@@ -9,6 +9,8 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 
+using System.Diagnostics;
+
 namespace EVCS_Projekt
 {
     /// <summary>
@@ -21,6 +23,9 @@ namespace EVCS_Projekt
 
         public Main()
         {
+            // Das ist ein Test :-)
+            Debug.WriteLine("Start Game");
+            
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
         }
