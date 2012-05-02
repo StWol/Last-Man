@@ -23,8 +23,9 @@ namespace EVCS_Projekt
 
         public Main()
         {
+
             // Das ist ein Test :-)
-            Debug.WriteLine("Start Game");
+            Debug.WriteLine("Start Game..");
             
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
