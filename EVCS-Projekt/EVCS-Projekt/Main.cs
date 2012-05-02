@@ -23,6 +23,7 @@ namespace EVCS_Projekt
 
         public Main()
         {
+
             // Das ist ein Test :-)
             Debug.WriteLine("Start Game");
             
