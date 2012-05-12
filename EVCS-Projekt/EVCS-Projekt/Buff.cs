@@ -22,7 +22,6 @@ namespace EVCS_Projekt
     {
 
         //Attributes
-
         private EBuffType type;
         private String name;
         private float value;
@@ -30,6 +29,7 @@ namespace EVCS_Projekt
         private float duration;
         private bool expired;
 
+        //Constructor
         public Buff(Game game, String name, float value, float modifier, float duration, EBuffType type, bool expired)
             : base(game)
         {
@@ -43,7 +43,6 @@ namespace EVCS_Projekt
 
 
         // Getter 'n' Setter
-
         public String GetName()
         {
             return name;
@@ -66,7 +65,6 @@ namespace EVCS_Projekt
 
 
         //other Functions
-
         public void UpdateDuration()
         {
 

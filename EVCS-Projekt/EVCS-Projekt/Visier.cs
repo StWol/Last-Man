@@ -12,30 +12,31 @@ using Microsoft.Xna.Framework.Media;
 
 namespace EVCS_Projekt
 {
+
     /**
      * @UMLVersion = 12.Mai2012
      * @Last Changes = 12.Mai2012
      *
      */
-    public class Munition : Microsoft.Xna.Framework.GameComponent
+
+    public class Visier : Microsoft.Xna.Framework.GameComponent
     {
 
         //Attributes
-        private List<Buff> buffList;
+        private float accuracy;
 
         //Constructor
-        public Munition(Game game, int id, EGroup group, String name, List<int> buffIDs)
+        public Visier(Game game, int id, EGroup group, String name, float accuracy, float weight)
             : base(game)
         {
-            
+            this.accuracy = accuracy;
         }
-
-
 
         //Functions
-        public List<Buff> GetBuffList()
+        public float GetAccuracy()
         {
-            return buffList;
+            return accuracy;
         }
+
     }
 }

@@ -27,6 +27,7 @@ namespace EVCS_Projekt
         private Stabilisator stabilisator;
         private Hauptteil hauptteil;
 
+        //Constructor
         public Weapon(Game game, Visier visier, Antrieb antrieb, Stabilisator stabilisator, Hauptteil hauptteil, int id, EGroup group, String name, float weight)
             : base(game)
         {
@@ -37,10 +38,9 @@ namespace EVCS_Projekt
         }
 
         //Functions
-
         public Item Shoot (float accuratcy) 
         {
-            return  //Schuss generiert neues Item
+            return null; //Schuss generiert neues Item
         }
 
         public Munition GetMunition()
@@ -48,7 +48,7 @@ namespace EVCS_Projekt
             return this.munition;
         }
 
-        public SetMunition (Munition newMunition)
+        public void SetMunition (Munition newMunition)
         {
             this.munition= newMunition;
         }

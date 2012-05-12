@@ -20,13 +20,13 @@ namespace EVCS_Projekt
     public class Shot : Microsoft.Xna.Framework.GameComponent
     {
         //Attributes
-
         private Vector2 direction;
         private float speed;
         private float damage;
         private float distance;
         private List<Buff> buffList;
 
+        //Constructor
         public Shot(Game game, int id, EGroup group, float speed, Vector2 direction, float damage, String name, float distance)
             : base(game)
         {
@@ -39,7 +39,6 @@ namespace EVCS_Projekt
 
 
         //Functions
-
         public float GetDamage()
         {
             return damage;
