@@ -37,21 +37,6 @@ namespace EVCS_Projekt
             this.distance = distance;
         }
 
-        
-        public override void Initialize()
-        {
-
-
-            base.Initialize();
-        }
-
-        
-        public override void Update(GameTime gameTime)
-        {
-
-            base.Update(gameTime);
-        }
-
 
         //Functions
 

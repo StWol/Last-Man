@@ -41,22 +41,6 @@ namespace EVCS_Projekt
             this.expired = false;
         }
 
-        
-        public override void Initialize()
-        {
-            // TODO: Add your initialization code here
-
-            base.Initialize();
-        }
-
-        
-        public override void Update(GameTime gameTime)
-        {
-
-            base.Update(gameTime);
-        }
-
-
 
         // Getter 'n' Setter
 

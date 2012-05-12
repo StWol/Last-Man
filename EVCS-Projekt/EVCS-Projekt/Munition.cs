@@ -17,33 +17,20 @@ namespace EVCS_Projekt
      * @Last Changes = 12.Mai2012
      *
      */
-    public class Monition : Microsoft.Xna.Framework.GameComponent
+    public class Munition : Microsoft.Xna.Framework.GameComponent
     {
 
         //Attributes
 
         private List<Buff> buffList;
 
-        public Monition(Game game, int id, EGroup group, String name, List<int> buffIDs)
+        public Munition(Game game, int id, EGroup group, String name, List<int> buffIDs)
             : base(game)
         {
             
         }
 
 
-        public override void Initialize()
-        {
-
-
-            base.Initialize();
-        }
-
-        public override void Update(GameTime gameTime)
-        {
-
-
-            base.Update(gameTime);
-        }
 
         public List<Buff> GetBuffList()
         {
