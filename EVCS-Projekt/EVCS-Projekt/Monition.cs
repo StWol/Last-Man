@@ -17,27 +17,20 @@ namespace EVCS_Projekt
      * @Last Changes = 12.Mai2012
      *
      */
-    public class Shot : Microsoft.Xna.Framework.GameComponent
+    public class Monition : Microsoft.Xna.Framework.GameComponent
     {
+
         //Attributes
 
-        private Vector2 direction;
-        private float speed;
-        private float damage;
-        private float distance;
         private List<Buff> buffList;
 
-        public Shot(Game game, int id, EGroup group, float speed, Vector2 direction, float damage, String name, float distance)
+        public Monition(Game game, int id, EGroup group, String name, List<int> buffIDs)
             : base(game)
         {
-            this.speed = speed;
-            this.direction = direction;
-            this.damage = damage;
-            this.buffList = buffList;
-            this.distance = distance;
+            
         }
 
-        
+
         public override void Initialize()
         {
 
@@ -45,19 +38,16 @@ namespace EVCS_Projekt
             base.Initialize();
         }
 
-        
         public override void Update(GameTime gameTime)
         {
+
 
             base.Update(gameTime);
         }
 
-
-        //Functions
-
-        public float GetDamage()
+        public List<Buff> GetBuffList()
         {
-            return damage;
+            return buffList;
         }
     }
 }

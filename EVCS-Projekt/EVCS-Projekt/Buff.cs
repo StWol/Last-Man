@@ -22,6 +22,7 @@ namespace EVCS_Projekt
     {
 
         //Attributes
+
         private EBuffType type;
         private String name;
         private float value;
