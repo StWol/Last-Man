@@ -1,18 +1,26 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
+using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.GamerServices;
+using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Media;
+
 
 namespace EVCS_Projekt
 {
-
     /**
      * @UMLVersion = 12.Mai2012
      * @Last Changes = 12.Mai2012
      *
      */
-    class Buff
+
+    public class Buff : Microsoft.Xna.Framework.GameComponent
     {
+
         //Attributes
         private EBuffType type;
         private String name;
@@ -20,12 +28,9 @@ namespace EVCS_Projekt
         private float modifier;
         private float duration;
         private bool expired;
-        
 
-        //Fuctions & Constructor
-
-        //Begin of Cons
-        public Buff(String name, float value, float modifier, float duration, EBuffType type, bool expired)
+        public Buff(Game game, String name, float value, float modifier, float duration, EBuffType type, bool expired)
+            : base(game)
         {
             this.name = name;
             this.value = value;
@@ -34,7 +39,21 @@ namespace EVCS_Projekt
             this.type = type;
             this.expired = false;
         }
-        // End of Const
+
+        
+        public override void Initialize()
+        {
+            // TODO: Add your initialization code here
+
+            base.Initialize();
+        }
+
+        
+        public override void Update(GameTime gameTime)
+        {
+
+            base.Update(gameTime);
+        }
 
 
 
@@ -60,7 +79,8 @@ namespace EVCS_Projekt
             return type;
         }
 
-        //Functions
+
+        //other Functions
 
         public void UpdateDuration()
         {
@@ -71,7 +91,11 @@ namespace EVCS_Projekt
         {
             return expired;
         }
-
-
     }
 }
+
+        
+        
+
+
+        
