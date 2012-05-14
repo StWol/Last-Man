@@ -118,6 +118,7 @@
     <Compile Include="IRenderBehavoir.cs" />
     <Compile Include="Item.cs" />
     <Compile Include="Liquid.cs" />
+    <Compile Include="MapLocation.cs" />
     <Compile Include="Munition.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="Powerup.cs" />

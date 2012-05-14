@@ -69,6 +69,11 @@ namespace EVCS_Projekt
             this.size.Y = rectangle.Height;
             
         }
+        public MapLocation(Rectangle rectangle)
+        {
+           
+
+        }
 
 
 
