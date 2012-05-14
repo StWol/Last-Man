@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using EVCS_Projekt.Location;
+using EVCS_Projekt.Objects;
 using Microsoft.Xna.Framework;
 
 namespace EVCS_Projekt
@@ -17,7 +19,7 @@ namespace EVCS_Projekt
         private float ratOfFire;
         private List<Buff> buffList;
 
-        public Enemy(Game game,ILocationBehavoir locationBehavoir,float ratOfFire,float attackDistance,
+        public Enemy(Game game,ILocationBehavior locationBehavoir,float ratOfFire,float attackDistance,
             float sightiningDistance, float maxHealth,  float speed, float health)
             :base(game,locationBehavoir)
         {

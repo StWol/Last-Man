@@ -1,16 +1,8 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
+using EVCS_Projekt.Location;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Audio;
-using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework.GamerServices;
-using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
-using Microsoft.Xna.Framework.Media;
 
-
-namespace EVCS_Projekt
+namespace EVCS_Projekt.Objects.Items
 {
     /**
      * @UMLVersion = 12.Mai2012
@@ -23,7 +15,7 @@ namespace EVCS_Projekt
         private float regeneration;
 
         //Constructor
-        public Powerup(Game game, int id, EGroup group, String name, float regeneration, string description, float weight, ILocationBehavoir locationBehavior)
+        public Powerup(Game game, int id, EGroup group, String name, float regeneration, string description, float weight, ILocationBehavior locationBehavior)
             : base( game,  id,  group,  name,  description,  weight,  locationBehavior)
         {
             this.regeneration = regeneration;

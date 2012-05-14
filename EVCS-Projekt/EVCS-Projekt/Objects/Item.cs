@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using EVCS_Projekt.Location;
+using EVCS_Projekt.Objects.Items;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
@@ -10,14 +12,14 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 
 
-namespace EVCS_Projekt
+namespace EVCS_Projekt.Objects
 {
     /**
      * @UMLVersion = 12.Mai2012
      * @Last Changes = 14.Mai2012
      *
      */
-    public class Item : GameObject
+    public abstract class Item : GameObject
     {
 
         //Attributes
@@ -52,7 +54,7 @@ namespace EVCS_Projekt
         }
 
         //Constructor
-        public Item(Game game, int id, EGroup group, string name, string description, float weight, ILocationBehavoir locationBehavior)
+        public Item(Game game, int id, EGroup group, string name, string description, float weight, ILocationBehavior locationBehavior)
             : base(game,  locationBehavior)
         {
             this.id = id;

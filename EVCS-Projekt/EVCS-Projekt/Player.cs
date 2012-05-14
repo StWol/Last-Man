@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using EVCS_Projekt.Location;
+using EVCS_Projekt.Objects;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
@@ -26,7 +28,7 @@ namespace EVCS_Projekt
 
 
 
-        public Player(Game game, ILocationBehavoir locationBehavior, float maxHealth, float health, float speed)
+        public Player(Game game, ILocationBehavior locationBehavior, float maxHealth, float health, float speed)
             : base(game, locationBehavior)
         {
 

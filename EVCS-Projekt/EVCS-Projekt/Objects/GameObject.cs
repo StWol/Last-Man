@@ -1,26 +1,18 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
+using EVCS_Projekt.Location;
+using EVCS_Projekt.Renderer;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Audio;
-using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework.GamerServices;
-using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
-using Microsoft.Xna.Framework.Media;
 
-
-namespace EVCS_Projekt
+namespace EVCS_Projekt.Objects
 {
 
     public abstract class GameObject : Microsoft.Xna.Framework.GameComponent
     {
 
-        private IRenderBehavoir renderBehavoir;
-        private ILocationBehavoir locationBehavior;
+        private IRenderBehavior renderBehavoir;
+        private ILocationBehavior locationBehavior;
 
 
-        public GameObject(Game game, ILocationBehavoir locationBehavior)
+        public GameObject(Game game, ILocationBehavior locationBehavior)
             : base(game)
         {
             this.locationBehavior = locationBehavior;
