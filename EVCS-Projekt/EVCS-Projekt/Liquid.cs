@@ -21,22 +21,31 @@ namespace EVCS_Projekt
     {
 
         //Attributes
-        public int Liquid_RED; 
-        public int Liquid_GREEN; 
-        public int Liquid_BLUE;
+
+        public const int Liquid_GREEN = 0;
+        public const int Liquid_BLUE = 1;
+        public const int Liquid_RED = 2; 
 
         private float amount;
+        private int typeOfLiquid = Liquid_GREEN;
+
+        public float Amount 
+        {
+            get { return amount; }
+        }
+
+        
+        public int TypeOfLiquid
+        {
+            get { return typeOfLiquid; }
+        }
 
 
-        public Liquid(Game game, int id, EGroup group, String name, float amount)
+        public Liquid(Game game, int id, int typeOfLiquid, String name, float amount)
             : base(game)
         {
             this.amount = amount;
-        }
-
-        public float GetAmount()
-        {
-            return this.amount;
+            this.typeOfLiquid = typeOfLiquid;
         }
 
     }
