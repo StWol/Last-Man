@@ -14,26 +14,53 @@ namespace EVCS_Projekt
 {
     /**
      * @UMLVersion = 12.Mai2012
-     * @Last Changes = 12.Mai2012
+     * @Last Changes = 14.Mai2012
      *
      */
-    public class Item : Microsoft.Xna.Framework.GameComponent
+    public class Item : GameObject
     {
 
         //Attributes
         private int id;
         private EGroup group;
-        private String name;
+        private string name;
+        private string description;
         private float weight;
 
+        public string Name
+        {
+            get
+            {
+                return name;
+            }
+        }
+       
+        public string Description
+        {
+            get 
+            {
+                return description;
+            }
+        }
+        
+        public float Weight
+        {
+            get
+            {
+                return weight;
+            }
+        }
 
         //Constructor
-        public Item(Game game, int id, EGroup group,String name,float weight, ILocationBehavior locationBehavior)
-            : base(game)
+        public Item(Game game, int id, EGroup group, string name, string description, float weight, ILocationBehavoir locationBehavior)
+            : base(game,  locationBehavior)
         {
             this.id = id;
             this.name = name;
+            this.description = description;
             this.weight = weight;
+            this.group = group;
+
         }
 
         //Functions
@@ -41,24 +68,5 @@ namespace EVCS_Projekt
         {
             return 0;
         }
-        public String GetDescription()
-        {
-            return null;
-        }
-        public String GetName()
-        {
-            return name;
-        }
-        public String GetDetails()
-        {
-            return null;
-        }
-        public void GetDetails(String name)
-        {
-            this.name = name;
-        }
-
-
-
     }
 }

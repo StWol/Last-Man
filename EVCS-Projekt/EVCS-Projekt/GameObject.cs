@@ -26,6 +26,7 @@ namespace EVCS_Projekt
             this.locationBehavior = locationBehavior;
         }
 
+ 
         /// <summary>
         /// Allows the game component to perform any initialization it needs to before starting
         /// to run.  This is where it can query for any required services and load content.
