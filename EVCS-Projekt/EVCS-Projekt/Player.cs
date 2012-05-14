@@ -17,14 +17,16 @@ namespace EVCS_Projekt
         //Attributes
         private float maxHealth;
         private float health;
+        private float speed;
+        private float[] liquid;
         private Item weapon;
         private List<Item> inventar;
-        private float speed;
         private Dictionary<int, Item> shortcuts;
-        private float[] liquid;
         private List<Buff> bufflist;
 
-        public Player (Game game, ILocationBehavoir locationBehavior)
+
+
+        public Player(Game game, ILocationBehavoir locationBehavior, float maxHealth, float health, float speed)
             : base(game, locationBehavior)
         {
 
