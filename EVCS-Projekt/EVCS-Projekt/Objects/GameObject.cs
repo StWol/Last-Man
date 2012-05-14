@@ -8,7 +8,11 @@ namespace EVCS_Projekt.Objects
     public abstract class GameObject : Microsoft.Xna.Framework.GameComponent
     {
 
+<<<<<<< HEAD:EVCS-Projekt/EVCS-Projekt/Objects/GameObject.cs
         private IRenderBehavior renderBehavoir;
+=======
+        private IRenderBehavoir renderBehavoir;
+>>>>>>> 6b84f34b7b990c4c4cd3092868cd1276207e7c35:EVCS-Projekt/EVCS-Projekt/GameObject.cs
         private ILocationBehavior locationBehavior;
 
 

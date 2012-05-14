@@ -110,6 +110,7 @@
     <Compile Include="Objects\Items\Antrieb.cs" />
     <Compile Include="Objects\Buff.cs" />
     <Compile Include="Enemy.cs" />
+<<<<<<< HEAD
     <Compile Include="Objects\EBuffType.cs" />
     <Compile Include="Objects\Items\EGroup.cs" />
     <Compile Include="Objects\Items\Hauptteil.cs" />
@@ -120,6 +121,19 @@
     <Compile Include="Location\MapLocation.cs" />
     <Compile Include="Objects\Items\Munition.cs" />
     <Compile Include="Objects\GameObject.cs" />
+=======
+    <Compile Include="EBuffType.cs" />
+    <Compile Include="EGroup.cs" />
+    <Compile Include="GameObject.cs" />
+    <Compile Include="Hauptteil.cs" />
+    <Compile Include="ILocationBehavoir.cs" />
+    <Compile Include="IRenderBehavoir.cs" />
+	<Compile Include="IRenderBehavior.cs" />
+    <Compile Include="Item.cs" />
+    <Compile Include="Liquid.cs" />
+    <Compile Include="MapLocation.cs" />
+    <Compile Include="Munition.cs" />
+>>>>>>> 6b84f34b7b990c4c4cd3092868cd1276207e7c35
     <Compile Include="Player.cs" />
     <Compile Include="Objects\Items\Powerup.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
