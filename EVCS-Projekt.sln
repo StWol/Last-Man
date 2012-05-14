@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EVCS-Projekt", "EVCS-Projekt\EVCS-Projekt\EVCS-Projekt.csproj", "{BFE09056-153F-40F2-A772-4EC9AFFD1AAD}"
 EndProject
-Project("{96E2B04D-8817-42C6-938A-82C39BA4D311}") = "EVCS-ProjektContent", "EVCS-Projekt\EVCS-ProjektContent\EVCS-ProjektContent.contentproj", "{6847BBA9-B2C8-4C09-B1F3-DEA9DF832442}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
@@ -15,8 +13,6 @@ Global
 		{BFE09056-153F-40F2-A772-4EC9AFFD1AAD}.Debug|x86.Build.0 = Debug|x86
 		{BFE09056-153F-40F2-A772-4EC9AFFD1AAD}.Release|x86.ActiveCfg = Release|x86
 		{BFE09056-153F-40F2-A772-4EC9AFFD1AAD}.Release|x86.Build.0 = Release|x86
-		{6847BBA9-B2C8-4C09-B1F3-DEA9DF832442}.Debug|x86.ActiveCfg = Debug|x86
-		{6847BBA9-B2C8-4C09-B1F3-DEA9DF832442}.Release|x86.ActiveCfg = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -18,49 +18,27 @@ namespace EVCS_Projekt
      *
      */
 
-    public class Buff : Microsoft.Xna.Framework.GameComponent
+    public class Buff
     {
 
         //Attributes
-        private EBuffType type;
-        private String name;
-        private float value;
-        private float modifier;
-        private float duration;
+        public float Duration { get; private set; }
+        public float Modifier { get; private set; }
+        public float Value { get; private set; }
+        public EBuffType Type { get; private set; }
+        public string Name { get; private set; }
+
         private bool expired;
 
         //Constructor
         public Buff(Game game, String name, float value, float modifier, float duration, EBuffType type, bool expired)
-            : base(game)
         {
-            this.name = name;
-            this.value = value;
-            this.modifier = modifier;
-            this.duration = duration;
-            this.type = type;
+            this.Name = name;
+            this.Value = value;
+            this.Modifier = modifier;
+            this.Duration = duration;
+            this.Type = type;
             this.expired = false;
-        }
-
-
-        // Getter 'n' Setter
-        public String GetName()
-        {
-            return name;
-        }
-
-        public float GetValue()
-        {
-            return value;
-        }
-
-        public float GetModifikation()
-        {
-            return modifier;
-        }
-
-        public EBuffType GetBuffType()
-        {
-            return type;
         }
 
 
@@ -77,8 +55,7 @@ namespace EVCS_Projekt
     }
 }
 
-        
-        
 
 
-        
+
+

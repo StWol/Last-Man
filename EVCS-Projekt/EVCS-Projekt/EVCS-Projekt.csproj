@@ -109,6 +109,8 @@
   <ItemGroup>
     <Compile Include="Antrieb.cs" />
     <Compile Include="Buff.cs" />
+    <Compile Include="Enemy.cs" />
+    <Compile Include="EBuffType.cs" />
     <Compile Include="EGroup.cs" />
     <Compile Include="GameObject.cs" />
     <Compile Include="Hauptteil.cs" />
@@ -118,7 +120,7 @@
     <Compile Include="Liquid.cs" />
     <Compile Include="Munition.cs" />
     <Compile Include="Player.cs" />
-	<Compile Include="Powerup.cs" />
+    <Compile Include="Powerup.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Main.cs" />
