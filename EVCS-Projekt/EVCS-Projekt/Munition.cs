@@ -14,18 +14,18 @@ namespace EVCS_Projekt
 {
     /**
      * @UMLVersion = 12.Mai2012
-     * @Last Changes = 12.Mai2012
+     * @Last Changes = 14.Mai2012
      *
      */
-    public class Munition : Microsoft.Xna.Framework.GameComponent
+    public class Munition : Item
     {
 
         //Attributes
         private List<Buff> buffList;
 
         //Constructor
-        public Munition(Game game, int id, EGroup group, String name, List<int> buffIDs)
-            : base(game)
+        public Munition(Game game, int id, EGroup group, String name, List<int> buffIDs, string description, float weight, ILocationBehavoir locationBehavior)
+            : base( game,  id,  group,  name,  description,  weight,  locationBehavior)
         {
             
         }

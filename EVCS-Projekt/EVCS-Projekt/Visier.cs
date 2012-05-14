@@ -19,15 +19,15 @@ namespace EVCS_Projekt
      *
      */
 
-    public class Visier : Microsoft.Xna.Framework.GameComponent
+    public class Visier : Item
     {
 
         //Attributes
         private float accuracy;
 
         //Constructor
-        public Visier(Game game, int id, EGroup group, String name, float accuracy, float weight)
-            : base(game)
+        public Visier(Game game, int id, EGroup group, String name, float accuracy, float weight, string description, ILocationBehavoir locationBehavior)
+            : base( game,  id,  group,  name,  description,  weight,  locationBehavior)
         {
             this.accuracy = accuracy;
         }

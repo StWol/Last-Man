@@ -17,7 +17,7 @@ namespace EVCS_Projekt
      * @Last Changes = 12.Mai2012
      *
      */
-    public class Liquid : Microsoft.Xna.Framework.GameComponent
+    public class Liquid : Item
     {
 
         //Attributes
@@ -41,8 +41,8 @@ namespace EVCS_Projekt
         }
 
 
-        public Liquid(Game game, int id, int typeOfLiquid, String name, float amount)
-            : base(game)
+        public Liquid(Game game, int id, int typeOfLiquid, String name, float amount, EGroup group, string description, float weight, ILocationBehavoir locationBehavior)
+            : base( game,  id,  group,  name,  description,  weight,  locationBehavior)
         {
             this.amount = amount;
             this.typeOfLiquid = typeOfLiquid;

@@ -17,24 +17,27 @@ namespace EVCS_Projekt
      * @Last Changes = 12.Mai2012
      *
      */
-    public class Hauptteil : Microsoft.Xna.Framework.GameComponent
+    public class Hauptteil : Item
     {
         //Attributes
         private float rateOfFire;
+        public float RateOfFire
+        {
+            get
+            {
+                return this.rateOfFire;
+            }
+        }
 
         //Constructor
-        public Hauptteil(Game game, int id, EGroup group, String name, float rateOfFire, float weight)
-            : base(game)
+        public Hauptteil(Game game, int id, EGroup group, String name, float rateOfFire, float weight, string description, ILocationBehavoir locationBehavior)
+            : base( game,  id,  group,  name,  description,  weight,  locationBehavior)
         {
             this.rateOfFire = rateOfFire;
         }
 
         //Functions
 
-        public float GetRateOfFire()
-        {
-            return rateOfFire;
-        }
 
     }
 }

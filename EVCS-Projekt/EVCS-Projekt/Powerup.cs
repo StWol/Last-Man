@@ -17,14 +17,14 @@ namespace EVCS_Projekt
      * @Last Changes = 12.Mai2012
      *
      */
-    public class Powerup : Microsoft.Xna.Framework.GameComponent
+    public class Powerup : Item
     {
         //Attributes
         private float regeneration;
 
         //Constructor
-        public Powerup(Game game, int id, EGroup group, String name, float regeneration)
-            : base(game)
+        public Powerup(Game game, int id, EGroup group, String name, float regeneration, string description, float weight, ILocationBehavoir locationBehavior)
+            : base( game,  id,  group,  name,  description,  weight,  locationBehavior)
         {
             this.regeneration = regeneration;
         }

@@ -60,8 +60,9 @@ namespace EVCS_Projekt
             this.description = description;
             this.weight = weight;
             this.group = group;
-
         }
+
+
 
         //Functions
         protected int HashCode()
