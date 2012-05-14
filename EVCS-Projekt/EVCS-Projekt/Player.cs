@@ -26,7 +26,7 @@ namespace EVCS_Projekt
 
 
 
-        public Player(Game game, ILocationBehavoir locationBehavior, float maxHealth, float health, float speed)
+        public Player(Game game, ILocationBehavior locationBehavior, float maxHealth, float health, float speed)
             : base(game, locationBehavior)
         {
 

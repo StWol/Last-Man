@@ -8,7 +8,7 @@ namespace EVCS_Projekt
 {
     interface IRenderBehavior
     {
-        public void draw(SpriteBatch sriteBatch, ILocationBehavoir locationBehavior);
+        public void draw(SpriteBatch sriteBatch, ILocationBehavior locationBehavior);
         public void Update(GameTime gameTime);
     }
 }

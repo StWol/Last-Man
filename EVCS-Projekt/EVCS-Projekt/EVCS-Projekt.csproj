@@ -116,6 +116,7 @@
     <Compile Include="Hauptteil.cs" />
     <Compile Include="ILocationBehavoir.cs" />
     <Compile Include="IRenderBehavoir.cs" />
+	<Compile Include="IRenderBehavior.cs" />
     <Compile Include="Item.cs" />
     <Compile Include="Liquid.cs" />
     <Compile Include="MapLocation.cs" />

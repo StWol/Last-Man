@@ -24,7 +24,7 @@ namespace EVCS_Projekt
         private List<Buff> buffList;
 
         //Constructor
-        public Munition(Game game, int id, EGroup group, String name, List<int> buffIDs, string description, float weight, ILocationBehavoir locationBehavior)
+        public Munition(Game game, int id, EGroup group, String name, List<int> buffIDs, string description, float weight, ILocationBehavior locationBehavior)
             : base( game,  id,  group,  name,  description,  weight,  locationBehavior)
         {
             

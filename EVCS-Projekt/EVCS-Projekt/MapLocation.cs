@@ -6,7 +6,7 @@ using Microsoft.Xna.Framework;
 
 namespace EVCS_Projekt
 {
-    class MapLocation : ILocationBehavoir
+    class MapLocation : ILocationBehavior
     {
 
         //Attributes

@@ -6,7 +6,7 @@ using Microsoft.Xna.Framework;
 
 namespace EVCS_Projekt
 {
-    interface ILocationBehavoir
+    interface ILocationBehavior
     {
         public Vector2 GetPostition();
         public Vector2 GetSize();

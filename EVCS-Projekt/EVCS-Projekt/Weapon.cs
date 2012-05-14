@@ -39,7 +39,7 @@ namespace EVCS_Projekt
         private Hauptteil hauptteil;
 
         //Constructor
-        public Weapon(Game game, Visier visier, Antrieb antrieb, Stabilisator stabilisator, Hauptteil hauptteil, int id, EGroup group, String name, float weight, string description, ILocationBehavoir locationBehavior)
+        public Weapon(Game game, Visier visier, Antrieb antrieb, Stabilisator stabilisator, Hauptteil hauptteil, int id, EGroup group, String name, float weight, string description, ILocationBehavior locationBehavior)
             : base(   game,  id,  group,  name,  description,  weight,  locationBehavior)
         {
             this.visier = visier;

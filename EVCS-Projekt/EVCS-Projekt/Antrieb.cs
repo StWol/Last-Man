@@ -32,7 +32,7 @@ namespace EVCS_Projekt
         private Buff damageBuff;
 
         //Constructor
-        public Antrieb(Game game, int id, EGroup group, String name, float rateOfFire, float damage, float weight, string description, ILocationBehavoir locationBehavior)
+        public Antrieb(Game game, int id, EGroup group, String name, float rateOfFire, float damage, float weight, string description, ILocationBehavior locationBehavior)
             : base( game,  id,  group,  name,  description,  weight,  locationBehavior)
         {
             this.rateOfFire = rateOfFire;

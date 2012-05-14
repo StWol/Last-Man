@@ -17,10 +17,10 @@ namespace EVCS_Projekt
     {
 
         private IRenderBehavoir renderBehavoir;
-        private ILocationBehavoir locationBehavior;
+        private ILocationBehavior locationBehavior;
 
 
-        public GameObject(Game game, ILocationBehavoir locationBehavior)
+        public GameObject(Game game, ILocationBehavior locationBehavior)
             : base(game)
         {
             this.locationBehavior = locationBehavior;

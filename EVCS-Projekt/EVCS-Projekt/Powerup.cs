@@ -23,7 +23,7 @@ namespace EVCS_Projekt
         private float regeneration;
 
         //Constructor
-        public Powerup(Game game, int id, EGroup group, String name, float regeneration, string description, float weight, ILocationBehavoir locationBehavior)
+        public Powerup(Game game, int id, EGroup group, String name, float regeneration, string description, float weight, ILocationBehavior locationBehavior)
             : base( game,  id,  group,  name,  description,  weight,  locationBehavior)
         {
             this.regeneration = regeneration;

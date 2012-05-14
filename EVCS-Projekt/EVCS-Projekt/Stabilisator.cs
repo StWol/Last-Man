@@ -23,7 +23,7 @@ namespace EVCS_Projekt
         private float accuracy;
 
         //Constructor
-        public Stabilisator(Game game, int id, EGroup group, String name, float accuracy, float weight, string description, ILocationBehavoir locationBehavior)
+        public Stabilisator(Game game, int id, EGroup group, String name, float accuracy, float weight, string description, ILocationBehavior locationBehavior)
             : base( game,  id,  group,  name,  description,  weight,  locationBehavior)
         {
             this.accuracy = accuracy;
