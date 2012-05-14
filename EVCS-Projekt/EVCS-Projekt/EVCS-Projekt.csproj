@@ -109,6 +109,8 @@
   <ItemGroup>
     <Compile Include="Antrieb.cs" />
     <Compile Include="Buff.cs" />
+    <Compile Include="Enemy.cs" />
+    <Compile Include="EBuffType.cs" />
     <Compile Include="EGroup.cs" />
     <Compile Include="GameObject.cs" />
     <Compile Include="Hauptteil.cs" />
