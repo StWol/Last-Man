@@ -7,21 +7,23 @@ namespace EVCS_Projekt.Objects
 
     public abstract class GameObject : Microsoft.Xna.Framework.GameComponent
     {
+        // Baucht man die Vererbung der GameComponent von XNA und die initialize methode?
 
-<<<<<<< HEAD:EVCS-Projekt/EVCS-Projekt/Objects/GameObject.cs
         private IRenderBehavior renderBehavoir;
-=======
-        private IRenderBehavoir renderBehavoir;
->>>>>>> 6b84f34b7b990c4c4cd3092868cd1276207e7c35:EVCS-Projekt/EVCS-Projekt/GameObject.cs
-        private ILocationBehavior locationBehavior;
+        public ILocationBehavior LocationBehavior { get; private set; }
 
 
         public GameObject(Game game, ILocationBehavior locationBehavior)
             : base(game)
         {
-            this.locationBehavior = locationBehavior;
+            this.LocationBehavior = locationBehavior;
         }
 
+        public Rectangle GetBoundingBox()
+        {
+            // TODO: BB zurückgeben
+            return new Rectangle();
+        }
  
         /// <summary>
         /// Allows the game component to perform any initialization it needs to before starting
@@ -44,5 +46,7 @@ namespace EVCS_Projekt.Objects
 
             base.Update(gameTime);
         }
+
+
     }
 }
