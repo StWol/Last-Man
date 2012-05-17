@@ -107,6 +107,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Managers\GameManager.cs" />
+    <Compile Include="Managers\Manager.cs" />
+    <Compile Include="Managers\MenuManager.cs" />
     <Compile Include="Objects\Items\Antrieb.cs" />
     <Compile Include="Objects\Buff.cs" />
     <Compile Include="Enemy.cs" />
@@ -141,12 +144,6 @@
     <Content Include="GameThumbnail.png" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\EVCS-ProjektContent\EVCS-ProjektContent.contentproj">
-      <Name>EVCS_ProjektContent</Name>
-      <XnaReferenceType>Content</XnaReferenceType>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.0,Profile=Client">
       <Visible>False</Visible>
       <ProductName>Microsoft .NET Framework 4 Client Profile %28x86 und x64%29</ProductName>
@@ -173,7 +170,6 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\Microsoft.Xna.GameStudio.targets" />
   <!--
