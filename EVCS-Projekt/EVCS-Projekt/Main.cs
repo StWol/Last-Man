@@ -29,6 +29,7 @@ namespace EVCS_Projekt
         // Statische Attribute
         public static GameTime GameTime { get; private set; }
         public static Main MainObject { get; private set; }
+        public static ContentManager ContentManager { get; private set; }
 
         public Main()
         {
@@ -43,15 +44,16 @@ namespace EVCS_Projekt
 
         protected override void Initialize()
         {
-            // Main für static Zugriff
-            MainObject = this;
+            // Load Config
+            Configuration.LoadConfig();
 
-            // Manager erzeugen
-            MenuManager = new MenuManager();
-            GameManager = new GameManager();
+            // Auflösung einstellen
+            int resWidht = Configuration.GetInt("resolutionWidth");
+            int resHeight = Configuration.GetInt("resolutionHeight");
 
-            // CurrentManager ist standardmäßig das Menu
-            CurrentManager = MenuManager;
+            graphics.PreferredBackBufferWidth = resWidht;
+            graphics.PreferredBackBufferHeight = resHeight;
+            graphics.ApplyChanges();
 
             base.Initialize();
         }
@@ -61,7 +63,16 @@ namespace EVCS_Projekt
         {
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
+            // Main + ContentManager für static Zugriff
+            MainObject = this;
+            ContentManager = Content;
 
+            // Manager erzeugen
+            MenuManager = new MenuManager();
+            GameManager = new GameManager();
+
+            // CurrentManager ist standardmäßig das Menu
+            CurrentManager = MenuManager;
         }
 
 

@@ -1,12 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Microsoft.Xna.Framework;
 
-namespace EVCS_Projekt
+namespace EVCS_Projekt.Location
 {
-    class UILocation : ILocationBehavoir
+    class UILocation : ILocationBehavior
     {
 
         private Rectangle rectangle;
@@ -47,6 +44,11 @@ namespace EVCS_Projekt
             tmp.X = rectangle.Width;
             tmp.Y = rectangle.Height;
             return tmp;
+        }
+        
+        public Rectangle GetRectangle()
+        {
+            throw new NotImplementedException();
         }
     }
 }
