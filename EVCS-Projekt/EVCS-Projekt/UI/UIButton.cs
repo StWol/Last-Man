@@ -37,6 +37,14 @@ namespace EVCS_Projekt.UI
 
         }
 
+        public UIButton(Vector2 position, Texture2D texture, Texture2D hoverTexture)
+            : base(texture.Width, texture.Height, position)
+        {
+            this.texture = texture;
+            this.hoverTexture = hoverTexture;
+            isHover = false;
+        }
+
 
         public override void Update()
         {

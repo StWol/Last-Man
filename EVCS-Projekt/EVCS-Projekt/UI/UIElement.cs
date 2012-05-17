@@ -14,16 +14,39 @@ namespace EVCS_Projekt.UI
 {
     class UIElement
     {
-        protected int width;
-        protected int height;
-        protected Vector2 position;
+        protected int width
+        {
+            get
+            {
+                return (int)(Helper.DrawHelper.Get(this.GetHashCode() + "Size").X);
+            }
+        }
+        protected int height
+        {
+            get
+            {
+                return (int)(Helper.DrawHelper.Get(this.GetHashCode() + "Size").Y);
+            }
+        }
+        protected Vector2 position
+        {
+            get { return Helper.DrawHelper.Get(this.GetHashCode() + "Position"); }
+            private set 
+            {
+                string key = this.GetHashCode() + "Position";
+
+                Helper.DrawHelper.AddDimension(key, (int)value.X, (int)value.Y);
+            }
+        }
+
         protected List<UIActionListener> listener;
         protected UIElement parent;
 
         public UIElement(int width, int height, Vector2 position)
         {
-            this.height = height;
-            this.width = width;
+            string key = this.GetHashCode() + "Size";
+            Helper.DrawHelper.AddDimension(key, width, height);
+            
             this.position = position;
             listener = new List<UIActionListener>();
         }

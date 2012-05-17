@@ -13,38 +13,96 @@ using EVCS_Projekt.UI;
 
 namespace EVCS_Projekt.Managers
 {
-    public class MenuManager : Manager
+    public class MenuManager : Manager, UIActionListener
     {
-        private UIPanel menu;
+        private UIPanel menuPanel;
+        private UIButton btnStart;
+        private UIButton btnExit;
+        private UIButton btnCredits;
+        private UIButton btnOptions;
+
         private Texture2D background;
 
         public MenuManager()
         {
-            Load();
+            LoadMenu();
         }
 
-        public void Load()
+        public void LoadMenu()
         {
             Debug.WriteLine("Benötigter Content für Menu laden.");
 
             ContentManager content = Main.ContentManager;
 
+            // Initialisierung
+            UI.MouseCursor.CurrentCursor = UI.MouseCursor.DefaultCursor;
+
             // Läd Texturen die bnötigt werden
             background = content.Load<Texture2D>("images/menu/background");
+
+            Texture2D imgStart = content.Load<Texture2D>("images/menu/start");
+            Texture2D imgStartHover = content.Load<Texture2D>("images/menu/startH");
+
+            Texture2D imgExit = content.Load<Texture2D>("images/menu/exit");
+            Texture2D imgExitHover = content.Load<Texture2D>("images/menu/exitH");
+
+            Texture2D imgCredits = content.Load<Texture2D>("images/menu/credits");
+            Texture2D imgCreditsHover = content.Load<Texture2D>("images/menu/creditsH");
+
+            Texture2D imgOptions = content.Load<Texture2D>("images/menu/options");
+            Texture2D imgOptionsHover = content.Load<Texture2D>("images/menu/optionsH");
+
+            // Menü erzeugen
+            menuPanel = new UIPanel(0, 0, new Vector2(0, 0));
+
+            btnStart = new UIButton(new Vector2(99, 152), imgStart, imgStartHover);
+            btnExit = new UIButton(new Vector2(649, 490), imgExit, imgExitHover);
+            btnCredits = new UIButton(new Vector2(0, 507), imgCredits, imgCreditsHover);
+            btnOptions = new UIButton(new Vector2(337, 209), imgOptions, imgOptionsHover);
+
+            btnStart.AddActionListener(this);
+            btnExit.AddActionListener(this);
+            btnCredits.AddActionListener(this);
+            btnOptions.AddActionListener(this);
+
+            menuPanel.Add(btnStart);
+            menuPanel.Add(btnExit);
+            menuPanel.Add(btnCredits);
+            menuPanel.Add(btnOptions);
         }
 
         public override void Update()
         {
-
+            // Menubuttons updaten
+            menuPanel.Update();
         }
 
         public override void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Begin();
 
-            spriteBatch.Draw(background, new Rectangle(0,0, Configuration.GetInt("resolutionWidth"), Configuration.GetInt("resolutionHeight")), Color.White);
+            // Hintergrund
+            spriteBatch.Draw(background, new Rectangle(0, 0, Configuration.GetInt("resolutionWidth"), Configuration.GetInt("resolutionHeight")), Color.White);
+
+            // Buttons zeichnen
+            menuPanel.Draw(spriteBatch);
+
+            // Maus zeichnen
+            UI.MouseCursor.DrawMouse(spriteBatch);
 
             spriteBatch.End();
+        }
+
+        void UIActionListener.ActionEvent(UIElement element)
+        {
+            if (element == btnExit)
+                Environment.Exit(0);
+            else if (element == btnStart)
+                Debug.WriteLine("Start Button");
+            else if (element == btnOptions)
+                Debug.WriteLine("Option Button");
+            else if (element == btnCredits)
+                Debug.WriteLine("Credits Button");
         }
     }
 }

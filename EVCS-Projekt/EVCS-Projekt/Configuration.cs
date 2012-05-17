@@ -17,6 +17,7 @@ namespace EVCS_Projekt
             // Dummy werte
             configurationDic.Add("resolutionWidth", "800");
             configurationDic.Add("resolutionHeight", "600");
+            configurationDic.Add("isFullscreen", "false");
         }
 
         public static void SaveConfig()
@@ -43,6 +44,11 @@ namespace EVCS_Projekt
         public static long GetLong(string key)
         {
             return long.Parse(configurationDic[key]);
+        }
+
+        public static bool GetBool(string key)
+        {
+            return bool.Parse(configurationDic[key]);
         }
     }
 }

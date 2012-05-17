@@ -53,6 +53,9 @@ namespace EVCS_Projekt
 
             graphics.PreferredBackBufferWidth = resWidht;
             graphics.PreferredBackBufferHeight = resHeight;
+
+            graphics.IsFullScreen = Configuration.GetBool("isFullscreen");
+
             graphics.ApplyChanges();
 
             base.Initialize();
@@ -66,6 +69,9 @@ namespace EVCS_Projekt
             // Main + ContentManager für static Zugriff
             MainObject = this;
             ContentManager = Content;
+
+            // Mauszeiger laden
+            UI.MouseCursor.Load();
 
             // Manager erzeugen
             MenuManager = new MenuManager();
