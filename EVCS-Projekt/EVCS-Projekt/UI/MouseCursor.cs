@@ -30,7 +30,7 @@ namespace EVCS_Projekt.UI
             ContentManager content = Main.ContentManager;
 
             // Cursor laden
-            NoCursor = content.Load<Texture2D>("images/blankPixel");
+            NoCursor = content.Load<Texture2D>("images/pixelTransparent");
             DefaultCursor = content.Load<Texture2D>("images/mouse/default");
 
             CurrentCursor = NoCursor;

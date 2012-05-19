@@ -10,6 +10,7 @@ using Microsoft.Xna.Framework.Content;
 using System.Diagnostics;
 
 using EVCS_Projekt.UI;
+using EVCS_Projekt.Helper;
 
 namespace EVCS_Projekt.Managers
 {
@@ -22,6 +23,13 @@ namespace EVCS_Projekt.Managers
         private UIButton btnOptions;
 
         private Texture2D background;
+        private Texture2D pixelWhite;
+
+        private SpriteFont fontDefault;
+
+        // Für weichen ÜBergang
+        private float fadeIn = 1F;
+        private float fadeTime = 0.25F;
 
         public MenuManager()
         {
@@ -39,6 +47,7 @@ namespace EVCS_Projekt.Managers
 
             // Läd Texturen die bnötigt werden
             background = content.Load<Texture2D>("images/menu/background");
+            pixelWhite = content.Load<Texture2D>("images/pixelWhite");
 
             Texture2D imgStart = content.Load<Texture2D>("images/menu/start");
             Texture2D imgStartHover = content.Load<Texture2D>("images/menu/startH");
@@ -51,6 +60,9 @@ namespace EVCS_Projekt.Managers
 
             Texture2D imgOptions = content.Load<Texture2D>("images/menu/options");
             Texture2D imgOptionsHover = content.Load<Texture2D>("images/menu/optionsH");
+
+            // Fonts laden
+            fontDefault = content.Load<SpriteFont>("fonts/defaultMedium");
 
             // Menü erzeugen
             menuPanel = new UIPanel(0, 0, new Vector2(0, 0));
@@ -75,11 +87,20 @@ namespace EVCS_Projekt.Managers
         {
             // Menubuttons updaten
             menuPanel.Update();
+
+            // Weicher übergang
+            if (fadeIn > 0)
+            {
+                fadeIn -= (1F / fadeTime) * (float)Main.GameTime.ElapsedGameTime.TotalSeconds;
+
+                if (fadeIn < 0)
+                    fadeIn = 0;
+            }
         }
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Begin();
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend);
 
             // Hintergrund
             spriteBatch.Draw(background, new Rectangle(0, 0, Configuration.GetInt("resolutionWidth"), Configuration.GetInt("resolutionHeight")), Color.White);
@@ -90,8 +111,15 @@ namespace EVCS_Projekt.Managers
             // Maus zeichnen
             UI.MouseCursor.DrawMouse(spriteBatch);
 
+            // Komplett schwarz um menü einzufaden
+            spriteBatch.Draw(pixelWhite, new Rectangle(0, 0, Configuration.GetInt("resolutionWidth"), Configuration.GetInt("resolutionHeight")), Color.Black * fadeIn);
+
+            spriteBatch.DrawString(fontDefault, "test", new Vector2(0,0), Color.Blue, 0F, new Vector2(0,0), DrawHelper.Scale, SpriteEffects.None, 0);
+
             spriteBatch.End();
         }
+
+
 
         void UIActionListener.ActionEvent(UIElement element)
         {

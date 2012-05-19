@@ -12,6 +12,7 @@ using Microsoft.Xna.Framework.Media;
 using System.Diagnostics;
 
 using EVCS_Projekt.Managers;
+using EVCS_Projekt.Helper;
 
 namespace EVCS_Projekt
 {
@@ -57,6 +58,9 @@ namespace EVCS_Projekt
             graphics.IsFullScreen = Configuration.GetBool("isFullscreen");
 
             graphics.ApplyChanges();
+
+            // Helper updaten
+            DrawHelper.Callculate();
 
             base.Initialize();
         }

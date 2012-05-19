@@ -10,13 +10,16 @@ namespace EVCS_Projekt.Helper
     class DrawHelper
     {
         // Die Referenzauflösung die zu berechnung verwendet wird
-        private static Vector2 referenceSize = new Vector2(800, 600);
+        private static Vector2 referenceSize = new Vector2(1024, 576);
 
         // Zwischenspeicher
         private static Dictionary<string, Vector2> dimensions = new Dictionary<string,Vector2>();
         private static Dictionary<string, Vector2> unmodifiedDimensions = new Dictionary<string,Vector2>();
 
-        public static void ConvertDimensions()
+        private static float scale = 1F;
+        public static float Scale { get { return scale; } }
+
+        public static void Callculate()
         {
             // Rechnet die Position in die Aktuelle Bildschirmgröße um
             int resWidht = Configuration.GetInt("resolutionWidth");
@@ -32,6 +35,9 @@ namespace EVCS_Projekt.Helper
 
                 dimensions[dim.Key] = calc;
             }
+
+            // Scale neu berechnen
+            scale = 1F / referenceSize.Y * resHeight;
         }
 
         public static void AddDimension(string key, int x, int y)
@@ -45,6 +51,11 @@ namespace EVCS_Projekt.Helper
 
             Vector2 calc = new Vector2((int)(x / referenceSize.X * resWidht), (int)(y / referenceSize.Y * resHeight));
             dimensions.Add(key, calc);
+        }
+
+        public static void Update(string key, Vector2 newVector)
+        {
+            dimensions[key] = newVector;
         }
 
         public static Vector2 Get(string key)
