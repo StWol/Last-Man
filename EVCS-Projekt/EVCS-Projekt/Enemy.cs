@@ -8,45 +8,49 @@ using Microsoft.Xna.Framework;
 
 namespace EVCS_Projekt
 {
-    class Enemy:GameObject
+    class Enemy: GameObject
     {
         public float Speed { get; private set; }
-        public float Health{ get; private set; }
-        
+        public float Health{ get; private set; }  
         private float maxHealth;
         private float sightiningDistance;
         private float attackDistance;
         private float ratOfFire;
         private List<Buff> buffList;
+        private int typOfEnemy { get; private set; }
+        
 
-        public Enemy(Game game,ILocationBehavior locationBehavoir,float ratOfFire,float attackDistance,
-            float sightiningDistance, float maxHealth,  float speed, float health)
-            :base(game,locationBehavoir)
+        public Enemy(ILocationBehavior locationBehavoir,float ratOfFire,float attackDistance,
+            float sightiningDistance, float maxHealth,  float speed, float health, int TypeOfEnemy)
+            :base(locationBehavoir)
         {
             this.buffList = new List<Buff>();
             this.ratOfFire = ratOfFire;
             this.attackDistance = attackDistance;
             this.sightiningDistance = sightiningDistance;
             this.maxHealth = maxHealth;
-            
-            Speed = speed;
-            Health = health;
+            this.typOfEnemy = typOfEnemy;
+
+            this.Speed = speed;
+            this.Health = health;
         }
 
-        private void Die()
-        {
-            
-        }
+        /*
+        *  Die(), das DropItem() und das Prüfen, ob ein Enemy gestorben ist - muss der GameManager checken und
+        *  behandeln!
+        */
 
-        public void TakeDamage()
+        public void TakeDamage(Objects.Items.Shot shot)
         {
-            
+            this.Health -= shot.Damage;
         }
 
         public void Attack()
         {
             
         }
+
+
 
 
         // Hier ist es etwas seltsam, dass der Gegner ein Item bekommt, welches es dann auch glei droppt. Ausserdem ist die 
@@ -56,15 +60,11 @@ namespace EVCS_Projekt
             
         }
 
-        public void AddBuffs(List<Buff> buffs )
+        public void AddBuffs(List<Buff> buffs)
         {
-            
         }
 
-        //weiss nicht, ob man das braucht.
-        public void AddBuff(Buff buff)
-        {
+       
             
-        }
     }
 }

@@ -54,8 +54,8 @@ namespace EVCS_Projekt.Objects
         }
 
         //Constructor
-        public Item(Game game, int id, EGroup group, string name, string description, float weight, ILocationBehavior locationBehavior)
-            : base(game,  locationBehavior)
+        public Item( int id, EGroup group, string name, string description, float weight, ILocationBehavior locationBehavior)
+            : base( locationBehavior)
         {
             this.id = id;
             this.name = name;

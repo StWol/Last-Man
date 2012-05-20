@@ -5,7 +5,7 @@ using Microsoft.Xna.Framework;
 namespace EVCS_Projekt.Objects
 {
 
-    public abstract class GameObject : Microsoft.Xna.Framework.GameComponent
+    public abstract class GameObject
     {
         // Baucht man die Vererbung der GameComponent von XNA und die initialize methode?
 
@@ -13,8 +13,8 @@ namespace EVCS_Projekt.Objects
         public ILocationBehavior LocationBehavior { get; private set; }
 
 
-        public GameObject(Game game, ILocationBehavior locationBehavior)
-            : base(game)
+        public GameObject( ILocationBehavior locationBehavior)
+
         {
             this.LocationBehavior = locationBehavior;
         }
@@ -25,28 +25,6 @@ namespace EVCS_Projekt.Objects
             return new Rectangle();
         }
  
-        /// <summary>
-        /// Allows the game component to perform any initialization it needs to before starting
-        /// to run.  This is where it can query for any required services and load content.
-        /// </summary>
-        public override void Initialize()
-        {
-            // TODO: Add your initialization code here
-
-            base.Initialize();
-        }
-
-        /// <summary>
-        /// Allows the game component to update itself.
-        /// </summary>
-        /// <param name="gameTime">Provides a snapshot of timing values.</param>
-        public override void Update(GameTime gameTime)
-        {
-            // TODO: Add your update code here
-
-            base.Update(gameTime);
-        }
-
 
     }
 }

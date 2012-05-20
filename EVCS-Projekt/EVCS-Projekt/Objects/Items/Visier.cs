@@ -18,8 +18,8 @@ namespace EVCS_Projekt.Objects.Items
         private float accuracy;
 
         //Constructor
-        public Visier(Game game, int id, EGroup group, String name, float accuracy, float weight, string description, ILocationBehavior locationBehavior)
-            : base( game,  id,  group,  name,  description,  weight,  locationBehavior)
+        public Visier( int id, EGroup group, String name, float accuracy, float weight, string description, ILocationBehavior locationBehavior)
+            : base(  id,  group,  name,  description,  weight,  locationBehavior)
         {
             this.accuracy = accuracy;
         }

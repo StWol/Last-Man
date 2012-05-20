@@ -14,25 +14,14 @@ namespace EVCS_Projekt.Objects.Items
 
         //Attributes
         private Visier visier;
-        private Munition munition;
-        public Munition Munition
-        {
-            get
-            {
-                return munition;
-            }
-            set
-            {
-                munition = value;
-            }
-        }
+        public Munition Munition { get; set; }
         private Antrieb antrieb;
         private Stabilisator stabilisator;
         private Hauptteil hauptteil;
 
         //Constructor
-        public Weapon(Game game, Visier visier, Antrieb antrieb, Stabilisator stabilisator, Hauptteil hauptteil, int id, EGroup group, String name, float weight, string description, ILocationBehavior locationBehavior)
-            : base(   game,  id,  group,  name,  description,  weight,  locationBehavior)
+        public Weapon( Visier visier, Antrieb antrieb, Stabilisator stabilisator, Hauptteil hauptteil, int id, EGroup group, String name, float weight, string description, ILocationBehavior locationBehavior)
+            : base(   id,  group,  name,  description,  weight,  locationBehavior)
         {
             this.visier = visier;
             this.antrieb = antrieb;
