@@ -22,7 +22,7 @@ namespace EVCS_Projekt.Objects
         private bool expired;
 
         //Constructor
-        public Buff(Game game, String name, float value, float modifier, float duration, EBuffType type, bool expired)
+        public Buff(String name, float value, float modifier, float duration, EBuffType type, bool expired)
         {
             this.Name = name;
             this.Value = value;

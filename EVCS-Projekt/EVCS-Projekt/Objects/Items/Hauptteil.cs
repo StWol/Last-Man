@@ -23,8 +23,8 @@ namespace EVCS_Projekt.Objects.Items
         }
 
         //Constructor
-        public Hauptteil(Game game, int id, EGroup group, String name, float rateOfFire, float weight, string description, ILocationBehavior locationBehavior)
-            : base( game,  id,  group,  name,  description,  weight,  locationBehavior)
+        public Hauptteil( int id, EGroup group, String name, float rateOfFire, float weight, string description, ILocationBehavior locationBehavior)
+            : base( id,  group,  name,  description,  weight,  locationBehavior)
         {
             this.rateOfFire = rateOfFire;
         }

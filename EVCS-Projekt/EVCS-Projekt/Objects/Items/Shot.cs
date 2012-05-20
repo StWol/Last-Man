@@ -20,8 +20,8 @@ namespace EVCS_Projekt.Objects.Items
         private List<Buff> buffList;
 
         //Constructor
-        public Shot(Game game, int id, EGroup group, float speed, Vector2 direction, float damage, String name, float distance, string description, float weight, ILocationBehavior locationBehavior)
-            : base( game,  id,  group,  name,  description,  weight,  locationBehavior)
+        public Shot( int id, EGroup group, float speed, Vector2 direction, float damage, String name, float distance, string description, float weight, ILocationBehavior locationBehavior)
+            : base( id,  group,  name,  description,  weight,  locationBehavior)
         {
             this.speed = speed;
             this.direction = direction;

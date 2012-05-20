@@ -8,20 +8,20 @@ using Microsoft.Xna.Framework;
 
 namespace EVCS_Projekt
 {
-    class Enemy:GameObject
+    class Enemy: GameObject
     {
         public float Speed { get; private set; }
-        public float Health{ get; private set; }
-        
+        public float Health{ get; private set; }  
         private float maxHealth;
         private float sightiningDistance;
         private float attackDistance;
         private float ratOfFire;
         private List<Buff> buffList;
+        private int TypOfEnemy;
 
-        public Enemy(Game game,ILocationBehavior locationBehavoir,float ratOfFire,float attackDistance,
+        public Enemy(ILocationBehavior locationBehavoir,float ratOfFire,float attackDistance,
             float sightiningDistance, float maxHealth,  float speed, float health)
-            :base(game,locationBehavoir)
+            :base(locationBehavoir)
         {
             this.buffList = new List<Buff>();
             this.ratOfFire = ratOfFire;

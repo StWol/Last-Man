@@ -23,16 +23,16 @@ namespace EVCS_Projekt
         private float maxHealth;
         public float Health { get; private set; }
         private float speed;
-        public float[] Liquid {get;}
-        public Item Weapon { set; }
+        public float[] Liquid { get; set; }
+        public Item Weapon { set; get; }
         public List<Item> Inventar { get; private set; }
         private Dictionary<int, Item> shortcuts;
         private List<Buff> bufflist;
 
         
 
-        public Player( Game game, ILocationBehavior locationBehavior, float maxHealth, float health, float speed)
-            : base(game, locationBehavior)
+        public Player(ILocationBehavior locationBehavior, float maxHealth, float health, float speed)
+            : base(locationBehavior)
         {
             bufflist = new List<Buff>();
         }

@@ -33,8 +33,8 @@ namespace EVCS_Projekt.Objects.Items
         }
 
 
-        public Liquid(Game game, int id, int typeOfLiquid, String name, float amount, EGroup group, string description, float weight, ILocationBehavior locationBehavior)
-            : base( game,  id,  group,  name,  description,  weight,  locationBehavior)
+        public Liquid( int id, int typeOfLiquid, String name, float amount, EGroup group, string description, float weight, ILocationBehavior locationBehavior)
+            : base(  id,  group,  name,  description,  weight,  locationBehavior)
         {
             this.amount = amount;
             this.typeOfLiquid = typeOfLiquid;
