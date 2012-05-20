@@ -15,7 +15,7 @@ namespace EVCS_Projekt.Objects.Items
         //Attributes
         private Vector2 direction;
         private float speed;
-        private float damage;
+        public float Damage { get; private set; }
         private float distance;
         private List<Buff> buffList;
 
@@ -25,16 +25,13 @@ namespace EVCS_Projekt.Objects.Items
         {
             this.speed = speed;
             this.direction = direction;
-            this.damage = damage;
+            this.Damage = damage;
             this.buffList = new List<Buff>();
             this.distance = distance;
         }
 
 
         //Functions
-        public float GetDamage()
-        {
-            return 0;
-        }
+
     }
 }
