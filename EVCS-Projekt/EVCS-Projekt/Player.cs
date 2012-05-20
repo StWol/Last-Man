@@ -29,7 +29,10 @@ namespace EVCS_Projekt
         private Dictionary<int, Item> shortcuts;
         private List<Buff> bufflist;
 
-        
+        /*
+        *  Die(), das DropItem() und das Prüfen, ob ein Enemy gestorben ist - muss der GameManager checken und
+        *  behandeln!
+        */
 
         public Player(ILocationBehavior locationBehavior, float maxHealth, float health, float speed)
             : base(locationBehavior)

@@ -17,10 +17,11 @@ namespace EVCS_Projekt
         private float attackDistance;
         private float ratOfFire;
         private List<Buff> buffList;
-        private int TypOfEnemy;
+        private int typOfEnemy { get; private set; }
+        
 
         public Enemy(ILocationBehavior locationBehavoir,float ratOfFire,float attackDistance,
-            float sightiningDistance, float maxHealth,  float speed, float health)
+            float sightiningDistance, float maxHealth,  float speed, float health, int TypeOfEnemy)
             :base(locationBehavoir)
         {
             this.buffList = new List<Buff>();
@@ -28,25 +29,28 @@ namespace EVCS_Projekt
             this.attackDistance = attackDistance;
             this.sightiningDistance = sightiningDistance;
             this.maxHealth = maxHealth;
-            
-            Speed = speed;
-            Health = health;
+            this.typOfEnemy = typOfEnemy;
+
+            this.Speed = speed;
+            this.Health = health;
         }
 
-        private void Die()
-        {
-            
-        }
+        /*
+        *  Die(), das DropItem() und das Prüfen, ob ein Enemy gestorben ist - muss der GameManager checken und
+        *  behandeln!
+        */
 
-        public void TakeDamage()
+        public void TakeDamage(Objects.Items.Shot shot)
         {
-            
+            this.Health -= shot.Damage;
         }
 
         public void Attack()
         {
             
         }
+
+
 
 
         // Hier ist es etwas seltsam, dass der Gegner ein Item bekommt, welches es dann auch glei droppt. Ausserdem ist die 
@@ -56,15 +60,11 @@ namespace EVCS_Projekt
             
         }
 
-        public void AddBuffs(List<Buff> buffs )
+        public void AddBuffs(List<Buff> buffs)
         {
-            
         }
 
-        //weiss nicht, ob man das braucht.
-        public void AddBuff(Buff buff)
-        {
+       
             
-        }
     }
 }
