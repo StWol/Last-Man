@@ -4,9 +4,13 @@ namespace EVCS_Projekt.Location
 {
     public interface ILocationBehavior
     {
-         Vector2 GetPostition();
-         Vector2 GetSize();
-         Rectangle GetRectangle();
+        Rectangle BoundingBox
+        {
+            get;
+        }
+
+        Vector2 Position { get; set; }
+        Vector2 Size { get; set; }
 
     }
 }

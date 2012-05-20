@@ -96,6 +96,7 @@
     <Compile Include="Objects\Items\Stabilisator.cs" />
     <Compile Include="Objects\Items\Visier.cs" />
     <Compile Include="Objects\Items\Weapon.cs" />
+    <Compile Include="Objects\SpawnPoint.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

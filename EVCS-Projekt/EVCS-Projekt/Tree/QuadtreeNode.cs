@@ -81,7 +81,7 @@ namespace EVCS_Projekt.Tree
 
                     foreach (GameObject o in Objects)
                     {
-                        Vector2 position = o.LocationBehavior.GetPostition();
+                        Vector2 position = o.LocationBehavior.Position;
 
                         if (position.X < children[1].Position.X)
                         {
@@ -106,7 +106,7 @@ namespace EVCS_Projekt.Tree
             }
             else
             {
-                Vector2 position = obj.LocationBehavior.GetPostition();
+                Vector2 position = obj.LocationBehavior.Position;
 
                 if (position.X < children[1].Position.X)
                 {

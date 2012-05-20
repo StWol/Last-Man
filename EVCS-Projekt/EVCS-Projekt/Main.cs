@@ -13,6 +13,7 @@ using System.Diagnostics;
 
 using EVCS_Projekt.Managers;
 using EVCS_Projekt.Helper;
+using EVCS_Projekt.Objects;
 
 namespace EVCS_Projekt
 {
@@ -22,8 +23,8 @@ namespace EVCS_Projekt
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
-        public Manager GameManager { get; private set; }
-        public Manager MenuManager { get; private set; }
+        public GameManager GameManager { get; private set; }
+        public MenuManager MenuManager { get; private set; }
 
         public Manager CurrentManager { private get; set; }
 
@@ -112,12 +113,6 @@ namespace EVCS_Projekt
             CurrentManager.Draw(spriteBatch);
 
             base.Draw(gameTime);
-        }
-
-        public void SwitchManager(Manager newManager)
-        {
-            // Wechselt den aktuellen Manager
-            CurrentManager = newManager;
         }
     }
 }

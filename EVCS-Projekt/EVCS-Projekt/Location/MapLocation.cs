@@ -6,86 +6,34 @@ namespace EVCS_Projekt.Location
     class MapLocation : ILocationBehavior
     {
 
-        //Attributes
+        public Rectangle BoundingBox
+        {
+            get
+            {
+                return new Rectangle((int)Position.X, (int)Position.Y, (int)Size.X, (int)Size.Y);
+            }
+        }
+        public Vector2 Position { get; set; }
+        public Vector2 Size { get; set; }
 
-        private Rectangle rectangle;
-        public Rectangle _Rectangle
-        {
-            get
-            {
-                return this.rectangle;
-            }
-            set
-            {
-                this.rectangle = value;
-            }
-        }
-        private Vector2 direction;
-        public Vector2 Direction
-        {
-            get
-            {
-                return this.direction;
-            }
-            set
-            {
-                this.direction = value;
-            }
-        }
-        private Vector2 position;
-        public Vector2 Position
-        {
-            get
-            {
-                return this.position;
-            }
-            set
-            {
-                this.position = value;
-            }
-        }
-        private Vector2 size;
-        public Vector2 Size
-        {
-            get
-            {
-                return this.size;
-            }
-            set
-            {
-                this.size = value;
-            }
-        }
+        public Vector2 Direction { get; set; }
 
-        //Constructor
+        // ***************************************************************************
+        // Konstruktor 1
         public MapLocation(Vector2 position, Vector2 size)
         {
-            this.position.X = rectangle.X;
-            this.position.Y = rectangle.Y;
-            this.size.X = rectangle.Width;
-            this.size.Y = rectangle.Height;
-            
+            Position = position;
+            Size = size;
+            Direction = new Vector2(0, 0);
         }
+
+        // ***************************************************************************
+        // Konstruktor 2
         public MapLocation(Rectangle rectangle)
         {
-           
-
-        }
-
-
-        public Vector2 GetPostition()
-        {
-            throw new NotImplementedException();
-        }
-
-        public Vector2 GetSize()
-        {
-            throw new NotImplementedException();
-        }
-
-        public Rectangle GetRectangle()
-        {
-            throw new NotImplementedException();
+            Position = new Vector2(rectangle.X, rectangle.Y);
+            Size = new Vector2(rectangle.Width, rectangle.Height);
+            Direction = new Vector2(0, 0);
         }
     }
 }

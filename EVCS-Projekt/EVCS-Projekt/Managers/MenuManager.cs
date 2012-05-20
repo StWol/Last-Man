@@ -271,6 +271,8 @@ namespace EVCS_Projekt.Managers
 
             drawSub = DrawLoading;
             updateSub = UpdateLoading;
+
+            Main.MainObject.GameManager.Load();
         }
     }
 }

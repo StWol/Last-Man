@@ -14,30 +14,29 @@ namespace EVCS_Projekt.Objects.Items
 
         //Attributes
 
-        public const int Liquid_GREEN = 0;
-        public const int Liquid_BLUE = 1;
-        public const int Liquid_RED = 2; 
+        public const int GREEN = 0;
+        public const int BLUE = 1;
+        public const int RED = 2; 
 
-        private float amount;
-        private int typeOfLiquid = Liquid_GREEN;
 
-        public float Amount 
+        public float Amount
         {
-            get { return amount; }
+            get;
+            private set;
         }
 
-        
         public int TypeOfLiquid
         {
-            get { return typeOfLiquid; }
+            get;
+            private set;
         }
 
 
         public Liquid(Game game, int id, int typeOfLiquid, String name, float amount, EGroup group, string description, float weight, ILocationBehavior locationBehavior)
             : base( game,  id,  group,  name,  description,  weight,  locationBehavior)
         {
-            this.amount = amount;
-            this.typeOfLiquid = typeOfLiquid;
+            this.Amount = amount;
+            this.TypeOfLiquid = typeOfLiquid;
         }
 
     }
