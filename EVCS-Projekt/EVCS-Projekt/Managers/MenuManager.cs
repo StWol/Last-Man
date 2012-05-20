@@ -11,6 +11,7 @@ using System.Diagnostics;
 
 using EVCS_Projekt.UI;
 using EVCS_Projekt.Helper;
+using System.Threading;
 
 namespace EVCS_Projekt.Managers
 {
@@ -272,7 +273,8 @@ namespace EVCS_Projekt.Managers
             drawSub = DrawLoading;
             updateSub = UpdateLoading;
 
-            Main.MainObject.GameManager.Load();
+            Thread thread = new Thread(new ThreadStart(Main.MainObject.GameManager.Load));
+            thread.Start();
         }
     }
 }

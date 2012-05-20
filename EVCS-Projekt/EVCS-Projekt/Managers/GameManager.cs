@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 using System.Diagnostics;
 using EVCS_Projekt.Objects;
+using System.Threading;
 
 namespace EVCS_Projekt.Managers
 {
@@ -23,6 +24,8 @@ namespace EVCS_Projekt.Managers
 
             // Variablen initialisiwerung
             spawnPoints = new List<SpawnPoint>();
+
+            Thread.Sleep(2000);
 
             // Wenn ladevorgang fertig => Switch von MenuManager auf GameManager
             Main.MainObject.CurrentManager = this;
