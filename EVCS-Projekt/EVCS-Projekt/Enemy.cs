@@ -17,11 +17,11 @@ namespace EVCS_Projekt
         private float attackDistance;
         private float ratOfFire;
         private List<Buff> buffList;
-        private int typOfEnemy { get; private set; }
+        public int TypOfEnemy { get; private set; }
         
 
         public Enemy(ILocationBehavior locationBehavoir,float ratOfFire,float attackDistance,
-            float sightiningDistance, float maxHealth,  float speed, float health, int TypeOfEnemy)
+            float sightiningDistance, float maxHealth,  float speed, float health, int typeOfEnemy)
             :base(locationBehavoir)
         {
             this.buffList = new List<Buff>();
@@ -29,7 +29,7 @@ namespace EVCS_Projekt
             this.attackDistance = attackDistance;
             this.sightiningDistance = sightiningDistance;
             this.maxHealth = maxHealth;
-            this.typOfEnemy = typOfEnemy;
+            TypOfEnemy = typeOfEnemy;
 
             this.Speed = speed;
             this.Health = health;
