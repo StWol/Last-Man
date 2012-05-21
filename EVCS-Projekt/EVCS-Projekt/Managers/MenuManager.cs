@@ -131,7 +131,7 @@ namespace EVCS_Projekt.Managers
             // Weicher übergang
             if (fadeIn > 0)
             {
-                fadeIn -= (1F / fadeTime) * (float)Main.GameTime.ElapsedGameTime.TotalSeconds;
+                fadeIn -= (1F / fadeTime) * (float)Main.GameTimeUpdate.ElapsedGameTime.TotalSeconds;
 
                 if (fadeIn < 0)
                     fadeIn = 0;
@@ -143,7 +143,7 @@ namespace EVCS_Projekt.Managers
         private void UpdateIntro()
         {
             // Zeit seit dem start des intros
-            introTimer += (float)Main.GameTime.ElapsedGameTime.TotalSeconds;
+            introTimer += (float)Main.GameTimeUpdate.ElapsedGameTime.TotalSeconds;
 
             // Intro überspringen
             if (Mouse.GetState().LeftButton == ButtonState.Pressed || Mouse.GetState().RightButton == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape) || introTimer > 11)
@@ -238,9 +238,9 @@ namespace EVCS_Projekt.Managers
             Vector2 textSize = fontDefault.MeasureString(text);
 
             // Kleine animation. es blinken zwei punkte hinter dem loading schriftzug
-            if (Main.GameTime.TotalGameTime.TotalSeconds % 3 < 1)
+            if (Main.GameTimeUpdate.TotalGameTime.TotalSeconds % 3 < 1)
                 text += "";
-            else if (Main.GameTime.TotalGameTime.TotalSeconds % 3 < 2)
+            else if (Main.GameTimeUpdate.TotalGameTime.TotalSeconds % 3 < 2)
                 text += ".";
             else
                 text += "..";

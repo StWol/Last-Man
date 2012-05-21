@@ -74,6 +74,7 @@
   <ItemGroup>
     <Compile Include="Configuration.cs" />
     <Compile Include="Enemy.cs" />
+    <Compile Include="GameState.cs" />
     <Compile Include="Helper\DrawHelper.cs" />
     <Compile Include="Location\ILocationBehavior.cs" />
     <Compile Include="Location\MapLocation.cs" />
@@ -101,8 +102,9 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Renderer\IRenderBehavior.cs" />
-    <Compile Include="Tree\Quadtree.cs" />
-    <Compile Include="Tree\QuadtreeNode.cs" />
+    <Compile Include="Tree\Eigener Quadtree\Quadtree.cs" />
+    <Compile Include="Tree\Eigener Quadtree\QuadtreeNode.cs" />
+    <Compile Include="Tree\QuadTree.cs" />
     <Compile Include="UI\MouseCursor.cs" />
     <Compile Include="UI\UIActionListener.cs" />
     <Compile Include="UI\UIButton.cs" />

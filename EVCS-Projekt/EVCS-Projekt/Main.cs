@@ -29,7 +29,8 @@ namespace EVCS_Projekt
         public Manager CurrentManager { private get; set; }
 
         // Statische Attribute
-        public static GameTime GameTime { get; private set; }
+        public static GameTime GameTimeUpdate { get; private set; }
+        public static GameTime GameTimeDraw { get; private set; }
         public static Main MainObject { get; private set; }
         public static ContentManager ContentManager { get; private set; }
 
@@ -96,7 +97,7 @@ namespace EVCS_Projekt
         protected override void Update(GameTime gameTime)
         {
             //GameTime speichern um für alle zugänglich zu machen
-            GameTime = gameTime;
+            GameTimeUpdate = gameTime;
 
             // Manager updaten
             CurrentManager.Update();
@@ -107,6 +108,9 @@ namespace EVCS_Projekt
 
         protected override void Draw(GameTime gameTime)
         {
+            //GameTime speichern um für alle zugänglich zu machen
+            GameTimeDraw = gameTime;
+
             //GraphicsDevice.Clear(Color.CornflowerBlue);
 
             // currentmanagaer draw

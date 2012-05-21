@@ -7,6 +7,7 @@ namespace EVCS_Projekt.Tree
 {
     class QuadtreeNode
     {
+        /*
         private QuadtreeNode[] children;
 
         public List<GameObject> Objects { get; private set; }
@@ -140,5 +141,6 @@ namespace EVCS_Projekt.Tree
         {
             Shots.Add(shot);
         }
+         */
     }
 }
