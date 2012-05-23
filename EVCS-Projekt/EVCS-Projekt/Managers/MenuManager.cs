@@ -12,6 +12,7 @@ using System.Diagnostics;
 using EVCS_Projekt.UI;
 using EVCS_Projekt.Helper;
 using System.Threading;
+using EVCS_Projekt.Audio;
 
 namespace EVCS_Projekt.Managers
 {

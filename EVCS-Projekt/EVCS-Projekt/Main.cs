@@ -14,6 +14,7 @@ using System.Diagnostics;
 using EVCS_Projekt.Managers;
 using EVCS_Projekt.Helper;
 using EVCS_Projekt.Objects;
+using EVCS_Projekt.Audio;
 
 namespace EVCS_Projekt
 {
@@ -79,12 +80,18 @@ namespace EVCS_Projekt
             // Mauszeiger laden
             UI.MouseCursor.Load();
 
+            // Music laden
+            MusicPlayer.LoadSongs();
+
             // Manager erzeugen
             MenuManager = new MenuManager();
             GameManager = new GameManager();
 
             // CurrentManager ist standardm‰ﬂig das Menu
             CurrentManager = MenuManager;
+
+            // Musik starten
+            MusicPlayer.Play(MusicPlayer.LookBehind);
         }
 
 

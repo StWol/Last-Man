@@ -13,6 +13,7 @@ using EVCS_Projekt.Tree;
 using EVCS_Projekt.Location;
 using Microsoft.Xna.Framework.Input;
 using EVCS_Projekt.Renderer;
+using EVCS_Projekt.Audio;
 
 namespace EVCS_Projekt.Managers
 {
@@ -102,6 +103,7 @@ namespace EVCS_Projekt.Managers
 
             // Wenn ladevorgang fertig => Switch von MenuManager auf GameManager
             Main.MainObject.CurrentManager = this;
+            MusicPlayer.Stop();
         }
 
         // ***************************************************************************
