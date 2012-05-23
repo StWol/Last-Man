@@ -12,6 +12,7 @@ using System.Threading;
 using EVCS_Projekt.Tree;
 using EVCS_Projekt.Location;
 using Microsoft.Xna.Framework.Input;
+using EVCS_Projekt.Renderer;
 
 namespace EVCS_Projekt.Managers
 {
@@ -36,6 +37,10 @@ namespace EVCS_Projekt.Managers
             // GameState initialisieren
             gameState.QuadTreeEnemies = new QuadTree<Enemy>(0, 0, 1000, 1000); // TODO: Mapgröße hier mitgeben
 
+            // Player
+            MapLocation playerPosition = new MapLocation(new Rectangle(0, 0, 30, 30));
+            gameState.Player = new Player(playerPosition, 100, 100, 1);
+
             // ################################################################################
             // TEST
             // Test für ladebilschirm
@@ -48,12 +53,49 @@ namespace EVCS_Projekt.Managers
             // Test für quadtree
             Random random = new Random();
 
+            Texture2D monster = Main.ContentManager.Load<Texture2D>("test/red_monster_small");
+            Texture2D monster2 = Main.ContentManager.Load<Texture2D>("test/red_monster_happy");
+            Texture2D monster3 = Main.ContentManager.Load<Texture2D>("test/red_monster_angry");
+
+            Texture2D[] ani = new Texture2D[] { monster, monster2, monster3 };
+
             for (int i = 0; i < 1000; i++)
             {
-                MapLocation m = new MapLocation(new Rectangle(random.Next(0, 1000), random.Next(0, 1000), 10, 10));
-                Enemy x = new Enemy(m, 0, 0, 0, 0, 0, 0, 0);
+                // 20 % chance, dass gegner ne richtige textur bekommt..
+                IRenderBehavior render;
+                if (random.Next(0, 100) < 50)
+                {
+                    render = new AnimationRenderer(ani, random.Next(1,9));
+                }
+                else if (random.Next(0, 100) < 30)
+                {
+                    render = new StaticRenderer(ani[random.Next(0, 3)]);
+                }
+                else
+                {
+                    render = new SimpleRenderer(new Color(random.Next(0, 255), random.Next(0, 255), random.Next(0, 200)));
+                }
+
+                MapLocation m = new MapLocation(new Rectangle(random.Next(0, 1000), random.Next(0, 1000), random.Next(10, 30), random.Next(10, 30)));
+
+                Enemy x = new Enemy(m, render, 0, 0, 0, 0, 0, 0, 0);
+                x.LocationSizing();
+
                 gameState.QuadTreeEnemies.Add(x);
             }
+
+
+            AnimationRenderer ar = new AnimationRenderer(ani, 1);
+            // Enemy mit Animation
+            Enemy ea = new Enemy(new MapLocation(new Rectangle(150, 150, 0, 0)), ar, 0, 0, 0, 0, 0, 0, 0);
+            ea.LocationSizing();
+            gameState.QuadTreeEnemies.Add(ea);
+
+            ar = new AnimationRenderer(ani, 2);
+            // Enemy mit Animation
+            ea = new Enemy(new MapLocation(new Rectangle(200, 150, 0, 0)), ar, 0, 0, 0, 0, 0, 0, 0);
+            ea.LocationSizing();
+            gameState.QuadTreeEnemies.Add(ea);
 
             // TEST-ENDE
             // ################################################################################
@@ -69,7 +111,7 @@ namespace EVCS_Projekt.Managers
 
             // ################################################################################
             // TEST
-            foreach ( Enemy e in gameState.QuadTreeEnemies )
+            /*foreach ( Enemy e in gameState.QuadTreeEnemies )
             {
                 int x = (int)e.LocationBehavior.Position.X + 1;
                 if ( x > 1000)
@@ -78,7 +120,23 @@ namespace EVCS_Projekt.Managers
                 e.HasMoved = true;
 
                 gameState.QuadTreeEnemies.Move(e);
+            }*/
+            List<Enemy> enemies = gameState.QuadTreeEnemies.GetObjects(new Rectangle(Mouse.GetState().X - 100, Mouse.GetState().Y - 100, 200, 200));
+
+            if (Mouse.GetState().LeftButton == ButtonState.Pressed)
+            {
+                foreach (Enemy e in enemies)
+                {
+                    gameState.QuadTreeEnemies.Remove(e);
+                }
             }
+
+
+            foreach (Enemy e in enemies)
+            {
+                e.Renderer.Update();
+            }
+
             // TEST-ENDE
             // ################################################################################
 
@@ -93,20 +151,24 @@ namespace EVCS_Projekt.Managers
             // Komplett weiß
             spriteBatch.Draw(test, new Rectangle(0, 0, Configuration.GetInt("resolutionWidth"), Configuration.GetInt("resolutionHeight")), Color.White);
 
+            // Player zeichnen
+
             // ################################################################################
             // TEST
             List<Enemy> enemies = gameState.QuadTreeEnemies.GetObjects(new Rectangle(Mouse.GetState().X - 100, Mouse.GetState().Y - 100, 200, 200));
-            
+
             //Debug.WriteLine("enemies: " + enemies.Count);
             foreach (Enemy e in enemies)
             {
                 //Debug.WriteLine((int)e.LocationBehavior.Position.X + " " + (int)e.LocationBehavior.Position.Y);
-                spriteBatch.Draw(test, new Rectangle((int)e.LocationBehavior.Position.X, (int)e.LocationBehavior.Position.Y, 10, 10), Color.Red);
+                //spriteBatch.Draw(test, new Rectangle((int)e.LocationBehavior.Position.X, (int)e.LocationBehavior.Position.Y, 10, 10), Color.Red);
+                e.Renderer.Draw(spriteBatch, e.LocationBehavior);
             }
 
             spriteBatch.Draw(test, new Rectangle(Mouse.GetState().X - 100, Mouse.GetState().Y - 100, 200, 200), Color.Blue * 0.5F);
 
-            spriteBatch.DrawString(testFont, "Enemies: "+gameState.QuadTreeEnemies.Count+" Draws: " + enemies.Count + " FPS: " + (1/Main.GameTimeDraw.ElapsedGameTime.TotalSeconds), new Vector2(0,0), Color.Black);
+            spriteBatch.DrawString(testFont, "Enemies: " + gameState.QuadTreeEnemies.Count + " Draws: " + enemies.Count + " FPS: " + (1 / Main.GameTimeDraw.ElapsedGameTime.TotalSeconds), new Vector2(0, 0), Color.Black);
+            spriteBatch.DrawString(testFont, "Linksklick zum Enemies loeschen", new Vector2(0, 30), Color.Red);
 
             // TEST-ENDE
             // ################################################################################

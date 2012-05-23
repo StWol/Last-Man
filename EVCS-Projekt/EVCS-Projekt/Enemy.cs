@@ -5,6 +5,7 @@ using System.Text;
 using EVCS_Projekt.Location;
 using EVCS_Projekt.Objects;
 using Microsoft.Xna.Framework;
+using EVCS_Projekt.Renderer;
 
 namespace EVCS_Projekt
 {
@@ -18,11 +19,16 @@ namespace EVCS_Projekt
         private float ratOfFire;
         private List<Buff> buffList;
         public int TypOfEnemy { get; private set; }
-        
 
-        public Enemy(ILocationBehavior locationBehavoir,float ratOfFire,float attackDistance,
+        public Enemy(ILocationBehavior locationBehavoir, float ratOfFire, float attackDistance,
+            float sightiningDistance, float maxHealth, float speed, float health, int typeOfEnemy)
+            : this(locationBehavoir, new NoRenderer(), ratOfFire, attackDistance, sightiningDistance, maxHealth, speed,health, typeOfEnemy)
+        {
+        }
+
+        public Enemy(ILocationBehavior locationBehavoir, IRenderBehavior renderBehavior ,float ratOfFire,float attackDistance,
             float sightiningDistance, float maxHealth,  float speed, float health, int typeOfEnemy)
-            :base(locationBehavoir)
+            : base(locationBehavoir, renderBehavior)
         {
             this.buffList = new List<Buff>();
             this.ratOfFire = ratOfFire;

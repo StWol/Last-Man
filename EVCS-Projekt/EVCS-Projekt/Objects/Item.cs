@@ -10,6 +10,7 @@ using Microsoft.Xna.Framework.GamerServices;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
+using EVCS_Projekt.Renderer;
 
 
 namespace EVCS_Projekt.Objects
@@ -54,8 +55,18 @@ namespace EVCS_Projekt.Objects
         }
 
         //Constructor
-        public Item( int id, EGroup group, string name, string description, float weight, ILocationBehavior locationBehavior)
-            : base( locationBehavior)
+        public Item( int id, EGroup group, string name, string description, float weight, ILocationBehavior locationBehavior, IRenderBehavior renderBehavior)
+            : base(locationBehavior, renderBehavior)
+        {
+            this.id = id;
+            this.name = name;
+            this.description = description;
+            this.weight = weight;
+            this.group = group;
+        }
+
+        public Item(int id, EGroup group, string name, string description, float weight, ILocationBehavior locationBehavior )
+            : base(locationBehavior)
         {
             this.id = id;
             this.name = name;

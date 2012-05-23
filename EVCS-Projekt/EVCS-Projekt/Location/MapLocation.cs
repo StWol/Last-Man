@@ -10,13 +10,18 @@ namespace EVCS_Projekt.Location
         {
             get
             {
-                return new Rectangle((int)Position.X, (int)Position.Y, (int)Size.X, (int)Size.Y);
+                return new Rectangle((int)(Position.X-Size.X/2), (int)(Position.Y-Size.Y/2), (int)Size.X, (int)Size.Y);
             }
         }
         public Vector2 Position { get; set; }
         public Vector2 Size { get; set; }
 
         public Vector2 Direction { get; set; }
+
+        public void Sizing()
+        {
+
+        }
 
         // ***************************************************************************
         // Konstruktor 1
@@ -35,5 +40,6 @@ namespace EVCS_Projekt.Location
             Size = new Vector2(rectangle.Width, rectangle.Height);
             Direction = new Vector2(0, 0);
         }
+
     }
 }

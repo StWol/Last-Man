@@ -101,7 +101,11 @@
     <Compile Include="Player.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Renderer\AnimationRenderer.cs" />
     <Compile Include="Renderer\IRenderBehavior.cs" />
+    <Compile Include="Renderer\NoRenderer.cs" />
+    <Compile Include="Renderer\SimpleRenderer.cs" />
+    <Compile Include="Renderer\StaticRenderer.cs" />
     <Compile Include="Tree\Eigener Quadtree\Quadtree.cs" />
     <Compile Include="Tree\Eigener Quadtree\QuadtreeNode.cs" />
     <Compile Include="Tree\QuadTree.cs" />

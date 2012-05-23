@@ -4,10 +4,13 @@ using Microsoft.Xna.Framework;
 
 namespace EVCS_Projekt.Renderer
 {
-    interface IRenderBehavior
+    public interface IRenderBehavior
     {
         void Draw(SpriteBatch spriteBatch, ILocationBehavior locationBehavoir);
-        void Update(GameTime gameTime);
+        void Update();
 
+        // ***************************************************************************
+        // Die Größe, des zu rendernen Objektes => Größe der Textur
+        Vector2 Size { get; }
     }
 }

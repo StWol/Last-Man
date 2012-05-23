@@ -9,5 +9,6 @@ namespace EVCS_Projekt
     class GameState
     {
         public QuadTree<Enemy> QuadTreeEnemies { get; set; }
+        public Player Player { get; set; }
     }
 }

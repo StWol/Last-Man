@@ -10,28 +10,40 @@ namespace EVCS_Projekt.Objects
     {
         // Baucht man die Vererbung der GameComponent von XNA und die initialize methode?
 
-        private IRenderBehavior renderBehavoir;
+        public IRenderBehavior Renderer { get; set; }
         public ILocationBehavior LocationBehavior { get; private set; }
 
+
+        public GameObject(ILocationBehavior locationBehavior, IRenderBehavior renderBehavior)
+        {
+            this.LocationBehavior = locationBehavior;
+            this.Renderer = renderBehavior;
+        }
 
         public GameObject(ILocationBehavior locationBehavior)
         {
             this.LocationBehavior = locationBehavior;
-        }
-
-        public Rectangle GetBoundingBox()
-        {
-            // TODO: BB zurückgeben
-            return new Rectangle();
+            this.Renderer = new NoRenderer();
         }
 
         // ***************************************************************************
-        // Für Quadtree benötigt - Gibt Position als Rectangle zurück
+        // Setzt die Größe des LocationBehavior auf die Größe der Textur bzw die Größe des Renderers
+        public void LocationSizing()
+        {
+            // Nicht schön, aber NoRenderer und SimpleRenderer werden abgefangen, da diese keine Größe besitzten
+            if ( Renderer.GetType() == typeof(NoRenderer) || Renderer.GetType() == typeof(SimpleRenderer) )
+                return;
+
+            LocationBehavior.Size = Renderer.Size;
+        }
+
+        // ***************************************************************************
+        // Für Quadtree benötigt - Gibt Position als Rectangle zurück / BoundingBox
         public Rectangle Rect
         {
             get
             {
-                return new Rectangle((int)LocationBehavior.Position.X, (int)LocationBehavior.Position.Y, (int)LocationBehavior.Size.X, (int)LocationBehavior.Size.Y);
+                return LocationBehavior.BoundingBox;
             }
         }
 

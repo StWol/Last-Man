@@ -11,6 +11,5 @@ namespace EVCS_Projekt.Location
 
         Vector2 Position { get; set; }
         Vector2 Size { get; set; }
-
     }
 }
