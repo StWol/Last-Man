@@ -119,7 +119,7 @@ namespace EVCS_Projekt.Managers
                 MapLocation m = new MapLocation(new Rectangle(random.Next(0, (int)GameState.MapSize.X), random.Next(0, (int)GameState.MapSize.Y), random.Next(10, 30), random.Next(10, 30)));
 
                 Enemy x = new Enemy(m, render, 0, 0, 0, 0, 0, 0, 0);
-                x.LocationSizing();
+                //x.LocationSizing();
 
                 GameState.QuadTreeEnemies.Add(x);
             }

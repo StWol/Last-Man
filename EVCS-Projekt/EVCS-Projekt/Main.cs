@@ -15,6 +15,7 @@ using EVCS_Projekt.Managers;
 using EVCS_Projekt.Helper;
 using EVCS_Projekt.Objects;
 using EVCS_Projekt.Audio;
+using EVCS_Projekt.Helper.XMLManager;
 
 namespace EVCS_Projekt
 {
@@ -40,6 +41,12 @@ namespace EVCS_Projekt
 
             // Das ist ein Test :-)
             Debug.WriteLine("Start Game..");
+
+            //XMLRead-Test
+            //XMLManager xMan = new XMLManager("E:/Development/LastManSrc/evcs-Projekt/EVCS-Projekt/EVCS-Projekt/Helper/XMLManager/TestPlayerConf.xml");
+            //xMan.displayXML();
+            //xMan.getValueOfNode("Health");
+
 
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
