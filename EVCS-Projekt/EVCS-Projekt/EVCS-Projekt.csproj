@@ -76,6 +76,7 @@
     <Compile Include="Enemy.cs" />
     <Compile Include="GameState.cs" />
     <Compile Include="Helper\DrawHelper.cs" />
+    <Compile Include="Helper\XMLManager\XMLManager.cs" />
     <Compile Include="Location\ILocationBehavior.cs" />
     <Compile Include="Location\MapLocation.cs" />
     <Compile Include="Location\UILocation.cs" />
@@ -121,6 +122,7 @@
     <Content Include="GameThumbnail.png">
       <XnaPlatformSpecific>true</XnaPlatformSpecific>
     </Content>
+    <Content Include="Helper\XMLManager\TestPlayerConf.xml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\EVCS-ProjektContent\EVCS-ProjektContent.contentproj">
