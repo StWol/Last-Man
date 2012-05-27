@@ -47,7 +47,7 @@ namespace EVCS_Projekt.Renderer
         public void Draw(SpriteBatch spriteBatch, ILocationBehavior locationBehavoir)
         {
             // Texture zeichnen
-            spriteBatch.Draw(textures[Frame], locationBehavoir.BoundingBox, Color.White);
+            spriteBatch.Draw(textures[Frame], locationBehavoir.RelativeBoundingBox, null, Color.White, locationBehavoir.Rotation, locationBehavoir.Size / 2, SpriteEffects.None, 0);
         }
 
         // ***************************************************************************

@@ -13,8 +13,25 @@ namespace EVCS_Projekt.Location
                 return new Rectangle((int)Position.X, (int)Position.Y, (int)Size.X, (int)Size.Y);
             }
         }
+        public Rectangle RelativeBoundingBox
+        {
+            get
+            {
+                return new Rectangle((int)Position.X, (int)Position.Y, (int)Size.X, (int)Size.Y);
+            }
+        }
         public Vector2 Position { get; set; }
         public Vector2 Size { get; set; }
+        public Vector2 RelativePosition
+        {
+            get
+            {
+                return Position;
+            }
+        }
+
+        public float Rotation { get; set; }
+        public Vector2 Direction { get; set; }
 
         // ***************************************************************************
         // Konstruktor 1

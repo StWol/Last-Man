@@ -2,6 +2,8 @@ using EVCS_Projekt.Location;
 using EVCS_Projekt.Renderer;
 using Microsoft.Xna.Framework;
 using EVCS_Projekt.Tree;
+using System;
+using System.Diagnostics;
 
 namespace EVCS_Projekt.Objects
 {
@@ -31,10 +33,50 @@ namespace EVCS_Projekt.Objects
         public void LocationSizing()
         {
             // Nicht schön, aber NoRenderer und SimpleRenderer werden abgefangen, da diese keine Größe besitzten
-            if ( Renderer.GetType() == typeof(NoRenderer) || Renderer.GetType() == typeof(SimpleRenderer) )
+            if (Renderer.GetType() == typeof(NoRenderer) )
                 return;
 
-            LocationBehavior.Size = Renderer.Size;
+            LocationBehavior.Size = new Vector2(Renderer.Size.X, Renderer.Size.Y);
+        }
+
+        // ***************************************************************************
+        // Berechnet Direction und Rotation, dass Location in richtung des Vectors schaut
+        public void LookAt(Vector2 target)
+        {
+            Vector2 norm = LocationBehavior.Position - target;
+            norm.Normalize();
+            LocationBehavior.Direction = norm;
+            
+            CalculateRotation();
+        }
+
+        // ***************************************************************************
+        // Berechnet Direction und Rotation, dass Location in richtung des Vectors schaut abhänig des MapOffsets
+        public void RelativeLookAt(Vector2 target)
+        {
+            Vector2 norm = LocationBehavior.RelativePosition - target;
+            norm.Normalize();
+            LocationBehavior.Direction = norm;
+
+            CalculateRotation();
+        }
+
+        // ***************************************************************************
+        // Set die Direction und berechnet die Rotation, dass Location in richtung des Vectors schaut
+        public void SetDirection(Vector2 direction)
+        {
+            Vector2 norm = direction;
+            norm.Normalize();
+            LocationBehavior.Direction = norm;
+
+            CalculateRotation();
+        }
+
+        // ***************************************************************************
+        // berechnet die Rotation, dass Location in richtung des Vectors schaut
+        private void CalculateRotation()
+        {
+            LocationBehavior.Rotation = -(float)(Math.Atan2(-LocationBehavior.Direction.Y, LocationBehavior.Direction.X));
         }
 
         // ***************************************************************************
@@ -43,7 +85,11 @@ namespace EVCS_Projekt.Objects
         {
             get
             {
-                return LocationBehavior.BoundingBox;
+                // Korrektur, da die gerendeten Bilder ihre position zentriert haben und nicht in der linken oberen ecke
+                Rectangle r = LocationBehavior.BoundingBox;
+                r.X -= r.Width / 2;
+                r.Y -= r.Height / 2;
+                return r;
             }
         }
 

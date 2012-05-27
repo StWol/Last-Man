@@ -9,7 +9,7 @@ using EVCS_Projekt.Renderer;
 
 namespace EVCS_Projekt
 {
-    class Enemy: GameObject
+    public class Enemy: GameObject
     {
         public float Speed { get; private set; }
         public float Health{ get; private set; }  

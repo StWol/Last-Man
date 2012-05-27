@@ -37,7 +37,10 @@ namespace EVCS_Projekt.Renderer
 
         public void Draw(SpriteBatch spriteBatch, ILocationBehavior locationBehavoir)
         {
-            spriteBatch.Draw(pixel, locationBehavoir.BoundingBox, color);
+            Rectangle temp = locationBehavoir.RelativeBoundingBox;
+            temp.X -= temp.Width / 2;
+            temp.Y -= temp.Height / 2;
+            spriteBatch.Draw(pixel, temp, color);
         }
 
         // ***************************************************************************

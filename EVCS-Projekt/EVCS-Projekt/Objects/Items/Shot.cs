@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using EVCS_Projekt.Location;
 using Microsoft.Xna.Framework;
+using System.Diagnostics;
 
 namespace EVCS_Projekt.Objects.Items
 {
@@ -19,19 +20,34 @@ namespace EVCS_Projekt.Objects.Items
         private float distance;
         private List<Buff> buffList;
 
+        private float lifetime = 2000; // TODO: Das irgendwie auslagern oder so
+
         //Constructor
-        public Shot( int id, EGroup group, float speed, Vector2 direction, float damage, String name, float distance, string description, float weight, ILocationBehavior locationBehavior)
-            : base( id,  group,  name,  description,  weight,  locationBehavior)
+        public Shot(int id, EGroup group, float speed, Vector2 direction, float damage, String name, float distance, string description, float weight, ILocationBehavior locationBehavior)
+            : base(id, group, name, description, weight, locationBehavior)
         {
             this.speed = speed;
-            this.direction = direction;
             this.Damage = damage;
             this.buffList = new List<Buff>();
             this.distance = distance;
+
+            this.direction = direction;
+            this.direction.Normalize();
         }
 
+        // ********************************************************************************
+        // Lässt den Schuss "weiter fliegen"
+        public void UpdatePosition()
+        {
+            
+            Vector2 moveVector = new Vector2((float)(Main.GameTimeUpdate.ElapsedGameTime.TotalSeconds * speed * direction.X), (float)(Main.GameTimeUpdate.ElapsedGameTime.TotalSeconds * speed * direction.Y));
 
-        //Functions
+            base.LocationBehavior.Position = base.LocationBehavior.Position + moveVector;
+
+            lifetime -= (float)Math.Sqrt(Math.Pow(moveVector.X, 2) + Math.Pow(moveVector.Y, 2));
+            if (lifetime <= 0)
+                Main.MainObject.GameManager.GameState.ShotList.Remove(this);
+        }
 
     }
 }

@@ -40,7 +40,7 @@ namespace EVCS_Projekt
 
             // Das ist ein Test :-)
             Debug.WriteLine("Start Game..");
-            
+
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
         }
@@ -60,6 +60,8 @@ namespace EVCS_Projekt
 
             graphics.IsFullScreen = Configuration.GetBool("isFullscreen");
 
+            graphics.PreferMultiSampling = Configuration.GetBool("antiAliasing");
+           
             graphics.ApplyChanges();
 
             // Helper updaten
@@ -106,8 +108,10 @@ namespace EVCS_Projekt
             //GameTime speichern um für alle zugänglich zu machen
             GameTimeUpdate = gameTime;
 
-            // Manager updaten
-            CurrentManager.Update();
+            // Wenn Spielfenster keinen Focus hat, wird kein updatevorgang ausgeführt
+            if (this.IsActive)
+                // Manager updaten
+                CurrentManager.Update();
 
             base.Update(gameTime);
         }

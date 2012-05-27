@@ -8,8 +8,19 @@ namespace EVCS_Projekt.Location
         {
             get;
         }
+        Rectangle RelativeBoundingBox
+        {
+            get;
+        }
 
         Vector2 Position { get; set; }
         Vector2 Size { get; set; }
+        Vector2 RelativePosition
+        {
+            get;
+        }
+
+        float Rotation { get; set; }
+        Vector2 Direction { get; set; }
     }
 }

@@ -18,7 +18,7 @@ using EVCS_Projekt.Renderer;
 
 namespace EVCS_Projekt
 {
-    class Player : GameObject
+    public class Player : GameObject
     {
         //Attributes
         private float maxHealth;
@@ -29,6 +29,7 @@ namespace EVCS_Projekt
         public List<Item> Inventar { get; private set; }
         private Dictionary<int, Item> shortcuts;
         private List<Buff> bufflist;
+        public Vector2 Direction { get; set; }
 
         /*
         *  Die(), das DropItem() und das Prüfen, ob ein Enemy gestorben ist - muss der GameManager checken und

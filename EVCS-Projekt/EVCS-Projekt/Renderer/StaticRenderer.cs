@@ -5,6 +5,7 @@ using System.Text;
 using Microsoft.Xna.Framework.Graphics;
 using EVCS_Projekt.Location;
 using Microsoft.Xna.Framework;
+using System.Diagnostics;
 
 namespace EVCS_Projekt.Renderer
 {
@@ -30,7 +31,7 @@ namespace EVCS_Projekt.Renderer
         public void Draw(SpriteBatch spriteBatch, ILocationBehavior locationBehavoir)
         {
             // Texture zeichnen
-            spriteBatch.Draw(texture, locationBehavoir.BoundingBox, Color.White);
+            spriteBatch.Draw(texture, locationBehavoir.RelativeBoundingBox, null, Color.White, locationBehavoir.Rotation, locationBehavoir.Size/2, SpriteEffects.None, 0);
         }
 
         // ***************************************************************************

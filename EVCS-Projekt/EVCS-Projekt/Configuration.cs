@@ -24,6 +24,7 @@ namespace EVCS_Projekt
             configurationDic.Add("resolutionWidth", "1024");
             configurationDic.Add("resolutionHeight", "576");
             configurationDic.Add("isFullscreen", "false");
+            configurationDic.Add("antiAliasing", "true");
 
             // Speichern
             SaveConfig();
