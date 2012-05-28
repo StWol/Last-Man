@@ -25,6 +25,11 @@ namespace EVCS_Projekt.Renderer
             // Nothing todo
         }
 
+        public void Draw(SpriteBatch spriteBatch, ILocationBehavior locationBehavoir, Color color)
+        {
+            // Nothing todo
+        }
+
         public void Update()
         {
             // Nothing todo

@@ -33,7 +33,7 @@ namespace EVCS_Projekt.Objects
         public void LocationSizing()
         {
             // Nicht schön, aber NoRenderer und SimpleRenderer werden abgefangen, da diese keine Größe besitzten
-            if (Renderer.GetType() == typeof(NoRenderer) )
+            if (Renderer.GetType() == typeof(NoRenderer))
                 return;
 
             LocationBehavior.Size = new Vector2(Renderer.Size.X, Renderer.Size.Y);
@@ -46,7 +46,7 @@ namespace EVCS_Projekt.Objects
             Vector2 norm = LocationBehavior.Position - target;
             norm.Normalize();
             LocationBehavior.Direction = norm;
-            
+
             CalculateRotation();
         }
 
@@ -77,6 +77,23 @@ namespace EVCS_Projekt.Objects
         private void CalculateRotation()
         {
             LocationBehavior.Rotation = -(float)(Math.Atan2(-LocationBehavior.Direction.Y, LocationBehavior.Direction.X));
+        }
+
+        // ***************************************************************************
+        // Prüft kollision mit anderem GameObject
+        public bool CollisionWith(GameObject g)
+        {
+            return g.Rect.Intersects(Rect);
+        }
+
+        // ***************************************************************************
+        // Prüft ob ein objekt näher drann ist wie wert
+        public bool DistanceLessThan(GameObject g, float distance)
+        {
+            if (Vector2.Distance(new Vector2(Rect.X, Rect.Y), new Vector2(g.Rect.X, g.Rect.Y)) < distance)
+                return true;
+            else
+                return false;
         }
 
         // ***************************************************************************

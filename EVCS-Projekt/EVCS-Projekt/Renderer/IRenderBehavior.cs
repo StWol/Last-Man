@@ -7,6 +7,7 @@ namespace EVCS_Projekt.Renderer
     public interface IRenderBehavior
     {
         void Draw(SpriteBatch spriteBatch, ILocationBehavior locationBehavoir);
+        void Draw(SpriteBatch spriteBatch, ILocationBehavior locationBehavoir, Color color);
         void Update();
 
         // ***************************************************************************

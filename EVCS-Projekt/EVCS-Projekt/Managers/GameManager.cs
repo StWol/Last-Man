@@ -57,7 +57,7 @@ namespace EVCS_Projekt.Managers
 
 
             // GameState initialisieren
-            GameState.MapSize = new Vector2(3000, 2000); // TODO: Mapgröße hier mitgeben
+            GameState.MapSize = new Vector2(2000, 2000); // TODO: Mapgröße hier mitgeben
             GameState.QuadTreeEnemies = new QuadTree<Enemy>(0, 0, (int)GameState.MapSize.X, (int)GameState.MapSize.Y);
 
             GameState.ShotList = new List<Shot>(); // Shots als Liste, da diese nur eine kurze Lebenszeit haben
@@ -179,7 +179,7 @@ namespace EVCS_Projekt.Managers
             {
                 accu += 0.05F;
             }
-            else if ( mr < 0 )
+            else if (mr < 0)
             {
                 accu -= 0.05F;
             }
@@ -210,7 +210,8 @@ namespace EVCS_Projekt.Managers
             {
                 e.Renderer.Update();
 
-                e.LookAt(GameState.Player.LocationBehavior.Position);
+                if ( e.DistanceLessThan(GameState.Player, 300) ) 
+                    e.LookAt(GameState.Player.LocationBehavior.Position);
             }
 
             // TEST-ENDE
@@ -257,7 +258,9 @@ namespace EVCS_Projekt.Managers
 
         public void CalculateMapOffset()
         {
-            GameState.MapOffset = new Vector2(MathHelper.Max(GameState.Player.LocationBehavior.Position.X - Configuration.GetInt("resolutionWidth") / 2, 0), MathHelper.Max(GameState.Player.LocationBehavior.Position.Y - Configuration.GetInt("resolutionHeight") / 2, 0));
+            float x = MathHelper.Min(MathHelper.Max(GameState.Player.LocationBehavior.Position.X - Configuration.GetInt("resolutionWidth") / 2, 0), GameState.MapSize.X - Configuration.GetInt("resolutionWidth"));
+            float y = MathHelper.Min(MathHelper.Max(GameState.Player.LocationBehavior.Position.Y - Configuration.GetInt("resolutionHeight") / 2, 0), GameState.MapSize.Y - Configuration.GetInt("resolutionHeight"));
+            GameState.MapOffset = new Vector2(x, y);
         }
 
         // ***************************************************************************
@@ -287,14 +290,28 @@ namespace EVCS_Projekt.Managers
             {
                 s.Renderer.Draw(spriteBatch, s.LocationBehavior);
             }
-            
+
 
             //Debug.WriteLine("enemies: " + enemies.Count);
             foreach (Enemy e in enemiesOnScreen)
             {
+                bool col = false;
+                List<Shot> tempList = new List<Shot>(GameState.ShotList);
+                foreach (Shot s in tempList)
+                {
+                    if (s.CollisionWith(e))
+                    {
+                        GameState.ShotList.Remove(s);
+                        col = true;
+                        break;
+                    }
+                }
                 //Debug.WriteLine((int)e.LocationBehavior.Position.X + " " + (int)e.LocationBehavior.Position.Y);
                 //spriteBatch.Draw(test, new Rectangle((int)e.LocationBehavior.Position.X, (int)e.LocationBehavior.Position.Y, 10, 10), Color.Red);
-                e.Renderer.Draw(spriteBatch, e.LocationBehavior);
+                if (col)
+                    e.Renderer.Draw(spriteBatch, e.LocationBehavior, Color.Green);
+                else
+                    e.Renderer.Draw(spriteBatch, e.LocationBehavior);
             }
 
             spriteBatch.DrawString(testFont, "Enemies: " + GameState.QuadTreeEnemies.Count + " Draws: " + enemiesOnScreen.Count + " Updates: " + updateObjects + " FPS: " + (1 / Main.GameTimeDraw.ElapsedGameTime.TotalSeconds), new Vector2(0, 0), Color.Black);
