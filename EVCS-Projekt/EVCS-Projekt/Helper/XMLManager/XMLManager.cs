@@ -10,12 +10,24 @@ namespace EVCS_Projekt.Helper.XMLManager
 {
     class XMLManager
     {
+
+        /*
+         * Beim Erzeugen eines Objektes wird die URL zu der Fiel benötigt. Damit ist sichergestellt, 
+         * dass jede Datei nur von einem Objekt bearbeitet werden kann. Die Microsoftleute raten dazu,
+         * damit konsistenter Datentransfer gewährleistet ist.
+         */
+
        public string urlToConfigFile { get; set; }
+
+
 
        public XMLManager(string FileURL)
        {
             this.urlToConfigFile = FileURL;
        }
+
+
+
 
         //Zeigt das XML-File in der Debugkonsole
         public void displayXML()
@@ -25,8 +37,18 @@ namespace EVCS_Projekt.Helper.XMLManager
             Debug.WriteLine("Try to display File...");
             while (reader.Read())
             {
-                reader.MoveToElement();
-                Debug.WriteLine("<" +reader.LocalName + "> " + reader.Value);
+                switch (reader.NodeType)
+                {
+                    case XmlNodeType.Element: // Der Knoten ist ein Element.
+                        Debug.WriteLine("<" + reader.Name + ">");
+                        break;
+                    case XmlNodeType.Text: //Anzeigen des Textes in jedem Element.
+                        Debug.WriteLine(reader.Value);
+                        break;
+                    case XmlNodeType.EndElement: //Anzeigen des Endes des Elements.
+                        Debug.WriteLine("</" + reader.Name + ">");
+                        break;
+                }
             }
         }
 
@@ -64,6 +86,52 @@ namespace EVCS_Projekt.Helper.XMLManager
 
             }
             return valueArray;
+        }
+
+        //Erstellt ein Dokument für einen abänderbares XML. Diese Methode soll nur als Template dienen, damit
+        //wir später leichter gezielte Dokumente schreiben können, ohne mit Listen arbeiten zu müssen
+        public void WriteCustomXML(string value1, string value2)
+        {
+            Debug.WriteLine("Try to write in XML-File...");
+            XmlWriterSettings settings = new XmlWriterSettings();
+            settings.Indent = true;
+            settings.IndentChars = ("    ");
+            using (XmlWriter writer = XmlWriter.Create(urlToConfigFile, settings))
+            {
+                writer.WriteStartElement("player");
+                writer.WriteElementString("Health", value1);
+                writer.WriteElementString("Score", value2);
+                writer.WriteEndElement();
+                writer.Flush();
+            }
+
+        }
+
+        //Erstellt ein XML-Dokument, bei dem alle Kindknoten des Rootelements auf einem Level sind
+        public void CreateXMLFromLists_L1(string rootName, List<string> nodeNameList, List<string> valueList)
+        {
+            Debug.WriteLine("Try to write in XML-File...");
+            XmlWriterSettings settings = new XmlWriterSettings();
+            settings.Indent = true;
+            settings.IndentChars = ("    ");
+            if (nodeNameList.Count != valueList.Count)
+            {
+                Debug.WriteLine("Warnung: Listen sind nicht gleich lang - Störung im XML- Dokument erwartet: Aktion abgebrochen!");
+            }
+            else
+            {
+                using (XmlWriter writer = XmlWriter.Create(urlToConfigFile, settings))
+                {
+                    writer.WriteStartElement(rootName);
+                    for (int i = 0; i < nodeNameList.Count; i++)
+                    {
+                        writer.WriteElementString(nodeNameList.ElementAt(i), valueList.ElementAt(i));
+                    }
+                    writer.WriteEndElement();
+                    writer.Flush();
+                    Debug.WriteLine("XML created");
+                }
+            }
         }
     }
 }

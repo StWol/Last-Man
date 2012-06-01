@@ -42,10 +42,8 @@ namespace EVCS_Projekt
             // Das ist ein Test :-)
             Debug.WriteLine("Start Game..");
 
-            //XMLRead-Test
-            //XMLManager xMan = new XMLManager("E:/Development/LastManSrc/evcs-Projekt/EVCS-Projekt/EVCS-Projekt/Helper/XMLManager/TestPlayerConf.xml");
-            //xMan.displayXML();
-            //xMan.getValueOfNode("Health");
+            
+           
 
 
             graphics = new GraphicsDeviceManager(this);
@@ -67,7 +65,7 @@ namespace EVCS_Projekt
 
             graphics.IsFullScreen = Configuration.GetBool("isFullscreen");
 
-            graphics.PreferMultiSampling = Configuration.GetBool("antiAliasing");
+            //graphics.PreferMultiSampling = Configuration.GetBool("antiAliasing");
            
             graphics.ApplyChanges();
 

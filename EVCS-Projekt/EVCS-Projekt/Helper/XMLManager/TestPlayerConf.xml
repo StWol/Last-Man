@@ -1,1 +1,5 @@
-﻿<Player><Health>100</Health><Score>20</Score></Player>
+﻿<?xml version="1.0" encoding="utf-8"?>
+<player>
+    <Health>30</Health>
+    <Score>20</Score>
+</player>

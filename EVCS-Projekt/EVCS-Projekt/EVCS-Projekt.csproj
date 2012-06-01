@@ -122,7 +122,9 @@
     <Content Include="GameThumbnail.png">
       <XnaPlatformSpecific>true</XnaPlatformSpecific>
     </Content>
-    <Content Include="Helper\XMLManager\TestPlayerConf.xml" />
+    <Content Include="Helper\XMLManager\TestPlayerConf.xml">
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\EVCS-ProjektContent\EVCS-ProjektContent.contentproj">
