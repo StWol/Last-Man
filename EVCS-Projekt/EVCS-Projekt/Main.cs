@@ -65,7 +65,7 @@ namespace EVCS_Projekt
 
             graphics.IsFullScreen = Configuration.GetBool("isFullscreen");
 
-            //graphics.PreferMultiSampling = Configuration.GetBool("antiAliasing");
+            graphics.PreferMultiSampling = Configuration.GetBool("antiAliasing");
            
             graphics.ApplyChanges();
 

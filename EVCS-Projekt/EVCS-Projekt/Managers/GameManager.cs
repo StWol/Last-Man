@@ -33,6 +33,8 @@ namespace EVCS_Projekt.Managers
         private Keys keyMoveLeft;
         private Keys keyMoveRight;
 
+        private float spawnInterval = 2F;
+
         // Debug
         private float updateObjects = 0;
 
@@ -40,7 +42,7 @@ namespace EVCS_Projekt.Managers
         private Texture2D test;
         private SpriteFont testFont;
         Texture2D monster3;
-        Texture2D arrow, shot;
+        Texture2D arrow, shot, blood;
         Enemy testEnemy;
         float accu = 0.1F;
         float mausrad = 0F;
@@ -59,12 +61,14 @@ namespace EVCS_Projekt.Managers
             // GameState initialisieren
             GameState.MapSize = new Vector2(2000, 2000); // TODO: Mapgröße hier mitgeben
             GameState.QuadTreeEnemies = new QuadTree<Enemy>(0, 0, (int)GameState.MapSize.X, (int)GameState.MapSize.Y);
+            GameState.QuadTreeSpawnPoints = new QuadTree<SpawnPoint>(0, 0, (int)GameState.MapSize.X, (int)GameState.MapSize.Y);
+            GameState.QuadTreeStaticObjects = new QuadTree<StaticObject>(0, 0, (int)GameState.MapSize.X, (int)GameState.MapSize.Y);
 
             GameState.ShotList = new List<Shot>(); // Shots als Liste, da diese nur eine kurze Lebenszeit haben
 
             // Player
-            MapLocation playerPosition = new MapLocation(new Rectangle(0, 0, 30, 30));
-            GameState.Player = new Player(playerPosition, 100, 100, 1);
+            MapLocation playerPosition = new MapLocation(new Rectangle(0, 0, 30, 200));
+            GameState.Player = new Player(playerPosition, 100, 100, 200);
 
             // Keybelegung
             keyMoveUp = Keys.W;
@@ -75,11 +79,13 @@ namespace EVCS_Projekt.Managers
             // ################################################################################
             // TEST
             // Test für ladebilschirm
-            Thread.Sleep(500);
+            Thread.Sleep(100);
+
 
             monster3 = Main.ContentManager.Load<Texture2D>("test/red_monster_angry");
             arrow = Main.ContentManager.Load<Texture2D>("test/arrow");
             shot = Main.ContentManager.Load<Texture2D>("test/shot");
+            blood = Main.ContentManager.Load<Texture2D>("test/blood");
 
             GameState.Player.Renderer = new StaticRenderer(arrow);
             GameState.Player.LocationSizing();
@@ -96,10 +102,14 @@ namespace EVCS_Projekt.Managers
             Texture2D monster = Main.ContentManager.Load<Texture2D>("test/red_monster_small");
             Texture2D monster2 = Main.ContentManager.Load<Texture2D>("test/red_monster_happy");
 
+            // DefaultEnemies laden
+            Enemy d1 = new Enemy(new MapLocation(new Vector2(0, 0)), new StaticRenderer(monster2), 0, 0, 0, 0, 0, 100, 0);
+            Enemy[] de = new Enemy[] { d1 };
+            Enemy.DefaultEnemies = de;
 
             Texture2D[] ani = new Texture2D[] { monster, monster2, monster3 };
 
-            for (int i = 0; i < 100; i++)
+            for (int i = 0; i < 00; i++)
             {
                 // 20 % chance, dass gegner ne richtige textur bekommt..
                 IRenderBehavior render;
@@ -124,6 +134,14 @@ namespace EVCS_Projekt.Managers
                 GameState.QuadTreeEnemies.Add(x);
             }
 
+            for (int i = 0; i < 50; i++)
+            {
+                MapLocation m = new MapLocation(new Rectangle(random.Next(0, (int)GameState.MapSize.X), random.Next(0, (int)GameState.MapSize.Y), 1, 1));
+
+                SpawnPoint s = new SpawnPoint(m, 0, 1);
+                GameState.QuadTreeSpawnPoints.Add(s);
+
+            }
 
             AnimationRenderer ar = new AnimationRenderer(ani, 1);
             // Enemy mit Animation
@@ -160,19 +178,24 @@ namespace EVCS_Projekt.Managers
             // Input prüfen
             CheckInput();
 
+            // Gegner spawnen
+            SpawnEnemy();
+
+            // Kollisionen der SChüsse prüfen
+            CheckShots(enemies);
 
             // ################################################################################
             // TEST
-            /*foreach ( Enemy e in gameState.QuadTreeEnemies )
+            foreach ( Enemy e in enemies )
             {
                 int x = (int)e.LocationBehavior.Position.X + 1;
-                if ( x > 1000)
+                if ( x > GameState.MapSize.X)
                     x = 0;
                 e.LocationBehavior.Position = new Vector2(x ,  e.LocationBehavior.Position.Y);
                 e.HasMoved = true;
 
-                gameState.QuadTreeEnemies.Move(e);
-            }*/
+                GameState.QuadTreeEnemies.Move(e);
+            }
 
             float mr = Mouse.GetState().ScrollWheelValue - mausrad;
             if (mr > 0)
@@ -190,7 +213,12 @@ namespace EVCS_Projekt.Managers
             {
                 Vector2 accuracy = new Vector2((float)(r.NextDouble() * accu - accu / 2), (float)(r.NextDouble() * accu - accu / 2));
 
-                Shot s = new Shot(0, 0, 1000, -GameState.Player.LocationBehavior.Direction + accuracy, 0, "", 0, "", 0, new MapLocation(GameState.Player.LocationBehavior.Position));
+                if (GameState.Player.IsMoving)
+                {
+                    accuracy = accuracy * 3F;
+                }
+
+                Shot s = new Shot(0, 0, 1000, -GameState.Player.LocationBehavior.Direction + accuracy, 10, "", 0, "", 0, new MapLocation(GameState.Player.LocationBehavior.Position));
                 s.Renderer = new StaticRenderer(shot);
                 s.SetDirection(-GameState.Player.LocationBehavior.Direction + accuracy);
                 s.LocationSizing();
@@ -210,7 +238,7 @@ namespace EVCS_Projekt.Managers
             {
                 e.Renderer.Update();
 
-                if ( e.DistanceLessThan(GameState.Player, 300) ) 
+                if (e.DistanceLessThan(GameState.Player, 300))
                     e.LookAt(GameState.Player.LocationBehavior.Position);
             }
 
@@ -219,40 +247,49 @@ namespace EVCS_Projekt.Managers
         }
 
         // ***************************************************************************
-        // Lässt einen Gegner spawnen
+        // Prüft die EIngabe
         public void CheckInput()
         {
             // KeyState holen
             KeyboardState keyState = Keyboard.GetState();
 
-            bool hasMoved = false;
-
-            Vector2 newPlayerPosition = GameState.Player.LocationBehavior.Position;
+            Vector2 moveVector = new Vector2(0, 0);
             if (keyState.IsKeyDown(keyMoveUp))
             {
-                hasMoved = true;
-                newPlayerPosition.Y -= 1;
+                moveVector.Y -= 1;
             }
             if (keyState.IsKeyDown(keyMoveDown))
             {
-                hasMoved = true;
-                newPlayerPosition.Y += 1;
+                moveVector.Y += 1;
             }
             if (keyState.IsKeyDown(keyMoveLeft))
             {
-                hasMoved = true;
-                newPlayerPosition.X -= 1;
+                moveVector.X -= 1;
             }
             if (keyState.IsKeyDown(keyMoveRight))
             {
-                hasMoved = true;
-                newPlayerPosition.X += 1;
+                moveVector.X += 1;
             }
 
-            if (hasMoved)
+            if ( moveVector.X != 0 || moveVector.Y != 0)
             {
+                moveVector.Normalize();
+
+                float movement = (float)Main.GameTimeUpdate.ElapsedGameTime.TotalSeconds * GameState.Player.Speed;
+
+                float xPos = GameState.Player.LocationBehavior.Position.X + moveVector.X * movement;
+                float yPos = GameState.Player.LocationBehavior.Position.Y + moveVector.Y * movement;
+
+                Vector2 newPlayerPosition = new Vector2(xPos, yPos);
+                
                 GameState.Player.LocationBehavior.Position = newPlayerPosition;
+                GameState.Player.IsMoving = true;
+                
                 CalculateMapOffset();
+            }
+            else
+            {
+                GameState.Player.IsMoving = false;
             }
         }
 
@@ -275,8 +312,17 @@ namespace EVCS_Projekt.Managers
             // Bildschirm Rectangle
             Rectangle screenRect = new Rectangle((int)GameState.MapOffset.X, (int)GameState.MapOffset.Y, Configuration.GetInt("resolutionWidth"), Configuration.GetInt("resolutionHeight"));
 
+            //Static Objects im Bild
+            List<StaticObject> staticOnScreen = GameState.QuadTreeStaticObjects.GetObjects(screenRect);
+            
             // Alle gegner im Bilschirm
             List<Enemy> enemiesOnScreen = GameState.QuadTreeEnemies.GetObjects(screenRect);
+
+            // Statische Objekte zeichnen
+            foreach (StaticObject so in staticOnScreen)
+            {
+                so.Renderer.Draw(spriteBatch, so.LocationBehavior);
+            }
 
             // Player zeichnen
             GameState.Player.Renderer.Draw(spriteBatch, GameState.Player.LocationBehavior);
@@ -295,22 +341,7 @@ namespace EVCS_Projekt.Managers
             //Debug.WriteLine("enemies: " + enemies.Count);
             foreach (Enemy e in enemiesOnScreen)
             {
-                bool col = false;
-                List<Shot> tempList = new List<Shot>(GameState.ShotList);
-                foreach (Shot s in tempList)
-                {
-                    if (s.CollisionWith(e))
-                    {
-                        GameState.ShotList.Remove(s);
-                        col = true;
-                        break;
-                    }
-                }
-                //Debug.WriteLine((int)e.LocationBehavior.Position.X + " " + (int)e.LocationBehavior.Position.Y);
-                //spriteBatch.Draw(test, new Rectangle((int)e.LocationBehavior.Position.X, (int)e.LocationBehavior.Position.Y, 10, 10), Color.Red);
-                if (col)
-                    e.Renderer.Draw(spriteBatch, e.LocationBehavior, Color.Green);
-                else
+
                     e.Renderer.Draw(spriteBatch, e.LocationBehavior);
             }
 
@@ -329,10 +360,20 @@ namespace EVCS_Projekt.Managers
         }
 
         // ***************************************************************************
-        // Lässt einen Gegner spawnen
+        // Lässt einen Gegner spawnen, vlt
         public void SpawnEnemy()
         {
+            // NextSpawn verringern
+            GameState.NextSpawn -= (float)Main.GameTimeUpdate.ElapsedGameTime.TotalSeconds;
 
+            if (GameState.NextSpawn <= 0)
+            {
+                // NextSpawn resetten
+                GameState.NextSpawn = spawnInterval;
+
+                // Spawn starten
+                SpawnPoint.SpawnEnemies(GameState);
+            }
         }
 
         // ***************************************************************************
@@ -342,7 +383,56 @@ namespace EVCS_Projekt.Managers
             return false;
         }
 
+        // ***************************************************************************
+        // Prüfe schüsse
+        public void CheckShots(List<Enemy> enemies)
+        {
 
+            foreach (Enemy e in enemies)
+            {
+                // Kopiere die lsite, um getroffene schüsse gleich entfernen zu können
+                List<Shot> tempList = new List<Shot>(GameState.ShotList);
+
+                if (e.IsDead) {
+                    // FEHLER BEIM LÖSCHEN!!!!!!!!!!!!!!!! dieser gegner kann nicht gelöscht werden, falls es hier rein geht
+                    foreach (Enemy x in GameState.QuadTreeEnemies) {
+                        if (x == e)
+                            Debug.WriteLine("found");
+                    }
+
+                }
+
+                // Prüfe kollision mit jedem schuss
+                foreach (Shot s in tempList)
+                {
+                    if (s.CollisionWith(e))
+                    {
+                        // Gegner schaden zufügen
+                        e.TakeDamage(s);
+
+                        // Buffs des Schusses auf den Gegner übertragen
+                        e.AddBuffs(s.BuffList);
+
+                        //Debug.WriteLine("Health nach Schuss: " + e.Health);
+
+                        // FEHLER BEIM LÖSCHEN!!!!!!!!!!!!!!!!
+                        GameState.ShotList.Remove(s);
+                    }
+                }
+
+                // Töte Enemie - am besten in eigene Methode auslagern
+                if (e.IsDead)
+                {
+                    //Test
+                    StaticObject splatter = new StaticObject(new MapLocation(e.LocationBehavior.Position), new StaticRenderer(blood) );
+                    Debug.WriteLine("remove "+e);
+                    GameState.QuadTreeStaticObjects.Add(splatter);
+                    //Debug.WriteLine("Entferne Gegner"); 381 1986
+                    GameState.QuadTreeEnemies.Remove(e);
+                }
+            }
+
+        }
 
     }
 }

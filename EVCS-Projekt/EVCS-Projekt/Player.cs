@@ -23,13 +23,14 @@ namespace EVCS_Projekt
         //Attributes
         private float maxHealth;
         public float Health { get; private set; }
-        private float speed;
+        public float Speed { get; set; }
         public float[] Liquid { get; set; }
         public Item Weapon { set; get; }
         public List<Item> Inventar { get; private set; }
         private Dictionary<int, Item> shortcuts;
         private List<Buff> bufflist;
         public Vector2 Direction { get; set; }
+        public bool IsMoving { get; set; }
 
         /*
         *  Die(), das DropItem() und das Prüfen, ob ein Enemy gestorben ist - muss der GameManager checken und
@@ -40,6 +41,7 @@ namespace EVCS_Projekt
             : base(locationBehavior)
         {
             bufflist = new List<Buff>();
+            Speed = speed;
         }
 
         // Player wird getroffen von Shot:

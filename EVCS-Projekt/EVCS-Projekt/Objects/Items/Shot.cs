@@ -18,7 +18,7 @@ namespace EVCS_Projekt.Objects.Items
         private float speed;
         public float Damage { get; private set; }
         private float distance;
-        private List<Buff> buffList;
+        public List<Buff> BuffList { get; set; }
 
         private float lifetime = 2000; // TODO: Das irgendwie auslagern oder so
 
@@ -28,7 +28,6 @@ namespace EVCS_Projekt.Objects.Items
         {
             this.speed = speed;
             this.Damage = damage;
-            this.buffList = new List<Buff>();
             this.distance = distance;
 
             this.direction = direction;
