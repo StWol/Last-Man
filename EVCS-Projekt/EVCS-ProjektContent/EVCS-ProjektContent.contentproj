@@ -178,7 +178,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-<<<<<<< HEAD
     <Compile Include="map\2_baenke_tisch.png">
       <Name>2_baenke_tisch</Name>
       <Importer>TextureImporter</Importer>
@@ -276,6 +275,9 @@
     </Compile>
     <Compile Include="map\zwei_sessel_tisch.png">
       <Name>zwei_sessel_tisch</Name>
+	  <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
     <Compile Include="test\blood.png">
       <Name>blood</Name>
       <Importer>TextureImporter</Importer>
