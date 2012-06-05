@@ -9,12 +9,15 @@ using System.Diagnostics;
 
 namespace EVCS_Projekt.Renderer
 {
-    class AnimationRenderer : IRenderBehavior
+    public class AnimationRenderer : IRenderBehavior
     {
         private Texture2D[] textures;
         private float framesPerSecond;
         private float animationTimer;
         private float frameDuration;
+
+        private delegate void UpdateDelegate ();
+        private UpdateDelegate update;
 
         // ***************************************************************************
         // Aktuelle Framenummer
@@ -42,6 +45,7 @@ namespace EVCS_Projekt.Renderer
             this.framesPerSecond = fps;
             this.animationTimer = 0;
             this.frameDuration = 1 / framesPerSecond;
+            update = UpdateLoop;
         }
 
         public void Draw(SpriteBatch spriteBatch, ILocationBehavior locationBehavoir)
@@ -60,6 +64,13 @@ namespace EVCS_Projekt.Renderer
         // Frame weiterzählen
         public void Update()
         {
+            update();
+        }
+
+        // ***************************************************************************
+        // Frame weiterzählen - Schleife
+        private void UpdateLoop()
+        {
             // Gametime auf timer adden
             animationTimer += (float)Main.GameTimeUpdate.ElapsedGameTime.TotalSeconds;
 
@@ -68,6 +79,33 @@ namespace EVCS_Projekt.Renderer
             {
                 animationTimer = 0;
             }
+
+        }
+
+        // ***************************************************************************
+        // Frame weiterzählen - Einmal abspielen dann stop
+        private void UpdateOnce()
+        {
+            // Gametime auf timer adden - aber nur wenn es nicht durchgelaufen ist
+            if (textures.Length / framesPerSecond > animationTimer + (float)Main.GameTimeUpdate.ElapsedGameTime.TotalSeconds )
+            {
+                animationTimer += (float)Main.GameTimeUpdate.ElapsedGameTime.TotalSeconds;
+            }
+
+        }
+
+        // ***************************************************************************
+        // Frame weiterzählen
+        public void PlayOnce()
+        {
+            update = UpdateOnce;
+        }
+
+        // ***************************************************************************
+        // Animation auf 0 setzten
+        public void ResetAnimation()
+        {
+            animationTimer = 0;
         }
     }
 }

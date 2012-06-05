@@ -24,8 +24,6 @@ namespace EVCS_Projekt.Managers
         private List<SpawnPoint> spawnPoints;
         public GameState GameState { get; set; }
 
-        // Player Blickrichtung und PlayerDrehpunkt
-        float playerRotation;
 
         // Keybelegung
         private Keys keyMoveUp;
@@ -42,10 +40,14 @@ namespace EVCS_Projekt.Managers
         private Texture2D test;
         private SpriteFont testFont;
         Texture2D monster3;
-        Texture2D arrow, shot, blood;
+        Texture2D arrow, shot, blood, gun_fire, shot_01;
         Enemy testEnemy;
         float accu = 0.1F;
         float mausrad = 0F;
+        Texture2D[] bloodA;
+        bool shoting = false;
+        StaticRenderer gun;
+        private float gun_cd;
 
         // ***************************************************************************
         // Läd den ganzen Stuff, den der GameManager benötigt
@@ -81,14 +83,16 @@ namespace EVCS_Projekt.Managers
             // Test für ladebilschirm
             Thread.Sleep(100);
 
+            gun_cd = 0.10F;
+
+            gun_fire = Main.ContentManager.Load<Texture2D>("images/effects/guns/gun_fire");
+            gun = new StaticRenderer(gun_fire);
 
             monster3 = Main.ContentManager.Load<Texture2D>("test/red_monster_angry");
-            arrow = Main.ContentManager.Load<Texture2D>("test/arrow");
             shot = Main.ContentManager.Load<Texture2D>("test/shot");
             blood = Main.ContentManager.Load<Texture2D>("test/blood");
-
-            GameState.Player.Renderer = new StaticRenderer(arrow);
-            GameState.Player.LocationSizing();
+            shot_01 = Main.ContentManager.Load<Texture2D>("images/shots/shot_01");
+            
 
             MouseCursor.CurrentCursor = MouseCursor.DefaultCursor;
 
@@ -102,6 +106,18 @@ namespace EVCS_Projekt.Managers
             Texture2D monster = Main.ContentManager.Load<Texture2D>("test/red_monster_small");
             Texture2D monster2 = Main.ContentManager.Load<Texture2D>("test/red_monster_happy");
 
+
+            bloodA = new Texture2D[26];
+            for (int i = 0; i <= 25; i++)
+            {
+                String x = "";
+                if (i < 10)
+                    x += "0";
+                x += i;
+
+                bloodA[i] = Main.ContentManager.Load<Texture2D>("test/blood/blood_"+x);
+            }
+
             // DefaultEnemies laden
             Enemy d1 = new Enemy(new MapLocation(new Vector2(0, 0)), new StaticRenderer(monster2), 0, 0, 0, 0, 0, 100, 0);
             Enemy[] de = new Enemy[] { d1 };
@@ -109,7 +125,7 @@ namespace EVCS_Projekt.Managers
 
             Texture2D[] ani = new Texture2D[] { monster, monster2, monster3 };
 
-            for (int i = 0; i < 00; i++)
+            for (int i = 0; i < 100; i++)
             {
                 // 20 % chance, dass gegner ne richtige textur bekommt..
                 IRenderBehavior render;
@@ -128,15 +144,15 @@ namespace EVCS_Projekt.Managers
 
                 MapLocation m = new MapLocation(new Rectangle(random.Next(0, (int)GameState.MapSize.X), random.Next(0, (int)GameState.MapSize.Y), random.Next(10, 30), random.Next(10, 30)));
 
-                Enemy x = new Enemy(m, render, 0, 0, 0, 0, 0, 0, 0);
+                Enemy x = new Enemy(m, render, 0, 0, 0, 0, 0, 150, 0);
                 x.LocationSizing();
 
                 GameState.QuadTreeEnemies.Add(x);
             }
 
-            for (int i = 0; i < 50; i++)
+            for (int i = 0; i < 0; i++)
             {
-                MapLocation m = new MapLocation(new Rectangle(random.Next(0, (int)GameState.MapSize.X), random.Next(0, (int)GameState.MapSize.Y), 1, 1));
+                MapLocation m = new MapLocation(new Rectangle(random.Next(40, (int)GameState.MapSize.X-40), random.Next(40, (int)GameState.MapSize.Y-40), 1, 1));
 
                 SpawnPoint s = new SpawnPoint(m, 0, 1);
                 GameState.QuadTreeSpawnPoints.Add(s);
@@ -170,8 +186,9 @@ namespace EVCS_Projekt.Managers
             // Bildschirm Rectangle + 10 % tolleranz in jede richtung
             Rectangle screenRect = new Rectangle((int)(GameState.MapOffset.X - Configuration.GetInt("resolutionWidth") * 0.1), (int)(GameState.MapOffset.Y - Configuration.GetInt("resolutionHeight") * 0.1), (int)(Configuration.GetInt("resolutionWidth") * 1.2), (int)(Configuration.GetInt("resolutionHeight") * 1.2));
 
-            // Enemies in UdpateRect
+            // Enemies, SO in UdpateRect
             List<Enemy> enemies = GameState.QuadTreeEnemies.GetObjects(screenRect);
+            List<StaticObject> staticObjects = GameState.QuadTreeStaticObjects.GetObjects(screenRect);
 
             updateObjects = enemies.Count;
 
@@ -184,8 +201,17 @@ namespace EVCS_Projekt.Managers
             // Kollisionen der SChüsse prüfen
             CheckShots(enemies);
 
+            // Renderer des Players
+            GameState.Player.Renderer.Update();
+
+            // StaticObjects Renderer updaten
+            foreach (StaticObject s in staticObjects) {
+                s.Renderer.Update();
+            }
+
             // ################################################################################
             // TEST
+            /*
             foreach ( Enemy e in enemies )
             {
                 int x = (int)e.LocationBehavior.Position.X + 1;
@@ -195,7 +221,7 @@ namespace EVCS_Projekt.Managers
                 e.HasMoved = true;
 
                 GameState.QuadTreeEnemies.Move(e);
-            }
+            }*/
 
             float mr = Mouse.GetState().ScrollWheelValue - mausrad;
             if (mr > 0)
@@ -209,7 +235,7 @@ namespace EVCS_Projekt.Managers
             mausrad = Mouse.GetState().ScrollWheelValue;
 
             Random r = new Random();
-            if (Mouse.GetState().LeftButton == ButtonState.Pressed)
+            if ( gun_cd <= 0 && Mouse.GetState().LeftButton == ButtonState.Pressed)
             {
                 Vector2 accuracy = new Vector2((float)(r.NextDouble() * accu - accu / 2), (float)(r.NextDouble() * accu - accu / 2));
 
@@ -219,11 +245,18 @@ namespace EVCS_Projekt.Managers
                 }
 
                 Shot s = new Shot(0, 0, 1000, -GameState.Player.LocationBehavior.Direction + accuracy, 10, "", 0, "", 0, new MapLocation(GameState.Player.LocationBehavior.Position));
-                s.Renderer = new StaticRenderer(shot);
+                s.Renderer = new StaticRenderer(shot_01);
                 s.SetDirection(-GameState.Player.LocationBehavior.Direction + accuracy);
                 s.LocationSizing();
 
                 GameState.ShotList.Add(s);
+                shoting = true;
+                gun_cd = 0.05F;
+            }
+            else
+            {
+                gun_cd -= (float)Main.GameTimeUpdate.ElapsedGameTime.TotalSeconds;
+                shoting = false;
             }
 
             List<Shot> shotListTemp = new List<Shot>(GameState.ShotList);
@@ -271,7 +304,7 @@ namespace EVCS_Projekt.Managers
                 moveVector.X += 1;
             }
 
-            if ( moveVector.X != 0 || moveVector.Y != 0)
+            if (moveVector.X != 0 || moveVector.Y != 0)
             {
                 moveVector.Normalize();
 
@@ -281,10 +314,10 @@ namespace EVCS_Projekt.Managers
                 float yPos = GameState.Player.LocationBehavior.Position.Y + moveVector.Y * movement;
 
                 Vector2 newPlayerPosition = new Vector2(xPos, yPos);
-                
+
                 GameState.Player.LocationBehavior.Position = newPlayerPosition;
                 GameState.Player.IsMoving = true;
-                
+
                 CalculateMapOffset();
             }
             else
@@ -314,9 +347,25 @@ namespace EVCS_Projekt.Managers
 
             //Static Objects im Bild
             List<StaticObject> staticOnScreen = GameState.QuadTreeStaticObjects.GetObjects(screenRect);
-            
+
             // Alle gegner im Bilschirm
             List<Enemy> enemiesOnScreen = GameState.QuadTreeEnemies.GetObjects(screenRect);
+
+            /* 
+             * ## DRAWS
+             * 
+             * Reihenfolge:
+             * - Map (fehlt)
+             * - Statische Objecte
+             * - Items etc. (fehlt)
+             * - Schüsse
+             * - Gegner
+             * - Player
+             * - Cursor
+             * 
+             */
+
+
 
             // Statische Objekte zeichnen
             foreach (StaticObject so in staticOnScreen)
@@ -324,25 +373,31 @@ namespace EVCS_Projekt.Managers
                 so.Renderer.Draw(spriteBatch, so.LocationBehavior);
             }
 
-            // Player zeichnen
-            GameState.Player.Renderer.Draw(spriteBatch, GameState.Player.LocationBehavior);
-
-            // ################################################################################
-            // TEST
-
-            // player
-
+            // Shots werden alle gezeichnet, da es von ihnen nicht viele gibt und diese normalerweise alle innerhalb des bildschirms liegen
             foreach (Shot s in GameState.ShotList)
             {
                 s.Renderer.Draw(spriteBatch, s.LocationBehavior);
             }
 
-
-            //Debug.WriteLine("enemies: " + enemies.Count);
+            // Enemies zeichnen
             foreach (Enemy e in enemiesOnScreen)
             {
+                e.Renderer.Draw(spriteBatch, e.LocationBehavior);
+            }
 
-                    e.Renderer.Draw(spriteBatch, e.LocationBehavior);
+            // Player zeichnen
+            GameState.Player.Renderer.Draw(spriteBatch, GameState.Player.LocationBehavior);
+
+            // Cursor zeichnen
+            MouseCursor.DrawMouse(spriteBatch);
+
+            // ################################################################################
+            // ################################################################################
+            // TEST
+
+            if (shoting)
+            {
+                gun.Draw(spriteBatch, GameState.Player.LocationBehavior);
             }
 
             spriteBatch.DrawString(testFont, "Enemies: " + GameState.QuadTreeEnemies.Count + " Draws: " + enemiesOnScreen.Count + " Updates: " + updateObjects + " FPS: " + (1 / Main.GameTimeDraw.ElapsedGameTime.TotalSeconds), new Vector2(0, 0), Color.Black);
@@ -352,9 +407,7 @@ namespace EVCS_Projekt.Managers
 
             // TEST-ENDE
             // ################################################################################
-
-            // CUrsor zeichnen
-            MouseCursor.DrawMouse(spriteBatch);
+            // ################################################################################
 
             spriteBatch.End();
         }
@@ -393,9 +446,11 @@ namespace EVCS_Projekt.Managers
                 // Kopiere die lsite, um getroffene schüsse gleich entfernen zu können
                 List<Shot> tempList = new List<Shot>(GameState.ShotList);
 
-                if (e.IsDead) {
+                if (e.IsDead)
+                {
                     // FEHLER BEIM LÖSCHEN!!!!!!!!!!!!!!!! dieser gegner kann nicht gelöscht werden, falls es hier rein geht
-                    foreach (Enemy x in GameState.QuadTreeEnemies) {
+                    foreach (Enemy x in GameState.QuadTreeEnemies)
+                    {
                         if (x == e)
                             Debug.WriteLine("found");
                     }
@@ -415,7 +470,6 @@ namespace EVCS_Projekt.Managers
 
                         //Debug.WriteLine("Health nach Schuss: " + e.Health);
 
-                        // FEHLER BEIM LÖSCHEN!!!!!!!!!!!!!!!!
                         GameState.ShotList.Remove(s);
                     }
                 }
@@ -423,12 +477,19 @@ namespace EVCS_Projekt.Managers
                 // Töte Enemie - am besten in eigene Methode auslagern
                 if (e.IsDead)
                 {
-                    //Test
-                    StaticObject splatter = new StaticObject(new MapLocation(e.LocationBehavior.Position), new StaticRenderer(blood) );
-                    Debug.WriteLine("remove "+e);
+                    //Test new StaticRenderer(blood)
+                    AnimationRenderer a = new AnimationRenderer(bloodA, 35);
+                    a.PlayOnce();
+                    StaticObject splatter = new StaticObject(new MapLocation(e.LocationBehavior.Position), a );
+                    
                     GameState.QuadTreeStaticObjects.Add(splatter);
                     //Debug.WriteLine("Entferne Gegner"); 381 1986
-                    GameState.QuadTreeEnemies.Remove(e);
+
+                    // FEHLER BEIM LÖSCHEN!!!!!!!!!!!!!!!!
+                    if ( !GameState.QuadTreeEnemies.Remove(e))
+                    {
+                        Debug.WriteLine("Fehler beim löschen");
+                    }
                 }
             }
 

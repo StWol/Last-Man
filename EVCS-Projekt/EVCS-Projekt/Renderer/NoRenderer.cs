@@ -8,7 +8,7 @@ using Microsoft.Xna.Framework;
 
 namespace EVCS_Projekt.Renderer
 {
-    class NoRenderer : IRenderBehavior
+    public class NoRenderer : IRenderBehavior
     {
         // ***************************************************************************
         // Die Größe, des zu rendernen Objektes => Größe der Textur, da keine Textur 0,0

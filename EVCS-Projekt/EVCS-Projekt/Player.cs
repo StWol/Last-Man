@@ -30,53 +30,94 @@ namespace EVCS_Projekt
         private Dictionary<int, Item> shortcuts;
         private List<Buff> bufflist;
         public Vector2 Direction { get; set; }
-        public bool IsMoving { get; set; }
+
+        private bool isMoving = false;
+        public bool IsMoving
+        {
+            get { return isMoving; }
+            set
+            {
+                if (isMoving == value)
+                    return;
+
+                isMoving = value;
+                if (isMoving)
+                    Renderer = RendererMoving;
+                else
+                    Renderer = RendererStanding;
+            }
+        }
+
+        // Verschiedene Renderer
+        private AnimationRenderer RendererMoving { get; set; }
+        private StaticRenderer RendererStanding { get; set; }
 
         /*
         *  Die(), das DropItem() und das Prüfen, ob ein Enemy gestorben ist - muss der GameManager checken und
         *  behandeln!
         */
 
+        // ***************************************************************************
+        // Konstruktor
         public Player(ILocationBehavior locationBehavior, float maxHealth, float health, float speed)
             : base(locationBehavior)
         {
             bufflist = new List<Buff>();
             Speed = speed;
+
+            // Texturen für Renderer laden
+            Texture2D textureStanding = Main.ContentManager.Load<Texture2D>("images/character/standing");
+            RendererStanding = new StaticRenderer(textureStanding);
+
+            Texture2D[] textureMoving = new Texture2D[]{ 
+                Main.ContentManager.Load<Texture2D>("images/character/moving_1"),
+                Main.ContentManager.Load<Texture2D>("images/character/moving_2")
+            };
+            RendererMoving = new AnimationRenderer(textureMoving, 4F);
+
+            // Standardmäßig den StandingRenderer zuweisen
+            Renderer = RendererStanding;
+
+            // LocationSize anpassen
+            LocationSizing();
         }
 
-        // Player wird getroffen von Shot:
-        // holt sich Leben des Players und zieht den Schaden des Schusses davon ab - falls Leben danach <= 0, Player kaputt :)
-        public void TakeDamage( Objects.Items.Shot shot )
+        // ***************************************************************************
+        // Player wird von Schuss getroffen => Schaden nehmen und Buffs übernehmen - manager muss auf Tod reagieren
+        public void TakeDamage(Shot shot)
         {
-            this.Health = this.Health - shot.Damage;
-            if ( this.Health <= 0 )
-            {
-                
-                //Die(); //Muss vom GameManager aufgerufen werden!
-                Debug.WriteLine("Player kaputt :) -> Leben <= 0");
-            }
+            // Schaden abziehen
+            Health -= shot.Damage;
+
+            // Buffs übernehmen
+            AddBuffs(shot.BuffList);
         }
 
-        //Bekommt das Item und entfernt es aus der eigenen Itemliste
+        // ***************************************************************************
+        // Entfernt das Item aus dem Inventar
         public void EatItem(Item item)
         {
             this.Inventar.Remove(item);
         }
 
-        //Bekommt die ID des Liquids und die Menge, die hinzugefügt werden soll
+        // ***************************************************************************
+        // Fügt von Liquid mit der ID id, die Menge amount hinzu
         public void AddLiquid(int id, float amount)
         {
             this.Liquid[id] += amount;
         }
 
-
+        // ***************************************************************************
+        // Zieht von Liquid mit der ID id, die Menge amount ab
         public void ReduceLiquid(int id, float amount)
         {
             this.Liquid[id] -= amount;
-            if ( Liquid[id] - amount <= 0 )
+            if (Liquid[id] - amount <= 0)
                 amount = 0;
         }
 
+        // ***************************************************************************
+        // Fügt die übergebene Liste mit Buffs dem Player hinzu
         public void AddBuffs(List<Buff> buffList)
         {
             this.bufflist.AddRange(bufflist);

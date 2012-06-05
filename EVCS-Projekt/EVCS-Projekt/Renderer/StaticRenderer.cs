@@ -9,7 +9,7 @@ using System.Diagnostics;
 
 namespace EVCS_Projekt.Renderer
 {
-    class StaticRenderer : IRenderBehavior
+    public class StaticRenderer : IRenderBehavior
     {
         private Texture2D texture;
 

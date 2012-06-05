@@ -29,13 +29,17 @@ namespace EVCS_Projekt.Objects
         // float gibt die wahrscheinlichkeit an ob ein Monster spawn. 0=0% 1=100%
         public float IsSpawning()
         {
+            // TODO: Auslagern
             int maxSpawnDistance = 1000;
+            int maxEnemies = 200;
 
             // + 10% Sicherheitsrahmen
             int screenWidth = (int)(Configuration.GetInt("resolutionWidth") * 1.1F);
             int screenHeight = (int)(Configuration.GetInt("resolutionHeight") * 1.1F);
 
-            Vector2 playerPosition = Main.MainObject.GameManager.GameState.Player.LocationBehavior.Position;
+            Vector2 playerPosition = Main.MainObject.GameManager.GameState.MapOffset;
+            playerPosition.X += Configuration.GetInt("resolutionWidth") / 2;
+            playerPosition.Y += Configuration.GetInt("resolutionHeight") / 2;
 
             float distanceX = MathHelper.Clamp(Math.Abs(playerPosition.X - Location.Position.X), 0, maxSpawnDistance + screenWidth / 2);
             float distanceY = MathHelper.Clamp(Math.Abs(playerPosition.Y - Location.Position.Y), 0, maxSpawnDistance + screenHeight / 2);
@@ -52,9 +56,12 @@ namespace EVCS_Projekt.Objects
             float distX = (maxSpawnDistance - (distanceX - screenWidth / 2)) / maxSpawnDistance;
             float distY = (maxSpawnDistance - (distanceY - screenHeight / 2)) / maxSpawnDistance;
 
-            //Debug.WriteLine("Dist: " + distX + " " + distY);
+            float limit = -(1 / (maxEnemies / 4F)) * Main.MainObject.GameManager.GameState.QuadTreeEnemies.Count + 4F;
 
-            float spawn = ((distX+distY)/2) * bildschirmX * bildschirmY * (float)modifier;
+            //Debug.WriteLine("Dist: " + distX + " " + distY);
+            //Debug.WriteLine("limit: " + limit);
+
+            float spawn = ((distX + distY) / 2) * bildschirmX * bildschirmY * (float)modifier * limit;
 
             //Debug.WriteLine("Spawn: " + spawn);
 
@@ -63,7 +70,7 @@ namespace EVCS_Projekt.Objects
 
         // ***************************************************************************
         // spawnt enemies von der liste in den quadtree
-        public static void SpawnEnemies(GameState gameState )
+        public static void SpawnEnemies(GameState gameState)
         {
             // Randomwert für "Wahrscheinlichkei"
             Random rand = new Random();
@@ -71,7 +78,8 @@ namespace EVCS_Projekt.Objects
             //Debug.WriteLine("Spawning..");
             int debugCount = 0;
 
-            foreach ( SpawnPoint s in gameState.QuadTreeSpawnPoints ) {
+            foreach (SpawnPoint s in gameState.QuadTreeSpawnPoints)
+            {
 
                 float random = (float)rand.NextDouble();
 
@@ -83,13 +91,16 @@ namespace EVCS_Projekt.Objects
                     Enemy d = Enemy.DefaultEnemies[s.EnemyType];
 
                     // Spawn ein gegner
-                    Enemy newEnemie = new Enemy(new MapLocation(s.Location.Position), d.Renderer,0, 0, 0, 100, d.Speed, d.Health, d.TypOfEnemy);
+                    Enemy newEnemie = new Enemy(new MapLocation(s.Location.Position), d.Renderer, 0, 0, 0, 100, d.Speed, d.Health, d.TypOfEnemy);
                     newEnemie.LocationSizing();
 
-                    // Gegner in Baum adden
-                    gameState.QuadTreeEnemies.Add(newEnemie);
+                    if (AllowToSpawn(gameState, newEnemie))
+                    {
+                        // Gegner in Baum adden
+                        gameState.QuadTreeEnemies.Add(newEnemie);
 
-                    debugCount++;
+                        debugCount++;
+                    }
                 }
 
             }
@@ -99,6 +110,18 @@ namespace EVCS_Projekt.Objects
         }
 
         // ***************************************************************************
+        // Prüft ob ein dem Punkt zum spawnen bereits ein gegner steht
+        private static bool AllowToSpawn(GameState gameState, Enemy e)
+        {
+            if (gameState.QuadTreeEnemies.GetObjects(e.Rect).Count > 0)
+            {
+                return false;
+            }
+            return true;
+        }
+
+
+        // ***************************************************************************
         // Für Quadtree benötigt - Gibt Position als Rectangle zurück / BoundingBox
         public Rectangle Rect
         {
@@ -106,6 +129,8 @@ namespace EVCS_Projekt.Objects
             {
                 // Korrektur, da die gerendeten Bilder ihre position zentriert haben und nicht in der linken oberen ecke
                 Rectangle r = Location.BoundingBox;
+                r.X -= r.Width / 2;
+                r.Y -= r.Height / 2;
                 return r;
             }
         }
