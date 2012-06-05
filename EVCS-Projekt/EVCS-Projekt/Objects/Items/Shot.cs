@@ -19,6 +19,7 @@ namespace EVCS_Projekt.Objects.Items
         public float Damage { get; private set; }
         private float distance;
         public List<Buff> BuffList { get; set; }
+        public bool Delete { get; set; }
 
         private float lifetime = 2000; // TODO: Das irgendwie auslagern oder so
 
@@ -46,6 +47,17 @@ namespace EVCS_Projekt.Objects.Items
             lifetime -= (float)Math.Sqrt(Math.Pow(moveVector.X, 2) + Math.Pow(moveVector.Y, 2));
             if (lifetime <= 0)
                 Main.MainObject.GameManager.GameState.ShotList.Remove(this);
+        }
+
+        // ********************************************************************************
+        // Schuss ein Pixel zurüclfliegen lassen
+        public void AdjustShot ()
+        {
+
+            Vector2 moveVector = new Vector2(-(float)(Main.GameTimeUpdate.ElapsedGameTime.TotalSeconds * speed * direction.X), -(float)(Main.GameTimeUpdate.ElapsedGameTime.TotalSeconds * speed * direction.Y));
+            moveVector.Normalize();
+
+            base.LocationBehavior.Position = base.LocationBehavior.Position + moveVector;
         }
 
     }

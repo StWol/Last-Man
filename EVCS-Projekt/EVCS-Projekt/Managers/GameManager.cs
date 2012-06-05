@@ -270,6 +270,25 @@ namespace EVCS_Projekt.Managers
             foreach (Shot s in shotListTemp)
             {
                 s.UpdatePosition();
+
+                if (!CheckRectangleInMap(s.Rect))
+                {
+                    // Wenn der Schuss das erste mal aus der Map fliegt, wird er korrigiert, dass er noch drinn ist und dann erst gelöscht
+                    if (!s.Delete)
+                    {
+                        s.Delete = true;
+                        for (int i = 0; i < 100; i++)
+                        {
+                            // Schuss in die Map schieben
+                            s.AdjustShot();
+                            if (CheckRectangleInMap(s.Rect))
+                                break;
+                        }
+                    }
+                    else
+                        //Schuss entgültig löschen
+                        GameState.ShotList.Remove(s);
+                }
             }
 
             GameState.Player.RelativeLookAt(new Vector2(Mouse.GetState().X, Mouse.GetState().Y));
@@ -315,50 +334,14 @@ namespace EVCS_Projekt.Managers
             {
                 moveVector.Normalize();
 
-                float movement = (float)Main.GameTimeUpdate.ElapsedGameTime.TotalSeconds * GameState.Player.Speed;
-
-                float xPos = GameState.Player.LocationBehavior.Position.X + moveVector.X * movement;
-                float yPos = GameState.Player.LocationBehavior.Position.Y + moveVector.Y * movement;
-
-                Vector2 newPlayerPosition = new Vector2(xPos, yPos);
-
-                Vector2 currentPosition = GameState.Player.LocationBehavior.Position;
-                GameState.Player.LocationBehavior.Position = newPlayerPosition;
-
-                // Prüfen ob man an neuer Position gehen kann
-                if (CheckWalkable(GameState.Player.LittleBoundingBox))
+                if (CheckPlayerCanMove(moveVector))
                 {
                     GameState.Player.IsMoving = true;
-
                     CalculateMapOffset();
                 }
                 else
                 {
-                    newPlayerPosition.X -= moveVector.X * movement;
-                    GameState.Player.LocationBehavior.Position = newPlayerPosition;
-                    // Prüfen ob man an neuer Position in X richtung gehen kann
-                    if (CheckWalkable(GameState.Player.LittleBoundingBox)) 
-                    {
-                        GameState.Player.IsMoving = true;
-                        CalculateMapOffset();
-                    }
-                    else
-                    {
-                        newPlayerPosition.X += moveVector.X * movement;
-                        newPlayerPosition.Y -= moveVector.Y * movement;
-                        GameState.Player.LocationBehavior.Position = newPlayerPosition;
-                        // Prüfen ob man an neuer Position in Y richtung gehen kann
-                        if (CheckWalkable(GameState.Player.LittleBoundingBox))
-                        {
-                            GameState.Player.IsMoving = true;
-                            CalculateMapOffset();
-                        }
-                        else
-                        {
-                            GameState.Player.LocationBehavior.Position = currentPosition;
-                            GameState.Player.IsMoving = false;
-                        }
-                    }
+                    GameState.Player.IsMoving = false;
                 }
             }
             else
@@ -367,6 +350,70 @@ namespace EVCS_Projekt.Managers
             }
         }
 
+        // ***************************************************************************
+        // 
+        private bool CheckPlayerCanMove(Vector2 moveVector)
+        {
+            float movement = (float)Main.GameTimeUpdate.ElapsedGameTime.TotalSeconds * GameState.Player.Speed;
+
+            float xPos = GameState.Player.LocationBehavior.Position.X + moveVector.X * movement;
+            float yPos = GameState.Player.LocationBehavior.Position.Y + moveVector.Y * movement;
+
+            Vector2 newPlayerPosition = new Vector2(xPos, yPos);
+
+            Vector2 currentPosition = GameState.Player.LocationBehavior.Position;
+            GameState.Player.LocationBehavior.Position = newPlayerPosition;
+
+            bool canMove = false;
+
+            // Prüfen ob man an neuer Position gehen kann
+            if (CheckRectangleInMap(GameState.Player.LittleBoundingBox))
+            {
+                canMove = true;
+            }
+
+            if (!canMove)
+            {
+                newPlayerPosition.X -= moveVector.X * movement;
+                GameState.Player.LocationBehavior.Position = newPlayerPosition;
+                // Prüfen ob man an neuer Position in X richtung gehen kann
+                if (CheckRectangleInMap(GameState.Player.LittleBoundingBox))
+                {
+                    canMove = true;
+                }
+            }
+
+            if (!canMove)
+            {
+                newPlayerPosition.X += moveVector.X * movement;
+                newPlayerPosition.Y -= moveVector.Y * movement;
+                GameState.Player.LocationBehavior.Position = newPlayerPosition;
+                // Prüfen ob man an neuer Position in Y richtung gehen kann
+                if (CheckRectangleInMap(GameState.Player.LittleBoundingBox))
+                {
+                    canMove = true;
+                }
+            }
+
+            if (canMove)
+            {
+                // Prüft ob ein Gegner im Weg steht
+                List<Enemy> enemies = GameState.QuadTreeEnemies.GetObjects(GameState.Player.Rect);
+
+                foreach (Enemy e in enemies) {
+                    if ( e.PPCollisionWith(GameState.Player) ) {
+                        GameState.Player.LocationBehavior.Position = currentPosition;
+                        canMove = false;
+                        break;
+                    }
+                }
+            }
+
+            return canMove;
+        }
+
+        // ***************************************************************************
+        // Berechnung des MapOffset
         public void CalculateMapOffset()
         {
             float x = MathHelper.Min(MathHelper.Max(GameState.Player.LocationBehavior.Position.X - Configuration.GetInt("resolutionWidth") / 2, 0), GameState.MapSize.X - Configuration.GetInt("resolutionWidth"));
@@ -508,6 +555,7 @@ namespace EVCS_Projekt.Managers
                 // Prüfe kollision mit jedem schuss
                 foreach (Shot s in tempList)
                 {
+                    // Shuss triff Gegner
                     if (s.PPCollisionWith(e))
                     {
                         // Gegner schaden zufügen
@@ -519,6 +567,8 @@ namespace EVCS_Projekt.Managers
                         //Debug.WriteLine("Health nach Schuss: " + e.Health);
 
                         GameState.ShotList.Remove(s);
+
+                        continue;
                     }
                 }
 
@@ -546,7 +596,7 @@ namespace EVCS_Projekt.Managers
 
         // ***************************************************************************
         // Prüfe ob Player an neue Position laufen darf
-        private bool CheckWalkable(Rectangle newPosition)
+        private bool CheckRectangleInMap(Rectangle newPosition)
         {
             List<StaticObject> objects = GameState.Karte.QuadTreeWalkable.GetObjects(newPosition);
 
@@ -560,9 +610,12 @@ namespace EVCS_Projekt.Managers
             {
                 Rectangle inter = Rectangle.Intersect(newPosition, so.Rect);
                 area += inter.Width * inter.Height;
+
+                if (area >= newPosition.Width * newPosition.Height)
+                    return true;
             }
 
-            Debug.WriteLine(area);
+            //Debug.WriteLine(area);
 
             if (area >= newPosition.Width * newPosition.Height)
                 return true;

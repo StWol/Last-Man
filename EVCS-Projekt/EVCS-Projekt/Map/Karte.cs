@@ -38,9 +38,11 @@ namespace EVCS_Projekt.Map
             StaticObject s2 = new StaticObject(new MapLocation(new Rectangle(700, 300, 400, 200)), new SimpleRenderer(Color.BurlyWood), false);
             StaticObject s3 = new StaticObject(new MapLocation(new Rectangle(700, 600, 100, 400)), new SimpleRenderer(Color.BlueViolet), false);
 
+
             QuadTreeWalkable.Add(s1);
             QuadTreeWalkable.Add(s2);
             QuadTreeWalkable.Add(s3);
+            QuadTreeWalkable.Add(new StaticObject(new MapLocation(new Rectangle(1000, 900, 2000, 200)), new SimpleRenderer(Color.BlueViolet), false));
 
             return;
             string fileContents = string.Empty;
