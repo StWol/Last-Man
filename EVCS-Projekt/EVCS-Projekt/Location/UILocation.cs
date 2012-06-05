@@ -48,5 +48,12 @@ namespace EVCS_Projekt.Location
             Position = new Vector2(rectangle.X, rectangle.Y);
             Size = new Vector2(rectangle.Width, rectangle.Height);
         }
+
+        // ***************************************************************************
+        // Clone
+        public ILocationBehavior Clone()
+        {
+            return new UILocation(BoundingBox);
+        }
     }
 }

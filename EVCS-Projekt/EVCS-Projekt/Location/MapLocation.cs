@@ -63,5 +63,12 @@ namespace EVCS_Projekt.Location
             Direction = new Vector2(0, 0);
             Rotation = 0;
         }
+
+        // ***************************************************************************
+        // Clone
+        public ILocationBehavior Clone()
+        {
+            return new MapLocation( BoundingBox );
+        }
     }
 }

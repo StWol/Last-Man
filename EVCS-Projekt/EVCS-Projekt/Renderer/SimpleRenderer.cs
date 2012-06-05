@@ -54,5 +54,12 @@ namespace EVCS_Projekt.Renderer
         {
             // Nothing todo
         }
+
+        // ***************************************************************************
+        // Clone
+        public IRenderBehavior Clone()
+        {
+            return new SimpleRenderer(color);
+        }
     }
 }

@@ -11,13 +11,15 @@ namespace EVCS_Projekt.Renderer
 {
     public class AnimationRenderer : IRenderBehavior
     {
-        private Texture2D[] textures;
+        public Texture2D[] Textures { get; private set; }
         private float framesPerSecond;
         private float animationTimer;
         private float frameDuration;
 
-        private delegate void UpdateDelegate ();
+        private delegate void UpdateDelegate();
         private UpdateDelegate update;
+
+        public static Dictionary<EAnimationRenderer, AnimationRenderer> DefaultRenderer { get; private set; }
 
         // ***************************************************************************
         // Aktuelle Framenummer
@@ -35,13 +37,13 @@ namespace EVCS_Projekt.Renderer
         {
             get
             {
-                return new Vector2(textures[0].Width, textures[0].Height);
+                return new Vector2(Textures[0].Width, Textures[0].Height);
             }
         }
 
         public AnimationRenderer(Texture2D[] textures, float fps)
         {
-            this.textures = textures;
+            this.Textures = textures;
             this.framesPerSecond = fps;
             this.animationTimer = 0;
             this.frameDuration = 1 / framesPerSecond;
@@ -57,7 +59,7 @@ namespace EVCS_Projekt.Renderer
         public void Draw(SpriteBatch spriteBatch, ILocationBehavior locationBehavoir, Color color)
         {
             // Texture zeichnen
-            spriteBatch.Draw(textures[Frame], locationBehavoir.RelativeBoundingBox, null, color, locationBehavoir.Rotation, locationBehavoir.Size / 2, SpriteEffects.None, 0);
+            spriteBatch.Draw(Textures[Frame], locationBehavoir.RelativeBoundingBox, null, color, locationBehavoir.Rotation, locationBehavoir.Size / 2, SpriteEffects.None, 0);
         }
 
         // ***************************************************************************
@@ -75,7 +77,7 @@ namespace EVCS_Projekt.Renderer
             animationTimer += (float)Main.GameTimeUpdate.ElapsedGameTime.TotalSeconds;
 
             // animationTimer resetten
-            if (textures.Length / framesPerSecond <= animationTimer)
+            if (Textures.Length / framesPerSecond <= animationTimer)
             {
                 animationTimer = 0;
             }
@@ -87,7 +89,7 @@ namespace EVCS_Projekt.Renderer
         private void UpdateOnce()
         {
             // Gametime auf timer adden - aber nur wenn es nicht durchgelaufen ist
-            if (textures.Length / framesPerSecond > animationTimer + (float)Main.GameTimeUpdate.ElapsedGameTime.TotalSeconds )
+            if (Textures.Length / framesPerSecond > animationTimer + (float)Main.GameTimeUpdate.ElapsedGameTime.TotalSeconds)
             {
                 animationTimer += (float)Main.GameTimeUpdate.ElapsedGameTime.TotalSeconds;
             }
@@ -106,6 +108,49 @@ namespace EVCS_Projekt.Renderer
         public void ResetAnimation()
         {
             animationTimer = 0;
+        }
+
+        // ***************************************************************************
+        // Clone
+        public IRenderBehavior Clone()
+        {
+            return new AnimationRenderer(Textures, framesPerSecond);
+        }
+
+        // ***************************************************************************
+        // Clonet ein DefaultRenderer
+        public static AnimationRenderer Get(EAnimationRenderer e)
+        {
+            AnimationRenderer a = (AnimationRenderer)DefaultRenderer[e].Clone();
+            return a;
+        }
+
+        // ***************************************************************************
+        // Load Animation
+        public static void Load(EAnimationRenderer e, String name, int frames, float framesPerSecond)
+        {
+            // Dic erstellen, falle es es nicht gibt
+            if (DefaultRenderer == null)
+                DefaultRenderer = new Dictionary<EAnimationRenderer, AnimationRenderer>();
+
+            // Array mit texturen erstellen
+            Texture2D[] array = new Texture2D[frames];
+
+            // Einzelne Bilder einladen
+            for (int i = 0; i < frames; i++)
+            {
+                String f = "";
+                if (i < 100 && frames >= 100)
+                    f += "0";
+                if (i < 10 && frames >= 10)
+                    f += "0";
+                f += i;
+
+                array[i] = Main.ContentManager.Load<Texture2D>("animation/" + name + "/" + name + "_" + f);
+            }
+
+            // Renderer erstellen
+            DefaultRenderer.Add(e, new AnimationRenderer(array, framesPerSecond));
         }
     }
 }

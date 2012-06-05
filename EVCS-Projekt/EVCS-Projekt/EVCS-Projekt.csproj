@@ -85,9 +85,10 @@
     <Compile Include="Managers\Manager.cs" />
     <Compile Include="Managers\MenuManager.cs" />
     <Compile Include="Audio\MusicPlayer.cs" />
-    <Compile Include="Map\Map.cs" />
+    <Compile Include="Map\Karte.cs" />
     <Compile Include="Objects\Buff.cs" />
     <Compile Include="Objects\EBuffType.cs" />
+    <Compile Include="Objects\EEnemyType.cs" />
     <Compile Include="Objects\GameObject.cs" />
     <Compile Include="Objects\Item.cs" />
     <Compile Include="Objects\Items\Antrieb.cs" />
@@ -106,6 +107,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Renderer\AnimationRenderer.cs" />
+    <Compile Include="Renderer\EAnimationRenderer.cs" />
     <Compile Include="Renderer\IRenderBehavior.cs" />
     <Compile Include="Renderer\NoRenderer.cs" />
     <Compile Include="Renderer\SimpleRenderer.cs" />

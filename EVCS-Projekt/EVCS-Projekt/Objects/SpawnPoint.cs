@@ -13,12 +13,12 @@ namespace EVCS_Projekt.Objects
     public class SpawnPoint : IQuadStorable
     {
         public MapLocation Location { get; private set; }
-        public int EnemyType { get; private set; }
+        public EEnemyType EnemyType { get; private set; }
         private float modifier;
 
         // ***************************************************************************
         // Läd und erzeugt das eigentliche Spiel
-        public SpawnPoint(MapLocation location, int enemyType, float modifier)
+        public SpawnPoint(MapLocation location, EEnemyType enemyType, float modifier)
         {
             Location = location;
             EnemyType = enemyType;
@@ -88,11 +88,10 @@ namespace EVCS_Projekt.Objects
                 // Darf er Spawnen ?
                 if (s.IsSpawning() >= random)
                 {
-                    Enemy d = Enemy.DefaultEnemies[s.EnemyType];
+                    Enemy defEnemy = Enemy.DefaultEnemies[s.EnemyType].Clone();
 
                     // Spawn ein gegner
-                    Enemy newEnemie = new Enemy(new MapLocation(s.Location.Position), d.Renderer, 0, 0, 0, 100, d.Speed, d.Health, d.TypOfEnemy);
-                    newEnemie.LocationSizing();
+                    Enemy newEnemie = new Enemy( defEnemy, s.Location.Position);
 
                     if (AllowToSpawn(gameState, newEnemie))
                     {
@@ -105,7 +104,7 @@ namespace EVCS_Projekt.Objects
 
             }
 
-            Debug.WriteLine("Spawned Enemies: " + debugCount);
+            //Debug.WriteLine("Spawned Enemies: " + debugCount);
 
         }
 

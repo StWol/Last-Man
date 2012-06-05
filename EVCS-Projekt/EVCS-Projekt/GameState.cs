@@ -6,6 +6,7 @@ using EVCS_Projekt.Tree;
 using Microsoft.Xna.Framework;
 using EVCS_Projekt.Objects.Items;
 using EVCS_Projekt.Objects;
+using EVCS_Projekt.Map;
 
 namespace EVCS_Projekt
 {
@@ -27,5 +28,7 @@ namespace EVCS_Projekt
         public Vector2 MapSize { get; set; }
         // Zeit bis zum nächsten Gegner spawn
         public float NextSpawn { get; set; }
+        // Die Map selbst
+        public Karte Karte { get; set; }
     }
 }

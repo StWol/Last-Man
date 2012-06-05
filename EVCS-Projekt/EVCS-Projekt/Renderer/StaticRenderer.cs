@@ -11,7 +11,7 @@ namespace EVCS_Projekt.Renderer
 {
     public class StaticRenderer : IRenderBehavior
     {
-        private Texture2D texture;
+        public Texture2D Texture { get; private set; }
 
         // ***************************************************************************
         // Die Größe, des zu rendernen Objektes => Größe der Textur
@@ -19,13 +19,13 @@ namespace EVCS_Projekt.Renderer
         {
             get
             {
-                return new Vector2(texture.Width, texture.Height);
+                return new Vector2(Texture.Width, Texture.Height);
             }
         }
 
         public StaticRenderer(Texture2D texture)
         {
-            this.texture = texture;
+            this.Texture = texture;
         }
 
         public void Draw(SpriteBatch spriteBatch, ILocationBehavior locationBehavoir)
@@ -37,7 +37,7 @@ namespace EVCS_Projekt.Renderer
         public void Draw(SpriteBatch spriteBatch, ILocationBehavior locationBehavoir, Color color)
         {
             // Texture zeichnen
-            spriteBatch.Draw(texture, locationBehavoir.RelativeBoundingBox, null, color, locationBehavoir.Rotation, locationBehavoir.Size / 2, SpriteEffects.None, 0);
+            spriteBatch.Draw(Texture, locationBehavoir.RelativeBoundingBox, null, color, locationBehavoir.Rotation, locationBehavoir.Size / 2, SpriteEffects.None, 0);
         }
 
         // ***************************************************************************
@@ -45,6 +45,13 @@ namespace EVCS_Projekt.Renderer
         public void Update()
         {
             // Nothing todo
+        }
+
+        // ***************************************************************************
+        // Clone
+        public IRenderBehavior Clone()
+        {
+            return new StaticRenderer(Texture);
         }
     }
 }

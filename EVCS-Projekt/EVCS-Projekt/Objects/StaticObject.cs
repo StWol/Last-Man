@@ -10,9 +10,15 @@ namespace EVCS_Projekt.Objects
     public class StaticObject : GameObject
     {
         public StaticObject(ILocationBehavior location, IRenderBehavior renderer)
+            : this(location, renderer, true)
+        {
+        }
+
+        public StaticObject(ILocationBehavior location, IRenderBehavior renderer, bool locationSizing)
             : base(location, renderer)
         {
-            LocationSizing();
+            if (locationSizing)
+                LocationSizing();
         }
     }
 }

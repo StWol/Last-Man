@@ -22,8 +22,14 @@ namespace EVCS_Projekt
         public bool IsDead { get { if (Health <= 0F) return true; else return false; } }
 
         // Vordefinierte Gegner
-        public static Enemy[] DefaultEnemies { get; set; }
+        public static Dictionary<EEnemyType, Enemy> DefaultEnemies { get; set; }
 
+        public Enemy (Enemy e, Vector2 position):
+            this(e.LocationBehavior, e.Renderer, e.ratOfFire, e.attackDistance, e.sightiningDistance, e.maxHealth, e.Speed, e.Health, e.TypOfEnemy)
+        {
+            LocationBehavior.Position = position;
+        }
+        
         public Enemy(ILocationBehavior locationBehavoir, float ratOfFire, float attackDistance,
             float sightiningDistance, float maxHealth, float speed, float health, int typeOfEnemy)
             : this(locationBehavoir, new NoRenderer(), ratOfFire, attackDistance, sightiningDistance, maxHealth, speed,health, typeOfEnemy)
@@ -48,7 +54,7 @@ namespace EVCS_Projekt
         // Clont den Gegner
         public Enemy Clone()
         {
-            Enemy c = new Enemy(LocationBehavior, Renderer, ratOfFire, attackDistance, sightiningDistance, maxHealth, Speed, Health, TypOfEnemy);
+            Enemy c = new Enemy(LocationBehavior.Clone(), Renderer.Clone(), ratOfFire, attackDistance, sightiningDistance, maxHealth, Speed, Health, TypOfEnemy);
             return c;
         }
 

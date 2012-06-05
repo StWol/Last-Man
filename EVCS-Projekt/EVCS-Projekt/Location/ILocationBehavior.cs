@@ -22,5 +22,7 @@ namespace EVCS_Projekt.Location
 
         float Rotation { get; set; }
         Vector2 Direction { get; set; }
+
+        ILocationBehavior Clone();
     }
 }

@@ -16,6 +16,7 @@ using EVCS_Projekt.Renderer;
 using EVCS_Projekt.Audio;
 using EVCS_Projekt.UI;
 using EVCS_Projekt.Objects.Items;
+using EVCS_Projekt.Map;
 
 namespace EVCS_Projekt.Managers
 {
@@ -59,6 +60,8 @@ namespace EVCS_Projekt.Managers
             spawnPoints = new List<SpawnPoint>();
             GameState = new GameState();
 
+            // Animationen laden
+            AnimationRenderer.Load(EAnimationRenderer.Splatter_01, "blood", 14, 35F);
 
             // GameState initialisieren
             GameState.MapSize = new Vector2(2000, 2000); // TODO: Mapgröße hier mitgeben
@@ -68,9 +71,14 @@ namespace EVCS_Projekt.Managers
 
             GameState.ShotList = new List<Shot>(); // Shots als Liste, da diese nur eine kurze Lebenszeit haben
 
+            GameState.Karte = new Karte();
+            GameState.Karte.LoadMap(GameState, "");
+
             // Player
-            MapLocation playerPosition = new MapLocation(new Rectangle(0, 0, 30, 200));
+            MapLocation playerPosition = new MapLocation(GameState.Karte.PlayerStart);
             GameState.Player = new Player(playerPosition, 100, 100, 200);
+
+            CalculateMapOffset();
 
             // Keybelegung
             keyMoveUp = Keys.W;
@@ -83,6 +91,12 @@ namespace EVCS_Projekt.Managers
             // Test für ladebilschirm
             Thread.Sleep(100);
 
+
+            foreach (EEnemyType e in Enum.GetValues(typeof(EEnemyType)))
+            {
+                Debug.WriteLine(e.ToString());
+            }
+
             gun_cd = 0.10F;
 
             gun_fire = Main.ContentManager.Load<Texture2D>("images/effects/guns/gun_fire");
@@ -92,7 +106,7 @@ namespace EVCS_Projekt.Managers
             shot = Main.ContentManager.Load<Texture2D>("test/shot");
             blood = Main.ContentManager.Load<Texture2D>("test/blood");
             shot_01 = Main.ContentManager.Load<Texture2D>("images/shots/shot_01");
-            
+
 
             MouseCursor.CurrentCursor = MouseCursor.DefaultCursor;
 
@@ -107,25 +121,17 @@ namespace EVCS_Projekt.Managers
             Texture2D monster2 = Main.ContentManager.Load<Texture2D>("test/red_monster_happy");
 
 
-            bloodA = new Texture2D[26];
-            for (int i = 0; i <= 25; i++)
-            {
-                String x = "";
-                if (i < 10)
-                    x += "0";
-                x += i;
-
-                bloodA[i] = Main.ContentManager.Load<Texture2D>("test/blood/blood_"+x);
-            }
-
             // DefaultEnemies laden
+            Enemy.DefaultEnemies = new Dictionary<EEnemyType, Enemy>();
+
             Enemy d1 = new Enemy(new MapLocation(new Vector2(0, 0)), new StaticRenderer(monster2), 0, 0, 0, 0, 0, 100, 0);
-            Enemy[] de = new Enemy[] { d1 };
-            Enemy.DefaultEnemies = de;
+            d1.LocationSizing();
+
+            Enemy.DefaultEnemies.Add(EEnemyType.E1, d1);
 
             Texture2D[] ani = new Texture2D[] { monster, monster2, monster3 };
 
-            for (int i = 0; i < 100; i++)
+            for (int i = 0; i < 00; i++)
             {
                 // 20 % chance, dass gegner ne richtige textur bekommt..
                 IRenderBehavior render;
@@ -150,9 +156,9 @@ namespace EVCS_Projekt.Managers
                 GameState.QuadTreeEnemies.Add(x);
             }
 
-            for (int i = 0; i < 0; i++)
+            for (int i = 0; i < 100; i++)
             {
-                MapLocation m = new MapLocation(new Rectangle(random.Next(40, (int)GameState.MapSize.X-40), random.Next(40, (int)GameState.MapSize.Y-40), 1, 1));
+                MapLocation m = new MapLocation(new Rectangle(random.Next(40, (int)GameState.MapSize.X - 40), random.Next(40, (int)GameState.MapSize.Y - 40), 1, 1));
 
                 SpawnPoint s = new SpawnPoint(m, 0, 1);
                 GameState.QuadTreeSpawnPoints.Add(s);
@@ -205,7 +211,8 @@ namespace EVCS_Projekt.Managers
             GameState.Player.Renderer.Update();
 
             // StaticObjects Renderer updaten
-            foreach (StaticObject s in staticObjects) {
+            foreach (StaticObject s in staticObjects)
+            {
                 s.Renderer.Update();
             }
 
@@ -235,7 +242,7 @@ namespace EVCS_Projekt.Managers
             mausrad = Mouse.GetState().ScrollWheelValue;
 
             Random r = new Random();
-            if ( gun_cd <= 0 && Mouse.GetState().LeftButton == ButtonState.Pressed)
+            if (gun_cd <= 0 && Mouse.GetState().LeftButton == ButtonState.Pressed)
             {
                 Vector2 accuracy = new Vector2((float)(r.NextDouble() * accu - accu / 2), (float)(r.NextDouble() * accu - accu / 2));
 
@@ -315,10 +322,44 @@ namespace EVCS_Projekt.Managers
 
                 Vector2 newPlayerPosition = new Vector2(xPos, yPos);
 
+                Vector2 currentPosition = GameState.Player.LocationBehavior.Position;
                 GameState.Player.LocationBehavior.Position = newPlayerPosition;
-                GameState.Player.IsMoving = true;
 
-                CalculateMapOffset();
+                // Prüfen ob man an neuer Position gehen kann
+                if (CheckWalkable(GameState.Player.LittleBoundingBox))
+                {
+                    GameState.Player.IsMoving = true;
+
+                    CalculateMapOffset();
+                }
+                else
+                {
+                    newPlayerPosition.X -= moveVector.X * movement;
+                    GameState.Player.LocationBehavior.Position = newPlayerPosition;
+                    // Prüfen ob man an neuer Position in X richtung gehen kann
+                    if (CheckWalkable(GameState.Player.LittleBoundingBox)) 
+                    {
+                        GameState.Player.IsMoving = true;
+                        CalculateMapOffset();
+                    }
+                    else
+                    {
+                        newPlayerPosition.X += moveVector.X * movement;
+                        newPlayerPosition.Y -= moveVector.Y * movement;
+                        GameState.Player.LocationBehavior.Position = newPlayerPosition;
+                        // Prüfen ob man an neuer Position in Y richtung gehen kann
+                        if (CheckWalkable(GameState.Player.LittleBoundingBox))
+                        {
+                            GameState.Player.IsMoving = true;
+                            CalculateMapOffset();
+                        }
+                        else
+                        {
+                            GameState.Player.LocationBehavior.Position = currentPosition;
+                            GameState.Player.IsMoving = false;
+                        }
+                    }
+                }
             }
             else
             {
@@ -361,11 +402,17 @@ namespace EVCS_Projekt.Managers
              * - Schüsse
              * - Gegner
              * - Player
+             * - Objekte die an der Decke sind
              * - Cursor
              * 
              */
 
-
+            // Map zeichnen
+            foreach (StaticObject so in GameState.Karte.QuadTreeWalkable.GetObjects(screenRect))
+            {
+                //Debug.WriteLine(so.LocationBehavior.Position + " " + so.LocationBehavior.Size);
+                so.Renderer.Draw(spriteBatch, so.LocationBehavior);
+            }
 
             // Statische Objekte zeichnen
             foreach (StaticObject so in staticOnScreen)
@@ -387,6 +434,7 @@ namespace EVCS_Projekt.Managers
 
             // Player zeichnen
             GameState.Player.Renderer.Draw(spriteBatch, GameState.Player.LocationBehavior);
+
 
             // Cursor zeichnen
             MouseCursor.DrawMouse(spriteBatch);
@@ -460,7 +508,7 @@ namespace EVCS_Projekt.Managers
                 // Prüfe kollision mit jedem schuss
                 foreach (Shot s in tempList)
                 {
-                    if (s.CollisionWith(e))
+                    if (s.PPCollisionWith(e))
                     {
                         // Gegner schaden zufügen
                         e.TakeDamage(s);
@@ -478,21 +526,48 @@ namespace EVCS_Projekt.Managers
                 if (e.IsDead)
                 {
                     //Test new StaticRenderer(blood)
-                    AnimationRenderer a = new AnimationRenderer(bloodA, 35);
+                    AnimationRenderer a = AnimationRenderer.Get(EAnimationRenderer.Splatter_01);
                     a.PlayOnce();
-                    StaticObject splatter = new StaticObject(new MapLocation(e.LocationBehavior.Position), a );
-                    
+
+                    StaticObject splatter = new StaticObject(new MapLocation(e.LocationBehavior.Position), a);
+
                     GameState.QuadTreeStaticObjects.Add(splatter);
                     //Debug.WriteLine("Entferne Gegner"); 381 1986
 
                     // FEHLER BEIM LÖSCHEN!!!!!!!!!!!!!!!!
-                    if ( !GameState.QuadTreeEnemies.Remove(e))
+                    if (!GameState.QuadTreeEnemies.Remove(e))
                     {
                         Debug.WriteLine("Fehler beim löschen");
                     }
                 }
             }
 
+        }
+
+        // ***************************************************************************
+        // Prüfe ob Player an neue Position laufen darf
+        private bool CheckWalkable(Rectangle newPosition)
+        {
+            List<StaticObject> objects = GameState.Karte.QuadTreeWalkable.GetObjects(newPosition);
+
+            if (objects.Count <= 0)
+                return false;
+
+            float area = 0;
+
+            // Fläche aller überschnitte berechnen
+            foreach (StaticObject so in objects)
+            {
+                Rectangle inter = Rectangle.Intersect(newPosition, so.Rect);
+                area += inter.Width * inter.Height;
+            }
+
+            Debug.WriteLine(area);
+
+            if (area >= newPosition.Width * newPosition.Height)
+                return true;
+            else
+                return false;
         }
 
     }

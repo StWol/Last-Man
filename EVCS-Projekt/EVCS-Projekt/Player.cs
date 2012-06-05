@@ -123,5 +123,17 @@ namespace EVCS_Projekt
             this.bufflist.AddRange(bufflist);
         }
 
+        // Kleine BoundingBox
+        public Rectangle LittleBoundingBox
+        {
+            get
+            {
+                int s = 24;
+                return new Rectangle((int)LocationBehavior.Position.X - s / 2, (int)LocationBehavior.Position.Y - s / 2, s, s);
+            }
+            set
+            {
+            }
+        }
     }
 }
