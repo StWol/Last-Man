@@ -37,6 +37,9 @@ namespace EVCS_Projekt.Managers
         // Debug
         private float updateObjects = 0;
 
+        // ## Sonstiges
+        Texture2D background;
+
         // Tests
         private Texture2D test;
         private SpriteFont testFont;
@@ -60,8 +63,12 @@ namespace EVCS_Projekt.Managers
             spawnPoints = new List<SpawnPoint>();
             GameState = new GameState();
 
-            // Animationen laden
+            // AnimationRenderer laden
             AnimationRenderer.Load(EAnimationRenderer.Splatter_01, "blood", 14, 35F);
+
+            // StaticRenderer laden
+            StaticRenderer.Load(EStaticRenderer.Shot_Normal, "shots/shot_01");
+            StaticRenderer.Load(EStaticRenderer.Shot_Monster_01, "shots/shot_monster_01");
 
             // GameState initialisieren
             GameState.MapSize = new Vector2(2000, 2000); // TODO: Mapgröße hier mitgeben
@@ -69,7 +76,8 @@ namespace EVCS_Projekt.Managers
             GameState.QuadTreeSpawnPoints = new QuadTree<SpawnPoint>(0, 0, (int)GameState.MapSize.X, (int)GameState.MapSize.Y);
             GameState.QuadTreeStaticObjects = new QuadTree<StaticObject>(0, 0, (int)GameState.MapSize.X, (int)GameState.MapSize.Y);
 
-            GameState.ShotList = new List<Shot>(); // Shots als Liste, da diese nur eine kurze Lebenszeit haben
+            GameState.ShotListVsEnemies = new List<Shot>(); // Shots als Liste, da diese nur eine kurze Lebenszeit haben
+            GameState.ShotListVsPlayer = new List<Shot>(); // Shots als Liste, da diese nur eine kurze Lebenszeit haben
 
             GameState.Karte = new Karte();
             GameState.Karte.LoadMap(GameState, "");
@@ -85,6 +93,9 @@ namespace EVCS_Projekt.Managers
             keyMoveDown = Keys.S;
             keyMoveLeft = Keys.A;
             keyMoveRight = Keys.D;
+
+            // Background laden
+            background = Main.ContentManager.Load<Texture2D>("images/background");
 
             // ################################################################################
             // TEST
@@ -124,7 +135,7 @@ namespace EVCS_Projekt.Managers
             // DefaultEnemies laden
             Enemy.DefaultEnemies = new Dictionary<EEnemyType, Enemy>();
 
-            Enemy d1 = new Enemy(new MapLocation(new Vector2(0, 0)), new StaticRenderer(monster2), 0, 0, 0, 0, 0, 100, 0);
+            Enemy d1 = new Enemy(new MapLocation(new Vector2(0, 0)), new StaticRenderer(monster2), 1, 0, 0, 0, 0, 100, 0);
             d1.LocationSizing();
 
             Enemy.DefaultEnemies.Add(EEnemyType.E1, d1);
@@ -204,8 +215,12 @@ namespace EVCS_Projekt.Managers
             // Gegner spawnen
             SpawnEnemy();
 
+            // Schüsse fliegen lassen
+            UpdateShots();
+
             // Kollisionen der SChüsse prüfen
-            CheckShots(enemies);
+            CheckShotsVsEnemies(enemies);
+            CheckShotsVsPlayer();
 
             // Renderer des Players
             GameState.Player.Renderer.Update();
@@ -216,6 +231,13 @@ namespace EVCS_Projekt.Managers
                 s.Renderer.Update();
             }
 
+            
+
+
+
+
+            // ################################################################################
+            // ################################################################################
             // ################################################################################
             // TEST
             /*
@@ -252,11 +274,11 @@ namespace EVCS_Projekt.Managers
                 }
 
                 Shot s = new Shot(0, 0, 1000, -GameState.Player.LocationBehavior.Direction + accuracy, 10, "", 0, "", 0, new MapLocation(GameState.Player.LocationBehavior.Position));
-                s.Renderer = new StaticRenderer(shot_01);
+                s.Renderer = StaticRenderer.DefaultRenderer[EStaticRenderer.Shot_Normal];
                 s.SetDirection(-GameState.Player.LocationBehavior.Direction + accuracy);
                 s.LocationSizing();
 
-                GameState.ShotList.Add(s);
+                GameState.ShotListVsEnemies.Add(s);
                 shoting = true;
                 gun_cd = 0.05F;
             }
@@ -266,7 +288,31 @@ namespace EVCS_Projekt.Managers
                 shoting = false;
             }
 
-            List<Shot> shotListTemp = new List<Shot>(GameState.ShotList);
+            
+
+            GameState.Player.RelativeLookAt(new Vector2(Mouse.GetState().X, Mouse.GetState().Y));
+
+            foreach (Enemy e in enemies)
+            {
+                e.Renderer.Update();
+
+                if (e.DistanceLessThan(GameState.Player, 300))
+                {
+                    e.LookAt(GameState.Player.LocationBehavior.Position);
+                    e.Attack(GameState);
+                }
+            }
+
+            // TEST-ENDE
+            // ###############################################################################
+        }
+
+        // ***************************************************************************
+        // Prüft die EIngabe
+        public void UpdateShots()
+        {
+            // Schüsse gegen Gegner fliegen lassen - bei Kollision entfernen
+            List<Shot> shotListTemp = new List<Shot>(GameState.ShotListVsEnemies);
             foreach (Shot s in shotListTemp)
             {
                 s.UpdatePosition();
@@ -287,22 +333,35 @@ namespace EVCS_Projekt.Managers
                     }
                     else
                         //Schuss entgültig löschen
-                        GameState.ShotList.Remove(s);
+                        GameState.ShotListVsEnemies.Remove(s);
                 }
             }
 
-            GameState.Player.RelativeLookAt(new Vector2(Mouse.GetState().X, Mouse.GetState().Y));
-
-            foreach (Enemy e in enemies)
+            // Schüsse gegen Player fliegen lassen - bei Kollision entfernen
+            shotListTemp = new List<Shot>(GameState.ShotListVsPlayer);
+            foreach (Shot s in shotListTemp)
             {
-                e.Renderer.Update();
+                s.UpdatePosition();
 
-                if (e.DistanceLessThan(GameState.Player, 300))
-                    e.LookAt(GameState.Player.LocationBehavior.Position);
+                if (!CheckRectangleInMap(s.Rect))
+                {
+                    // Wenn der Schuss das erste mal aus der Map fliegt, wird er korrigiert, dass er noch drinn ist und dann erst gelöscht
+                    if (!s.Delete)
+                    {
+                        s.Delete = true;
+                        for (int i = 0; i < 100; i++)
+                        {
+                            // Schuss in die Map schieben
+                            s.AdjustShot();
+                            if (CheckRectangleInMap(s.Rect))
+                                break;
+                        }
+                    }
+                    else
+                        //Schuss entgültig löschen
+                        GameState.ShotListVsPlayer.Remove(s);
+                }
             }
-
-            // TEST-ENDE
-            // ###############################################################################
         }
 
         // ***************************************************************************
@@ -400,8 +459,10 @@ namespace EVCS_Projekt.Managers
                 // Prüft ob ein Gegner im Weg steht
                 List<Enemy> enemies = GameState.QuadTreeEnemies.GetObjects(GameState.Player.Rect);
 
-                foreach (Enemy e in enemies) {
-                    if ( e.PPCollisionWith(GameState.Player) ) {
+                foreach (Enemy e in enemies)
+                {
+                    if (e.PPCollisionWith(GameState.Player))
+                    {
                         GameState.Player.LocationBehavior.Position = currentPosition;
                         canMove = false;
                         break;
@@ -427,8 +488,10 @@ namespace EVCS_Projekt.Managers
         {
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend);
 
-            // Komplett weiß
-            spriteBatch.Draw(test, new Rectangle(0, 0, Configuration.GetInt("resolutionWidth"), Configuration.GetInt("resolutionHeight")), Color.White);
+            // Hintergrund zeichnen
+            for (int x = 0; x <= 1; x++)
+                for (int y = 0; y <= 1; y++)
+                    spriteBatch.Draw(background, new Rectangle((int)(Configuration.GetInt("resolutionWidth") * x - GameState.MapOffset.X % Configuration.GetInt("resolutionWidth")), (int)(Configuration.GetInt("resolutionHeight") * y - GameState.MapOffset.Y % Configuration.GetInt("resolutionHeight")), Configuration.GetInt("resolutionWidth"), Configuration.GetInt("resolutionHeight")), Color.White);
 
             // Bildschirm Rectangle
             Rectangle screenRect = new Rectangle((int)GameState.MapOffset.X, (int)GameState.MapOffset.Y, Configuration.GetInt("resolutionWidth"), Configuration.GetInt("resolutionHeight"));
@@ -468,7 +531,11 @@ namespace EVCS_Projekt.Managers
             }
 
             // Shots werden alle gezeichnet, da es von ihnen nicht viele gibt und diese normalerweise alle innerhalb des bildschirms liegen
-            foreach (Shot s in GameState.ShotList)
+            foreach (Shot s in GameState.ShotListVsEnemies)
+            {
+                s.Renderer.Draw(spriteBatch, s.LocationBehavior);
+            }
+            foreach (Shot s in GameState.ShotListVsPlayer)
             {
                 s.Renderer.Draw(spriteBatch, s.LocationBehavior);
             }
@@ -497,7 +564,7 @@ namespace EVCS_Projekt.Managers
 
             spriteBatch.DrawString(testFont, "Enemies: " + GameState.QuadTreeEnemies.Count + " Draws: " + enemiesOnScreen.Count + " Updates: " + updateObjects + " FPS: " + (1 / Main.GameTimeDraw.ElapsedGameTime.TotalSeconds), new Vector2(0, 0), Color.Black);
             spriteBatch.DrawString(testFont, "MapOffset: " + GameState.MapOffset + " PlayerPos: " + GameState.Player.LocationBehavior.Position + " PlayerRel: " + GameState.Player.LocationBehavior.RelativePosition, new Vector2(0, 30), Color.Red);
-            spriteBatch.DrawString(testFont, "Player: " + GameState.Player.LocationBehavior.RelativeBoundingBox + " Shots: " + GameState.ShotList.Count, new Vector2(0, 60), Color.Red);
+            spriteBatch.DrawString(testFont, "Player: " + GameState.Player.LocationBehavior.RelativeBoundingBox + " Shots: " + GameState.ShotListVsEnemies.Count, new Vector2(0, 60), Color.Red);
             spriteBatch.DrawString(testFont, "PlayerDirection: " + GameState.Player.LocationBehavior.Direction + " Accu (Mausrad): " + accu, new Vector2(0, 90), Color.Blue);
 
             // TEST-ENDE
@@ -532,14 +599,33 @@ namespace EVCS_Projekt.Managers
         }
 
         // ***************************************************************************
-        // Prüfe schüsse
-        public void CheckShots(List<Enemy> enemies)
+        // Prüfe schüsse gegen Spieler
+        public void CheckShotsVsPlayer()
+        {
+            // Kopiere die lsite, um getroffene schüsse gleich entfernen zu können
+            List<Shot> tempList = new List<Shot>(GameState.ShotListVsPlayer);
+
+            foreach ( Shot s in tempList ) {
+                // Bei collision
+                if ( s.PPCollisionWith(GameState.Player) ) {
+                    // Schuss dem Player gegebn
+                    GameState.Player.TakeDamage(s);
+
+                    // Schuss entfernen
+                    GameState.ShotListVsPlayer.Remove(s);
+                }
+            }
+        }
+
+        // ***************************************************************************
+        // Prüfe schüsse gegen gegner
+        public void CheckShotsVsEnemies(List<Enemy> enemies)
         {
 
             foreach (Enemy e in enemies)
             {
                 // Kopiere die lsite, um getroffene schüsse gleich entfernen zu können
-                List<Shot> tempList = new List<Shot>(GameState.ShotList);
+                List<Shot> tempList = new List<Shot>(GameState.ShotListVsEnemies);
 
                 if (e.IsDead)
                 {
@@ -566,7 +652,7 @@ namespace EVCS_Projekt.Managers
 
                         //Debug.WriteLine("Health nach Schuss: " + e.Health);
 
-                        GameState.ShotList.Remove(s);
+                        GameState.ShotListVsEnemies.Remove(s);
 
                         continue;
                     }

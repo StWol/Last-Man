@@ -18,8 +18,9 @@ namespace EVCS_Projekt
         public QuadTree<SpawnPoint> QuadTreeSpawnPoints { get; set; }
         // QT für statische Objekte
         public QuadTree<StaticObject> QuadTreeStaticObjects { get; set; }
-        // List für alle Schüsse
-        public List<Shot> ShotList { get; set; }
+        // List für alle Schüsse von Spieler
+        public List<Shot> ShotListVsEnemies { get; set; }
+        public List<Shot> ShotListVsPlayer { get; set; }
         // Der Spieler
         public Player Player { get; set; }
         // Der Versatz der Map relativ zum Spieler - so dass Spieler in der Mitte von Screen ist

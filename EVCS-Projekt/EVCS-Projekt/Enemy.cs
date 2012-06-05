@@ -6,38 +6,41 @@ using EVCS_Projekt.Location;
 using EVCS_Projekt.Objects;
 using Microsoft.Xna.Framework;
 using EVCS_Projekt.Renderer;
+using EVCS_Projekt.Objects.Items;
+using System.Diagnostics;
 
 namespace EVCS_Projekt
 {
-    public class Enemy: GameObject
+    public class Enemy : GameObject
     {
         public float Speed { get; private set; }
-        public float Health{ get; private set; }  
+        public float Health { get; private set; }
         private float maxHealth;
         private float sightiningDistance;
         private float attackDistance;
         private float ratOfFire;
+        private double lastAttack;
         private List<Buff> buffList;
-        public int TypOfEnemy { get; private set; }
+        public EEnemyType TypOfEnemy { get; private set; }
         public bool IsDead { get { if (Health <= 0F) return true; else return false; } }
 
         // Vordefinierte Gegner
         public static Dictionary<EEnemyType, Enemy> DefaultEnemies { get; set; }
 
-        public Enemy (Enemy e, Vector2 position):
+        public Enemy(Enemy e, Vector2 position) :
             this(e.LocationBehavior, e.Renderer, e.ratOfFire, e.attackDistance, e.sightiningDistance, e.maxHealth, e.Speed, e.Health, e.TypOfEnemy)
         {
             LocationBehavior.Position = position;
         }
-        
+
         public Enemy(ILocationBehavior locationBehavoir, float ratOfFire, float attackDistance,
-            float sightiningDistance, float maxHealth, float speed, float health, int typeOfEnemy)
-            : this(locationBehavoir, new NoRenderer(), ratOfFire, attackDistance, sightiningDistance, maxHealth, speed,health, typeOfEnemy)
+            float sightiningDistance, float maxHealth, float speed, float health, EEnemyType typeOfEnemy)
+            : this(locationBehavoir, new NoRenderer(), ratOfFire, attackDistance, sightiningDistance, maxHealth, speed, health, typeOfEnemy)
         {
         }
 
-        public Enemy(ILocationBehavior locationBehavoir, IRenderBehavior renderBehavior ,float ratOfFire,float attackDistance,
-            float sightiningDistance, float maxHealth,  float speed, float health, int typeOfEnemy)
+        public Enemy(ILocationBehavior locationBehavoir, IRenderBehavior renderBehavior, float ratOfFire, float attackDistance,
+            float sightiningDistance, float maxHealth, float speed, float health, EEnemyType typeOfEnemy)
             : base(locationBehavoir, renderBehavior)
         {
             this.buffList = new List<Buff>();
@@ -46,6 +49,8 @@ namespace EVCS_Projekt
             this.sightiningDistance = sightiningDistance;
             this.maxHealth = maxHealth;
             TypOfEnemy = typeOfEnemy;
+
+            lastAttack = 0;
 
             this.Speed = speed;
             this.Health = health;
@@ -68,9 +73,33 @@ namespace EVCS_Projekt
             this.Health -= shot.Damage;
         }
 
-        public void Attack()
+        public void Attack(GameState gameState)
         {
-            
+            // Schießt ein Shot auf den Player
+            if (Main.GameTimeUpdate.TotalGameTime.TotalSeconds - lastAttack > ratOfFire)
+            {
+                lastAttack = Main.GameTimeUpdate.TotalGameTime.TotalSeconds;
+
+                // Schuss erstellen
+                Shot s = new Shot(0, 0, 1000, -LocationBehavior.Direction, 10, "", 0, "", 0, new MapLocation(LocationBehavior.Position));
+
+                // Je nach Gegner andere SchussGrafik
+                switch (TypOfEnemy)
+                {
+                    case EEnemyType.E1:
+                        s.Renderer = StaticRenderer.DefaultRenderer[EStaticRenderer.Shot_Monster_01];
+                        break;
+                    default:
+                        s.Renderer = StaticRenderer.DefaultRenderer[EStaticRenderer.Shot_Normal];
+                        break;
+                }
+
+                s.SetDirection(-LocationBehavior.Direction);
+                s.LocationSizing();
+
+                // Schuss in gameState liste aufnehmen
+                gameState.ShotListVsPlayer.Add(s);
+            }
         }
 
 
@@ -81,14 +110,14 @@ namespace EVCS_Projekt
         // -- Stan: Die Idee war, dass diese Methode von der Die()-Methode aufgerufen wird, wenn der Gegner verreckt.s
         private void Drop(Item item)
         {
-            
+
         }
 
         public void AddBuffs(List<Buff> buffs)
         {
         }
 
-       
-            
+
+
     }
 }

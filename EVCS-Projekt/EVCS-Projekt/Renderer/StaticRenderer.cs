@@ -13,6 +13,8 @@ namespace EVCS_Projekt.Renderer
     {
         public Texture2D Texture { get; private set; }
 
+        public static Dictionary<EStaticRenderer, StaticRenderer> DefaultRenderer { get; private set; }
+
         // ***************************************************************************
         // Die Größe, des zu rendernen Objektes => Größe der Textur
         public Vector2 Size
@@ -52,6 +54,29 @@ namespace EVCS_Projekt.Renderer
         public IRenderBehavior Clone()
         {
             return new StaticRenderer(Texture);
+        }
+
+        // ***************************************************************************
+        // Clonet ein DefaultRenderer
+        public static StaticRenderer Get(EStaticRenderer e)
+        {
+            StaticRenderer s = (StaticRenderer)DefaultRenderer[e].Clone();
+            return s;
+        }
+
+        // ***************************************************************************
+        // Load Animation
+        public static void Load(EStaticRenderer e, String name)
+        {
+            // Dic erstellen, falle es es nicht gibt
+            if (DefaultRenderer == null)
+                DefaultRenderer = new Dictionary<EStaticRenderer, StaticRenderer>();
+
+            // Bilder einladen
+            Texture2D load = Main.ContentManager.Load<Texture2D>("images/" + name);
+
+            // Renderer erstellen
+            DefaultRenderer.Add(e, new StaticRenderer(load));
         }
     }
 }

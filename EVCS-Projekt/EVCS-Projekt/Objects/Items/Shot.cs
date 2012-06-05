@@ -46,7 +46,7 @@ namespace EVCS_Projekt.Objects.Items
 
             lifetime -= (float)Math.Sqrt(Math.Pow(moveVector.X, 2) + Math.Pow(moveVector.Y, 2));
             if (lifetime <= 0)
-                Main.MainObject.GameManager.GameState.ShotList.Remove(this);
+                Main.MainObject.GameManager.GameState.ShotListVsEnemies.Remove(this);
         }
 
         // ********************************************************************************
