@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework;
 
 namespace EVCS_Projekt.Location
 {
-    class MapLocation : ILocationBehavior
+    public class MapLocation : ILocationBehavior
     {
 
         public Rectangle BoundingBox

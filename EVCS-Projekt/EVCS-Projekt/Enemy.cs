@@ -19,6 +19,10 @@ namespace EVCS_Projekt
         private float ratOfFire;
         private List<Buff> buffList;
         public int TypOfEnemy { get; private set; }
+        public bool IsDead { get { if (Health <= 0F) return true; else return false; } }
+
+        // Vordefinierte Gegner
+        public static Enemy[] DefaultEnemies { get; set; }
 
         public Enemy(ILocationBehavior locationBehavoir, float ratOfFire, float attackDistance,
             float sightiningDistance, float maxHealth, float speed, float health, int typeOfEnemy)
@@ -39,6 +43,13 @@ namespace EVCS_Projekt
 
             this.Speed = speed;
             this.Health = health;
+        }
+
+        // Clont den Gegner
+        public Enemy Clone()
+        {
+            Enemy c = new Enemy(LocationBehavior, Renderer, ratOfFire, attackDistance, sightiningDistance, maxHealth, Speed, Health, TypOfEnemy);
+            return c;
         }
 
         /*

@@ -9,7 +9,7 @@ using Microsoft.Xna.Framework;
 namespace EVCS_Projekt.Renderer
 {
     // Render einfach "nur" die größe des Elements als Rechteck
-    class SimpleRenderer : IRenderBehavior
+    public class SimpleRenderer : IRenderBehavior
     {
         private static Texture2D pixel;
         private Color color;
