@@ -85,6 +85,7 @@
     <Compile Include="Managers\Manager.cs" />
     <Compile Include="Managers\MenuManager.cs" />
     <Compile Include="Audio\MusicPlayer.cs" />
+    <Compile Include="Map\Map.cs" />
     <Compile Include="Objects\Buff.cs" />
     <Compile Include="Objects\EBuffType.cs" />
     <Compile Include="Objects\GameObject.cs" />

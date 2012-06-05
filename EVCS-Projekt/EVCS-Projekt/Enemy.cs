@@ -61,6 +61,7 @@ namespace EVCS_Projekt
 
         // Hier ist es etwas seltsam, dass der Gegner ein Item bekommt, welches es dann auch glei droppt. Ausserdem ist die 
         // Methode private. Wer soll sie aufrufen?
+        // -- Stan: Die Idee war, dass diese Methode von der Die()-Methode aufgerufen wird, wenn der Gegner verreckt.s
         private void Drop(Item item)
         {
             
