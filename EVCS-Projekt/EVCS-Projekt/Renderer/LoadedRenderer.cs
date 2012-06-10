@@ -3,16 +3,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework.Graphics;
+using System.Diagnostics;
 
 namespace EVCS_Projekt.Renderer
 {
     class LoadedRenderer
     {
-        public static Dictionary<ERenderer, IRenderBehavior> DefaultRenderer { get; set; }
+        public static Dictionary<string, IRenderBehavior> DefaultRenderer { get; set; }
 
         // ***************************************************************************
         // Clonet ein DefaultRenderer
-        public static AnimationRenderer GetAnimation(ERenderer e)
+        public static AnimationRenderer GetAnimation(string e)
         {
             AnimationRenderer a = (AnimationRenderer)DefaultRenderer[e].Clone();
             return a;
@@ -20,7 +21,7 @@ namespace EVCS_Projekt.Renderer
 
         // ***************************************************************************
         // Clonet ein DefaultRenderer
-        public static StaticRenderer GetStatic(ERenderer e)
+        public static StaticRenderer GetStatic(string e)
         {
             StaticRenderer s = (StaticRenderer)DefaultRenderer[e].Clone();
             return s;
@@ -28,7 +29,7 @@ namespace EVCS_Projekt.Renderer
 
         // ***************************************************************************
         // Clonet ein DefaultRenderer
-        public static IRenderBehavior Get(ERenderer e)
+        public static IRenderBehavior Get(string e)
         {
             return DefaultRenderer[e].Clone();
         }

@@ -15,7 +15,7 @@ namespace EVCS_Projekt.Renderer
         private float framesPerSecond;
         private float animationTimer;
         private float frameDuration;
-        public ERenderer ERenderer { get; set; }
+        public string Name { get; set; }
 
         private delegate void UpdateDelegate();
         private UpdateDelegate update;
@@ -129,7 +129,7 @@ namespace EVCS_Projekt.Renderer
 
         // ***************************************************************************
         // Load Animation
-        public static void Load(ERenderer e, String name, int frames, float framesPerSecond)
+        public static void Load(string name, String file, int frames, float framesPerSecond)
         {
             // Array mit texturen erstellen
             Texture2D[] array = new Texture2D[frames];
@@ -144,14 +144,14 @@ namespace EVCS_Projekt.Renderer
                     f += "0";
                 f += i;
 
-                array[i] = Main.ContentManager.Load<Texture2D>("animation/" + name + "/" + name + "_" + f);
+                array[i] = Main.ContentManager.Load<Texture2D>("animation/" + file + "/" + file + "_" + f);
             }
 
             AnimationRenderer a = new AnimationRenderer(array, framesPerSecond);
-            a.ERenderer = e;
+            a.Name = name;
 
             // Renderer erstellen
-            LoadedRenderer.DefaultRenderer.Add(e, a);
+            LoadedRenderer.DefaultRenderer.Add(a.Name, a);
         }
     }
 }

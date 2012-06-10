@@ -57,7 +57,7 @@ namespace EVCS_Projekt.Objects
         {
             public float xPos, yPos, width, height, rotation;
             public bool isMapLocation;
-            public ERenderer renderer;
+            public string renderer;
         }
 
         // ***************************************************************************
@@ -74,7 +74,7 @@ namespace EVCS_Projekt.Objects
                 goi.isMapLocation = true;
             else
                 goi.isMapLocation = false;
-            goi.renderer = Renderer.ERenderer;
+            goi.renderer = Renderer.Name;
             return goi;
         }
 

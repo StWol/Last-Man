@@ -27,7 +27,6 @@ namespace EVCS_Projekt.Managers
 {
     public class GameManager : Manager
     {
-        private List<SpawnPoint> spawnPoints;
         public GameState GameState { get; set; }
 
 
@@ -66,20 +65,42 @@ namespace EVCS_Projekt.Managers
             Debug.WriteLine("Läd das eigentliche Spiel");
 
             // Variablen initialisiwerung
-            spawnPoints = new List<SpawnPoint>();
             GameState = new GameState();
 
             // Renderer initialisieren
-            LoadedRenderer.DefaultRenderer = new Dictionary<ERenderer, IRenderBehavior>();
-            LoadedRenderer.DefaultRenderer.Add(ERenderer.NoRenderer, new NoRenderer());
-            LoadedRenderer.DefaultRenderer.Add(ERenderer.SimpleRenderer, new SimpleRenderer(Color.White));
+            LoadedRenderer.DefaultRenderer = new Dictionary<string, IRenderBehavior>();
+            LoadedRenderer.DefaultRenderer.Add("NoRenderer", new NoRenderer());
+            LoadedRenderer.DefaultRenderer.Add("SimpleRenderer", new SimpleRenderer(Color.White));
 
             // AnimationRenderer laden
-            AnimationRenderer.Load(ERenderer.A_Splatter_01, "blood", 14, 35F);
+            AnimationRenderer.Load("A_Splatter_01", "blood", 14, 35F);
 
             // StaticRenderer laden
-            StaticRenderer.Load(ERenderer.S_Shot_Normal, "shots/shot_01");
-            StaticRenderer.Load(ERenderer.S_Shot_Monster_01, "shots/shot_monster_01");
+            StaticRenderer.Load("S_Shot_Normal", "shots/shot_01");
+            StaticRenderer.Load("S_Shot_Monster_01", "shots/shot_monster_01");
+
+            StaticRenderer.Load("S_Map_2_baenke_tisch", "map/2_baenke_tisch");
+            StaticRenderer.Load("S_Map_bett", "map/bett");
+            StaticRenderer.Load("S_Map_brunnen", "map/brunnen");
+            StaticRenderer.Load("S_Map_ecksofa", "map/ecksofa");
+            StaticRenderer.Load("S_Map_klo", "map/klo");
+            StaticRenderer.Load("S_Map_lagerregal", "map/lagerregal");
+            StaticRenderer.Load("S_Map_langer_schmaler_tisch", "map/langer_schmaler_tisch");
+            StaticRenderer.Load("S_Map_monitor", "map/monitor");
+            StaticRenderer.Load("S_Map_pflanze_gross", "map/pflanze_gross");
+            StaticRenderer.Load("S_Map_pflanze_klein", "map/pflanze_klein");
+            StaticRenderer.Load("S_Map_pflanze_mittel", "map/pflanze_mittel");
+            StaticRenderer.Load("S_Map_reaktor", "map/reaktor");
+            StaticRenderer.Load("S_Map_regal", "map/regal");
+            StaticRenderer.Load("S_Map_schrank", "map/schrank");
+            StaticRenderer.Load("S_Map_schrank_mittel", "map/schrank_mittel");
+            StaticRenderer.Load("S_Map_sessel_tisch", "map/sessel_tisch");
+            StaticRenderer.Load("S_Map_stuhl", "map/stuhl");
+            StaticRenderer.Load("S_Map_theke", "map/theke");
+            StaticRenderer.Load("S_Map_tisch", "map/tisch");
+            StaticRenderer.Load("S_Map_T-treppe", "map/T-treppe");
+            StaticRenderer.Load("S_Map_waschbecken", "map/waschbecken");
+            StaticRenderer.Load("S_Map_zwei_sessel_tisch", "map/zwei_sessel_tisch");
 
             // GameState initialisieren
             GameState.MapSize = new Vector2(10000, 10000); // TODO: Mapgröße hier mitgeben
@@ -120,7 +141,7 @@ namespace EVCS_Projekt.Managers
 
 
             Visier v = new Visier(0, EGroup.FeuerGross, "TestVisier", 0.05F, 2.5F, "desc", new MapLocation(new Rectangle(100,123,25,33)));
-            v.Renderer = LoadedRenderer.Get(ERenderer.A_Splatter_01);
+            v.Renderer = LoadedRenderer.Get("A_Splatter_01");
 
             List<Visier.VisierInner> list = new List<Visier.VisierInner>();
             list.Add(v.GetInner());
@@ -131,18 +152,12 @@ namespace EVCS_Projekt.Managers
             fs.Close();
 
 
-
-            foreach (EEnemyType e in Enum.GetValues(typeof(EEnemyType)))
-            {
-                Debug.WriteLine(e.ToString());
-            }
-
             gun_cd = 0.10F;
 
             gun_fire = Main.ContentManager.Load<Texture2D>("images/effects/guns/gun_fire");
             gun = new StaticRenderer(gun_fire);
 
-            peng = Main.ContentManager.Load<SoundEffect>("test/barreta_m9-Dion_Stapper-1010051237");
+            peng = Main.ContentManager.Load<SoundEffect>("test/Skorpion-Kibblesbob-1109158827");
             headshot = Main.ContentManager.Load<SoundEffect>("test/headshot2");
 
             monster3 = Main.ContentManager.Load<Texture2D>("test/red_monster_angry");
@@ -198,16 +213,6 @@ namespace EVCS_Projekt.Managers
 
                 GameState.QuadTreeEnemies.Add(x);
             }
-
-            for (int i = 0; i < 100; i++)
-            {
-                MapLocation m = new MapLocation(new Rectangle(random.Next(40, (int)GameState.MapSize.X - 40), random.Next(40, (int)GameState.MapSize.Y - 40), 1, 1));
-
-                SpawnPoint s = new SpawnPoint(m, 0, 1);
-                GameState.QuadTreeSpawnPoints.Add(s);
-
-            }
-
 
             // TEST-ENDE
             // ################################################################################
@@ -296,7 +301,7 @@ namespace EVCS_Projekt.Managers
                 }
 
                 Shot s = new Shot(0, 0, 1000, -GameState.Player.LocationBehavior.Direction + accuracy, 10, "", 0, "", 0, new MapLocation(GameState.Player.LocationBehavior.Position));
-                s.Renderer = LoadedRenderer.DefaultRenderer[ERenderer.S_Shot_Normal];
+                s.Renderer = LoadedRenderer.DefaultRenderer["S_Shot_Normal"];
                 s.SetDirection(-GameState.Player.LocationBehavior.Direction + accuracy);
                 s.LocationSizing();
 
@@ -750,7 +755,7 @@ namespace EVCS_Projekt.Managers
                 if (e.IsDead)
                 {
                     //Test new StaticRenderer(blood)
-                    AnimationRenderer a = LoadedRenderer.GetAnimation(ERenderer.A_Splatter_01);
+                    AnimationRenderer a = LoadedRenderer.GetAnimation("A_Splatter_01");
                     a.PlayOnce();
 
                     StaticObject splatter = new StaticObject(new MapLocation(e.LocationBehavior.Position), a);

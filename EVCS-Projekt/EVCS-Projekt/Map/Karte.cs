@@ -118,6 +118,46 @@ namespace EVCS_Projekt.Map
 
                     Debug.WriteLine("Playerstart: " + x + "/" + +y);
                 }
+
+                // SpawnPoints
+                if (split[0].Equals("S") && split.Length == 3)
+                {
+                    // Variablen parsen
+                    int x = int.Parse(split[1]);
+                    int y = int.Parse(split[2]);
+
+                    // SP erstellen
+                    SpawnPoint sp = new SpawnPoint(new MapLocation(new Vector2(x, y)), EEnemyType.E1, 1);
+
+                    // SP adden
+                    Main.MainObject.GameManager.GameState.QuadTreeSpawnPoints.Add(sp);
+                }
+
+                // Objekte etc
+                if (split[0].Equals("M") && split.Length == 6)
+                {
+                    // Variablen parsen
+                    string img = split[1];
+                    int x = int.Parse(split[2]);
+                    int y = int.Parse(split[3]);
+                    int faktor = int.Parse(split[4]);
+                    int winkel = int.Parse(split[5]);
+
+                    // Vars für SO
+                    string renderer = "S_Map_" + img;
+
+                    float rotation = (float)((Math.PI * 2) / 360 * winkel);
+
+                    // SP erstellen
+                    MapLocation m = new MapLocation(new Vector2(x, y));
+                    m.Rotation = rotation;
+                    IRenderBehavior r = LoadedRenderer.Get(renderer);
+                    StaticObject so = new StaticObject(m, r);
+                    so.LocationSizing();
+
+                    // SP adden
+                    Main.MainObject.GameManager.GameState.QuadTreeStaticObjects.Add(so);
+                }
             }
 
             // File schließen

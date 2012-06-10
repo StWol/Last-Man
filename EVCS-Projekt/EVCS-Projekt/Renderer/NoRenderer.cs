@@ -10,7 +10,7 @@ namespace EVCS_Projekt.Renderer
 {
     public class NoRenderer : IRenderBehavior
     {
-        public ERenderer ERenderer { get { return ERenderer.NoRenderer; } set { } }
+        public string Name { get { return "NoRenderer"; } set { } }
 
         // ***************************************************************************
         // Die Größe, des zu rendernen Objektes => Größe der Textur, da keine Textur 0,0

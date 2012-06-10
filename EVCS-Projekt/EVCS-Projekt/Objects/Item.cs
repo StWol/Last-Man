@@ -68,8 +68,6 @@ namespace EVCS_Projekt.Objects
                     DefaultVisiere.Add("v_" + v.Id, v);
                 }
             }
-
-            Debug.WriteLine("");
         }
 
         //Attributes

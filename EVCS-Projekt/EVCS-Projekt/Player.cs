@@ -178,7 +178,7 @@ namespace EVCS_Projekt
         {
             get
             {
-                int s = 24;
+                int s = (int)LocationBehavior.Size.Y;
                 return new Rectangle((int)LocationBehavior.Position.X - s / 2, (int)LocationBehavior.Position.Y - s / 2, s, s);
             }
             set

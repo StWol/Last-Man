@@ -12,7 +12,7 @@ namespace EVCS_Projekt.Renderer
     public class StaticRenderer : IRenderBehavior
     {
         public Texture2D Texture { get; private set; }
-        public ERenderer ERenderer { get; set; }
+        public string Name { get; set; }
 
         //public static Dictionary<ERenderer, StaticRenderer> DefaultRenderer { get; private set; }
 
@@ -59,16 +59,16 @@ namespace EVCS_Projekt.Renderer
 
         // ***************************************************************************
         // Load Animation
-        public static void Load(ERenderer e, String name)
+        public static void Load(string name, string file)
         {
             // Bilder einladen
-            Texture2D load = Main.ContentManager.Load<Texture2D>("images/" + name);
+            Texture2D load = Main.ContentManager.Load<Texture2D>("images/" + file);
 
             StaticRenderer s = new StaticRenderer(load);
-            s.ERenderer = e;
+            s.Name = name;
 
             // Renderer erstellen
-            LoadedRenderer.DefaultRenderer.Add(e, s);
+            LoadedRenderer.DefaultRenderer.Add(s.Name, s);
         }
     }
 }

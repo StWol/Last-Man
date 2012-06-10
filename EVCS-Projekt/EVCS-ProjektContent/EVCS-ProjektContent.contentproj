@@ -178,102 +178,102 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="map\2_baenke_tisch.png">
+    <Compile Include="images\map\2_baenke_tisch.png">
       <Name>2_baenke_tisch</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-    <Compile Include="map\brunnen.png">
+    <Compile Include="images\map\brunnen.png">
       <Name>brunnen</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-    <Compile Include="map\ecksofa.png">
+    <Compile Include="images\map\ecksofa.png">
       <Name>ecksofa</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-    <Compile Include="map\klo.png">
+    <Compile Include="images\map\klo.png">
       <Name>klo</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-    <Compile Include="map\lagerregal.png">
+    <Compile Include="images\map\lagerregal.png">
       <Name>lagerregal</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-    <Compile Include="map\langer_schmaler_tisch.png">
+    <Compile Include="images\map\langer_schmaler_tisch.png">
       <Name>langer_schmaler_tisch</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-    <Compile Include="map\monitor.png">
+    <Compile Include="images\map\monitor.png">
       <Name>monitor</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-    <Compile Include="map\pflanze_gross.png">
+    <Compile Include="images\map\pflanze_gross.png">
       <Name>pflanze_gross</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-    <Compile Include="map\pflanze_klein.png">
+    <Compile Include="images\map\pflanze_klein.png">
       <Name>pflanze_klein</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-    <Compile Include="map\pflanze_mittel.png">
+    <Compile Include="images\map\pflanze_mittel.png">
       <Name>pflanze_mittel</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-    <Compile Include="map\reaktor.png">
+    <Compile Include="images\map\reaktor.png">
       <Name>reaktor</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-    <Compile Include="map\regal.png">
+    <Compile Include="images\map\regal.png">
       <Name>regal</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-    <Compile Include="map\schrank.png">
+    <Compile Include="images\map\schrank.png">
       <Name>schrank</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-    <Compile Include="map\schrank_mittel.png">
+    <Compile Include="images\map\schrank_mittel.png">
       <Name>schrank_mittel</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-    <Compile Include="map\stuhl.png">
+    <Compile Include="images\map\stuhl.png">
       <Name>stuhl</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-    <Compile Include="map\T-treppe.png">
+    <Compile Include="images\map\T-treppe.png">
       <Name>T-treppe</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-    <Compile Include="map\theke.png">
+    <Compile Include="images\map\theke.png">
       <Name>theke</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-    <Compile Include="map\tisch.png">
+    <Compile Include="images\map\tisch.png">
       <Name>tisch</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-    <Compile Include="map\waschbecken.png">
+    <Compile Include="images\map\waschbecken.png">
       <Name>waschbecken</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-    <Compile Include="map\zwei_sessel_tisch.png">
+    <Compile Include="images\map\zwei_sessel_tisch.png">
       <Name>zwei_sessel_tisch</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
@@ -494,6 +494,18 @@
   <ItemGroup>
     <Compile Include="images\character\right_foot.png">
       <Name>right_foot</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="images\map\bett.png">
+      <Name>bett</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="images\map\sessel_tisch.png">
+      <Name>sessel_tisch</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>

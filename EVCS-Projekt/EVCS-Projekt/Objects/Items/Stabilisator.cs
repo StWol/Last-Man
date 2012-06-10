@@ -21,6 +21,32 @@ namespace EVCS_Projekt.Objects.Items
             this.accuracy = accuracy;
         }
 
+        // ***************************************************************************
+        // Konstruktor Inner
+        public Stabilisator(StabilisatorInner si)
+            : base(si.item)
+        {
+            accuracy = si.accuracy;
+        }
+
+        // ***************************************************************************
+        // Objekt zum Serialisieren
+        public class StabilisatorInner
+        {
+            public float accuracy;
+            public ItemInner item;
+        }
+
+        // ***************************************************************************
+        // Erzeugt Objekt zum Serialisieren
+        public StabilisatorInner GetInner()
+        {
+            StabilisatorInner si = new StabilisatorInner();
+            si.accuracy = accuracy;
+            si.item = base.GetInner();
+            return si;
+        }
+
         //Functions
         public float GetAccuracy()
         {

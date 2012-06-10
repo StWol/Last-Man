@@ -4,11 +4,7 @@ using Microsoft.Xna.Framework;
 
 namespace EVCS_Projekt.Objects.Items
 {
-    /**
-     * @UMLVersion = 12.Mai2012
-     * @Last Changes = 12.Mai2012
-     *
-     */
+   
     public class Powerup : Item
     {
         //Attributes
@@ -21,9 +17,35 @@ namespace EVCS_Projekt.Objects.Items
             this.regeneration = regeneration;
         }
 
+        // ***************************************************************************
+        // Konstruktor Inner
+        public Powerup(PowerupInner pi)
+            : base(pi.item)
+        {
+            regeneration = pi.regeneration;
+        }
+
+        // ***************************************************************************
+        // Objekt zum Serialisieren
+        public class PowerupInner
+        {
+            public float regeneration;
+            public ItemInner item;
+        }
+
+        // ***************************************************************************
+        // Erzeugt Objekt zum Serialisieren
+        public PowerupInner GetInner()
+        {
+            PowerupInner pi = new PowerupInner();
+
+            pi.regeneration = regeneration;
+
+            pi.item = base.GetInner();
+            return pi;
+        }
 
         //Functions
-
         public float GetRegeneration()
         {
             return this.regeneration;

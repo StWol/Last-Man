@@ -23,6 +23,34 @@ namespace EVCS_Projekt.Objects.Items
         }
 
         // ***************************************************************************
+        // Konstruktor Inner
+        public Hauptteil(HauptteilInner hi)
+            : base(hi.item)
+        {
+            RateOfFire = hi.rateOfFire;
+        }
+
+        // ***************************************************************************
+        // Objekt zum Serialisieren
+        public class HauptteilInner
+        {
+            public float rateOfFire;
+            public ItemInner item;
+        }
+
+        // ***************************************************************************
+        // Erzeugt Objekt zum Serialisieren
+        public HauptteilInner GetInner()
+        {
+            HauptteilInner hi = new HauptteilInner();
+
+            hi.rateOfFire = RateOfFire;
+
+            hi.item = base.GetInner();
+            return hi;
+        }
+
+        // ***************************************************************************
         // Clont Object
         public Hauptteil Clone()
         {
