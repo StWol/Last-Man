@@ -17,6 +17,7 @@ using EVCS_Projekt.Audio;
 using EVCS_Projekt.UI;
 using EVCS_Projekt.Objects.Items;
 using EVCS_Projekt.Map;
+using Microsoft.Xna.Framework.Audio;
 
 namespace EVCS_Projekt.Managers
 {
@@ -52,6 +53,7 @@ namespace EVCS_Projekt.Managers
         bool shoting = false;
         StaticRenderer gun;
         private float gun_cd;
+        SoundEffect peng, headshot;
 
         // ***************************************************************************
         // Läd den ganzen Stuff, den der GameManager benötigt
@@ -80,7 +82,7 @@ namespace EVCS_Projekt.Managers
             GameState.ShotListVsPlayer = new List<Shot>(); // Shots als Liste, da diese nur eine kurze Lebenszeit haben
 
             GameState.Karte = new Karte();
-            GameState.Karte.LoadMap(GameState, "");
+            GameState.Karte.LoadMap(GameState, "testmap");
 
             // Player
             MapLocation playerPosition = new MapLocation(GameState.Karte.PlayerStart);
@@ -98,6 +100,8 @@ namespace EVCS_Projekt.Managers
             background = Main.ContentManager.Load<Texture2D>("images/background");
 
             // ################################################################################
+            // ################################################################################
+            // ################################################################################
             // TEST
             // Test für ladebilschirm
             Thread.Sleep(100);
@@ -112,6 +116,9 @@ namespace EVCS_Projekt.Managers
 
             gun_fire = Main.ContentManager.Load<Texture2D>("images/effects/guns/gun_fire");
             gun = new StaticRenderer(gun_fire);
+
+            peng = Main.ContentManager.Load<SoundEffect>("test/Skorpion-Kibblesbob-1109158827");
+            headshot = Main.ContentManager.Load<SoundEffect>("test/headshot2");
 
             monster3 = Main.ContentManager.Load<Texture2D>("test/red_monster_angry");
             shot = Main.ContentManager.Load<Texture2D>("test/shot");
@@ -176,20 +183,10 @@ namespace EVCS_Projekt.Managers
 
             }
 
-            AnimationRenderer ar = new AnimationRenderer(ani, 1);
-            // Enemy mit Animation
-            Enemy ea = new Enemy(new MapLocation(new Rectangle(150, 150, 0, 0)), ar, 0, 0, 0, 0, 0, 0, 0);
-            ea.LocationSizing();
-            GameState.QuadTreeEnemies.Add(ea);
-
-            ar = new AnimationRenderer(ani, 2);
-            // Enemy mit Animation
-            ea = new Enemy(new MapLocation(new Rectangle(200, 150, 0, 0)), ar, 0, 0, 0, 0, 0, 0, 0);
-            ea.LocationSizing();
-            GameState.QuadTreeEnemies.Add(ea);
 
             // TEST-ENDE
             // ################################################################################
+
 
             // Wenn ladevorgang fertig => Switch von MenuManager auf GameManager
             Main.MainObject.CurrentManager = this;
@@ -231,7 +228,7 @@ namespace EVCS_Projekt.Managers
                 s.Renderer.Update();
             }
 
-            
+
 
 
 
@@ -278,6 +275,9 @@ namespace EVCS_Projekt.Managers
                 s.SetDirection(-GameState.Player.LocationBehavior.Direction + accuracy);
                 s.LocationSizing();
 
+
+                peng.Play(0.8F, 0, 0);
+
                 GameState.ShotListVsEnemies.Add(s);
                 shoting = true;
                 gun_cd = 0.05F;
@@ -288,7 +288,7 @@ namespace EVCS_Projekt.Managers
                 shoting = false;
             }
 
-            
+
 
             GameState.Player.RelativeLookAt(new Vector2(Mouse.GetState().X, Mouse.GetState().Y));
 
@@ -296,7 +296,7 @@ namespace EVCS_Projekt.Managers
             {
                 e.Renderer.Update();
 
-                if (e.DistanceLessThan(GameState.Player, 300))
+                if (e.DistanceLessThan(GameState.Player, 300) && PointSeePoint(e.LocationBehavior.Position, GameState.Player.LocationBehavior.Position))
                 {
                     e.LookAt(GameState.Player.LocationBehavior.Position);
                     e.Attack(GameState);
@@ -389,12 +389,20 @@ namespace EVCS_Projekt.Managers
                 moveVector.X += 1;
             }
 
+            // Player bewegen
             if (moveVector.X != 0 || moveVector.Y != 0)
             {
                 moveVector.Normalize();
 
-                if (CheckPlayerCanMove(moveVector))
+                // Neue Position
+                Vector2 newPosition = new Vector2();
+
+                // Prüfen ob man laufen kann, wenn ja bewegen
+                if (CheckPlayerCanMove(moveVector, out newPosition))
                 {
+                    // neue Position setzten
+                    GameState.Player.LocationBehavior.Position = newPosition;
+
                     GameState.Player.IsMoving = true;
                     CalculateMapOffset();
                 }
@@ -411,64 +419,78 @@ namespace EVCS_Projekt.Managers
 
         // ***************************************************************************
         // 
-        private bool CheckPlayerCanMove(Vector2 moveVector)
+        private bool CheckPlayerCanMove(Vector2 moveVector, out Vector2 newPosition)
         {
             float movement = (float)Main.GameTimeUpdate.ElapsedGameTime.TotalSeconds * GameState.Player.Speed;
 
-            float xPos = GameState.Player.LocationBehavior.Position.X + moveVector.X * movement;
-            float yPos = GameState.Player.LocationBehavior.Position.Y + moveVector.Y * movement;
+            float xPos = (GameState.Player.LocationBehavior.Position.X + moveVector.X * movement);
+            float yPos = (GameState.Player.LocationBehavior.Position.Y + moveVector.Y * movement);
 
-            Vector2 newPlayerPosition = new Vector2(xPos, yPos);
-
+            // CurrentPosition
             Vector2 currentPosition = GameState.Player.LocationBehavior.Position;
-            GameState.Player.LocationBehavior.Position = newPlayerPosition;
+
+            // out setzten
+            newPosition = currentPosition;
 
             bool canMove = false;
+
+            // Positon setzten
+            GameState.Player.LocationBehavior.Position = new Vector2(xPos, yPos);
 
             // Prüfen ob man an neuer Position gehen kann
             if (CheckRectangleInMap(GameState.Player.LittleBoundingBox))
             {
                 canMove = true;
+
+                // new Positon ausgeben
+                newPosition = new Vector2(xPos, yPos);
             }
 
-            if (!canMove)
+            if (!canMove && moveVector.Y != 0)
             {
-                newPlayerPosition.X -= moveVector.X * movement;
-                GameState.Player.LocationBehavior.Position = newPlayerPosition;
-                // Prüfen ob man an neuer Position in X richtung gehen kann
+                // Prüfen ob man an neuer Position in Y richtung gehen kann
+                GameState.Player.LocationBehavior.Position = new Vector2(currentPosition.X, yPos);
+
                 if (CheckRectangleInMap(GameState.Player.LittleBoundingBox))
                 {
                     canMove = true;
+
+                    // new Positon ausgeben
+                    newPosition = new Vector2(currentPosition.X, yPos);
                 }
             }
 
-            if (!canMove)
+            if (!canMove && moveVector.X != 0)
             {
-                newPlayerPosition.X += moveVector.X * movement;
-                newPlayerPosition.Y -= moveVector.Y * movement;
-                GameState.Player.LocationBehavior.Position = newPlayerPosition;
-                // Prüfen ob man an neuer Position in Y richtung gehen kann
+                // Prüfen ob man an neuer Position in X richtung gehen kann
+                GameState.Player.LocationBehavior.Position = new Vector2(xPos, currentPosition.Y);
+
                 if (CheckRectangleInMap(GameState.Player.LittleBoundingBox))
                 {
                     canMove = true;
+
+                    // new Positon ausgeben
+                    newPosition = new Vector2(xPos, currentPosition.Y);
                 }
             }
 
             if (canMove)
             {
                 // Prüft ob ein Gegner im Weg steht
-                List<Enemy> enemies = GameState.QuadTreeEnemies.GetObjects(GameState.Player.Rect);
+                List<Enemy> enemies = GameState.QuadTreeEnemies.GetObjects(GameState.Player.LittleBoundingBox);
 
                 foreach (Enemy e in enemies)
                 {
                     if (e.PPCollisionWith(GameState.Player))
                     {
-                        GameState.Player.LocationBehavior.Position = currentPosition;
                         canMove = false;
                         break;
                     }
                 }
             }
+
+            // Player zurücksetzten
+            GameState.Player.LocationBehavior.Position = currentPosition;
 
             return canMove;
         }
@@ -591,12 +613,6 @@ namespace EVCS_Projekt.Managers
             }
         }
 
-        // ***************************************************************************
-        // Kollisionsprüfung
-        public bool CheckCollision(GameObject x, GameObject y)
-        {
-            return false;
-        }
 
         // ***************************************************************************
         // Prüfe schüsse gegen Spieler
@@ -605,9 +621,11 @@ namespace EVCS_Projekt.Managers
             // Kopiere die lsite, um getroffene schüsse gleich entfernen zu können
             List<Shot> tempList = new List<Shot>(GameState.ShotListVsPlayer);
 
-            foreach ( Shot s in tempList ) {
+            foreach (Shot s in tempList)
+            {
                 // Bei collision
-                if ( s.PPCollisionWith(GameState.Player) ) {
+                if (s.PPCollisionWith(GameState.Player))
+                {
                     // Schuss dem Player gegebn
                     GameState.Player.TakeDamage(s);
 
@@ -682,9 +700,9 @@ namespace EVCS_Projekt.Managers
 
         // ***************************************************************************
         // Prüfe ob Player an neue Position laufen darf
-        private bool CheckRectangleInMap(Rectangle newPosition)
+        public static bool CheckRectangleInMap(Rectangle newPosition)
         {
-            List<StaticObject> objects = GameState.Karte.QuadTreeWalkable.GetObjects(newPosition);
+            List<StaticObject> objects = Main.MainObject.GameManager.GameState.Karte.QuadTreeWalkable.GetObjects(newPosition);
 
             if (objects.Count <= 0)
                 return false;
@@ -707,6 +725,29 @@ namespace EVCS_Projekt.Managers
                 return true;
             else
                 return false;
+        }
+
+        // ***************************************************************************
+        // Prüfe ob zwei Punkte sichtkontakt haben (schießt sozusagen von Vector A nach Vector B un schaut ob er kollidiert.
+        public static bool PointSeePoint(Vector2 start, Vector2 target)
+        {
+            Vector2 direction = new Vector2(target.X - start.X, target.Y - start.Y);
+
+            int steps = (int)Math.Sqrt(Math.Pow(direction.X, 2) + Math.Pow(direction.Y, 2));
+
+            direction.Normalize();
+
+            for (int i = 0; i < steps; i++)
+            {
+                start = start + direction;
+
+                if (!CheckRectangleInMap(new Rectangle((int)start.X, (int)start.Y, 1, 1)))
+                {
+                    return false;
+                }
+            }
+
+            return true;
         }
 
     }
