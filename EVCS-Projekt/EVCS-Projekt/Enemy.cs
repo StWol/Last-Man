@@ -87,10 +87,10 @@ namespace EVCS_Projekt
                 switch (TypOfEnemy)
                 {
                     case EEnemyType.E1:
-                        s.Renderer = StaticRenderer.DefaultRenderer[EStaticRenderer.Shot_Monster_01];
+                        s.Renderer = LoadedRenderer.DefaultRenderer[ERenderer.S_Shot_Monster_01];
                         break;
                     default:
-                        s.Renderer = StaticRenderer.DefaultRenderer[EStaticRenderer.Shot_Normal];
+                        s.Renderer = LoadedRenderer.DefaultRenderer[ERenderer.S_Shot_Normal];
                         break;
                 }
 

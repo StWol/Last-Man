@@ -13,6 +13,7 @@ namespace EVCS_Projekt.Renderer
         // ***************************************************************************
         // Die Größe, des zu rendernen Objektes => Größe der Textur
         Vector2 Size { get; }
+        ERenderer ERenderer { get; set; }
 
         // ***************************************************************************
         // Clone

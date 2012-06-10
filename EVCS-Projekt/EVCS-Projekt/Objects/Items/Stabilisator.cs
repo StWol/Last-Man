@@ -26,5 +26,13 @@ namespace EVCS_Projekt.Objects.Items
         {
             return accuracy;
         }
+
+        // ***************************************************************************
+        // Clont Object
+        public Stabilisator Clone()
+        {
+            Stabilisator s = new Stabilisator(Id, Group, Name, accuracy, Weight, Description, LocationBehavior.Clone());
+            return s;
+        }
     }
 }

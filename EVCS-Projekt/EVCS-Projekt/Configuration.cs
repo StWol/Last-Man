@@ -26,7 +26,7 @@ namespace EVCS_Projekt
             configurationDic.Add("isFullscreen", "false");
             configurationDic.Add("antiAliasing", "true");
             configurationDic.Add("mapDir", "Maps/");
-            
+            configurationDic.Add("itemDir", "Items/");            
 
             // Speichern
             SaveConfig();

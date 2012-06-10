@@ -31,6 +31,14 @@ namespace EVCS_Projekt
         private List<Buff> bufflist;
         public Vector2 Direction { get; set; }
 
+        public float FootRotation
+        {
+            set
+            {
+                footLocation.Rotation = value;
+            }
+        }
+
         private bool isMoving = false;
         public bool IsMoving
         {
@@ -42,20 +50,27 @@ namespace EVCS_Projekt
 
                 isMoving = value;
                 if (isMoving)
-                    Renderer = RendererMoving;
+                {
+                    //Renderer = RendererMoving;
+                    footRenderer = RendererFootMoving;
+                }
                 else
-                    Renderer = RendererStanding;
+                {
+                    //Renderer = RendererStanding;
+                    footRenderer = new NoRenderer();
+                }
             }
         }
 
         // Verschiedene Renderer
         private AnimationRenderer RendererMoving { get; set; }
         private StaticRenderer RendererStanding { get; set; }
+        private AnimationRenderer RendererFootMoving { get; set; }
 
-        /*
-        *  Die(), das DropItem() und das Prüfen, ob ein Enemy gestorben ist - muss der GameManager checken und
-        *  behandeln!
-        */
+        // 
+        private IRenderBehavior footRenderer;
+        private MapLocation footLocation;
+
 
         // ***************************************************************************
         // Konstruktor
@@ -75,11 +90,46 @@ namespace EVCS_Projekt
             };
             RendererMoving = new AnimationRenderer(textureMoving, 4F);
 
+            Texture2D[] textureFootMoving = new Texture2D[]{ 
+                Main.ContentManager.Load<Texture2D>("images/character/left_foot"),
+                Main.ContentManager.Load<Texture2D>("images/character/right_foot")
+            };
+            RendererFootMoving = new AnimationRenderer(textureFootMoving, 4F);
+
+            footRenderer = new NoRenderer();
+
+            // Location für die Füße
+            footLocation = new MapLocation(locationBehavior.Position, new Vector2(textureFootMoving[0].Width, textureFootMoving[0].Height) );
+
             // Standardmäßig den StandingRenderer zuweisen
             Renderer = RendererStanding;
 
             // LocationSize anpassen
             LocationSizing();
+        }
+
+        // ***************************************************************************
+        // Player Draw
+        public void Draw(SpriteBatch spriteBatch)
+        {
+            // Füße zeichnen
+            footRenderer.Draw(spriteBatch, footLocation);
+
+            // Character oberteil
+            Renderer.Draw(spriteBatch, LocationBehavior);
+
+        }
+
+        // ***************************************************************************
+        // Player Update
+        public void Update()
+        {
+            // Renderer Updaten
+            Renderer.Update();
+            footRenderer.Update();
+
+            // Fußposition updaten
+            footLocation.Position = LocationBehavior.Position;
         }
 
         // ***************************************************************************

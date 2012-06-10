@@ -4,39 +4,35 @@ using Microsoft.Xna.Framework;
 
 namespace EVCS_Projekt.Objects.Items
 {
-    /**
-     * @UMLVersion = 12.Mai2012
-     * @Last Changes = 12.Mai2012
-     *
-     */
+    public enum ELiquid
+    {
+        Green,
+        Blue,
+        Red
+    }
+
     public class Liquid : Item
     {
 
         //Attributes
+        public float Amount { get; private set; }
 
-        public const int GREEN = 0;
-        public const int BLUE = 1;
-        public const int RED = 2; 
-
-
-        public float Amount
-        {
-            get;
-            private set;
-        }
-
-        public int TypeOfLiquid
-        {
-            get;
-            private set;
-        }
+        public ELiquid TypeOfLiquid { get; private set; }
 
 
-        public Liquid( int id, int typeOfLiquid, String name, float amount, EGroup group, string description, float weight, ILocationBehavior locationBehavior)
-            : base(  id,  group,  name,  description,  weight,  locationBehavior)
+        public Liquid(int id, ELiquid typeOfLiquid, String name, float amount, EGroup group, string description, float weight, ILocationBehavior locationBehavior)
+            : base(id, group, name, description, weight, locationBehavior)
         {
             this.Amount = amount;
             this.TypeOfLiquid = typeOfLiquid;
+        }
+
+        // ***************************************************************************
+        // Clont Object
+        public Liquid Clone()
+        {
+            Liquid l = new Liquid(Id, TypeOfLiquid, Name, Amount, Group, Description, Weight, LocationBehavior.Clone());
+            return l;
         }
 
     }

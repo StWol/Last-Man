@@ -107,9 +107,9 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Renderer\AnimationRenderer.cs" />
-    <Compile Include="Renderer\EAnimationRenderer.cs" />
-    <Compile Include="Renderer\EStaticRenderer.cs" />
+    <Compile Include="Renderer\ERenderer.cs" />
     <Compile Include="Renderer\IRenderBehavior.cs" />
+    <Compile Include="Renderer\LoadedRenderer.cs" />
     <Compile Include="Renderer\NoRenderer.cs" />
     <Compile Include="Renderer\SimpleRenderer.cs" />
     <Compile Include="Renderer\StaticRenderer.cs" />

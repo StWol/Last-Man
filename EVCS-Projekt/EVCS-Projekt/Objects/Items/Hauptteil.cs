@@ -13,24 +13,22 @@ namespace EVCS_Projekt.Objects.Items
     public class Hauptteil : Item
     {
         //Attributes
-        private float rateOfFire;
-        public float RateOfFire
-        {
-            get
-            {
-                return this.rateOfFire;
-            }
-        }
+        public float RateOfFire { get; private set; }
 
         //Constructor
-        public Hauptteil( int id, EGroup group, String name, float rateOfFire, float weight, string description, ILocationBehavior locationBehavior)
-            : base( id,  group,  name,  description,  weight,  locationBehavior)
+        public Hauptteil(int id, EGroup group, String name, float rateOfFire, float weight, string description, ILocationBehavior locationBehavior)
+            : base(id, group, name, description, weight, locationBehavior)
         {
-            this.rateOfFire = rateOfFire;
+            RateOfFire = rateOfFire;
         }
 
-        //Functions
-
+        // ***************************************************************************
+        // Clont Object
+        public Hauptteil Clone()
+        {
+            Hauptteil h = new Hauptteil(Id, Group, Name,RateOfFire, Weight,Description, LocationBehavior.Clone());
+            return h;
+        }
 
     }
 }

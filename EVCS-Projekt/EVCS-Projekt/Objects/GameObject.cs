@@ -5,6 +5,7 @@ using EVCS_Projekt.Tree;
 using System;
 using System.Diagnostics;
 using Microsoft.Xna.Framework.Graphics;
+using System.Xml;
 
 namespace EVCS_Projekt.Objects
 {
@@ -16,17 +17,65 @@ namespace EVCS_Projekt.Objects
         public IRenderBehavior Renderer { get; set; }
         public ILocationBehavior LocationBehavior { get; private set; }
 
-
+        // ***************************************************************************
+        // Konstruktor 1
         public GameObject(ILocationBehavior locationBehavior, IRenderBehavior renderBehavior)
         {
             this.LocationBehavior = locationBehavior;
             this.Renderer = renderBehavior;
         }
 
+        // ***************************************************************************
+        // Konstruktor 2
         public GameObject(ILocationBehavior locationBehavior)
         {
             this.LocationBehavior = locationBehavior;
             this.Renderer = new NoRenderer();
+        }
+
+        // ***************************************************************************
+        // Konstruktor 3
+        public GameObject(GameObjectInner goi)
+        {
+            if (goi.isMapLocation)
+            {
+                LocationBehavior = new MapLocation(new Vector2(goi.xPos, goi.yPos), new Vector2(goi.width, goi.height));
+                LocationBehavior.Rotation = goi.rotation;
+            }
+            else
+            {
+                LocationBehavior = new UILocation(new Vector2(goi.xPos, goi.yPos), new Vector2(goi.width, goi.height));
+                LocationBehavior.Rotation = goi.rotation;
+            }
+
+            Renderer = LoadedRenderer.Get(goi.renderer);
+        }
+
+        // ***************************************************************************
+        // Objekt zum Serialisieren
+        public class GameObjectInner
+        {
+            public float xPos, yPos, width, height, rotation;
+            public bool isMapLocation;
+            public ERenderer renderer;
+        }
+
+        // ***************************************************************************
+        // Erzeugt Objekt zum Serialisieren
+        public GameObjectInner GetInner()
+        {
+            GameObjectInner goi = new GameObjectInner();
+            goi.xPos = LocationBehavior.Position.X;
+            goi.yPos = LocationBehavior.Position.Y;
+            goi.width = LocationBehavior.Size.X;
+            goi.height = LocationBehavior.Size.Y;
+            goi.rotation = LocationBehavior.Rotation;
+            if (LocationBehavior.GetType() == typeof(MapLocation))
+                goi.isMapLocation = true;
+            else
+                goi.isMapLocation = false;
+            goi.renderer = Renderer.ERenderer;
+            return goi;
         }
 
         // ***************************************************************************
@@ -327,17 +376,6 @@ namespace EVCS_Projekt.Objects
             return new Rectangle((int)min.X, (int)min.Y,
                                  (int)(max.X - min.X), (int)(max.Y - min.Y));
         }
-
-
-
-
-
-
-
-
-
-
-
 
 
 

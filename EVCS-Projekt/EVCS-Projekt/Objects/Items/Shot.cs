@@ -60,5 +60,13 @@ namespace EVCS_Projekt.Objects.Items
             base.LocationBehavior.Position = base.LocationBehavior.Position + moveVector;
         }
 
+
+        // ***************************************************************************
+        // Clont Object
+        public Shot Clone()
+        {
+            Shot s = new Shot(Id, Group, speed, new Vector2(direction.X, direction.Y), Damage, Name, distance, Description,Weight, LocationBehavior.Clone());
+            return s;
+        }
     }
 }

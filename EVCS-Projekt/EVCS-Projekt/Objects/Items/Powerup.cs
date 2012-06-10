@@ -30,5 +30,12 @@ namespace EVCS_Projekt.Objects.Items
         }
 
 
+        // ***************************************************************************
+        // Clont Object
+        public Powerup Clone()
+        {
+            Powerup p = new Powerup(Id, Group, Name, regeneration, Description, Weight, LocationBehavior.Clone());
+            return p;
+        }
     }
 }

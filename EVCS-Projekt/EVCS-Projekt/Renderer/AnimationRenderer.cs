@@ -15,11 +15,12 @@ namespace EVCS_Projekt.Renderer
         private float framesPerSecond;
         private float animationTimer;
         private float frameDuration;
+        public ERenderer ERenderer { get; set; }
 
         private delegate void UpdateDelegate();
         private UpdateDelegate update;
 
-        public static Dictionary<EAnimationRenderer, AnimationRenderer> DefaultRenderer { get; private set; }
+        //public static Dictionary<ERenderer, AnimationRenderer> DefaultRenderer { get; private set; }
 
         // ***************************************************************************
         // Aktuelle Framenummer
@@ -117,22 +118,19 @@ namespace EVCS_Projekt.Renderer
             return new AnimationRenderer(Textures, framesPerSecond);
         }
 
+        /*
         // ***************************************************************************
         // Clonet ein DefaultRenderer
-        public static AnimationRenderer Get(EAnimationRenderer e)
+        public static AnimationRenderer Get(ERenderer e)
         {
             AnimationRenderer a = (AnimationRenderer)DefaultRenderer[e].Clone();
             return a;
-        }
+        }*/
 
         // ***************************************************************************
         // Load Animation
-        public static void Load(EAnimationRenderer e, String name, int frames, float framesPerSecond)
+        public static void Load(ERenderer e, String name, int frames, float framesPerSecond)
         {
-            // Dic erstellen, falle es es nicht gibt
-            if (DefaultRenderer == null)
-                DefaultRenderer = new Dictionary<EAnimationRenderer, AnimationRenderer>();
-
             // Array mit texturen erstellen
             Texture2D[] array = new Texture2D[frames];
 
@@ -149,8 +147,11 @@ namespace EVCS_Projekt.Renderer
                 array[i] = Main.ContentManager.Load<Texture2D>("animation/" + name + "/" + name + "_" + f);
             }
 
+            AnimationRenderer a = new AnimationRenderer(array, framesPerSecond);
+            a.ERenderer = e;
+
             // Renderer erstellen
-            DefaultRenderer.Add(e, new AnimationRenderer(array, framesPerSecond));
+            LoadedRenderer.DefaultRenderer.Add(e, a);
         }
     }
 }

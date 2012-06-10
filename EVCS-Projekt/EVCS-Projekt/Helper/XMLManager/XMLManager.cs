@@ -17,15 +17,42 @@ namespace EVCS_Projekt.Helper.XMLManager
          * damit konsistenter Datentransfer gewährleistet ist.
          */
 
-       public string urlToConfigFile { get; set; }
+        public string urlToConfigFile { get; set; }
 
 
 
-       public XMLManager(string FileURL)
-       {
+        public XMLManager(string FileURL)
+        {
             this.urlToConfigFile = FileURL;
-       }
+        }
 
+
+
+
+        // ***************************************************************************
+        // Fängt an zu schreiben
+        public static XmlWriter StartXML(string outFile)
+        {
+            XmlWriterSettings settings = new XmlWriterSettings();
+            settings.Indent = true;
+            settings.IndentChars = ("    ");
+
+            XmlWriter writer = XmlWriter.Create(outFile, settings);
+            writer.WriteStartDocument();
+            writer.WriteStartElement("root");
+
+            return writer;
+        }
+
+        // ***************************************************************************
+        // Beendet an zu schreiben
+        public static void EndXML(XmlWriter writer)
+        {
+            writer.WriteEndElement();
+            writer.WriteEndDocument();
+            writer.Flush();
+            writer.Close();
+        }
 
 
 
@@ -57,14 +84,14 @@ namespace EVCS_Projekt.Helper.XMLManager
         public void DisplayValuesOfNode(string NodeName)
         {
             XmlReader reader = XmlReader.Create(urlToConfigFile);
-                Debug.WriteLine("File is founded...");
-                Debug.WriteLine("Searching for " + NodeName + " in File");
-                while (reader.Read())
-                {
-                    reader.MoveToElement();
-                    if ( NodeName.Equals(reader.Name ))
-                    Debug.WriteLine(NodeName +": " + reader.ReadString());
-                }
+            Debug.WriteLine("File is founded...");
+            Debug.WriteLine("Searching for " + NodeName + " in File");
+            while (reader.Read())
+            {
+                reader.MoveToElement();
+                if (NodeName.Equals(reader.Name))
+                    Debug.WriteLine(NodeName + ": " + reader.ReadString());
+            }
         }
 
 
@@ -74,7 +101,7 @@ namespace EVCS_Projekt.Helper.XMLManager
             List<string> valueArray = new List<string>();
             XmlReader reader = XmlReader.Create(urlToConfigFile);
             Debug.WriteLine("File is founded...");
-            Debug.WriteLine("Try to collecting Values of Node " + NodeName );
+            Debug.WriteLine("Try to collecting Values of Node " + NodeName);
             while (reader.Read())
             {
                 reader.MoveToElement();

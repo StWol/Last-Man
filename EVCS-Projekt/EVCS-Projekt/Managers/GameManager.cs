@@ -18,6 +18,10 @@ using EVCS_Projekt.UI;
 using EVCS_Projekt.Objects.Items;
 using EVCS_Projekt.Map;
 using Microsoft.Xna.Framework.Audio;
+using System.Xml;
+using EVCS_Projekt.Helper.XMLManager;
+using System.Xml.Serialization;
+using System.IO;
 
 namespace EVCS_Projekt.Managers
 {
@@ -65,15 +69,20 @@ namespace EVCS_Projekt.Managers
             spawnPoints = new List<SpawnPoint>();
             GameState = new GameState();
 
+            // Renderer initialisieren
+            LoadedRenderer.DefaultRenderer = new Dictionary<ERenderer, IRenderBehavior>();
+            LoadedRenderer.DefaultRenderer.Add(ERenderer.NoRenderer, new NoRenderer());
+            LoadedRenderer.DefaultRenderer.Add(ERenderer.SimpleRenderer, new SimpleRenderer(Color.White));
+
             // AnimationRenderer laden
-            AnimationRenderer.Load(EAnimationRenderer.Splatter_01, "blood", 14, 35F);
+            AnimationRenderer.Load(ERenderer.A_Splatter_01, "blood", 14, 35F);
 
             // StaticRenderer laden
-            StaticRenderer.Load(EStaticRenderer.Shot_Normal, "shots/shot_01");
-            StaticRenderer.Load(EStaticRenderer.Shot_Monster_01, "shots/shot_monster_01");
+            StaticRenderer.Load(ERenderer.S_Shot_Normal, "shots/shot_01");
+            StaticRenderer.Load(ERenderer.S_Shot_Monster_01, "shots/shot_monster_01");
 
             // GameState initialisieren
-            GameState.MapSize = new Vector2(2000, 2000); // TODO: Mapgröße hier mitgeben
+            GameState.MapSize = new Vector2(10000, 10000); // TODO: Mapgröße hier mitgeben
             GameState.QuadTreeEnemies = new QuadTree<Enemy>(0, 0, (int)GameState.MapSize.X, (int)GameState.MapSize.Y);
             GameState.QuadTreeSpawnPoints = new QuadTree<SpawnPoint>(0, 0, (int)GameState.MapSize.X, (int)GameState.MapSize.Y);
             GameState.QuadTreeStaticObjects = new QuadTree<StaticObject>(0, 0, (int)GameState.MapSize.X, (int)GameState.MapSize.Y);
@@ -83,6 +92,9 @@ namespace EVCS_Projekt.Managers
 
             GameState.Karte = new Karte();
             GameState.Karte.LoadMap(GameState, "testmap");
+
+            // Items laden
+            Item.LoadItems();
 
             // Player
             MapLocation playerPosition = new MapLocation(GameState.Karte.PlayerStart);
@@ -104,7 +116,20 @@ namespace EVCS_Projekt.Managers
             // ################################################################################
             // TEST
             // Test für ladebilschirm
-            Thread.Sleep(100);
+
+
+
+            Visier v = new Visier(0, EGroup.FeuerGross, "TestVisier", 0.05F, 2.5F, "desc", new MapLocation(new Rectangle(100,123,25,33)));
+            v.Renderer = LoadedRenderer.Get(ERenderer.A_Splatter_01);
+
+            List<Visier.VisierInner> list = new List<Visier.VisierInner>();
+            list.Add(v.GetInner());
+
+            XmlSerializer serializer = new XmlSerializer(typeof(List<Visier.VisierInner>));
+            FileStream fs = new FileStream("testout.xml", FileMode.Create);
+            serializer.Serialize(fs, list);
+            fs.Close();
+
 
 
             foreach (EEnemyType e in Enum.GetValues(typeof(EEnemyType)))
@@ -117,7 +142,7 @@ namespace EVCS_Projekt.Managers
             gun_fire = Main.ContentManager.Load<Texture2D>("images/effects/guns/gun_fire");
             gun = new StaticRenderer(gun_fire);
 
-            peng = Main.ContentManager.Load<SoundEffect>("test/Skorpion-Kibblesbob-1109158827");
+            peng = Main.ContentManager.Load<SoundEffect>("test/barreta_m9-Dion_Stapper-1010051237");
             headshot = Main.ContentManager.Load<SoundEffect>("test/headshot2");
 
             monster3 = Main.ContentManager.Load<Texture2D>("test/red_monster_angry");
@@ -220,7 +245,7 @@ namespace EVCS_Projekt.Managers
             CheckShotsVsPlayer();
 
             // Renderer des Players
-            GameState.Player.Renderer.Update();
+            GameState.Player.Update();
 
             // StaticObjects Renderer updaten
             foreach (StaticObject s in staticObjects)
@@ -271,7 +296,7 @@ namespace EVCS_Projekt.Managers
                 }
 
                 Shot s = new Shot(0, 0, 1000, -GameState.Player.LocationBehavior.Direction + accuracy, 10, "", 0, "", 0, new MapLocation(GameState.Player.LocationBehavior.Position));
-                s.Renderer = StaticRenderer.DefaultRenderer[EStaticRenderer.Shot_Normal];
+                s.Renderer = LoadedRenderer.DefaultRenderer[ERenderer.S_Shot_Normal];
                 s.SetDirection(-GameState.Player.LocationBehavior.Direction + accuracy);
                 s.LocationSizing();
 
@@ -402,6 +427,7 @@ namespace EVCS_Projekt.Managers
                 {
                     // neue Position setzten
                     GameState.Player.LocationBehavior.Position = newPosition;
+                    GameState.Player.FootRotation = GetMoveRotation();
 
                     GameState.Player.IsMoving = true;
                     CalculateMapOffset();
@@ -418,7 +444,50 @@ namespace EVCS_Projekt.Managers
         }
 
         // ***************************************************************************
-        // 
+        // "Berechne" rotation der bewegung
+        private float GetMoveRotation()
+        {
+            // KeyState holen
+            KeyboardState keyState = Keyboard.GetState();
+
+            if (keyState.IsKeyDown(keyMoveLeft) && keyState.IsKeyDown(keyMoveUp))
+            {
+                return (float)Math.PI * 1 / 4;
+            }
+            if (keyState.IsKeyDown(keyMoveUp) && keyState.IsKeyDown(keyMoveRight))
+            {
+                return (float)Math.PI * 3 / 4;
+            }
+            if (keyState.IsKeyDown(keyMoveRight) && keyState.IsKeyDown(keyMoveDown))
+            {
+                return (float)Math.PI * 5 / 4;
+            }
+            if (keyState.IsKeyDown(keyMoveDown) && keyState.IsKeyDown(keyMoveLeft))
+            {
+                return (float)Math.PI * 7 / 4;
+            }
+            if (keyState.IsKeyDown(keyMoveLeft) )
+            {
+                return 0;
+            }
+            if (keyState.IsKeyDown(keyMoveUp))
+            {
+                return (float)Math.PI * 2 / 4;
+            }
+            if (keyState.IsKeyDown(keyMoveRight))
+            {
+                return (float)Math.PI;
+            }
+            if (keyState.IsKeyDown(keyMoveDown))
+            {
+                return (float)Math.PI * 6 / 4;
+            }
+
+            return 0;
+        }
+
+        // ***************************************************************************
+        // Prüft ob die neue postion blockiert ist
         private bool CheckPlayerCanMove(Vector2 moveVector, out Vector2 newPosition)
         {
             float movement = (float)Main.GameTimeUpdate.ElapsedGameTime.TotalSeconds * GameState.Player.Speed;
@@ -511,9 +580,10 @@ namespace EVCS_Projekt.Managers
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend);
 
             // Hintergrund zeichnen
-            for (int x = 0; x <= 1; x++)
+            /*for (int x = 0; x <= 1; x++)
                 for (int y = 0; y <= 1; y++)
                     spriteBatch.Draw(background, new Rectangle((int)(Configuration.GetInt("resolutionWidth") * x - GameState.MapOffset.X % Configuration.GetInt("resolutionWidth")), (int)(Configuration.GetInt("resolutionHeight") * y - GameState.MapOffset.Y % Configuration.GetInt("resolutionHeight")), Configuration.GetInt("resolutionWidth"), Configuration.GetInt("resolutionHeight")), Color.White);
+            */
 
             // Bildschirm Rectangle
             Rectangle screenRect = new Rectangle((int)GameState.MapOffset.X, (int)GameState.MapOffset.Y, Configuration.GetInt("resolutionWidth"), Configuration.GetInt("resolutionHeight"));
@@ -528,8 +598,8 @@ namespace EVCS_Projekt.Managers
              * ## DRAWS
              * 
              * Reihenfolge:
-             * - Map (fehlt)
-             * - Statische Objecte
+             * - Map (nicht durchschießbar)
+             * - Statische Objecte (nur walkkollision)
              * - Items etc. (fehlt)
              * - Schüsse
              * - Gegner
@@ -543,7 +613,7 @@ namespace EVCS_Projekt.Managers
             foreach (StaticObject so in GameState.Karte.QuadTreeWalkable.GetObjects(screenRect))
             {
                 //Debug.WriteLine(so.LocationBehavior.Position + " " + so.LocationBehavior.Size);
-                so.Renderer.Draw(spriteBatch, so.LocationBehavior);
+                so.Renderer.Draw(spriteBatch, so.LocationBehavior, Color.Black);
             }
 
             // Statische Objekte zeichnen
@@ -568,8 +638,8 @@ namespace EVCS_Projekt.Managers
                 e.Renderer.Draw(spriteBatch, e.LocationBehavior);
             }
 
-            // Player zeichnen
-            GameState.Player.Renderer.Draw(spriteBatch, GameState.Player.LocationBehavior);
+            // Player zeichnen mit verschiedenen Renderern (deswegen hat er ne eigene methode)
+            GameState.Player.Draw(spriteBatch);
 
 
             // Cursor zeichnen
@@ -680,10 +750,12 @@ namespace EVCS_Projekt.Managers
                 if (e.IsDead)
                 {
                     //Test new StaticRenderer(blood)
-                    AnimationRenderer a = AnimationRenderer.Get(EAnimationRenderer.Splatter_01);
+                    AnimationRenderer a = LoadedRenderer.GetAnimation(ERenderer.A_Splatter_01);
                     a.PlayOnce();
 
                     StaticObject splatter = new StaticObject(new MapLocation(e.LocationBehavior.Position), a);
+
+                    //headshot.Play();
 
                     GameState.QuadTreeStaticObjects.Add(splatter);
                     //Debug.WriteLine("Entferne Gegner"); 381 1986
@@ -705,8 +777,11 @@ namespace EVCS_Projekt.Managers
             List<StaticObject> objects = Main.MainObject.GameManager.GameState.Karte.QuadTreeWalkable.GetObjects(newPosition);
 
             if (objects.Count <= 0)
+                return true;
+            else
                 return false;
 
+            /*
             float area = 0;
 
             // Fläche aller überschnitte berechnen
@@ -724,7 +799,7 @@ namespace EVCS_Projekt.Managers
             if (area >= newPosition.Width * newPosition.Height)
                 return true;
             else
-                return false;
+                return false;*/
         }
 
         // ***************************************************************************

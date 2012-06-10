@@ -4,11 +4,7 @@ using Microsoft.Xna.Framework;
 
 namespace EVCS_Projekt.Objects.Items
 {
-    /**
-     * @UMLVersion = 12.Mai2012
-     * @Last Changes = 14.Mai2012
-     *
-     */
+
     public class Weapon : Item
     {
 
@@ -19,7 +15,8 @@ namespace EVCS_Projekt.Objects.Items
         private Stabilisator stabilisator;
         private Hauptteil hauptteil;
 
-        //Constructor
+        // ***************************************************************************
+        // Konstruktor
         public Weapon( Visier visier, Antrieb antrieb, Stabilisator stabilisator, Hauptteil hauptteil, int id, EGroup group, String name, float weight, string description, ILocationBehavior locationBehavior)
             : base(   id,  group,  name,  description,  weight,  locationBehavior)
         {
@@ -29,7 +26,8 @@ namespace EVCS_Projekt.Objects.Items
             this.hauptteil = hauptteil;
         }
 
-        //Functions
+        // ***************************************************************************
+        // schieﬂen
         public Item Shoot (float accuratcy) 
         {
             return null; //Schuss generiert neues Item

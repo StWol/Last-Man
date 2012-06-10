@@ -13,21 +13,16 @@ namespace EVCS_Projekt.Objects.Items
     {
 
         //Attributes
-        private float rateOfFire;
-        public float RateOfFire
-        {
-            get
-            {
-                return this.rateOfFire;
-            }
-        }
+        public float RateOfFire { get; private set; }
+        public float Damage { get; private set; }
         private Buff damageBuff;
 
         //Constructor
         public Antrieb( int id, EGroup group, String name, float rateOfFire, float damage, float weight, string description, ILocationBehavior locationBehavior)
             : base( id,  group,  name,  description,  weight,  locationBehavior)
         {
-            this.rateOfFire = rateOfFire;
+            RateOfFire = rateOfFire;
+            Damage = damage;
         }
 
 
@@ -36,6 +31,14 @@ namespace EVCS_Projekt.Objects.Items
         public float GetDamage()
         {
             return damageBuff.Modifier;
+        }
+
+        // ***************************************************************************
+        // Clont Object
+        public Antrieb Clone()
+        {
+            Antrieb a = new Antrieb(Id, Group, Name, RateOfFire, Damage, Weight, Description, LocationBehavior.Clone());
+            return a;
         }
     }
 }

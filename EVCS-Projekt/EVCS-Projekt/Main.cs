@@ -127,7 +127,8 @@ namespace EVCS_Projekt
             //GameTime speichern um für alle zugänglich zu machen
             GameTimeDraw = gameTime;
 
-            //GraphicsDevice.Clear(Color.CornflowerBlue);
+            // Alles weis
+            GraphicsDevice.Clear(Color.White);
 
             // currentmanagaer draw
             CurrentManager.Draw(spriteBatch);

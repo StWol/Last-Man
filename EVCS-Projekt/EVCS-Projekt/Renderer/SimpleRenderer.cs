@@ -13,6 +13,7 @@ namespace EVCS_Projekt.Renderer
     {
         private static Texture2D pixel;
         private Color color;
+        public ERenderer ERenderer { get { return ERenderer.SimpleRenderer; } set { } }
 
         // ***************************************************************************
         // Hat im Prinzip keine Größe => Nicht geeignet für GameObject.Sizing()

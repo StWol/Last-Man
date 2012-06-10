@@ -14,21 +14,28 @@ namespace EVCS_Projekt.Objects.Items
     {
 
         //Attributes
-        private List<Buff> buffList;
+        private List<int> buffIDs;
 
         //Constructor
         public Munition( int id, EGroup group, String name, List<int> buffIDs, string description, float weight, ILocationBehavior locationBehavior)
             : base( id,  group,  name,  description,  weight,  locationBehavior)
         {
-            
+            this.buffIDs = buffIDs;
         }
-
-
 
         //Functions
         public List<Buff> GetBuffList()
         {
-            return buffList;
+            return null;
+        }
+
+
+        // ***************************************************************************
+        // Clont Object
+        public Munition Clone()
+        {
+            Munition m = new Munition(Id, Group, Name, new List<int>(buffIDs), Description, Weight, LocationBehavior.Clone());
+            return m;
         }
     }
 }
