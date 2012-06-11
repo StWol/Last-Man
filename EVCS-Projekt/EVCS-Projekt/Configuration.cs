@@ -29,7 +29,8 @@ namespace EVCS_Projekt
             configurationDic.Add("itemDir", "Content/items/");
             configurationDic.Add("renderer", "Content/renderer.ini");
             configurationDic.Add("sounds", "Content/sounds.ini");
-            configurationDic.Add("soundDir", "Content/audio/sounds/");
+            configurationDic.Add("soundDir", "audio/sounds/");
+            configurationDic.Add("iconDir", "images/itemIcons/");
 
             configurationDic.Add("keyMoveUp", "W");
             configurationDic.Add("keyMoveDown", "S");

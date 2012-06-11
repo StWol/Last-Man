@@ -568,6 +568,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="animation\brunnen\" />
+    <Folder Include="images\itemIcons\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="animation\krabbler_move\krabbler_move_1.png">
@@ -608,7 +609,7 @@
       <Name>Dry Fire Gun-SoundBible.com-2053652037</Name>
       <Importer>WavImporter</Importer>
       <Processor>SoundEffectProcessor</Processor>
-	</Compile>
+    </Compile>
     <Compile Include="animation\schleimer_move\schleimer_move_0.png">
       <Name>schleimer_move_0</Name>
       <Importer>TextureImporter</Importer>
@@ -672,6 +673,13 @@
     </Compile>
     <Compile Include="animation\stachelkrabbe_move\stachelkrabbe_move_2.png">
       <Name>stachelkrabbe_move_2</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="images\shots\shot_02.png">
+      <Name>shot_02</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>

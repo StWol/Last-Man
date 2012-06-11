@@ -301,6 +301,13 @@ namespace EVCS_Projekt.Managers
                 GameState.QuadTreeEnemies.Move(e);
             }*/
 
+            if (Mouse.GetState().RightButton == ButtonState.Pressed)
+            {
+                GameState.Player.Weapon = Item.DefaultWeapon[10].Clone();
+
+                GameState.Player.Weapon.Munition = Item.DefaultMunition[12].Clone();
+            }
+
             float mr = Mouse.GetState().ScrollWheelValue - mausrad;
             if (mr > 0)
             {

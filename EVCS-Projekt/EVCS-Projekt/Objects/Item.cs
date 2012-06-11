@@ -74,6 +74,17 @@ namespace EVCS_Projekt.Objects
             LoadXML<Visier, Visier.VisierInner>("visier.xml");
             Debug.WriteLine("Lade weapon.xml");
             LoadXML<Weapon, Weapon.WeaponInner>("weapon.xml");
+
+            // Icons
+            foreach (Item i in AllItems.Values)
+            {
+                // Schüsse skippen
+                if (i.GetType() == typeof(Shot) || true)
+                    continue;
+
+                Texture2D ico = Main.ContentManager.Load<Texture2D>(Configuration.Get("iconDir") + i.Id);
+                ItemIcons.Add(i.Id, ico);
+            }
         }
 
         private static void LoadXML<Outter, Inner>(string file)
