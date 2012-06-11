@@ -608,6 +608,71 @@
       <Name>Dry Fire Gun-SoundBible.com-2053652037</Name>
       <Importer>WavImporter</Importer>
       <Processor>SoundEffectProcessor</Processor>
+    <Compile Include="animation\schleimer_move\schleimer_move_0.png">
+      <Name>schleimer_move_0</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="animation\schleimer_move\schleimer_move_1.png">
+      <Name>schleimer_move_1</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="animation\schleimer_move\schleimer_move_2.png">
+      <Name>schleimer_move_2</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="animation\hellboy_move\hellboy_move_0.png">
+      <Name>hellboy_move_0</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="animation\hellboy_move\hellboy_move_1.png">
+      <Name>hellboy_move_1</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="animation\hellboy_move\hellboy_move_2.png">
+      <Name>hellboy_move_2</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="animation\drache_move\drache_move_0.png">
+      <Name>drache_move_0</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="animation\drache_move\drache_move_1.png">
+      <Name>drache_move_1</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="animation\drache_move\drache_move_2.png">
+      <Name>drache_move_2</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="animation\stachelkrabbe_move\stachelkrabbe_move_0.png">
+      <Name>stachelkrabbe_move_0</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="animation\stachelkrabbe_move\stachelkrabbe_move_1.png">
+      <Name>stachelkrabbe_move_1</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="animation\stachelkrabbe_move\stachelkrabbe_move_2.png">
+      <Name>stachelkrabbe_move_2</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
     </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\$(XnaFrameworkVersion)\Microsoft.Xna.GameStudio.ContentPipeline.targets" />
