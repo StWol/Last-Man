@@ -608,6 +608,7 @@
       <Name>Dry Fire Gun-SoundBible.com-2053652037</Name>
       <Importer>WavImporter</Importer>
       <Processor>SoundEffectProcessor</Processor>
+	</Compile>
     <Compile Include="animation\schleimer_move\schleimer_move_0.png">
       <Name>schleimer_move_0</Name>
       <Importer>TextureImporter</Importer>
