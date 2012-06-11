@@ -16,7 +16,7 @@ namespace EVCS_Projekt.Objects.Items
         //Attributes
         public Vector2 Direction { get; private set; }
         public float Speed { get; private set; }
-        public float Damage { get; private set; }
+        public float Damage { get; set; }
         public float Distance { get; private set; }
         public List<int> BuffId { get; set; }
         public bool Delete { get; set; }
@@ -44,6 +44,15 @@ namespace EVCS_Projekt.Objects.Items
                 List<Buff> l = new List<Buff>();
                 return l;
             }
+        }
+
+        // ***************************************************************************
+        // Setztt die Direction hier und im location
+        public new void SetDirection(Vector2 d)
+        {
+            Direction = d;
+
+            base.SetDirection(d);
         }
 
         // ***************************************************************************
@@ -115,6 +124,7 @@ namespace EVCS_Projekt.Objects.Items
         public Shot Clone()
         {
             Shot s = new Shot(Id, Group, Speed, new Vector2(Direction.X, Direction.Y), Damage, Name, Distance, Description, Weight, LocationBehavior.Clone());
+            s.Renderer = Renderer;
             return s;
         }
     }

@@ -28,6 +28,8 @@ namespace EVCS_Projekt
             configurationDic.Add("mapDir", "Content/maps/");
             configurationDic.Add("itemDir", "Content/items/");
             configurationDic.Add("renderer", "Content/renderer.ini");
+            configurationDic.Add("sounds", "Content/sounds.ini");
+            configurationDic.Add("soundDir", "Content/audio/sounds/");
 
             configurationDic.Add("keyMoveUp", "W");
             configurationDic.Add("keyMoveDown", "S");

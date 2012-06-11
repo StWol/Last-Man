@@ -55,6 +55,7 @@ namespace EVCS_Projekt.Objects.Items
         public Visier Clone()
         {
             Visier v = new Visier(Id, Group, Name, accuracy, Weight, Description, LocationBehavior.Clone());
+            v.Renderer = Renderer;
             return v;
         }
 

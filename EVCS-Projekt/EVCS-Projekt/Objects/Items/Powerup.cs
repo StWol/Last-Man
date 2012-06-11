@@ -57,6 +57,7 @@ namespace EVCS_Projekt.Objects.Items
         public Powerup Clone()
         {
             Powerup p = new Powerup(Id, Group, Name, regeneration, Description, Weight, LocationBehavior.Clone());
+            p.Renderer = Renderer;
             return p;
         }
     }

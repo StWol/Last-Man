@@ -55,6 +55,7 @@ namespace EVCS_Projekt.Objects.Items
         public Hauptteil Clone()
         {
             Hauptteil h = new Hauptteil(Id, Group, Name,RateOfFire, Weight,Description, LocationBehavior.Clone());
+            h.Renderer = Renderer;
             return h;
         }
 

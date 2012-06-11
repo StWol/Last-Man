@@ -464,22 +464,8 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="test\Skorpion-Kibblesbob-1109158827.wav">
-      <Name>Skorpion-Kibblesbob-1109158827</Name>
-      <Importer>WavImporter</Importer>
-      <Processor>SoundEffectProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="test\headshot2.wav">
       <Name>headshot2</Name>
-      <Importer>WavImporter</Importer>
-      <Processor>SoundEffectProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="test\barreta_m9-Dion_Stapper-1010051237.wav">
-      <Name>barreta_m9-Dion_Stapper-1010051237</Name>
       <Importer>WavImporter</Importer>
       <Processor>SoundEffectProcessor</Processor>
     </Compile>
@@ -517,6 +503,10 @@
     </None>
     <None Include="renderer.ini">
       <Name>renderer</Name>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="sounds.ini">
+      <Name>sounds</Name>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
@@ -602,6 +592,28 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="audio\sounds\barreta_m9-Dion_Stapper-1010051237.wav">
+      <Name>barreta_m9-Dion_Stapper-1010051237</Name>
+      <Importer>WavImporter</Importer>
+      <Processor>SoundEffectProcessor</Processor>
+    </Compile>
+    <Compile Include="audio\sounds\Skorpion-Kibblesbob-1109158827.wav">
+      <Name>Skorpion-Kibblesbob-1109158827</Name>
+      <Importer>WavImporter</Importer>
+      <Processor>SoundEffectProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="audio\sounds\Dry Fire Gun-SoundBible.com-2053652037.wav">
+      <Name>Dry Fire Gun-SoundBible.com-2053652037</Name>
+      <Importer>WavImporter</Importer>
+      <Processor>SoundEffectProcessor</Processor>
+	</Compile>
+    <Compile Include="animation\schleimer_move\schleimer_move_0.png">
+      <Name>schleimer_move_0</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
     <Compile Include="animation\schleimer_move\schleimer_move_1.png">
       <Name>schleimer_move_1</Name>
       <Importer>TextureImporter</Importer>
@@ -612,8 +624,54 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-    <Compile Include="animation\schleimer_move\schleimer_move_3.png">
-      <Name>schleimer_move_3</Name>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="animation\hellboy_move\hellboy_move_0.png">
+      <Name>hellboy_move_0</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="animation\hellboy_move\hellboy_move_1.png">
+      <Name>hellboy_move_1</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="animation\hellboy_move\hellboy_move_2.png">
+      <Name>hellboy_move_2</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="animation\drache_move\drache_move_0.png">
+      <Name>drache_move_0</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="animation\drache_move\drache_move_1.png">
+      <Name>drache_move_1</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="animation\drache_move\drache_move_2.png">
+      <Name>drache_move_2</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="animation\stachelkrabbe_move\stachelkrabbe_move_0.png">
+      <Name>stachelkrabbe_move_0</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="animation\stachelkrabbe_move\stachelkrabbe_move_1.png">
+      <Name>stachelkrabbe_move_1</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="animation\stachelkrabbe_move\stachelkrabbe_move_2.png">
+      <Name>stachelkrabbe_move_2</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>

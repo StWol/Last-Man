@@ -1,6 +1,8 @@
 using System;
 using EVCS_Projekt.Location;
 using Microsoft.Xna.Framework;
+using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace EVCS_Projekt.Objects.Items
 {
@@ -9,11 +11,13 @@ namespace EVCS_Projekt.Objects.Items
     {
 
         //Attributes
-        private Visier Visier { get; set; }
+        public Visier Visier { get; private set; }
         public Munition Munition { get; set; }
-        private Antrieb Antrieb { get; set; }
-        private Stabilisator Stabilisator { get; set; }
-        private Hauptteil Hauptteil { get; set; }
+        public Antrieb Antrieb { get; private set; }
+        public Stabilisator Stabilisator { get; private set; }
+        public Hauptteil Hauptteil { get; private set; }
+
+        public float Cooldown { get; private set; }
 
         // ***************************************************************************
         // Konstruktor
@@ -83,10 +87,81 @@ namespace EVCS_Projekt.Objects.Items
         }
 
         // ***************************************************************************
-        // schieﬂen
-        public Item Shoot(float accuratcy)
+        // Updaten
+        public void Update(List<Buff> buffList)
         {
-            return null; //Schuss generiert neues Item
+            if (Cooldown > 0)
+            {
+                // Cooldown verringern
+                Cooldown -= (float)Main.GameTimeUpdate.ElapsedGameTime.TotalSeconds;
+            }
+        }
+
+        // ***************************************************************************
+        // schieﬂen
+        public Shot CreateShot()
+        {
+            //Debug.WriteLine("RateOfFire: " + RateOfFire);
+
+            // Cooldown setzen
+            ResetCooldown();
+
+            // Schuss erzeugen
+            Shot s = Item.DefaultShots[Munition.ShotId].Clone();
+            s.Damage = Damage;
+
+            // Munition abziehen
+            Munition.Count -= 1;
+
+            return s;
+        }
+
+        // ***************************************************************************
+        // Schusscount
+        public void ResetCooldown ()
+        {
+            // Cooldown setzten
+            Cooldown = 1F / RateOfFire;
+        }
+
+        // ***************************************************************************
+        // Schusscount
+        public int ShotCount
+        {
+            get
+            {
+                if (Munition == null)
+                    return -1;
+                else
+                    return Munition.Count;
+            }
+        }
+
+        // ***************************************************************************
+        // Feuerrate wird berechnet
+        public float Damage
+        {
+            get
+            {
+                float d = Antrieb.Damage;
+
+                if (Munition != null)
+                    d += Munition.Damage;
+
+                return d;
+            }
+        }
+
+        // ***************************************************************************
+        // Feuerrate wird berechnet
+        public float RateOfFire
+        {
+            get
+            {
+                float r = Hauptteil.RateOfFire + Antrieb.RateOfFire;
+
+                return r;
+            }
         }
 
         // ***************************************************************************
@@ -102,6 +177,15 @@ namespace EVCS_Projekt.Objects.Items
 
                 return w;
             }
+        }
+
+        // ***************************************************************************
+        // Clone
+        public Weapon Clone()
+        {
+            Weapon w = new Weapon(GetInner());
+            w.Renderer = Renderer;
+            return w;
         }
     }
 }

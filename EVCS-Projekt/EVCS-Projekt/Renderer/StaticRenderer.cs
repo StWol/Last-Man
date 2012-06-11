@@ -26,6 +26,12 @@ namespace EVCS_Projekt.Renderer
             }
         }
 
+        public StaticRenderer(Texture2D texture, string name)
+        {
+            this.Name = name;
+            this.Texture = texture;
+        }
+
         public StaticRenderer(Texture2D texture)
         {
             this.Texture = texture;
@@ -54,7 +60,7 @@ namespace EVCS_Projekt.Renderer
         // Clone
         public IRenderBehavior Clone()
         {
-            return new StaticRenderer(Texture);
+            return new StaticRenderer(Texture, Name);
         }
 
         // ***************************************************************************

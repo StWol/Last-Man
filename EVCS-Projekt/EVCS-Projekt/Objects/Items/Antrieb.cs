@@ -16,13 +16,15 @@ namespace EVCS_Projekt.Objects.Items
         public float RateOfFire { get; private set; }
         public float Damage { get; private set; }
         private Buff damageBuff;
+        public string SoundId { get; private set; }
 
         //Constructor
-        public Antrieb( int id, EGroup group, String name, float rateOfFire, float damage, float weight, string description, ILocationBehavior locationBehavior)
+        public Antrieb( int id, EGroup group, String name, float rateOfFire, float damage, string soundId, float weight, string description, ILocationBehavior locationBehavior)
             : base( id,  group,  name,  description,  weight,  locationBehavior)
         {
             RateOfFire = rateOfFire;
             Damage = damage;
+            SoundId = soundId;
         }
 
         // ***************************************************************************
@@ -32,6 +34,7 @@ namespace EVCS_Projekt.Objects.Items
         {
             RateOfFire = ai.rateOfFire;
             Damage = ai.damage;
+            SoundId = ai.soundId;
         }
 
         // ***************************************************************************
@@ -41,6 +44,7 @@ namespace EVCS_Projekt.Objects.Items
 
             public float rateOfFire, damage;
             public ItemInner item;
+            public string soundId;
         }
 
         // ***************************************************************************
@@ -51,6 +55,7 @@ namespace EVCS_Projekt.Objects.Items
 
             ai.rateOfFire = RateOfFire;
             ai.damage = Damage;
+            ai.soundId = SoundId;
 
             ai.item = base.GetInner();
             return ai;
@@ -66,7 +71,8 @@ namespace EVCS_Projekt.Objects.Items
         // Clont Object
         public Antrieb Clone()
         {
-            Antrieb a = new Antrieb(Id, Group, Name, RateOfFire, Damage, Weight, Description, LocationBehavior.Clone());
+            Antrieb a = new Antrieb(Id, Group, Name, RateOfFire, Damage, SoundId, Weight, Description, LocationBehavior.Clone());
+            a.Renderer = Renderer;
             return a;
         }
     }
