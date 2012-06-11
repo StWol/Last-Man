@@ -5,7 +5,7 @@
     <item>
       <weight>0</weight>
       <id>2</id>
-      <name>name</name>
+      <name>hauptteil_2</name>
       <description>desc</description>
       <group>DruckluftKlein</group>
       <gameObject>

@@ -5,7 +5,7 @@
     <item>
       <weight>345</weight>
       <id>4</id>
-      <name>name</name>
+      <name>powerup_4</name>
       <description>desc</description>
       <group>DruckluftKlein</group>
       <gameObject>

@@ -24,14 +24,14 @@ namespace EVCS_Projekt.UI
         {
             this.itemList = itemList;
             buttonList = new List<UIElement>();
-
+            countItemsDict = new Dictionary<int, int>();
             CountItems();
 
-            Texture2D imgPreviousButton = Main.ContentManager.Load<Texture2D>("images/gui/prev");
-            Texture2D imgPreviousButtonHover = Main.ContentManager.Load<Texture2D>("images/gui/prevH");
+            Texture2D imgPreviousButton = Main.ContentManager.Load<Texture2D>("images/gui/list_previous");
+            Texture2D imgPreviousButtonHover = Main.ContentManager.Load<Texture2D>("images/gui/list_previous");
 
-            Texture2D imgNextButton = Main.ContentManager.Load<Texture2D>("images/gui/next");
-            Texture2D imgNextButtonHover = Main.ContentManager.Load<Texture2D>("images/gui/nextH");
+            Texture2D imgNextButton = Main.ContentManager.Load<Texture2D>("images/gui/list_next");
+            Texture2D imgNextButtonHover = Main.ContentManager.Load<Texture2D>("images/gui/list_next");
 
             btnPrevious = new UIButton(100, 10, new Vector2(0, 0), imgPreviousButton, imgPreviousButtonHover);
             btnNext = new UIButton(100, 10, new Vector2(0, 0), imgNextButton, imgNextButtonHover);
@@ -48,7 +48,10 @@ namespace EVCS_Projekt.UI
         {
             foreach (var item in itemList)
             {
-                countItemsDict[item.Id] += 1;
+                if (!countItemsDict.ContainsKey(item.Id))
+                    countItemsDict.Add(item.Id, 0);
+                else
+                    countItemsDict[item.Id] += 1;
             }
         }
 
@@ -76,36 +79,46 @@ namespace EVCS_Projekt.UI
         /// <summary>
         /// Ein Button fuer die Liste
         /// </summary>
-        private class UIListButton : UIElement
+        private class UIListButton : UIPanel
         {
             private readonly UIButton itemIcon;
-            private readonly string name;
-            private readonly int count;
-            private float weigth;
+            private readonly UIButton name;
+            private readonly UIButton count;
+            private readonly UIButton weightIcon;
+            private readonly UIButton weightButton;
             private SpriteFont fontDefault;
-            private UIButton weightButton;
+
 
             public UIListButton(int width, int height, Vector2 position, Texture2D itemIcon, string name, int count, float weigth)
                 : base(width, height, position)
             {
                 this.itemIcon = new UIButton(new Vector2(0, 0), itemIcon, itemIcon);
-                this.name = name;
-                this.count = count;
-                var weightIcon = Main.ContentManager.Load<Texture2D>("images/gui/button_konstruktor");
-                weightButton = new UIButton(new Vector2(0, 0), weightIcon, weightIcon);
-                this.weigth = weigth;
+                this.name = new UIButton(50,50,new Vector2(0, 0), name);
+                this.count =  new UIButton(50,50,new Vector2(0, 0), count+"");
 
-                fontDefault = Main.ContentManager.Load<SpriteFont>("fonts/defaultMedium");
+                Texture2D weightIcon = Main.ContentManager.Load<Texture2D>("images/gui/weight");
+
+                this.weightIcon = new UIButton(new Vector2(0, 0), weightIcon, weightIcon);
+                weightButton = new UIButton(50, 50, new Vector2(0, 0), weigth.ToString());
+
+                fontDefault = Main.ContentManager.Load<SpriteFont>("fonts/defaultSmall");
+
+                Add(this.itemIcon);
+                Add(this.name);
+                Add(this.count);
+                Add(this.weightIcon);
+                Add(this.weightButton);
+
             }
 
-            public override void Draw(SpriteBatch sb)
-            {
-                itemIcon.Draw(sb);
-                sb.DrawString(fontDefault, name, new Vector2(0,0), Color.Black);
-                sb.DrawString(fontDefault, count.ToString(), new Vector2(100, 0), Color.Black);
-                weightButton.Draw(sb);
-                sb.DrawString(fontDefault, weigth.ToString(), new Vector2(200, 0), Color.Black);
-            }
+            //public override void Draw(SpriteBatch sb)
+            //{
+            //    itemIcon.Draw(sb);
+            //    sb.DrawString(fontDefault, name, new Vector2(0,0), Color.Black);
+            //    sb.DrawString(fontDefault, count.ToString(), new Vector2(100, 0), Color.Black);
+            //    weightButton.Draw(sb);
+            //    sb.DrawString(fontDefault, weigth.ToString(), new Vector2(200, 0), Color.Black);
+            //}
         }
 
         public void ActionEvent(UIElement element)

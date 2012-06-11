@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-
+using EVCS_Projekt.GUI;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -57,6 +57,7 @@ namespace EVCS_Projekt.Managers
         StaticRenderer gun;
         private float gun_cd;
         SoundEffect peng, headshot;
+        private Inventar inventar;
 
         // ***************************************************************************
         // Läd den ganzen Stuff, den der GameManager benötigt
@@ -103,6 +104,9 @@ namespace EVCS_Projekt.Managers
             // Background laden
             background = Main.ContentManager.Load<Texture2D>("images/background");
 
+
+            
+
             // ################################################################################
             // ################################################################################
             // ################################################################################
@@ -120,7 +124,11 @@ namespace EVCS_Projekt.Managers
             GameState.Player.Inventar.Add(Item.AllItems[2]);
             GameState.Player.Inventar.Add(Item.AllItems[3]);
             GameState.Player.Inventar.Add(Item.AllItems[4]);
-            GameState.Player.Inventar.Add(Item.AllItems[5]);
+            GameState.Player.Inventar.Add(Item.AllItems[6]);
+            GameState.Player.Inventar.Add(Item.AllItems[7]);
+
+            //User Interface erstellen
+            InitGui();
 
             GameState.Player.Weapon = Item.DefaultWeapon[8].Clone();
 
@@ -196,6 +204,14 @@ namespace EVCS_Projekt.Managers
             Main.MainObject.CurrentManager = this;
             MusicPlayer.Stop();
         }
+
+        //***************************************************************************
+        // User Interface laden
+        private void InitGui()
+        {
+            inventar = new Inventar(600, 400, new Vector2(0, 0));
+        }
+
 
         // ***************************************************************************
         // Renderer laden
@@ -349,6 +365,13 @@ namespace EVCS_Projekt.Managers
                     e.Renderer = LoadedRenderer.Get("A_StachelKrabbe_Move");
                 }
             }
+            else if (Keyboard.GetState().IsKeyUps(Keys.I))
+            {
+                
+                inventar.Visible = !inventar.Visible;
+
+            }
+
 
             float mr = Mouse.GetState().ScrollWheelValue - mausrad;
             if (mr > 0)
@@ -734,7 +757,9 @@ namespace EVCS_Projekt.Managers
             spriteBatch.DrawString(testFont, "Munition: " + GameState.Player.Weapon.Munition.Count + " PlayerPos: " + GameState.Player.LocationBehavior.Position + " PlayerRel: " + GameState.Player.LocationBehavior.RelativePosition, new Vector2(0, 30), Color.Red);
             spriteBatch.DrawString(testFont, "Player: " + GameState.Player.LocationBehavior.RelativeBoundingBox + " Shots: " + GameState.ShotListVsEnemies.Count, new Vector2(0, 60), Color.Red);
             spriteBatch.DrawString(testFont, "PlayerDirection: " + GameState.Player.LocationBehavior.Direction + " Accu (Mausrad): " + accu, new Vector2(0, 90), Color.Blue);
-
+            
+            if(inventar.Visible)
+                inventar.Draw(spriteBatch);
             // TEST-ENDE
             // ################################################################################
             // ################################################################################
