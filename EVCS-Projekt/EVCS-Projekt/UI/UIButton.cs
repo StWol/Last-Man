@@ -46,49 +46,6 @@ namespace EVCS_Projekt.UI
         }
 
 
-        public override void Update()
-        {
-            MouseState state = Mouse.GetState();
-            int mX = state.X;
-            int mY = state.Y;
-            int x = (int)(position.X + parent.GetPosition().X);
-            int y = (int)(position.Y + parent.GetPosition().Y);
-            int w = base.GetWidth();
-            int h = base.GetHeight();
-
-
-
-
-            if (mX > x && mX < x + w && mY > y && mY < y + h)
-            {
-                isHover = true;
-
-                // Wenn nicht mehr gedrückt, aber im vorherigen Durchgang gedrückt war => Man kann die Maustaste gedrückt halten ohne das jedesmal ein Event ausgelöst wird
-                if (state.LeftButton != ButtonState.Pressed && mouseDown == true)
-                {
-                    List<UIActionListener> clone = new List<UIActionListener>(listener);
-                    foreach (UIActionListener al in clone)
-                    {
-                        al.ActionEvent(this);
-                    }
-                }
-            }
-            else
-            {
-                isHover = false;
-            }
-
-            if (state.LeftButton == ButtonState.Pressed)
-            {
-                mouseDown = true;
-            }
-            else
-            {
-                mouseDown = false;
-            }
-
-        }
-
         public override void Draw(SpriteBatch sb)
         {
             int x = (int)(position.X + parent.GetPosition().X);

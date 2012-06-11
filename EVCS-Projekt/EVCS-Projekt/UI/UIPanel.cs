@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 
 namespace EVCS_Projekt.UI
 {
@@ -36,6 +37,11 @@ namespace EVCS_Projekt.UI
             }
         }
 
+        public void Clear()
+        {
+            children.Clear();
+        }
+
         public override void Update()
         {
             List<UIElement> clone = new List<UIElement>(children);
@@ -43,6 +49,7 @@ namespace EVCS_Projekt.UI
             {
                 e.Update();
             }
+           
         }
 
     }
