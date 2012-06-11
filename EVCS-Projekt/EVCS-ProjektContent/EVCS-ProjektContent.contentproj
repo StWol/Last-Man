@@ -602,6 +602,11 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="animation\schleimer_move\schleimer_move_0.png">
+      <Name>schleimer_move_0</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
     <Compile Include="animation\schleimer_move\schleimer_move_1.png">
       <Name>schleimer_move_1</Name>
       <Importer>TextureImporter</Importer>
@@ -612,8 +617,20 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-    <Compile Include="animation\schleimer_move\schleimer_move_3.png">
-      <Name>schleimer_move_3</Name>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="animation\hellboy_move\hellboy_move_0.png">
+      <Name>hellboy_move_0</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="animation\hellboy_move\hellboy_move_1.png">
+      <Name>hellboy_move_1</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="animation\hellboy_move\hellboy_move_2.png">
+      <Name>hellboy_move_2</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
