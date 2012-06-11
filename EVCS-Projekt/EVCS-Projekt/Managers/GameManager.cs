@@ -116,7 +116,7 @@ namespace EVCS_Projekt.Managers
 
             Debug.WriteLine(">" + s.Renderer.Name);
 
-
+           
             GameState.Player.Inventar.Add(Item.AllItems[2]);
             GameState.Player.Inventar.Add(Item.AllItems[3]);
             GameState.Player.Inventar.Add(Item.AllItems[4]);

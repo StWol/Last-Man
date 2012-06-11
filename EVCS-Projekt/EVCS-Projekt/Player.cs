@@ -107,6 +107,9 @@ namespace EVCS_Projekt
 
             // LocationSize anpassen
             LocationSizing();
+
+            // InventarListe init
+            Inventar = new List<Item>();
         }
 
         // ***************************************************************************
