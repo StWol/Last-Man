@@ -44,7 +44,7 @@ namespace EVCS_Projekt.Managers
             Texture2D imgMission = content.Load<Texture2D>("images/gui/button_konstruktor");
             Texture2D imgMissionHover = content.Load<Texture2D>("images/gui/button_konstruktor");
 
-            Texture2D imgInventar = content.Load<Texture2D>("images/gui/button_konstruktor")
+            Texture2D imgInventar = content.Load<Texture2D>("images/gui/button_konstruktor");
             Texture2D imgInventarHover = content.Load<Texture2D>("images/gui/button_konstruktor");
 
 
