@@ -464,22 +464,8 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="test\Skorpion-Kibblesbob-1109158827.wav">
-      <Name>Skorpion-Kibblesbob-1109158827</Name>
-      <Importer>WavImporter</Importer>
-      <Processor>SoundEffectProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="test\headshot2.wav">
       <Name>headshot2</Name>
-      <Importer>WavImporter</Importer>
-      <Processor>SoundEffectProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="test\barreta_m9-Dion_Stapper-1010051237.wav">
-      <Name>barreta_m9-Dion_Stapper-1010051237</Name>
       <Importer>WavImporter</Importer>
       <Processor>SoundEffectProcessor</Processor>
     </Compile>
@@ -517,6 +503,10 @@
     </None>
     <None Include="renderer.ini">
       <Name>renderer</Name>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="sounds.ini">
+      <Name>sounds</Name>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
@@ -599,6 +589,25 @@
       <Name>krabbler_move_0</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="audio\sounds\barreta_m9-Dion_Stapper-1010051237.wav">
+      <Name>barreta_m9-Dion_Stapper-1010051237</Name>
+      <Importer>WavImporter</Importer>
+      <Processor>SoundEffectProcessor</Processor>
+    </Compile>
+    <Compile Include="audio\sounds\Skorpion-Kibblesbob-1109158827.wav">
+      <Name>Skorpion-Kibblesbob-1109158827</Name>
+      <Importer>WavImporter</Importer>
+      <Processor>SoundEffectProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="audio\sounds\Dry Fire Gun-SoundBible.com-2053652037.wav">
+      <Name>Dry Fire Gun-SoundBible.com-2053652037</Name>
+      <Importer>WavImporter</Importer>
+      <Processor>SoundEffectProcessor</Processor>
     </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\$(XnaFrameworkVersion)\Microsoft.Xna.GameStudio.ContentPipeline.targets" />

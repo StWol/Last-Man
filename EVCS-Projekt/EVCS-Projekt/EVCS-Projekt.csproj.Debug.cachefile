@@ -56,9 +56,7 @@ Content\fonts\defaultMedium.xnb
 Content\fonts\arialMedium.xnb
 Content\fonts\arialSmall.xnb
 Content\music\Greendjohn_-_Look_Behind.xnb
-Content\test\Skorpion-Kibblesbob-1109158827.xnb
 Content\test\headshot2.xnb
-Content\test\barreta_m9-Dion_Stapper-1010051237.xnb
 Content\images\character\left_foot.xnb
 Content\images\character\right_foot.xnb
 Content\images\map\2_baenke_tisch.xnb
@@ -87,9 +85,13 @@ Content\animation\krabbler_move\krabbler_move_1.xnb
 Content\animation\krabbler_move\krabbler_move_2.xnb
 Content\animation\krabbler_move\krabbler_move_3.xnb
 Content\animation\krabbler_move\krabbler_move_0.xnb
+Content\audio\sounds\barreta_m9-Dion_Stapper-1010051237.xnb
+Content\audio\sounds\Skorpion-Kibblesbob-1109158827.xnb
+Content\audio\sounds\Dry Fire Gun-SoundBible.com-2053652037.xnb
 Content\music\Greendjohn_-_Look_Behind.wma
 Content\config.ini
 Content\renderer.ini
+Content\sounds.ini
 Content\maps\testmap
 Content\items\antrieb.xml
 Content\items\hauptteil.xml

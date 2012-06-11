@@ -42,6 +42,12 @@ namespace EVCS_Projekt.Renderer
             }
         }
 
+        public AnimationRenderer(Texture2D[] textures, float fps, string name)
+            : this(textures, fps)
+        {
+            Name = name;
+        }
+
         public AnimationRenderer(Texture2D[] textures, float fps)
         {
             this.Textures = textures;
@@ -115,7 +121,7 @@ namespace EVCS_Projekt.Renderer
         // Clone
         public IRenderBehavior Clone()
         {
-            return new AnimationRenderer(Textures, framesPerSecond);
+            return new AnimationRenderer(Textures, framesPerSecond, Name);
         }
 
         /*

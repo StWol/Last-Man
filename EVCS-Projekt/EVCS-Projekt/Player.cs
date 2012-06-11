@@ -14,6 +14,7 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using System.Diagnostics;
 using EVCS_Projekt.Renderer;
+using EVCS_Projekt.Audio;
 
 
 namespace EVCS_Projekt
@@ -25,7 +26,7 @@ namespace EVCS_Projekt
         public float Health { get; private set; }
         public float Speed { get; set; }
         public float[] Liquid { get; set; }
-        public Item Weapon { set; get; }
+        public Weapon Weapon { set; get; }
         public List<Item> Inventar { get; private set; }
         private Dictionary<int, Item> shortcuts;
         private List<Buff> bufflist;
@@ -99,7 +100,7 @@ namespace EVCS_Projekt
             footRenderer = new NoRenderer();
 
             // Location für die Füße
-            footLocation = new MapLocation(locationBehavior.Position, new Vector2(textureFootMoving[0].Width, textureFootMoving[0].Height) );
+            footLocation = new MapLocation(locationBehavior.Position, new Vector2(textureFootMoving[0].Width, textureFootMoving[0].Height));
 
             // Standardmäßig den StandingRenderer zuweisen
             Renderer = RendererStanding;
@@ -128,8 +129,47 @@ namespace EVCS_Projekt
             Renderer.Update();
             footRenderer.Update();
 
+            // Waffe f+r cooldown etc
+            Weapon.Update(bufflist);
+
             // Fußposition updaten
             footLocation.Position = LocationBehavior.Position;
+        }
+
+        // ***************************************************************************
+        // Player schießt
+        public void Shoot()
+        {
+            // Waffe schießen lassen
+            if (Weapon.Cooldown <= 0 && Weapon.ShotCount > 0)
+            {
+                // Schießt
+
+                // Schuss von waffe erstellen lassen
+                Shot s = Weapon.CreateShot();
+
+                // Position und richtung des schussen berechnen
+                Vector2 direction = -LocationBehavior.Direction; // + accuracy
+
+                // Flugrichtung/position setzten und rotation des schusses
+                s.LocationBehavior.Position = LocationBehavior.Position;
+                s.SetDirection(direction);
+                s.LocationSizing();
+
+                // schuss adden
+                Main.MainObject.GameManager.GameState.ShotListVsEnemies.Add(s);
+
+                // Sound abspielen
+                Sound.Sounds[Weapon.Antrieb.SoundId].Play();
+            }
+            else if (Weapon.Cooldown <= 0 && Weapon.ShotCount == 0)
+            {
+                // Waffe leer
+                Weapon.ResetCooldown();
+
+                // Sound abspielen
+                Sound.Sounds["Weapon_Empty"].Play();
+            }
         }
 
         // ***************************************************************************

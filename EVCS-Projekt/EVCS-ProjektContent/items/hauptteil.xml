@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <ArrayOfHauptteilInner xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <HauptteilInner>
-    <rateOfFire>0</rateOfFire>
+    <rateOfFire>5</rateOfFire>
     <item>
       <weight>0</weight>
       <id>2</id>

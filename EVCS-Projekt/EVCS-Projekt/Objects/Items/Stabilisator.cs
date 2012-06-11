@@ -58,6 +58,7 @@ namespace EVCS_Projekt.Objects.Items
         public Stabilisator Clone()
         {
             Stabilisator s = new Stabilisator(Id, Group, Name, accuracy, Weight, Description, LocationBehavior.Clone());
+            s.Renderer = Renderer;
             return s;
         }
     }

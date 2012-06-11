@@ -70,6 +70,8 @@ namespace EVCS_Projekt.Managers
             // Renderer laden
             LoadRenderer();
 
+            // Sounds laden
+            Sound.LoadSounds();
 
             // GameState initialisieren
             GameState.MapSize = new Vector2(10000, 10000); // TODO: Mapgröße hier mitgeben
@@ -107,14 +109,24 @@ namespace EVCS_Projekt.Managers
             // TEST
             // Test für ladebilschirm
 
-            GameState.Player.Weapon = Item.DefaultWeapon[8];
-            
+
+            MapLocation mmm = new MapLocation(new Rectangle(1,2,3,4));
+            Shot s = new Shot(1, EGroup.FeuerGross, 2, new Vector2(1, 2), 3, "name", 4, "desc", 5, mmm);
+            s.Renderer = LoadedRenderer.GetStatic("S_Shot_Normal");
+
+            Debug.WriteLine(">" + s.Renderer.Name);
+
+
+            GameState.Player.Weapon = Item.DefaultWeapon[8].Clone();
+
+            GameState.Player.Weapon.Munition = Item.DefaultMunition[3].Clone();
+
             gun_cd = 0.10F;
 
             gun_fire = Main.ContentManager.Load<Texture2D>("images/effects/guns/gun_fire");
             gun = new StaticRenderer(gun_fire);
 
-            peng = Main.ContentManager.Load<SoundEffect>("test/Skorpion-Kibblesbob-1109158827");
+            //peng = Main.ContentManager.Load<SoundEffect>("test/Skorpion-Kibblesbob-1109158827");
             headshot = Main.ContentManager.Load<SoundEffect>("test/headshot2");
 
             monster3 = Main.ContentManager.Load<Texture2D>("test/red_monster_angry");
@@ -265,9 +277,12 @@ namespace EVCS_Projekt.Managers
                 s.Renderer.Update();
             }
 
-
-
-
+            // Linke Maustaste gedrückt
+            if (Mouse.GetState().LeftButton == ButtonState.Pressed)
+            {
+                // Player schießt
+                GameState.Player.Shoot();
+            }
 
 
             // ################################################################################
@@ -307,7 +322,7 @@ namespace EVCS_Projekt.Managers
                     accuracy = accuracy * 3F;
                 }
 
-                Shot s = new Shot(0, 0, 1000, -GameState.Player.LocationBehavior.Direction + accuracy, 10, "", 0, "", 0, new MapLocation(GameState.Player.LocationBehavior.Position));
+                /*Shot s = new Shot(0, 0, 1000, -GameState.Player.LocationBehavior.Direction + accuracy, 10, "", 0, "", 0, new MapLocation(GameState.Player.LocationBehavior.Position));
                 s.Renderer = LoadedRenderer.DefaultRenderer["S_Shot_Normal"];
                 s.SetDirection(-GameState.Player.LocationBehavior.Direction + accuracy);
                 s.LocationSizing();
@@ -317,7 +332,7 @@ namespace EVCS_Projekt.Managers
 
                 GameState.ShotListVsEnemies.Add(s);
                 shoting = true;
-                gun_cd = 0.05F;
+                gun_cd = 0.05F;*/
             }
             else
             {
@@ -666,8 +681,8 @@ namespace EVCS_Projekt.Managers
                 gun.Draw(spriteBatch, GameState.Player.LocationBehavior);
             }
 
-            spriteBatch.DrawString(testFont, "Enemies: " + GameState.QuadTreeEnemies.Count + " Draws: " + enemiesOnScreen.Count + " Updates: " + updateObjects + " FPS: " + (1 / Main.GameTimeDraw.ElapsedGameTime.TotalSeconds), new Vector2(0, 0), Color.Black);
-            spriteBatch.DrawString(testFont, "MapOffset: " + GameState.MapOffset + " PlayerPos: " + GameState.Player.LocationBehavior.Position + " PlayerRel: " + GameState.Player.LocationBehavior.RelativePosition, new Vector2(0, 30), Color.Red);
+            spriteBatch.DrawString(testFont, "Enemies: " + GameState.QuadTreeEnemies.Count + " Draws: " + enemiesOnScreen.Count + " Updates: " + updateObjects + " FPS: " + (1 / Main.GameTimeDraw.ElapsedGameTime.TotalSeconds), new Vector2(0, 0), Color.Green);
+            spriteBatch.DrawString(testFont, "Munition: " + GameState.Player.Weapon.Munition.Count + " PlayerPos: " + GameState.Player.LocationBehavior.Position + " PlayerRel: " + GameState.Player.LocationBehavior.RelativePosition, new Vector2(0, 30), Color.Red);
             spriteBatch.DrawString(testFont, "Player: " + GameState.Player.LocationBehavior.RelativeBoundingBox + " Shots: " + GameState.ShotListVsEnemies.Count, new Vector2(0, 60), Color.Red);
             spriteBatch.DrawString(testFont, "PlayerDirection: " + GameState.Player.LocationBehavior.Direction + " Accu (Mausrad): " + accu, new Vector2(0, 90), Color.Blue);
 
