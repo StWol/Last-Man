@@ -43,8 +43,6 @@ namespace EVCS_Projekt
             Debug.WriteLine("Start Game..");
 
             
-           
-
 
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";

@@ -25,8 +25,9 @@ namespace EVCS_Projekt
             configurationDic.Add("resolutionHeight", "576");
             configurationDic.Add("isFullscreen", "false");
             configurationDic.Add("antiAliasing", "true");
-            configurationDic.Add("mapDir", "Maps/");
-            configurationDic.Add("itemDir", "Items/");            
+            configurationDic.Add("mapDir", "Content/maps/");
+            configurationDic.Add("itemDir", "Content/items/");
+            configurationDic.Add("renderer", "Content/renderer.ini"); 
 
             // Speichern
             SaveConfig();
@@ -37,7 +38,7 @@ namespace EVCS_Projekt
             Debug.WriteLine("Versuche config.ini zuladen..");
 
             // prüfen ob config.ini existiert
-            if (!File.Exists("config.ini"))
+            if (!File.Exists("Content/config.ini"))
             {
                 // Falls nicht existiert erstellen und Methode beenden
                 CreateConfig();
@@ -46,7 +47,7 @@ namespace EVCS_Projekt
             }
 
             // Configuration File öffnen
-            TextReader tr = new StreamReader("config.ini");
+            TextReader tr = new StreamReader("Content/config.ini");
 
             // Dictionary initialisieren
             configurationDic = new Dictionary<string, string>();
@@ -76,7 +77,7 @@ namespace EVCS_Projekt
             // Speicher die aktuelle ConfigurationDic
 
             // Configuration File öffnen
-            TextWriter tw = new StreamWriter("config.ini");
+            TextWriter tw = new StreamWriter("Content/config.ini");
 
             tw.WriteLine("# Config - Last Man");
 

@@ -67,40 +67,9 @@ namespace EVCS_Projekt.Managers
             // Variablen initialisiwerung
             GameState = new GameState();
 
-            // Renderer initialisieren
-            LoadedRenderer.DefaultRenderer = new Dictionary<string, IRenderBehavior>();
-            LoadedRenderer.DefaultRenderer.Add("NoRenderer", new NoRenderer());
-            LoadedRenderer.DefaultRenderer.Add("SimpleRenderer", new SimpleRenderer(Color.White));
+            // Renderer laden
+            LoadRenderer();
 
-            // AnimationRenderer laden
-            AnimationRenderer.Load("A_Splatter_01", "blood", 14, 35F);
-
-            // StaticRenderer laden
-            StaticRenderer.Load("S_Shot_Normal", "shots/shot_01");
-            StaticRenderer.Load("S_Shot_Monster_01", "shots/shot_monster_01");
-
-            StaticRenderer.Load("S_Map_2_baenke_tisch", "map/2_baenke_tisch");
-            StaticRenderer.Load("S_Map_bett", "map/bett");
-            StaticRenderer.Load("S_Map_brunnen", "map/brunnen");
-            StaticRenderer.Load("S_Map_ecksofa", "map/ecksofa");
-            StaticRenderer.Load("S_Map_klo", "map/klo");
-            StaticRenderer.Load("S_Map_lagerregal", "map/lagerregal");
-            StaticRenderer.Load("S_Map_langer_schmaler_tisch", "map/langer_schmaler_tisch");
-            StaticRenderer.Load("S_Map_monitor", "map/monitor");
-            StaticRenderer.Load("S_Map_pflanze_gross", "map/pflanze_gross");
-            StaticRenderer.Load("S_Map_pflanze_klein", "map/pflanze_klein");
-            StaticRenderer.Load("S_Map_pflanze_mittel", "map/pflanze_mittel");
-            StaticRenderer.Load("S_Map_reaktor", "map/reaktor");
-            StaticRenderer.Load("S_Map_regal", "map/regal");
-            StaticRenderer.Load("S_Map_schrank", "map/schrank");
-            StaticRenderer.Load("S_Map_schrank_mittel", "map/schrank_mittel");
-            StaticRenderer.Load("S_Map_sessel_tisch", "map/sessel_tisch");
-            StaticRenderer.Load("S_Map_stuhl", "map/stuhl");
-            StaticRenderer.Load("S_Map_theke", "map/theke");
-            StaticRenderer.Load("S_Map_tisch", "map/tisch");
-            StaticRenderer.Load("S_Map_T-treppe", "map/T-treppe");
-            StaticRenderer.Load("S_Map_waschbecken", "map/waschbecken");
-            StaticRenderer.Load("S_Map_zwei_sessel_tisch", "map/zwei_sessel_tisch");
 
             // GameState initialisieren
             GameState.MapSize = new Vector2(10000, 10000); // TODO: Mapgröße hier mitgeben
@@ -140,7 +109,7 @@ namespace EVCS_Projekt.Managers
 
 
 
-            Visier v = new Visier(0, EGroup.FeuerGross, "TestVisier", 0.05F, 2.5F, "desc", new MapLocation(new Rectangle(100,123,25,33)));
+            Visier v = new Visier(0, EGroup.FeuerGross, "TestVisier", 0.05F, 2.5F, "desc", new MapLocation(new Rectangle(100, 123, 25, 33)));
             v.Renderer = LoadedRenderer.Get("A_Splatter_01");
 
             List<Visier.VisierInner> list = new List<Visier.VisierInner>();
@@ -221,6 +190,56 @@ namespace EVCS_Projekt.Managers
             // Wenn ladevorgang fertig => Switch von MenuManager auf GameManager
             Main.MainObject.CurrentManager = this;
             MusicPlayer.Stop();
+        }
+
+        // ***************************************************************************
+        // Renderer laden
+        public void LoadRenderer()
+        {
+            //
+            Debug.WriteLine("Renderer laden");
+
+            // Renderer initialisieren
+            LoadedRenderer.DefaultRenderer = new Dictionary<string, IRenderBehavior>();
+            LoadedRenderer.DefaultRenderer.Add("NoRenderer", new NoRenderer());
+            LoadedRenderer.DefaultRenderer.Add("SimpleRenderer", new SimpleRenderer(Color.White));
+
+            // Configuration File öffnen
+            TextReader tr = new StreamReader( Configuration.Get("renderer") );
+
+            // Alle lines einlesen, bei = trennen und diese in das dic adden
+            string input;
+            while ((input = tr.ReadLine()) != null)
+            {
+                // falls erstes zeichen eine # ist, dann ist die zeile ein kommenatar
+                if (input.Length < 1 || input.Substring(0, 1).Equals("#"))
+                {
+                    continue;
+                }
+
+                string[] split = input.Split(new char[] { ',' });
+
+                if (split[0].Substring(0, 1).Equals("A"))
+                {
+                    int frames = int.Parse(split[2]);
+                    float fps = float.Parse(split[3]);
+
+                    Debug.WriteLine("AR: " + split[0] + "=" + split[1] + " " + frames + " frames mit " + fps + " fps");
+
+                    // AnimationRenderer laden
+                    AnimationRenderer.Load(split[0], split[1], frames, fps);
+                }
+                else if (split[0].Substring(0, 1).Equals("S"))
+                {
+                    Debug.WriteLine("SR: " + split[0] + "=" + split[1]);
+
+                    // StaticRenderer laden
+                    StaticRenderer.Load(split[0], split[1]);
+                }
+            }
+
+            // File schließen
+            tr.Close();
         }
 
         // ***************************************************************************
@@ -471,7 +490,7 @@ namespace EVCS_Projekt.Managers
             {
                 return (float)Math.PI * 7 / 4;
             }
-            if (keyState.IsKeyDown(keyMoveLeft) )
+            if (keyState.IsKeyDown(keyMoveLeft))
             {
                 return 0;
             }
