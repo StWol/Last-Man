@@ -15,12 +15,14 @@ namespace EVCS_Projekt.Objects.Items
 
         //Attributes
         private List<int> buffIDs;
+        public int Count { get; set; }
 
         //Constructor
-        public Munition( int id, EGroup group, String name, List<int> buffIDs, string description, float weight, ILocationBehavior locationBehavior)
+        public Munition( int id, EGroup group, String name, List<int> buffIDs, int count, string description, float weight, ILocationBehavior locationBehavior)
             : base( id,  group,  name,  description,  weight,  locationBehavior)
         {
             this.buffIDs = buffIDs;
+            Count = count;
         }
 
         // ***************************************************************************
@@ -29,6 +31,7 @@ namespace EVCS_Projekt.Objects.Items
             : base(mi.item)
         {
             buffIDs = mi.buffIDs;
+            Count = mi.count;
         }
 
         // ***************************************************************************
@@ -36,6 +39,7 @@ namespace EVCS_Projekt.Objects.Items
         public class MunitionInner
         {
             public List<int> buffIDs;
+            public int count;
             public ItemInner item;
         }
 
@@ -46,6 +50,7 @@ namespace EVCS_Projekt.Objects.Items
             MunitionInner mi = new MunitionInner();
 
             mi.buffIDs = buffIDs;
+            mi.count = Count;
 
             mi.item = base.GetInner();
             return mi;
@@ -61,7 +66,7 @@ namespace EVCS_Projekt.Objects.Items
         // Clont Object
         public Munition Clone()
         {
-            Munition m = new Munition(Id, Group, Name, new List<int>(buffIDs), Description, Weight, LocationBehavior.Clone());
+            Munition m = new Munition(Id, Group, Name, new List<int>(buffIDs), Count, Description, Weight, LocationBehavior.Clone());
             return m;
         }
     }

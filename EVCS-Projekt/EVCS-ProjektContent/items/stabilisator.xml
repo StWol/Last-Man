@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<ArrayOfStabilisatorInner xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <StabilisatorInner>
+    <accuracy>0</accuracy>
+    <item>
+      <weight>5</weight>
+      <id>6</id>
+      <name>name</name>
+      <description>name</description>
+      <group>DruckluftKlein</group>
+      <gameObject>
+        <xPos>100</xPos>
+        <yPos>123</yPos>
+        <width>25</width>
+        <height>33</height>
+        <rotation>0</rotation>
+        <isMapLocation>true</isMapLocation>
+        <renderer>NoRenderer</renderer>
+      </gameObject>
+    </item>
+  </StabilisatorInner>
+</ArrayOfStabilisatorInner>

@@ -70,11 +70,17 @@ namespace EVCS_Projekt.Objects
             goi.width = LocationBehavior.Size.X;
             goi.height = LocationBehavior.Size.Y;
             goi.rotation = LocationBehavior.Rotation;
+
             if (LocationBehavior.GetType() == typeof(MapLocation))
                 goi.isMapLocation = true;
             else
                 goi.isMapLocation = false;
-            goi.renderer = Renderer.Name;
+
+            if (goi.renderer == null)
+                goi.renderer = new NoRenderer().Name;
+            else
+                goi.renderer = Renderer.Name;
+
             return goi;
         }
 

@@ -15,6 +15,7 @@ using System.Xml;
 using System.IO;
 using System.Xml.Serialization;
 using System.Diagnostics;
+using System.Reflection;
 
 
 namespace EVCS_Projekt.Objects
@@ -24,48 +25,136 @@ namespace EVCS_Projekt.Objects
     {
         // ***************************************************************************
         // Dictionaries
-        public static Dictionary<string, Visier> DefaultVisiere;
-        public static Dictionary<string, Stabilisator> DefaultStabilisatoren;
-        public static Dictionary<string, Shot> DefaultShots;
-        public static Dictionary<string, Powerup> DefaultPowerups;
-        public static Dictionary<string, Munition> DefaultMunition;
-        public static Dictionary<string, Hauptteil> DefaultHauptteil;
-        public static Dictionary<string, Antrieb> DefaultAntrieb;
+        public static Dictionary<int, Visier> DefaultVisiere;
+        public static Dictionary<int, Stabilisator> DefaultStabilisatoren;
+        public static Dictionary<int, Shot> DefaultShots;
+        public static Dictionary<int, Powerup> DefaultPowerups;
+        public static Dictionary<int, Munition> DefaultMunition;
+        public static Dictionary<int, Hauptteil> DefaultHauptteil;
+        public static Dictionary<int, Antrieb> DefaultAntrieb;
+        public static Dictionary<int, Weapon> DefaultWeapon;
+
+        public static Dictionary<int, Item> AllItems;
+
+        // icons der Items
+        private static Dictionary<int, Texture2D> ItemIcons;
 
         // ***************************************************************************
         // Läd Items
         public static void LoadItems()
         {
             // Dics init
-            DefaultVisiere = new Dictionary<string, Visier>();
-            DefaultStabilisatoren = new Dictionary<string, Stabilisator>();
-            DefaultShots = new Dictionary<string, Shot>();
-            DefaultPowerups = new Dictionary<string, Powerup>();
-            DefaultMunition = new Dictionary<string, Munition>();
-            DefaultHauptteil = new Dictionary<string, Hauptteil>();
-            DefaultAntrieb = new Dictionary<string, Antrieb>();
+            DefaultVisiere = new Dictionary<int, Visier>();
+            DefaultStabilisatoren = new Dictionary<int, Stabilisator>();
+            DefaultShots = new Dictionary<int, Shot>();
+            DefaultPowerups = new Dictionary<int, Powerup>();
+            DefaultMunition = new Dictionary<int, Munition>();
+            DefaultHauptteil = new Dictionary<int, Hauptteil>();
+            DefaultAntrieb = new Dictionary<int, Antrieb>();
+            DefaultWeapon = new Dictionary<int, Weapon>();
+
+            AllItems = new Dictionary<int, Item>();
+
+            ItemIcons = new Dictionary<int, Texture2D>();
 
             // Laden
-            LoadXML<Visier>("visiere.xml");
+            Debug.WriteLine("Lade antrieb.xml");
+            LoadXML<Antrieb, Antrieb.AntriebInner>("antrieb.xml");
+            Debug.WriteLine("Lade hauptteil.xml");
+            LoadXML<Hauptteil, Hauptteil.HauptteilInner>("hauptteil.xml");
+            Debug.WriteLine("Lade munition.xml");
+            LoadXML<Munition, Munition.MunitionInner>("munition.xml");
+            Debug.WriteLine("Lade powerup.xml");
+            LoadXML<Powerup, Powerup.PowerupInner>("powerup.xml");
+            Debug.WriteLine("Lade shot.xml");
+            LoadXML<Shot, Shot.ShotInner>("shot.xml");
+            Debug.WriteLine("Lade stabilisator.xml");
+            LoadXML<Stabilisator, Stabilisator.StabilisatorInner>("stabilisator.xml");
+            Debug.WriteLine("Lade visier.xml");
+            LoadXML<Visier, Visier.VisierInner>("visier.xml");
+            Debug.WriteLine("Lade weapon.xml");
+            LoadXML<Weapon, Weapon.WeaponInner>("weapon.xml");
         }
 
-        private static void LoadXML<Outter>(string file)
+        private static void LoadXML<Outter, Inner>(string file)
         {
+
+            //BaseFruit fruit = constructor.Invoke(new object[] { (int)150 }) as BaseFruit;
+
+
             // File öffnen
             FileStream fs = new FileStream(Configuration.Get("itemDir") + file, FileMode.Open);
 
-            if (typeof(Outter) == typeof(Visier))
+            Type type = typeof(Outter);
+            ConstructorInfo ctor = type.GetConstructor(new[] { typeof(Inner) });
+
+
+            XmlSerializer serializer = new XmlSerializer(typeof(List<Inner>));
+            // Geladene liste
+            List<Inner> loaded = (List<Inner>)serializer.Deserialize(fs);
+
+            // itterien
+            foreach (Inner i in loaded)
             {
-                XmlSerializer serializer = new XmlSerializer(typeof(List<Visier.VisierInner>));
-                // Geladene liste
-                List<Visier.VisierInner> loaded = (List<Visier.VisierInner>)serializer.Deserialize(fs);
-                // itterien
-                foreach (Visier.VisierInner i in loaded)
+                // Objekt erstellen
+                object instance = ctor.Invoke(new object[] { i });
+
+                // Falls Visier
+                if (typeof(Outter) == typeof(Antrieb))
                 {
-                    // Objekt erstellen
-                    Visier v = new Visier(i);
+                    Antrieb v = (Antrieb)instance;
                     // Adden
-                    DefaultVisiere.Add("v_" + v.Id, v);
+                    DefaultAntrieb.Add(v.Id, v);
+                    AllItems.Add(v.Id, v);
+                }
+                else if (typeof(Outter) == typeof(Hauptteil))
+                {
+                    Hauptteil v = (Hauptteil)instance;
+                    // Adden
+                    DefaultHauptteil.Add(v.Id, v);
+                    AllItems.Add(v.Id, v);
+                }
+                else if (typeof(Outter) == typeof(Munition))
+                {
+                    Munition v = (Munition)instance;
+                    // Adden
+                    DefaultMunition.Add(v.Id, v);
+                    AllItems.Add(v.Id, v);
+                }
+                else if (typeof(Outter) == typeof(Powerup))
+                {
+                    Powerup v = (Powerup)instance;
+                    // Adden
+                    DefaultPowerups.Add(v.Id, v);
+                    AllItems.Add(v.Id, v);
+                }
+                else if (typeof(Outter) == typeof(Shot))
+                {
+                    Shot v = (Shot)instance;
+                    // Adden
+                    DefaultShots.Add(v.Id, v);
+                    AllItems.Add(v.Id, v);
+                }
+                else if (typeof(Outter) == typeof(Stabilisator))
+                {
+                    Stabilisator v = (Stabilisator)instance;
+                    // Adden
+                    DefaultStabilisatoren.Add(v.Id, v);
+                    AllItems.Add(v.Id, v);
+                }
+                else if (typeof(Outter) == typeof(Visier))
+                {
+                    Visier v = (Visier)instance;
+                    // Adden
+                    DefaultVisiere.Add(v.Id, v);
+                    AllItems.Add(v.Id, v);
+                }
+                else if (typeof(Outter) == typeof(Weapon))
+                {
+                    Weapon v = (Weapon)instance;
+                    // Adden
+                    DefaultWeapon.Add(v.Id, v);
+                    AllItems.Add(v.Id, v);
                 }
             }
         }
@@ -76,6 +165,8 @@ namespace EVCS_Projekt.Objects
         public string Name { get; private set; }
         public string Description { get; private set; }
         public float Weight { get; private set; }
+
+        public Texture2D Icon { get { return ItemIcons[Id]; } }
 
         // ***************************************************************************
         // Konstruktor 1

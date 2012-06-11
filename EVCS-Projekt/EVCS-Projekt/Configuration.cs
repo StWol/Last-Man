@@ -27,7 +27,12 @@ namespace EVCS_Projekt
             configurationDic.Add("antiAliasing", "true");
             configurationDic.Add("mapDir", "Content/maps/");
             configurationDic.Add("itemDir", "Content/items/");
-            configurationDic.Add("renderer", "Content/renderer.ini"); 
+            configurationDic.Add("renderer", "Content/renderer.ini");
+
+            configurationDic.Add("keyMoveUp", "W");
+            configurationDic.Add("keyMoveDown", "S");
+            configurationDic.Add("keyMoveLeft", "A");
+            configurationDic.Add("keyMoveRight", "D");
 
             // Speichern
             SaveConfig();

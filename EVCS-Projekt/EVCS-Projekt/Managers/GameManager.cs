@@ -93,10 +93,10 @@ namespace EVCS_Projekt.Managers
             CalculateMapOffset();
 
             // Keybelegung
-            keyMoveUp = Keys.W;
-            keyMoveDown = Keys.S;
-            keyMoveLeft = Keys.A;
-            keyMoveRight = Keys.D;
+            keyMoveUp = (Keys)Enum.Parse(typeof(Keys), Configuration.Get("keyMoveUp"));
+            keyMoveDown = (Keys)Enum.Parse(typeof(Keys), Configuration.Get("keyMoveDown"));
+            keyMoveLeft = (Keys)Enum.Parse(typeof(Keys), Configuration.Get("keyMoveLeft"));
+            keyMoveRight = (Keys)Enum.Parse(typeof(Keys), Configuration.Get("keyMoveRight"));
 
             // Background laden
             background = Main.ContentManager.Load<Texture2D>("images/background");
@@ -107,20 +107,8 @@ namespace EVCS_Projekt.Managers
             // TEST
             // Test für ladebilschirm
 
-
-
-            Visier v = new Visier(0, EGroup.FeuerGross, "TestVisier", 0.05F, 2.5F, "desc", new MapLocation(new Rectangle(100, 123, 25, 33)));
-            v.Renderer = LoadedRenderer.Get("A_Splatter_01");
-
-            List<Visier.VisierInner> list = new List<Visier.VisierInner>();
-            list.Add(v.GetInner());
-
-            XmlSerializer serializer = new XmlSerializer(typeof(List<Visier.VisierInner>));
-            FileStream fs = new FileStream("testout.xml", FileMode.Create);
-            serializer.Serialize(fs, list);
-            fs.Close();
-
-
+            GameState.Player.Weapon = Item.DefaultWeapon[8];
+            
             gun_cd = 0.10F;
 
             gun_fire = Main.ContentManager.Load<Texture2D>("images/effects/guns/gun_fire");
@@ -151,7 +139,7 @@ namespace EVCS_Projekt.Managers
             // DefaultEnemies laden
             Enemy.DefaultEnemies = new Dictionary<EEnemyType, Enemy>();
 
-            Enemy d1 = new Enemy(new MapLocation(new Vector2(0, 0)), new StaticRenderer(monster2), 1, 0, 0, 0, 0, 100, 0);
+            Enemy d1 = new Enemy(new MapLocation(new Vector2(0, 0)), LoadedRenderer.GetAnimation("A_Krabbler_Move"), 1, 0, 0, 0, 0, 100, 0);
             d1.LocationSizing();
 
             Enemy.DefaultEnemies.Add(EEnemyType.E1, d1);
@@ -205,7 +193,7 @@ namespace EVCS_Projekt.Managers
             LoadedRenderer.DefaultRenderer.Add("SimpleRenderer", new SimpleRenderer(Color.White));
 
             // Configuration File öffnen
-            TextReader tr = new StreamReader( Configuration.Get("renderer") );
+            TextReader tr = new StreamReader(Configuration.Get("renderer"));
 
             // Alle lines einlesen, bei = trennen und diese in das dic adden
             string input;
@@ -325,7 +313,7 @@ namespace EVCS_Projekt.Managers
                 s.LocationSizing();
 
 
-                peng.Play(0.8F, 0, 0);
+                peng.Play(0.8F, -0.5F, 0);
 
                 GameState.ShotListVsEnemies.Add(s);
                 shoting = true;

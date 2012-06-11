@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<ArrayOfShotInner xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <ShotInner>
+    <direction>
+      <X>0</X>
+      <Y>0</Y>
+    </direction>
+    <speed>0</speed>
+    <damage>2</damage>
+    <distance>5</distance>
+    <lifetime>2000</lifetime>
+    <item>
+      <weight>345</weight>
+      <id>5</id>
+      <name>name</name>
+      <description>desc</description>
+      <group>DruckluftKlein</group>
+      <gameObject>
+        <xPos>100</xPos>
+        <yPos>123</yPos>
+        <width>25</width>
+        <height>33</height>
+        <rotation>0</rotation>
+        <isMapLocation>true</isMapLocation>
+        <renderer>NoRenderer</renderer>
+      </gameObject>
+    </item>
+  </ShotInner>
+</ArrayOfShotInner>

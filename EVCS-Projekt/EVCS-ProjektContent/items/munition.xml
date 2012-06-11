@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<ArrayOfMunitionInner xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <MunitionInner>
+    <buffIDs>
+      <int>1337</int>
+    </buffIDs>
+	<count>1337</count>
+    <item>
+      <weight>345</weight>
+      <id>3</id>
+      <name>name</name>
+      <description>desc</description>
+      <group>DruckluftKlein</group>
+      <gameObject>
+        <xPos>100</xPos>
+        <yPos>123</yPos>
+        <width>25</width>
+        <height>33</height>
+        <rotation>0</rotation>
+        <isMapLocation>true</isMapLocation>
+        <renderer>NoRenderer</renderer>
+      </gameObject>
+    </item>
+  </MunitionInner>
+</ArrayOfMunitionInner>
