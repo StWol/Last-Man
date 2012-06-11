@@ -76,6 +76,7 @@
     <Compile Include="Configuration.cs" />
     <Compile Include="Enemy.cs" />
     <Compile Include="GameState.cs" />
+    <Compile Include="GUI\Inventar.cs" />
     <Compile Include="Helper\DrawHelper.cs" />
     <Compile Include="Helper\XMLManager\XMLManager.cs" />
     <Compile Include="Location\ILocationBehavior.cs" />
@@ -83,6 +84,7 @@
     <Compile Include="Location\UILocation.cs" />
     <Compile Include="Main.cs" />
     <Compile Include="Managers\GameManager.cs" />
+    <Compile Include="Managers\GuiManager.cs" />
     <Compile Include="Managers\Manager.cs" />
     <Compile Include="Managers\MenuManager.cs" />
     <Compile Include="Audio\MusicPlayer.cs" />
@@ -121,6 +123,7 @@
     <Compile Include="UI\UIActionListener.cs" />
     <Compile Include="UI\UIButton.cs" />
     <Compile Include="UI\UIElement.cs" />
+    <Compile Include="UI\UIList.cs" />
     <Compile Include="UI\UIPanel.cs" />
   </ItemGroup>
   <ItemGroup>

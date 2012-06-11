@@ -12,7 +12,7 @@ using Microsoft.Xna.Framework.Media;
 
 namespace EVCS_Projekt.UI
 {
-    class UIElement
+    abstract class UIElement
     {
         protected int width
         {
@@ -41,6 +41,8 @@ namespace EVCS_Projekt.UI
 
         protected List<UIActionListener> listener;
         protected UIElement parent;
+        private bool isHover;
+        private bool mouseDown;
 
         public UIElement(int width, int height, Vector2 position)
         {
@@ -79,7 +81,46 @@ namespace EVCS_Projekt.UI
         // Wird von den Unterklassen überschrieben
         public virtual void Update()
         {
+            MouseState state = Mouse.GetState();
+            int mX = state.X;
+            int mY = state.Y;
+            int x = (int)(position.X + parent.GetPosition().X);
+            int y = (int)(position.Y + parent.GetPosition().Y);
+            int w = GetWidth();
+            int h = GetHeight();
+
+
+
+
+            if (mX > x && mX < x + w && mY > y && mY < y + h)
+            {
+                isHover = true;
+
+                // Wenn nicht mehr gedrückt, aber im vorherigen Durchgang gedrückt war => Man kann die Maustaste gedrückt halten ohne das jedesmal ein Event ausgelöst wird
+                if (state.LeftButton != ButtonState.Pressed && mouseDown == true)
+                {
+                    List<UIActionListener> listenerList = new List<UIActionListener>(listener);
+                    foreach (UIActionListener al in listenerList)
+                    {
+                        al.ActionEvent(this);
+                    }
+                }
+            }
+            else
+            {
+                isHover = false;
+            }
+
+            if (state.LeftButton == ButtonState.Pressed)
+            {
+                mouseDown = true;
+            }
+            else
+            {
+                mouseDown = false;
+            }
         }
+
 
         public void AddActionListener(UIActionListener al)
         {

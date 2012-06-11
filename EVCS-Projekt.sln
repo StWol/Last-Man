@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EVCS-Projekt", "EVCS-Projekt\EVCS-Projekt\EVCS-Projekt.csproj", "{95136B82-37AA-4964-AEAC-AC3CCFB958A2}"
 EndProject
-Project("{96E2B04D-8817-42C6-938A-82C39BA4D311}") = "EVCS-ProjektContent", "EVCS-Projekt\EVCS-ProjektContent\EVCS-ProjektContent.contentproj", "{BE098348-C34C-4AB1-8A1C-C209C3FD808C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EVCS-ProjektContent", "EVCS-Projekt\EVCS-ProjektContent\EVCS-ProjektContent.contentproj", "{BE098348-C34C-4AB1-8A1C-C209C3FD808C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

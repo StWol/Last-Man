@@ -59,7 +59,7 @@ namespace EVCS_Projekt.Managers
 
         // ***************************************************************************
         // Initialisierung von Variable, Laden der Texturen etc.
-        public void LoadMenu()
+        private void LoadMenu()
         {
             Debug.WriteLine("Benötigter Content für Menu laden.");
 
