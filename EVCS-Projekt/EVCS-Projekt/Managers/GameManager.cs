@@ -117,6 +117,11 @@ namespace EVCS_Projekt.Managers
             Debug.WriteLine(">" + s.Renderer.Name);
 
 
+            GameState.Player.Inventar.Add(Item.AllItems[2]);
+            GameState.Player.Inventar.Add(Item.AllItems[3]);
+            GameState.Player.Inventar.Add(Item.AllItems[4]);
+            GameState.Player.Inventar.Add(Item.AllItems[5]);
+
             GameState.Player.Weapon = Item.DefaultWeapon[8].Clone();
 
             GameState.Player.Weapon.Munition = Item.DefaultMunition[3].Clone();
@@ -151,7 +156,7 @@ namespace EVCS_Projekt.Managers
             // DefaultEnemies laden
             Enemy.DefaultEnemies = new Dictionary<EEnemyType, Enemy>();
 
-            Enemy d1 = new Enemy(new MapLocation(new Vector2(0, 0)), LoadedRenderer.GetAnimation("A_Krabbler_Move"), 1, 0, 0, 0, 0, 100, 0);
+            Enemy d1 = new Enemy(new MapLocation(new Vector2(0, 0)), LoadedRenderer.GetAnimation("A_RoterDrache_Move"), 1, 0, 0, 0, 0, 100, 0);
             d1.LocationSizing();
 
             Enemy.DefaultEnemies.Add(EEnemyType.E1, d1);
@@ -306,6 +311,43 @@ namespace EVCS_Projekt.Managers
                 GameState.Player.Weapon = Item.DefaultWeapon[10].Clone();
 
                 GameState.Player.Weapon.Munition = Item.DefaultMunition[12].Clone();
+            }
+
+
+            if (Keyboard.GetState().IsKeyDown(Keys.D1))
+            {
+                foreach (Enemy e in GameState.QuadTreeEnemies)
+                {
+                    e.Renderer = LoadedRenderer.Get("A_Krabbler_Move");
+                }
+            }
+            else if (Keyboard.GetState().IsKeyDown(Keys.D2))
+            {
+                foreach (Enemy e in GameState.QuadTreeEnemies)
+                {
+                    e.Renderer = LoadedRenderer.Get("A_Schleimer_Move");
+                }
+            }
+            else if (Keyboard.GetState().IsKeyDown(Keys.D3))
+            {
+                foreach (Enemy e in GameState.QuadTreeEnemies)
+                {
+                    e.Renderer = LoadedRenderer.Get("A_Hellboy_Move");
+                }
+            }
+            else if (Keyboard.GetState().IsKeyDown(Keys.D4))
+            {
+                foreach (Enemy e in GameState.QuadTreeEnemies)
+                {
+                    e.Renderer = LoadedRenderer.Get("A_RoterDrache_Move");
+                }
+            }
+            else if (Keyboard.GetState().IsKeyDown(Keys.D5))
+            {
+                foreach (Enemy e in GameState.QuadTreeEnemies)
+                {
+                    e.Renderer = LoadedRenderer.Get("A_StachelKrabbe_Move");
+                }
             }
 
             float mr = Mouse.GetState().ScrollWheelValue - mausrad;

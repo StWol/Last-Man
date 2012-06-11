@@ -568,7 +568,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="animation\brunnen\" />
-    <Folder Include="images\itemIcons\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="animation\krabbler_move\krabbler_move_1.png">
@@ -680,6 +679,13 @@
   <ItemGroup>
     <Compile Include="images\shots\shot_02.png">
       <Name>shot_02</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="images\itemIcons\dummy.png">
+      <Name>dummy</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>

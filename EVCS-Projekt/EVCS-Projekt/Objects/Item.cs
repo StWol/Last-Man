@@ -79,10 +79,15 @@ namespace EVCS_Projekt.Objects
             foreach (Item i in AllItems.Values)
             {
                 // Schüsse skippen
-                if (i.GetType() == typeof(Shot) || true)
+                if ( i.GetType() == typeof(Shot) )
                     continue;
 
-                Texture2D ico = Main.ContentManager.Load<Texture2D>(Configuration.Get("iconDir") + i.Id);
+                Texture2D ico;
+                if (File.Exists(Configuration.Get("iconDir") + i.Id))
+                    ico = Main.ContentManager.Load<Texture2D>(Configuration.Get("iconDir") + i.Id);
+                else
+                    ico = Main.ContentManager.Load<Texture2D>(Configuration.Get("iconDir") + "dummy");
+
                 ItemIcons.Add(i.Id, ico);
             }
         }
