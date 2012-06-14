@@ -40,7 +40,7 @@ namespace EVCS_Projekt.Location
         {
             Position = position;
             Size = size;
-            Direction = new Vector2(0, 0);
+            Direction = new Vector2(1, 0);
             Rotation = 0;
         }
 
@@ -50,7 +50,7 @@ namespace EVCS_Projekt.Location
         {
             Position = new Vector2(rectangle.X, rectangle.Y);
             Size = new Vector2(rectangle.Width, rectangle.Height);
-            Direction = new Vector2(0, 0);
+            Direction = new Vector2(1, 0);
             Rotation = 0;
         }
 
@@ -59,8 +59,8 @@ namespace EVCS_Projekt.Location
         public MapLocation(Vector2 position)
         {
             Position = position;
-            Size = new Vector2(0,0);
-            Direction = new Vector2(0, 0);
+            Size = new Vector2(0, 0);
+            Direction = new Vector2(1, 0);
             Rotation = 0;
         }
 
@@ -68,7 +68,7 @@ namespace EVCS_Projekt.Location
         // Clone
         public ILocationBehavior Clone()
         {
-            return new MapLocation( BoundingBox );
+            return new MapLocation(BoundingBox);
         }
     }
 }

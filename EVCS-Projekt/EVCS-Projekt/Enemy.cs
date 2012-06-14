@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework;
 using EVCS_Projekt.Renderer;
 using EVCS_Projekt.Objects.Items;
 using System.Diagnostics;
+using EVCS_Projekt.AI;
 
 namespace EVCS_Projekt
 {
@@ -23,6 +24,10 @@ namespace EVCS_Projekt
         private List<Buff> buffList;
         public EEnemyType TypOfEnemy { get; private set; }
         public bool IsDead { get { if (Health <= 0F) return true; else return false; } }
+        //public bool IsMoving { get; set; }
+
+        // Action die der Gegner ausführt
+        public Activity Activity { get; set; }
 
         // Vordefinierte Gegner
         public static Dictionary<EEnemyType, Enemy> DefaultEnemies { get; set; }
@@ -54,6 +59,8 @@ namespace EVCS_Projekt
 
             this.Speed = speed;
             this.Health = health;
+
+            this.Activity = new NoActivity();
         }
 
         // Clont den Gegner
@@ -103,7 +110,11 @@ namespace EVCS_Projekt
         }
 
 
-
+        // Macht die Activität
+        public void DoActivity()
+        {
+            Activity.DoAction(this);
+        }
 
         // Hier ist es etwas seltsam, dass der Gegner ein Item bekommt, welches es dann auch glei droppt. Ausserdem ist die 
         // Methode private. Wer soll sie aufrufen?

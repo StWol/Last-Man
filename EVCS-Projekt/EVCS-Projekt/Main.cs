@@ -42,7 +42,7 @@ namespace EVCS_Projekt
             // Das ist ein Test :-)
             Debug.WriteLine("Start Game..");
 
-            
+            Debug.WriteLine(Math.Tan(45F * Math.PI / 180));
 
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";

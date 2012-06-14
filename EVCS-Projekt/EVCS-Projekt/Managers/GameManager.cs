@@ -22,6 +22,8 @@ using System.Xml;
 using EVCS_Projekt.Helper.XMLManager;
 using System.Xml.Serialization;
 using System.IO;
+using EVCS_Projekt.AI;
+using EVCS_Projekt.Helper;
 
 namespace EVCS_Projekt.Managers
 {
@@ -105,7 +107,7 @@ namespace EVCS_Projekt.Managers
             background = Main.ContentManager.Load<Texture2D>("images/background");
 
 
-            
+
 
             // ################################################################################
             // ################################################################################
@@ -114,13 +116,13 @@ namespace EVCS_Projekt.Managers
             // Test für ladebilschirm
 
 
-            MapLocation mmm = new MapLocation(new Rectangle(1,2,3,4));
+            MapLocation mmm = new MapLocation(new Rectangle(1, 2, 3, 4));
             Shot s = new Shot(1, EGroup.FeuerGross, 2, new Vector2(1, 2), 3, "name", 4, "desc", 5, mmm);
             s.Renderer = LoadedRenderer.GetStatic("S_Shot_Normal");
 
             Debug.WriteLine(">" + s.Renderer.Name);
 
-           
+
             GameState.Player.Inventar.Add(Item.AllItems[2]);
             GameState.Player.Inventar.Add(Item.AllItems[3]);
             GameState.Player.Inventar.Add(Item.AllItems[4]);
@@ -164,7 +166,7 @@ namespace EVCS_Projekt.Managers
             // DefaultEnemies laden
             Enemy.DefaultEnemies = new Dictionary<EEnemyType, Enemy>();
 
-            Enemy d1 = new Enemy(new MapLocation(new Vector2(0, 0)), LoadedRenderer.GetAnimation("A_RoterDrache_Move"), 1, 0, 0, 0, 0, 100, 0);
+            Enemy d1 = new Enemy(new MapLocation(new Vector2(0, 0)), LoadedRenderer.Get("A_RoterDrache_Move"), 1, 0, 0, 100, 100, 100, 0);
             d1.LocationSizing();
 
             Enemy.DefaultEnemies.Add(EEnemyType.E1, d1);
@@ -267,8 +269,8 @@ namespace EVCS_Projekt.Managers
         // Update
         public override void Update()
         {
-            // Bildschirm Rectangle + 10 % tolleranz in jede richtung
-            Rectangle screenRect = new Rectangle((int)(GameState.MapOffset.X - Configuration.GetInt("resolutionWidth") * 0.1), (int)(GameState.MapOffset.Y - Configuration.GetInt("resolutionHeight") * 0.1), (int)(Configuration.GetInt("resolutionWidth") * 1.2), (int)(Configuration.GetInt("resolutionHeight") * 1.2));
+            // Bildschirm Rectangle + 50 % in jede richtung
+            Rectangle screenRect = new Rectangle((int)(GameState.MapOffset.X - Configuration.GetInt("resolutionWidth") * 0.5), (int)(GameState.MapOffset.Y - Configuration.GetInt("resolutionHeight") * 0.5), (int)(Configuration.GetInt("resolutionWidth") * 2), (int)(Configuration.GetInt("resolutionHeight") * 2));
 
             // Enemies, SO in UdpateRect
             List<Enemy> enemies = GameState.QuadTreeEnemies.GetObjects(screenRect);
@@ -321,12 +323,30 @@ namespace EVCS_Projekt.Managers
 
                 GameState.QuadTreeEnemies.Move(e);
             }*/
+            Debug.WriteLineIf(!CheckRectangleInMap(GameState.Player.LittleBoundingBox), "Player in Map!!!!!!!!!");
 
-            if (Mouse.GetState().RightButton == ButtonState.Pressed)
+            foreach (Enemy e in enemies)
             {
-                GameState.Player.Weapon = Item.DefaultWeapon[10].Clone();
+                e.DoActivity();
+            }
+
+            if (Mouse.GetState().RightButton == ButtonState.Pressed && GameState.Player.Reloading <= 0)
+            {
+                GameState.Player.Weapon = Item.DefaultWeapon[15].Clone();
 
                 GameState.Player.Weapon.Munition = Item.DefaultMunition[12].Clone();
+
+                Sound.Sounds["Weapon_Reload"].Play();
+                GameState.Player.Reloading = (float)Sound.Sounds["Weapon_Reload"].Duration.TotalSeconds;
+            }
+
+
+            if (Keyboard.GetState().IsKeyDown(Keys.D0))
+            {
+                foreach (Enemy e in GameState.QuadTreeEnemies)
+                {
+                    e.Activity = new RandomWalk();
+                }
             }
 
 
@@ -365,9 +385,9 @@ namespace EVCS_Projekt.Managers
                     e.Renderer = LoadedRenderer.Get("A_StachelKrabbe_Move");
                 }
             }
-            else if (Keyboard.GetState().IsKeyUps(Keys.I))
+            else if (Keyboard.GetState().IsKeyUp(Keys.I))
             {
-                
+
                 inventar.Visible = !inventar.Visible;
 
             }
@@ -420,11 +440,11 @@ namespace EVCS_Projekt.Managers
             {
                 e.Renderer.Update();
 
-                if (e.DistanceLessThan(GameState.Player, 300) && PointSeePoint(e.LocationBehavior.Position, GameState.Player.LocationBehavior.Position))
+                /*if (e.DistanceLessThan(GameState.Player, 300) && PointSeePoint(e.LocationBehavior.Position, GameState.Player.LocationBehavior.Position))
                 {
                     e.LookAt(GameState.Player.LocationBehavior.Position);
                     e.Attack(GameState);
-                }
+                }*/
             }
 
             // TEST-ENDE
@@ -519,13 +539,19 @@ namespace EVCS_Projekt.Managers
                 moveVector.Normalize();
 
                 // Neue Position
-                Vector2 newPosition = new Vector2();
+                //Vector2 newPosition = new Vector2();
+
+                moveVector = moveVector * GameState.Player.Speed * (float)Main.GameTimeUpdate.ElapsedGameTime.TotalSeconds;
 
                 // Prüfen ob man laufen kann, wenn ja bewegen
-                if (CheckPlayerCanMove(moveVector, out newPosition))
+                //if (CheckRectCanMove( new FRectangle(GameState.Player.LittleBoundingBox), moveVector, out mov))
+                //if (CheckPlayerCanMove(moveVector, out newPosition))
+                if ( GameState.Player.MoveGameObject(moveVector) )
                 {
+
+                    //GameState.Player.LocationBehavior.Position = GameState.Player.LocationBehavior.Position + mov;
                     // neue Position setzten
-                    GameState.Player.LocationBehavior.Position = newPosition;
+                    //GameState.Player.LocationBehavior.Position = newPosition;
                     GameState.Player.FootRotation = GetMoveRotation();
 
                     GameState.Player.IsMoving = true;
@@ -748,6 +774,16 @@ namespace EVCS_Projekt.Managers
             // ################################################################################
             // TEST
 
+            foreach ( WayPoint w in GameState.Karte.WayPoints.Values)
+            {
+                WayPoint.Renderer.Draw(spriteBatch, w.Location);
+
+                foreach ( WayPoint wDest in w.connectedPoints )
+                {
+                   Draw2D.DrawLine(spriteBatch, 1, Color.Red, w.Location.RelativePosition, wDest.Location.RelativePosition);
+                }
+            }
+
             if (shoting)
             {
                 gun.Draw(spriteBatch, GameState.Player.LocationBehavior);
@@ -757,8 +793,8 @@ namespace EVCS_Projekt.Managers
             spriteBatch.DrawString(testFont, "Munition: " + GameState.Player.Weapon.Munition.Count + " PlayerPos: " + GameState.Player.LocationBehavior.Position + " PlayerRel: " + GameState.Player.LocationBehavior.RelativePosition, new Vector2(0, 30), Color.Red);
             spriteBatch.DrawString(testFont, "Player: " + GameState.Player.LocationBehavior.RelativeBoundingBox + " Shots: " + GameState.ShotListVsEnemies.Count, new Vector2(0, 60), Color.Red);
             spriteBatch.DrawString(testFont, "PlayerDirection: " + GameState.Player.LocationBehavior.Direction + " Accu (Mausrad): " + accu, new Vector2(0, 90), Color.Blue);
-            
-            if(inventar.Visible)
+
+            if (inventar.Visible)
                 inventar.Draw(spriteBatch);
             // TEST-ENDE
             // ################################################################################
@@ -877,30 +913,10 @@ namespace EVCS_Projekt.Managers
         {
             List<StaticObject> objects = Main.MainObject.GameManager.GameState.Karte.QuadTreeWalkable.GetObjects(newPosition);
 
-            if (objects.Count <= 0)
+            if (objects.Count <= 0 )
                 return true;
             else
                 return false;
-
-            /*
-            float area = 0;
-
-            // Fläche aller überschnitte berechnen
-            foreach (StaticObject so in objects)
-            {
-                Rectangle inter = Rectangle.Intersect(newPosition, so.Rect);
-                area += inter.Width * inter.Height;
-
-                if (area >= newPosition.Width * newPosition.Height)
-                    return true;
-            }
-
-            //Debug.WriteLine(area);
-
-            if (area >= newPosition.Width * newPosition.Height)
-                return true;
-            else
-                return false;*/
         }
 
         // ***************************************************************************
@@ -926,5 +942,57 @@ namespace EVCS_Projekt.Managers
             return true;
         }
 
+        // ***************************************************************************
+        // Prüft ob die neue postion blockiert ist und falls bewegt werden kann gibt es die bewegung zurück
+        public static bool CheckRectCanMove(FRectangle rect, Vector2 moveVector, out Vector2 outVector)
+        {
+
+            // CurrentPosition
+            Vector2 initPosition = new Vector2(rect.X, rect.Y);
+
+            // out setzten
+            outVector = new Vector2(0, 0);
+
+            rect.X += moveVector.X;
+            rect.Y += moveVector.Y;
+            
+            // Prüfen ob man an neuer Position gehen kann
+            if (CheckRectangleInMap(rect.Rect()))
+            {
+                // das rect kann wie gewünscht fahren
+                outVector = moveVector;
+                return true;
+            }
+
+            if (moveVector.Y != 0)
+            {
+                // Prüfen ob man an neuer Position in Y richtung gehen kann
+                rect.X = initPosition.X;
+
+                if (CheckRectangleInMap(rect.Rect()))
+                {
+                    // das rect kann nur in Y richtung fahren
+                    outVector = new Vector2(0, moveVector.Y);
+                    return true;
+                }
+            }
+
+            if (moveVector.X != 0)
+            {
+                // Prüfen ob man an neuer Position in X richtung gehen kann
+                rect.X += moveVector.X;
+                rect.Y = initPosition.Y;
+
+                if (CheckRectangleInMap(rect.Rect()))
+                {
+                    // das rect kann nur in X richtung fahren
+                    outVector = new Vector2(moveVector.X, 0);
+                    return true;
+                }
+            }
+
+
+            return false;
+        }
     }
 }

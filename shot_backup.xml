@@ -6,6 +6,7 @@
 			<Y>0</Y>
 		</direction>
 		<speed>1000</speed>
+		<damage>2</damage>
 		<distance>5</distance>
 		<lifetime>2000</lifetime>
 		<item>
@@ -15,6 +16,12 @@
 			<description>desc</description>
 			<group>DruckluftKlein</group>
 			<gameObject>
+				<xPos>1</xPos>
+				<yPos>2</yPos>
+				<width>3</width>
+				<height>4</height>
+				<rotation>0</rotation>
+				<isMapLocation>true</isMapLocation>
 				<renderer>S_Shot_Normal</renderer>
 			</gameObject>
 		</item>
@@ -24,7 +31,8 @@
 			<X>0</X>
 			<Y>0</Y>
 		</direction>
-		<speed>800</speed>
+		<speed>700</speed>
+		<damage>20</damage>
 		<distance>5</distance>
 		<lifetime>2000</lifetime>
 		<item>
@@ -34,6 +42,12 @@
 			<description>desc</description>
 			<group>DruckluftKlein</group>
 			<gameObject>
+				<xPos>1</xPos>
+				<yPos>2</yPos>
+				<width>3</width>
+				<height>4</height>
+				<rotation>0</rotation>
+				<isMapLocation>true</isMapLocation>
 				<renderer>S_Shot_Normal_Red</renderer>
 			</gameObject>
 		</item>
