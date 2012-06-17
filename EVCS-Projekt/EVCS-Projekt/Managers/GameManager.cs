@@ -30,6 +30,9 @@ namespace EVCS_Projekt.Managers
         public GameState GameState { get; set; }
 
 
+        // Cachen von dem KeyboardState. Ist fur das Ein- und Ausschalten von GUI noetig 
+        KeyboardState oldKeyState;
+
         // Keybelegung
         private Keys keyMoveUp;
         private Keys keyMoveDown;
@@ -120,12 +123,6 @@ namespace EVCS_Projekt.Managers
 
             Debug.WriteLine(">" + s.Renderer.Name);
 
-           
-            GameState.Player.Inventar.Add(Item.AllItems[2]);
-            GameState.Player.Inventar.Add(Item.AllItems[3]);
-            GameState.Player.Inventar.Add(Item.AllItems[4]);
-            GameState.Player.Inventar.Add(Item.AllItems[6]);
-            GameState.Player.Inventar.Add(Item.AllItems[7]);
 
             //User Interface erstellen
             InitGui();
@@ -209,7 +206,21 @@ namespace EVCS_Projekt.Managers
         // User Interface laden
         private void InitGui()
         {
-            inventar = new Inventar(600, 400, new Vector2(0, 0));
+
+            // ################################################################################
+            // TEST 
+
+
+            GameState.Player.Inventar.Add(Item.AllItems[2]);
+            GameState.Player.Inventar.Add(Item.AllItems[3]);
+            GameState.Player.Inventar.Add(Item.AllItems[4]);
+            GameState.Player.Inventar.Add(Item.AllItems[6]);
+            GameState.Player.Inventar.Add(Item.AllItems[7]);
+
+            // TEST ENDE
+            // ################################################################################
+
+            inventar = new Inventar(600, 400, new Vector2(100, 100));
         }
 
 
@@ -329,49 +340,51 @@ namespace EVCS_Projekt.Managers
                 GameState.Player.Weapon.Munition = Item.DefaultMunition[12].Clone();
             }
 
+            var newState = Keyboard.GetState();
 
-            if (Keyboard.GetState().IsKeyDown(Keys.D1))
+            if (newState.IsKeyDown(Keys.D1))
             {
                 foreach (Enemy e in GameState.QuadTreeEnemies)
                 {
                     e.Renderer = LoadedRenderer.Get("A_Krabbler_Move");
                 }
             }
-            else if (Keyboard.GetState().IsKeyDown(Keys.D2))
+            else if (newState.IsKeyDown(Keys.D2))
             {
                 foreach (Enemy e in GameState.QuadTreeEnemies)
                 {
                     e.Renderer = LoadedRenderer.Get("A_Schleimer_Move");
                 }
             }
-            else if (Keyboard.GetState().IsKeyDown(Keys.D3))
+            else if (newState.IsKeyDown(Keys.D3))
             {
                 foreach (Enemy e in GameState.QuadTreeEnemies)
                 {
                     e.Renderer = LoadedRenderer.Get("A_Hellboy_Move");
                 }
             }
-            else if (Keyboard.GetState().IsKeyDown(Keys.D4))
+            else if (newState.IsKeyDown(Keys.D4))
             {
                 foreach (Enemy e in GameState.QuadTreeEnemies)
                 {
                     e.Renderer = LoadedRenderer.Get("A_RoterDrache_Move");
                 }
             }
-            else if (Keyboard.GetState().IsKeyDown(Keys.D5))
+            else if (newState.IsKeyDown(Keys.D5))
             {
                 foreach (Enemy e in GameState.QuadTreeEnemies)
                 {
                     e.Renderer = LoadedRenderer.Get("A_StachelKrabbe_Move");
                 }
             }
-            else if (Keyboard.GetState().IsKeyUps(Keys.I))
+            else if ( newState.IsKeyDown( Keys.I ) && !oldKeyState.IsKeyDown( Keys.I ) )
             {
-                
+
                 inventar.Visible = !inventar.Visible;
 
             }
 
+            oldKeyState = newState;
 
             float mr = Mouse.GetState().ScrollWheelValue - mausrad;
             if (mr > 0)
@@ -493,7 +506,7 @@ namespace EVCS_Projekt.Managers
         public void CheckInput()
         {
             // KeyState holen
-            KeyboardState keyState = Keyboard.GetState();
+            var keyState = Keyboard.GetState();
 
             Vector2 moveVector = new Vector2(0, 0);
             if (keyState.IsKeyDown(keyMoveUp))
@@ -740,10 +753,7 @@ namespace EVCS_Projekt.Managers
             // Player zeichnen mit verschiedenen Renderern (deswegen hat er ne eigene methode)
             GameState.Player.Draw(spriteBatch);
 
-
-            // Cursor zeichnen
-            MouseCursor.DrawMouse(spriteBatch);
-
+           
             // ################################################################################
             // ################################################################################
             // TEST
@@ -757,12 +767,18 @@ namespace EVCS_Projekt.Managers
             spriteBatch.DrawString(testFont, "Munition: " + GameState.Player.Weapon.Munition.Count + " PlayerPos: " + GameState.Player.LocationBehavior.Position + " PlayerRel: " + GameState.Player.LocationBehavior.RelativePosition, new Vector2(0, 30), Color.Red);
             spriteBatch.DrawString(testFont, "Player: " + GameState.Player.LocationBehavior.RelativeBoundingBox + " Shots: " + GameState.ShotListVsEnemies.Count, new Vector2(0, 60), Color.Red);
             spriteBatch.DrawString(testFont, "PlayerDirection: " + GameState.Player.LocationBehavior.Direction + " Accu (Mausrad): " + accu, new Vector2(0, 90), Color.Blue);
+
+            if ( inventar.Visible )
+                inventar.Draw( spriteBatch );
+
             
-            if(inventar.Visible)
-                inventar.Draw(spriteBatch);
             // TEST-ENDE
             // ################################################################################
             // ################################################################################
+
+
+            // Cursor zeichnen
+            MouseCursor.DrawMouse( spriteBatch );
 
             spriteBatch.End();
         }

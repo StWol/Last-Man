@@ -11,11 +11,14 @@ namespace EVCS_Projekt.UI
     class UIPanel : UIElement
     {
         private List<UIElement> children;
+        
+        
 
         public UIPanel(int width, int height, Vector2 position)
             : base(width, height, position)
         {
             children = new List<UIElement>();
+            
         }
 
         public void Add(UIElement element)
@@ -49,8 +52,6 @@ namespace EVCS_Projekt.UI
             {
                 e.Update();
             }
-           
         }
-
     }
 }
