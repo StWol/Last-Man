@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using EVCS_Projekt.Location;
+using EVCS_Projekt.Managers;
 using EVCS_Projekt.Objects.Items;
 using EVCS_Projekt.Objects;
 using Microsoft.Xna.Framework;
@@ -31,6 +32,8 @@ namespace EVCS_Projekt
         private Dictionary<int, Item> shortcuts;
         private List<Buff> bufflist;
         public Vector2 Direction { get; set; }
+
+        public float Reloading { get; set; }
 
         public float FootRotation
         {
@@ -110,6 +113,9 @@ namespace EVCS_Projekt
 
             // InventarListe init
             Inventar = new List<Item>();
+
+            // Rect Methode setzten
+            base.GetRect = base.RectPlayer;
         }
 
         // ***************************************************************************
@@ -137,12 +143,22 @@ namespace EVCS_Projekt
 
             // Fußposition updaten
             footLocation.Position = LocationBehavior.Position;
+
+            // ReloadTimer
+            if (Reloading > 0)
+                Reloading -= (float) Main.GameTimeUpdate.ElapsedGameTime.TotalSeconds;
         }
 
         // ***************************************************************************
         // Player schießt
         public void Shoot()
         {
+            // Reloading checken
+            if (Reloading > 0)
+            {
+                return;
+            }
+
             // Waffe schießen lassen
             if (Weapon.Cooldown <= 0 && Weapon.ShotCount > 0)
             {
@@ -222,10 +238,34 @@ namespace EVCS_Projekt
             get
             {
                 int s = (int)LocationBehavior.Size.Y;
-                return new Rectangle((int)LocationBehavior.Position.X - s / 2, (int)LocationBehavior.Position.Y - s / 2, s, s);
+                return new Rectangle((int)(LocationBehavior.Position.X - s / 2F), (int)(LocationBehavior.Position.Y - s / 2F), s, s);
             }
             set
             {
+            }
+        }
+
+        // ***************************************************************************
+        // Prüft ob position außerhalb der map liegt
+        public new bool CheckPosition(Vector2 newPosition)
+        {
+            // old position
+            Vector2 old = LocationBehavior.Position;
+
+            // neue positon setzen
+            LocationBehavior.Position = newPosition;
+
+            // checken ob die neue position kaputt ist
+            // checken ob die neue position kaputt ist
+            if (!GameManager.CheckRectangleInMap(LittleBoundingBox))
+            {
+                LocationBehavior.Position = old;
+                return false;
+            }
+            else
+            {
+                LocationBehavior.Position = old;
+                return true;
             }
         }
     }

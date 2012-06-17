@@ -14,12 +14,6 @@
 			<description>desc</description>
 			<group>DruckluftKlein</group>
 			<gameObject>
-				<xPos>100</xPos>
-				<yPos>123</yPos>
-				<width>25</width>
-				<height>33</height>
-				<rotation>0</rotation>
-				<isMapLocation>true</isMapLocation>
 				<renderer>NoRenderer</renderer>
 			</gameObject>
 		</item>
@@ -30,7 +24,7 @@
 		</buffIDs>
 		<count>20</count>
 		<shotId>11</shotId>
-		<damage>12</damage>
+		<damage>20</damage>
 		<item>
 			<weight>345</weight>
 			<id>12</id>
@@ -38,12 +32,6 @@
 			<description>desc</description>
 			<group>DruckluftKlein</group>
 			<gameObject>
-				<xPos>100</xPos>
-				<yPos>123</yPos>
-				<width>25</width>
-				<height>33</height>
-				<rotation>0</rotation>
-				<isMapLocation>true</isMapLocation>
 				<renderer>NoRenderer</renderer>
 			</gameObject>
 		</item>

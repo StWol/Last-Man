@@ -47,7 +47,7 @@ namespace EVCS_Projekt.Objects.Items
             : base(wi.item)
         {
             Visier = Item.DefaultVisiere[wi.visier];
-            if (wi.munition != -1)
+            if (wi.munition != 0 )
                 Munition = Item.DefaultMunition[wi.munition];
             Antrieb = Item.DefaultAntrieb[wi.antrieb];
             Stabilisator = Item.DefaultStabilisatoren[wi.stabilisator];
@@ -77,7 +77,7 @@ namespace EVCS_Projekt.Objects.Items
             if (Munition != null)
                 wi.munition = Munition.Id;
             else
-                wi.munition = -1;
+                wi.munition = 0;
             wi.antrieb = Antrieb.Id;
             wi.stabilisator = Stabilisator.Id;
             wi.hauptteil = Hauptteil.Id;
@@ -144,7 +144,7 @@ namespace EVCS_Projekt.Objects.Items
             get
             {
                 float d = Antrieb.Damage;
-
+ 
                 if (Munition != null)
                     d += Munition.Damage;
 

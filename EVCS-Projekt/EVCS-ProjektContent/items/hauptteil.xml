@@ -9,12 +9,19 @@
       <description>desc</description>
       <group>DruckluftKlein</group>
       <gameObject>
-        <xPos>100</xPos>
-        <yPos>123</yPos>
-        <width>25</width>
-        <height>33</height>
-        <rotation>0</rotation>
-        <isMapLocation>true</isMapLocation>
+        <renderer>NoRenderer</renderer>
+      </gameObject>
+    </item>
+  </HauptteilInner>
+  <HauptteilInner>
+    <rateOfFire>3</rateOfFire>
+    <item>
+      <weight>0</weight>
+      <id>17</id>
+      <name>hauptteil_2</name>
+      <description>desc</description>
+      <group>DruckluftKlein</group>
+      <gameObject>
         <renderer>NoRenderer</renderer>
       </gameObject>
     </item>

@@ -1,4 +1,5 @@
 using EVCS_Projekt.Location;
+using EVCS_Projekt.Managers;
 using EVCS_Projekt.Renderer;
 using Microsoft.Xna.Framework;
 using EVCS_Projekt.Tree;
@@ -6,6 +7,7 @@ using System;
 using System.Diagnostics;
 using Microsoft.Xna.Framework.Graphics;
 using System.Xml;
+using EVCS_Projekt.Helper;
 
 namespace EVCS_Projekt.Objects
 {
@@ -17,12 +19,17 @@ namespace EVCS_Projekt.Objects
         public IRenderBehavior Renderer { get; set; }
         public ILocationBehavior LocationBehavior { get; private set; }
 
+        protected delegate Rectangle GetRectanlge();
+        protected GetRectanlge GetRect { get; set; }
+
         // ***************************************************************************
         // Konstruktor 1
         public GameObject(ILocationBehavior locationBehavior, IRenderBehavior renderBehavior)
         {
             this.LocationBehavior = locationBehavior;
             this.Renderer = renderBehavior;
+
+            GetRect = RectDefault;
         }
 
         // ***************************************************************************
@@ -31,24 +38,43 @@ namespace EVCS_Projekt.Objects
         {
             this.LocationBehavior = locationBehavior;
             this.Renderer = new NoRenderer();
+
+            GetRect = RectDefault;
         }
 
         // ***************************************************************************
         // Konstruktor 3
         public GameObject(GameObjectInner goi)
         {
-            if (goi.isMapLocation)
+            // Sollte kein GO angegeben sein
+            if (goi == null)
             {
-                LocationBehavior = new MapLocation(new Vector2(goi.xPos, goi.yPos), new Vector2(goi.width, goi.height));
-                LocationBehavior.Rotation = goi.rotation;
+                LocationBehavior = new MapLocation(new Vector2(0, 0));
+                LocationBehavior.Rotation = 0;
+                Renderer = LoadedRenderer.Get("NoRenderer");
             }
             else
             {
-                LocationBehavior = new UILocation(new Vector2(goi.xPos, goi.yPos), new Vector2(goi.width, goi.height));
-                LocationBehavior.Rotation = goi.rotation;
+                // UI oder MapLocation
+                if (!goi.isUILocation)
+                {
+                    LocationBehavior = new MapLocation(new Vector2(goi.xPos, goi.yPos), new Vector2(goi.width, goi.height));
+                    LocationBehavior.Rotation = goi.rotation;
+                }
+                else
+                {
+                    LocationBehavior = new UILocation(new Vector2(goi.xPos, goi.yPos), new Vector2(goi.width, goi.height));
+                    LocationBehavior.Rotation = goi.rotation;
+                }
+
+                // Kein Renderer = NoRenderer
+                if (goi.renderer != null)
+                    Renderer = LoadedRenderer.Get(goi.renderer);
+                else
+                    Renderer = LoadedRenderer.Get("NoRenderer");
             }
 
-            Renderer = LoadedRenderer.Get(goi.renderer);
+            GetRect = RectDefault;
         }
 
         // ***************************************************************************
@@ -56,7 +82,7 @@ namespace EVCS_Projekt.Objects
         public class GameObjectInner
         {
             public float xPos, yPos, width, height, rotation;
-            public bool isMapLocation;
+            public bool isUILocation;
             public string renderer;
         }
 
@@ -72,9 +98,9 @@ namespace EVCS_Projekt.Objects
             goi.rotation = LocationBehavior.Rotation;
 
             if (LocationBehavior.GetType() == typeof(MapLocation))
-                goi.isMapLocation = true;
+                goi.isUILocation = true;
             else
-                goi.isMapLocation = false;
+                goi.isUILocation = false;
 
             if (goi.renderer == null)
                 goi.renderer = new NoRenderer().Name;
@@ -129,6 +155,30 @@ namespace EVCS_Projekt.Objects
         }
 
         // ***************************************************************************
+        // Set die Rotation und berechnet die Direction, dass Location in richtung des Vectors schaut
+        public void SetRotation(float grad)
+        {
+            SetRotation(grad, false);
+        }
+
+        // ***************************************************************************
+        // Set die Rotation und berechnet die Direction, dass Location in richtung des Vectors schaut
+        public void SetRotation(float grad, bool rad)
+        {
+            // Grad im Bogenmaß
+            float bm;
+            if (!rad)
+                bm = (float)(grad * Math.PI / 180);
+            else bm = grad;
+            // Richtung berechnen
+            Vector2 direction = new Vector2((float)Math.Cos(bm), (float)Math.Sin(bm));
+
+            // Zuweisen
+            LocationBehavior.Direction = direction;
+            LocationBehavior.Rotation = bm;
+        }
+
+        // ***************************************************************************
         // berechnet die Rotation, dass Location in richtung des Vectors schaut
         private void CalculateRotation()
         {
@@ -141,6 +191,7 @@ namespace EVCS_Projekt.Objects
         {
             return g.Rect.Intersects(Rect);
         }
+
 
         // ***************************************************************************
         // Pixelgenaue Collisionsprüfung
@@ -396,18 +447,121 @@ namespace EVCS_Projekt.Objects
         }
 
         // ***************************************************************************
+        // Bewegt ein object
+        public bool MoveGameObject(Vector2 moveVector)
+        {
+            // der out vector wird verworfen
+            Vector2 trash = new Vector2();
+
+            return MoveGameObject(moveVector, out trash, false);
+        }
+
+        // ***************************************************************************
+        // Bewegt ein object und gibt die bewegung zurück
+        public bool MoveGameObject(Vector2 moveVector, out Vector2 realMoveVector)
+        {
+            return MoveGameObject(moveVector, out realMoveVector, false);
+        }
+
+        // ***************************************************************************
+        // Bewegt ein object und gibt die bewegung zurück und zusätzlich kann angegeben werden, ob überhaupt bewegt werden soll
+        public bool MoveGameObject(Vector2 moveVector, out Vector2 realMoveVector, bool onlyCheck)
+        {
+            // CurrentPosition
+            Vector2 initPosition = LocationBehavior.Position;
+
+            // out setzten
+            realMoveVector = new Vector2(0, 0);
+
+            // canMove
+            bool canMove = false;
+
+            LocationBehavior.Position = LocationBehavior.Position + moveVector;
+
+            // Prüfen ob man an neuer Position gehen kann
+            if (GameManager.CheckRectangleInMap(Rect))
+            {
+                // das rect kann wie gewünscht fahren
+                realMoveVector = moveVector;
+                canMove = true;
+            }
+
+            if (!canMove && moveVector.Y != 0)
+            {
+                // Prüfen ob man an neuer Position in Y richtung gehen kann
+                LocationBehavior.Position = new Vector2(initPosition.X, initPosition.Y + moveVector.Y);
+
+                if (GameManager.CheckRectangleInMap(Rect))
+                {
+                    // das rect kann nur in Y richtung fahren
+                    realMoveVector = new Vector2(0, moveVector.Y);
+                    canMove = true;
+                }
+            }
+
+            if (!canMove && moveVector.X != 0)
+            {
+                // Prüfen ob man an neuer Position in X richtung gehen kann
+                LocationBehavior.Position = new Vector2(initPosition.X + moveVector.X, initPosition.Y);
+
+                if (GameManager.CheckRectangleInMap(Rect))
+                {
+                    // das rect kann nur in X richtung fahren
+                    realMoveVector = new Vector2(moveVector.X, 0);
+                    canMove = true;
+                }
+            }
+
+            // Position zurücksetzten falls gewünscht
+            if (onlyCheck || !canMove)
+            {
+                LocationBehavior.Position = initPosition;
+            }
+
+            return canMove;
+        }
+
+        // ***************************************************************************
         // Für Quadtree benötigt - Gibt Position als Rectangle zurück / BoundingBox
-        public Rectangle Rect
+        public FRectangle FRect
         {
             get
             {
                 // Korrektur, da die gerendeten Bilder ihre position zentriert haben und nicht in der linken oberen ecke
-                Rectangle r = LocationBehavior.BoundingBox;
-                r.X -= r.Width / 2;
-                r.Y -= r.Height / 2;
+                FRectangle r = new FRectangle(LocationBehavior.Position.X, LocationBehavior.Position.Y, LocationBehavior.Size.X, LocationBehavior.Size.Y);
                 return r;
             }
         }
+
+        // ***************************************************************************
+        // Gibt Position als Rectangle zurück / BoundingBox
+        protected Rectangle RectDefault()
+        {
+            Rectangle r = LocationBehavior.BoundingBox;
+            //r.X = (int)( LocationBehavior.Position.X - LocationBehavior.Size.X / 2F);
+            //r.Y = (int) (LocationBehavior.Position.Y - LocationBehavior.Size.Y/2F);
+            r.X -= r.Width / 2;
+            r.Y -= r.Height / 2;
+            return r;
+        }
+
+        // ***************************************************************************
+        // Gibt Position als Rectangle zurück / BoundingBox
+        protected Rectangle RectPlayer()
+        {
+            int size = 32;
+            Rectangle r = new Rectangle((int)(LocationBehavior.Position.X - size / 2), (int)(LocationBehavior.Position.Y - size / 2), size, size);
+            return r;
+        }
+
+        // ***************************************************************************
+        // Für Quadtree benötigt - Gibt Position als Rectangle zurück / BoundingBox
+        public Rectangle Rect
+        {
+            get { return GetRect(); }
+        }
+
+
 
         // ***************************************************************************
         // Für Quadtree benötigt - Muss auf True gesetzt werden, falls sich das Objekt bewegt hat
