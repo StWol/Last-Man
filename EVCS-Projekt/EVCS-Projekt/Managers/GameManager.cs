@@ -366,15 +366,11 @@ namespace EVCS_Projekt.Managers
                     e.Activity = new RandomWalk();
                 }
             }
-<<<<<<< .mine
 
-
-
-=======
 
 
             if (Keyboard.GetState().IsKeyDown(Keys.D1))
->>>>>>> .theirs
+
             {
                 foreach (Enemy e in GameState.QuadTreeEnemies)
                 {
@@ -815,20 +811,10 @@ namespace EVCS_Projekt.Managers
             spriteBatch.DrawString(testFont, "Munition: " + GameState.Player.Weapon.Munition.Count + " PlayerPos: " + GameState.Player.LocationBehavior.Position + " PlayerRel: " + GameState.Player.LocationBehavior.RelativePosition, new Vector2(0, 30), Color.Red);
             spriteBatch.DrawString(testFont, "Player: " + GameState.Player.LocationBehavior.RelativeBoundingBox + " Shots: " + GameState.ShotListVsEnemies.Count, new Vector2(0, 60), Color.Red);
             spriteBatch.DrawString(testFont, "PlayerDirection: " + GameState.Player.LocationBehavior.Direction + " Accu (Mausrad): " + accu, new Vector2(0, 90), Color.Blue);
-<<<<<<< .mine
 
-=======
-
->>>>>>> .theirs
             if (inventar.Visible)
                 inventar.Draw(spriteBatch);
-<<<<<<< .mine
 
-            
-=======
-
-
->>>>>>> .theirs
             // TEST-ENDE
             // ################################################################################
             // ################################################################################
