@@ -19,6 +19,8 @@ namespace EVCS_Projekt.Objects.Items
 
         public float Cooldown { get; private set; }
 
+        public bool BigWeapon { get; set; }
+
         // ***************************************************************************
         // Konstruktor
         public Weapon(int visierId, int antriebId, int stabilisatorId, int hauptteilId, int id, EGroup group, String name, float weight, string description, ILocationBehavior locationBehavior)
@@ -47,11 +49,13 @@ namespace EVCS_Projekt.Objects.Items
             : base(wi.item)
         {
             Visier = Item.DefaultVisiere[wi.visier];
-            if (wi.munition != 0 )
+            if (wi.munition != 0)
                 Munition = Item.DefaultMunition[wi.munition];
             Antrieb = Item.DefaultAntrieb[wi.antrieb];
             Stabilisator = Item.DefaultStabilisatoren[wi.stabilisator];
             Hauptteil = Item.DefaultHauptteil[wi.hauptteil];
+
+            BigWeapon = wi.bigWeapon;
         }
 
         // ***************************************************************************
@@ -63,6 +67,8 @@ namespace EVCS_Projekt.Objects.Items
             public int antrieb;
             public int stabilisator;
             public int hauptteil;
+
+            public bool bigWeapon;
 
             public ItemInner item;
         }
@@ -81,6 +87,7 @@ namespace EVCS_Projekt.Objects.Items
             wi.antrieb = Antrieb.Id;
             wi.stabilisator = Stabilisator.Id;
             wi.hauptteil = Hauptteil.Id;
+            wi.bigWeapon = BigWeapon;
 
             wi.item = base.GetInner();
             return wi;
@@ -118,7 +125,7 @@ namespace EVCS_Projekt.Objects.Items
 
         // ***************************************************************************
         // Schusscount
-        public void ResetCooldown ()
+        public void ResetCooldown()
         {
             // Cooldown setzten
             Cooldown = 1F / RateOfFire;
@@ -144,7 +151,7 @@ namespace EVCS_Projekt.Objects.Items
             get
             {
                 float d = Antrieb.Damage;
- 
+
                 if (Munition != null)
                     d += Munition.Damage;
 

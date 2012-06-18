@@ -357,6 +357,16 @@ namespace EVCS_Projekt.Managers
                 GameState.Player.Reloading = (float)Sound.Sounds["Weapon_Reload"].Duration.TotalSeconds;
             }
 
+            if (Keyboard.GetState().IsKeyDown(Keys.M) && GameState.Player.Reloading <= 0)
+            {
+                GameState.Player.Weapon = Item.DefaultWeapon[8].Clone();
+
+                GameState.Player.Weapon.Munition = Item.DefaultMunition[3].Clone();
+
+                Sound.Sounds["Weapon_Reload"].Play();
+                GameState.Player.Reloading = (float)Sound.Sounds["Weapon_Reload"].Duration.TotalSeconds;
+            }
+
             var newState = Keyboard.GetState();
 
             if (Keyboard.GetState().IsKeyDown(Keys.D0))
@@ -569,10 +579,6 @@ namespace EVCS_Projekt.Managers
                 //if (CheckPlayerCanMove(moveVector, out newPosition))
                 if ( GameState.Player.MoveGameObject(moveVector) )
                 {
-
-                    //GameState.Player.LocationBehavior.Position = GameState.Player.LocationBehavior.Position + mov;
-                    // neue Position setzten
-                    //GameState.Player.LocationBehavior.Position = newPosition;
                     GameState.Player.FootRotation = GetMoveRotation();
 
                     GameState.Player.IsMoving = true;
