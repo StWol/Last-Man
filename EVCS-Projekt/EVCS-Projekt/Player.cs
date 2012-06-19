@@ -183,23 +183,11 @@ namespace EVCS_Projekt
         // Player Update
         public void Update()
         {
-            // nähester wegpunkt suchen
-            /*if (_waypointTimeout < 0 )
-            {
-                NearestWayPoint = Karte.SearchNearest(LocationBehavior.Position);
-                _waypointTimeout = 3;
-            }
-            else
-            {
-                _waypointTimeout -= (float)Main.GameTimeUpdate.ElapsedGameTime.TotalSeconds;
-            }
-             */
+            // NÄCHSTER WEGPUNKT ZUM PLAYER
             List<WayPoint> l = Main.MainObject.GameManager.GameState.Karte.QuadTreeWayPoints.GetObjects(new Rectangle((int)LocationBehavior.Position.X - 100, (int)LocationBehavior.Position.Y - 100, 200,200));
             if (l.Count > 0)
             {
-
                 NearestWayPoint = Karte.SearchNearest(LocationBehavior.Position, l);
-
             }
 
             // Renderer Updaten

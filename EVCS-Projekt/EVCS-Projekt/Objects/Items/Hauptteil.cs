@@ -14,6 +14,8 @@ namespace EVCS_Projekt.Objects.Items
     {
         //Attributes
         public float RateOfFire { get; private set; }
+        public int ShotCount { get; private set; }
+        public bool BigWeapon {get; private set;}
 
         //Constructor
         public Hauptteil(int id, EGroup group, String name, float rateOfFire, float weight, string description, ILocationBehavior locationBehavior)
@@ -28,6 +30,8 @@ namespace EVCS_Projekt.Objects.Items
             : base(hi.item)
         {
             RateOfFire = hi.rateOfFire;
+            ShotCount = hi.shotCount;
+            BigWeapon = hi.bigWeapon;
         }
 
         // ***************************************************************************
@@ -36,6 +40,8 @@ namespace EVCS_Projekt.Objects.Items
         {
             public float rateOfFire;
             public ItemInner item;
+            public int shotCount;
+            public bool bigWeapon;
         }
 
         // ***************************************************************************
@@ -45,6 +51,8 @@ namespace EVCS_Projekt.Objects.Items
             HauptteilInner hi = new HauptteilInner();
 
             hi.rateOfFire = RateOfFire;
+            hi.shotCount = ShotCount;
+            hi.bigWeapon = BigWeapon;
 
             hi.item = base.GetInner();
             return hi;

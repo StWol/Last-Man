@@ -33,5 +33,20 @@ namespace EVCS_Projekt.AI
 
             return n;
         }
+
+        // **************************************************************************
+        // Prüft ob sich in einem pfad ein bestimmter wegpunkt befindet
+        public static bool IsWaypointInPath(int waypointId, PathNode path)
+        {
+            PathNode current = path;
+            while (current != null)
+            {
+                if (current.ID == waypointId)
+                    return true;
+
+                current = current.NextNode;
+            }
+            return false;
+        }
     }
 }

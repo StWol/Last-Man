@@ -2,6 +2,8 @@
 <ArrayOfHauptteilInner xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <HauptteilInner>
     <rateOfFire>5</rateOfFire>
+    <shotCount>1</shotCount>
+    <bigWeapon>true</bigWeapon>
     <item>
       <weight>0</weight>
       <id>2</id>
@@ -15,6 +17,8 @@
   </HauptteilInner>
   <HauptteilInner>
     <rateOfFire>3</rateOfFire>
+    <shotCount>3</shotCount>
+    <bigWeapon>false</bigWeapon>
     <item>
       <weight>0</weight>
       <id>17</id>
