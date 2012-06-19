@@ -27,7 +27,7 @@ namespace EVCS_Projekt.UI
         {
             
             isHover = false;
-            fontDefault = Main.ContentManager.Load<SpriteFont>("fonts/defaultSmall");
+            fontDefault = Main.ContentManager.Load<SpriteFont>("fonts/defaultMedium");
             BackgroundColor = Color.Gray;
         }
 
@@ -36,7 +36,7 @@ namespace EVCS_Projekt.UI
         {
             Text = text;
             isHover = false;
-            fontDefault = Main.ContentManager.Load<SpriteFont>("fonts/defaultSmall");
+            fontDefault = Main.ContentManager.Load<SpriteFont>("fonts/defaultMedium");
             BackgroundColor = Color.Gray;
         }
 

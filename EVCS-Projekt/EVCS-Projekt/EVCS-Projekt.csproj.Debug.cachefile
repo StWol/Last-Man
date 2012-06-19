@@ -19,8 +19,6 @@ Content\test\arrow.xnb
 Content\test\shot.xnb
 Content\test\blood.xnb
 Content\images\character\standing.xnb
-Content\images\character\moving_1.xnb
-Content\images\character\moving_2.xnb
 Content\images\effects\guns\gun_fire.xnb
 Content\images\shots\shot_01.xnb
 Content\fonts\defaultSmall.xnb
@@ -118,6 +116,10 @@ Content\audio\sounds\Colt Desert Eagle-SoundBible.com-1042567256.xnb
 Content\audio\sounds\shotgun-reload-old_school-RA_The_Sun_God-580332022.xnb
 Content\images\gui\list_next_hover.xnb
 Content\images\gui\list_previous_hover.xnb
+Content\images\character\standing_big.xnb
+Content\images\character\standing_big_shot.xnb
+Content\images\character\standing_small.xnb
+Content\images\character\standing_small_shot.xnb
 Content\music\Greendjohn_-_Look_Behind.wma
 Content\config.ini
 Content\renderer.ini
