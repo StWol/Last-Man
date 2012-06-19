@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <ArrayOfStabilisatorInner xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <StabilisatorInner>
-    <accuracy>0</accuracy>
+    <accuracy>2</accuracy>
     <item>
       <weight>5</weight>
       <id>6</id>

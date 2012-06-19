@@ -232,23 +232,30 @@ namespace EVCS_Projekt
             }
 
             // Waffe schießen lassen
-            if (Weapon.Cooldown <= 0 && Weapon.ShotCount > 0)
+            if (Weapon.Cooldown <= 0 && Weapon.MunitionCount > 0)
             {
-                // Schießt
+                // Schießt X mal (ShotCount der Waffe )
+                Random r = new Random();
 
-                // Schuss von waffe erstellen lassen
-                Shot s = Weapon.CreateShot();
+                for (int x = 0; x < Weapon.ShotCount && Weapon.MunitionCount > 0; x++)
+                {
+                    // Schuss von waffe erstellen lassen
+                    Shot s = Weapon.CreateShot();
 
-                // Position und richtung des schussen berechnen
-                Vector2 direction = -LocationBehavior.Direction; // + accuracy
+                    //ungenauigkeit: 10 - random - häflte (um 0 zentriert)
+                    Vector2 accuracy = new Vector2((float)(r.NextDouble() * Weapon.Accuracy - Weapon.Accuracy / 2), (float)(r.NextDouble() * Weapon.Accuracy - Weapon.Accuracy / 2));
 
-                // Flugrichtung/position setzten und rotation des schusses
-                s.LocationBehavior.Position = LocationBehavior.Position;
-                s.SetDirection(direction);
-                s.LocationSizing();
+                    // Position und richtung des schussen berechnen
+                    Vector2 direction = -LocationBehavior.Direction + accuracy; // + accuracy
 
-                // schuss adden
-                Main.MainObject.GameManager.GameState.ShotListVsEnemies.Add(s);
+                    // Flugrichtung/position setzten und rotation des schusses
+                    s.LocationBehavior.Position = LocationBehavior.Position;
+                    s.SetDirection(direction);
+                    s.LocationSizing();
+
+                    // schuss adden
+                    Main.MainObject.GameManager.GameState.ShotListVsEnemies.Add(s);
+                }
 
                 // Sound abspielen
                 Sound.Sounds[Weapon.Antrieb.SoundId].Play();
@@ -256,7 +263,7 @@ namespace EVCS_Projekt
                 // Shottimer setzten
                 shotTimer = ShotTime;
             }
-            else if (Weapon.Cooldown <= 0 && Weapon.ShotCount == 0)
+            else if (Weapon.Cooldown <= 0 && Weapon.MunitionCount == 0)
             {
                 // Waffe leer
                 Weapon.ResetCooldown();

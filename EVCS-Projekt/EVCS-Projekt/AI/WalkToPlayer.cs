@@ -26,6 +26,25 @@ namespace EVCS_Projekt.AI
 
         public override void CalculateAction(Enemy e)
         {
+            if (GameManager.PointSeePoint(e.LocationBehavior.Position, Main.MainObject.GameManager.GameState.Player.LocationBehavior.Position, e.LocationBehavior.Size))
+            {
+                _lookAtPlayer = true;
+                _lastPlayerPosition = Main.MainObject.GameManager.GameState.Player.LocationBehavior.Position;
+
+                return;
+            }
+            else
+            {
+                // Wenn er player aus den augen verloren hat, nearest waypoint suchen
+                if (_lookAtPlayer == true)
+                {
+                    _path = null;
+                    _currentWayPoint = Karte.SearchNearest(_lastPlayerPosition);
+                }
+
+                _lookAtPlayer = false;
+            }
+
             WayPoint target = Main.MainObject.GameManager.GameState.Player.NearestWayPoint;
 
             if (target == null)
@@ -59,22 +78,7 @@ namespace EVCS_Projekt.AI
                     _path = _path.NextNode;
             }
 
-            if ( GameManager.PointSeePoint(e.LocationBehavior.Position, Main.MainObject.GameManager.GameState.Player.LocationBehavior.Position, e.LocationBehavior.Size))
-            {
-                _lookAtPlayer = true;
-                _lastPlayerPosition = Main.MainObject.GameManager.GameState.Player.LocationBehavior.Position;
-            }
-            else
-            {
-                // Wenn er player aus den augen verloren hat, nearest waypoint suchen
-                if (_lookAtPlayer == true)
-                {
-                    _path = null;
-                    _currentWayPoint = Karte.SearchNearest(_lastPlayerPosition);
-                }
-
-                _lookAtPlayer = false;
-            }
+            
 
             //Debug.WriteLineIf(_path == null, "path is null");
         }
