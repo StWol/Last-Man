@@ -22,7 +22,7 @@ namespace EVCS_Projekt.GUI
         public Inventar( int width, int height, Vector2 position )
             : base( width, height, position )
         {
-            inventarList = new UIList( 400, 300, new Vector2( 0, 0 ), Main.MainObject.GameManager.GameState.Player.Inventar );
+            inventarList = new UIList( 350, 300, new Vector2( 350, 50 ), Main.MainObject.GameManager.GameState.Player.Inventar );
 
             Add( inventarList );
             Visible = false;
@@ -41,7 +41,7 @@ namespace EVCS_Projekt.GUI
             Texture2D abtriebActiveHover = content.Load<Texture2D>( "images/gui/toggle_active_antriebHover" );
 
 
-            toggle = new UIToggleButton( 300, 50, new Vector2( 400, 0 ), abtrieb, abtriebHover, abtriebActive, abtriebActiveHover, "" );
+            toggle = new UIToggleButton( 100, 50, new Vector2( 350, 0 ), abtrieb, abtriebHover, abtriebActive, abtriebActiveHover, "" );
             toggle.AddActionListener(this);
             Add( toggle );
         }

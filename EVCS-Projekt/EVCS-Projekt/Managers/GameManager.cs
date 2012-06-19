@@ -246,7 +246,9 @@ namespace EVCS_Projekt.Managers
             // TEST ENDE
             // ################################################################################
 
-            inventar = new Inventar(700, 400, new Vector2(100, 100));
+            int x = Configuration.GetInt("resolutionWidth")/2-350;
+            int y = Configuration.GetInt( "resolutionHeight" ) / 2-200;
+            inventar = new Inventar(700, 400, new Vector2(x, y));
         }
 
 
