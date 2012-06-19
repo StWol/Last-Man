@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework;
 using System.Diagnostics;
 using EVCS_Projekt.Tree;
 using EVCS_Projekt.Managers;
+using EVCS_Projekt.AI;
 
 namespace EVCS_Projekt.Objects
 {
@@ -97,6 +98,9 @@ namespace EVCS_Projekt.Objects
                     // Darf er Spawnen und ist an der SpawnPosition überhaupt die Map
                     if (AllowToSpawn(gameState, newEnemie) && GameManager.CheckRectangleInMap(newEnemie.Rect) )
                     {
+                        // Richtung player laufen
+                        newEnemie.Activity = new WalkToPlayer();
+
                         // Gegner in Baum adden
                         gameState.QuadTreeEnemies.Add(newEnemie);
 

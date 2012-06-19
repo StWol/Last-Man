@@ -11,6 +11,9 @@ namespace EVCS_Projekt.Map
 {
     public class WayPoint : IQuadStorable
     {
+        // WayPoint id
+        public int ID { get; set; }
+
         // Renderer - static da für alle gleich
         public static IRenderBehavior Renderer
         {

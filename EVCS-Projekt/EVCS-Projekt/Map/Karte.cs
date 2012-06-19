@@ -10,6 +10,8 @@ using EVCS_Projekt.Objects;
 using EVCS_Projekt.Location;
 using EVCS_Projekt.Renderer;
 using System.Diagnostics;
+using EVCS_Projekt.Managers;
+using EVCS_Projekt.AI;
 
 namespace EVCS_Projekt.Map
 {
@@ -37,6 +39,9 @@ namespace EVCS_Projekt.Map
 
             // MapFile einlesen
             ReadMapFile(mapFile);
+
+            // Wege berechnen
+            PathFinder.CalculatePath();
         }
 
         private bool ReadMapFile(string mapFile)
@@ -149,6 +154,7 @@ namespace EVCS_Projekt.Map
 
                     // WP
                     WayPoint w = new WayPoint(x, y);
+                    w.ID = id;
 
                     // WP adden
                     Main.MainObject.GameManager.GameState.Karte.WayPoints.Add(id, w);
@@ -175,6 +181,41 @@ namespace EVCS_Projekt.Map
             Debug.WriteLine(rectCount + " Rects geladen");
 
             return true;
+        }
+
+        public static WayPoint SearchNearest(Vector2 position)
+        {
+            int sizeX = 1000, sizeY = 1000;
+            List<WayPoint> wpList = Main.MainObject.GameManager.GameState.Karte.QuadTreeWayPoints.GetObjects(new Rectangle((int)(position.X - sizeX / 2), (int)(position.Y - sizeY / 2), sizeX, sizeY));
+
+            // Nearest
+            WayPoint nearest = null;
+            float dist = 0;
+
+            foreach (WayPoint w in wpList)
+            {
+                if (nearest == null)
+                {
+                    if (GameManager.PointSeePoint(position, w.Location.Position))
+                    {
+                        // Bei null setzten
+                        nearest = w;
+                        dist = Vector2.Distance(w.Location.Position, position);
+                    }
+                }
+                else
+                {
+                    // prüfen ob wp näher an position liegt
+                    float tDist = Vector2.Distance(w.Location.Position, position);
+                    if (tDist < dist && GameManager.PointSeePoint(position, w.Location.Position))
+                    {
+                        dist = tDist;
+                        nearest = w;
+                    }
+                }
+            }
+
+            return nearest;
         }
     }
 }
