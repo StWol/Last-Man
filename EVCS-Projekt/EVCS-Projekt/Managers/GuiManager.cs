@@ -74,9 +74,15 @@ namespace EVCS_Projekt.Managers
             throw new NotImplementedException();
         }
 
-        public void ActionEvent(UIElement element)
+        public void OnMouseDown(UIElement element)
         {
             throw new NotImplementedException();
+        }
+
+
+        public void OnMouseUp(UIElement element)
+        {
+            // leer
         }
     }
 

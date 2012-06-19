@@ -36,6 +36,7 @@ namespace EVCS_Projekt.UI
                 Vector2 pos = Helper.DrawHelper.Get(this.GetHashCode() + "Position");
                 int x = (int)(pos.X);
                 int y = (int)(pos.Y);
+
                 if (parent != null)
                 {
                     x += (int)parent.GetPosition().X;
@@ -47,7 +48,6 @@ namespace EVCS_Projekt.UI
             private set 
             {
                 string key = this.GetHashCode() + "Position";
-
                 Helper.DrawHelper.AddDimension(key, (int)value.X, (int)value.Y);
             }
         }
@@ -112,6 +112,11 @@ namespace EVCS_Projekt.UI
             return position;
         }
 
+        public void SetPosition(Vector2 pos)
+        {
+            position = pos;
+        }
+
         // Wird von den Unterklassen überschrieben
         public virtual void Draw(SpriteBatch sb)
         {
@@ -121,34 +126,17 @@ namespace EVCS_Projekt.UI
         public virtual void Update()
         {
             MouseState state = Mouse.GetState();
-            int mX = state.X;
-            int mY = state.Y;
-            int x = (int)(position.X + parent.GetPosition().X);
-            int y = (int)(position.Y + parent.GetPosition().Y);
-            int w = GetWidth();
-            int h = GetHeight();
 
-
-
-
-            if (mX > x && mX < x + w && mY > y && mY < y + h)
+            // Wenn nicht mehr gedrückt, aber im vorherigen Durchgang gedrückt war => Man kann die Maustaste gedrückt halten ohne das jedesmal ein Event ausgelöst wird
+            if (IsMousePressed())
             {
-                isHover = true;
-                
-                // Wenn nicht mehr gedrückt, aber im vorherigen Durchgang gedrückt war => Man kann die Maustaste gedrückt halten ohne das jedesmal ein Event ausgelöst wird
-                if (state.LeftButton != ButtonState.Pressed && mouseDown == true)
+                List<UIActionListener> listenerList = new List<UIActionListener>(listener);
+                foreach (UIActionListener al in listenerList)
                 {
-                    List<UIActionListener> listenerList = new List<UIActionListener>(listener);
-                    foreach (UIActionListener al in listenerList)
-                    {
-                        al.ActionEvent(this);
-                    }
+                    al.OnMouseDown(this);
                 }
             }
-            else
-            {
-                isHover = false;
-            }
+            
 
             if (state.LeftButton == ButtonState.Pressed)
             {
@@ -160,6 +148,39 @@ namespace EVCS_Projekt.UI
             }
         }
 
+
+        protected bool IsMouseOver()
+        {
+            MouseState state = Mouse.GetState();
+            int mX = state.X;
+            int mY = state.Y;
+            int x = (int)(GetPosition().X);
+            int y = (int)(GetPosition().Y);
+            int w = GetWidth();
+            int h = GetHeight();
+
+            if (mX > x && mX < x + w && mY > y && mY < y + h)
+            {
+                isHover = true;
+                return true;
+            }
+            else
+            {
+                isHover = false;
+                return false;
+            }
+        }
+
+
+        protected bool IsMousePressed()
+        {
+            MouseState state = Mouse.GetState();
+            if (IsMouseOver() && state.LeftButton != ButtonState.Pressed && mouseDown == true)
+            {
+                return true;
+            }
+            return false;
+        }
 
         public void AddActionListener(UIActionListener al)
         {

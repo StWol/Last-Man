@@ -43,14 +43,26 @@ namespace EVCS_Projekt.Helper
         public static void AddDimension(string key, int x, int y)
         {
             // Speicher die werte zusätzlich unverändert
-            unmodifiedDimensions.Add(key, new Vector2(x,y));
+                
+            
 
             // Rechnet die Position in die Aktuelle Bildschirmgröße um
             int resWidht = Configuration.GetInt("resolutionWidth");
             int resHeight = Configuration.GetInt("resolutionHeight");
 
             Vector2 calc = new Vector2((int)(x / referenceSize.X * resWidht), (int)(y / referenceSize.Y * resHeight));
-            dimensions.Add(key, calc);
+            if (!unmodifiedDimensions.ContainsKey(key))
+            {
+                unmodifiedDimensions.Add(key, new Vector2(x, y));
+                dimensions.Add(key, calc);
+            }
+            else
+            {
+                unmodifiedDimensions[key] =  new Vector2(x, y);
+                dimensions[key] =  calc;
+            }
+
+            
         }
 
         public static void Update(string key, Vector2 newVector)

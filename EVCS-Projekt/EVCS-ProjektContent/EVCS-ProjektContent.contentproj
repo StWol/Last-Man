@@ -489,6 +489,26 @@
       <Name>config</Name>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <Compile Include="fonts\lunaBarMedium.spritefont">
+      <Name>lunaBarMedium</Name>
+      <Importer>FontDescriptionImporter</Importer>
+      <Processor>FontDescriptionProcessor</Processor>
+    </Compile>
+    <Compile Include="fonts\serenaSmall.spritefont">
+      <Name>serenaSmall</Name>
+      <Importer>FontDescriptionImporter</Importer>
+      <Processor>FontDescriptionProcessor</Processor>
+    </Compile>
+    <Compile Include="fonts\lunaBarSmall.spritefont">
+      <Name>lunaBarSmall</Name>
+      <Importer>FontDescriptionImporter</Importer>
+      <Processor>FontDescriptionProcessor</Processor>
+    </Compile>
+    <Compile Include="fonts\serenaMedium.spritefont">
+      <Name>serenaMedium</Name>
+      <Importer>FontDescriptionImporter</Importer>
+      <Processor>FontDescriptionProcessor</Processor>
+    </Compile>
     <None Include="renderer.ini">
       <Name>renderer</Name>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

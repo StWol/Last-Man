@@ -10,7 +10,7 @@ namespace EVCS_Projekt.UI
 {
     class UIPanel : UIElement
     {
-        private List<UIElement> children;
+        protected List<UIElement> children;
         
         
 
