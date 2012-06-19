@@ -19,7 +19,7 @@ namespace EVCS_Projekt.AI
 
         public static void CalculatePath()
         {
-            Debug.WriteLine("Pfade berechnen..");
+            //Debug.WriteLine("Pfade berechnen..");
             foreach (WayPoint s in Main.MainObject.GameManager.GameState.Karte.WayPoints.Values)
             {
                 foreach (WayPoint t in Main.MainObject.GameManager.GameState.Karte.WayPoints.Values)
@@ -44,7 +44,7 @@ namespace EVCS_Projekt.AI
             if (savedPaths == null)
                 savedPaths = new Dictionary<int, Dictionary<int, PathNode>>();
 
-            Debug.WriteLine("pfad berechnen von " + start.ID + " zu " + target.ID);
+            //Debug.WriteLine("pfad berechnen von " + start.ID + " zu " + target.ID);
 
             if (start == target)
             {

@@ -20,6 +20,7 @@ namespace EVCS_Projekt.Objects.Items
         public float Cooldown { get; private set; }
 
         public bool BigWeapon { get; set; }
+        public int ShotCount { get; set; }
 
         // ***************************************************************************
         // Konstruktor
@@ -56,6 +57,7 @@ namespace EVCS_Projekt.Objects.Items
             Hauptteil = Item.DefaultHauptteil[wi.hauptteil];
 
             BigWeapon = wi.bigWeapon;
+            ShotCount = wi.shotCount;
         }
 
         // ***************************************************************************
@@ -69,6 +71,7 @@ namespace EVCS_Projekt.Objects.Items
             public int hauptteil;
 
             public bool bigWeapon;
+            public int shotCount;
 
             public ItemInner item;
         }
@@ -88,6 +91,7 @@ namespace EVCS_Projekt.Objects.Items
             wi.stabilisator = Stabilisator.Id;
             wi.hauptteil = Hauptteil.Id;
             wi.bigWeapon = BigWeapon;
+            wi.shotCount = ShotCount;
 
             wi.item = base.GetInner();
             return wi;
@@ -133,7 +137,7 @@ namespace EVCS_Projekt.Objects.Items
 
         // ***************************************************************************
         // Schusscount
-        public int ShotCount
+        public int MunitionCount
         {
             get
             {
@@ -192,9 +196,9 @@ namespace EVCS_Projekt.Objects.Items
         {
             get
             {
-                float a = Visier.Accuracy + Stabilisator.Accuracy;
+                float w = Math.Max( (10 - (Visier.Accuracy + Stabilisator.Accuracy)) / 2 / 10 , 0 );
 
-                return a;
+                return w;
             }
         }
 
