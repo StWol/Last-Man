@@ -187,6 +187,18 @@ namespace EVCS_Projekt.Objects.Items
         }
 
         // ***************************************************************************
+        // Gewicht wird berechnet
+        public new float Accuracy
+        {
+            get
+            {
+                float a = Visier.Accuracy + Stabilisator.Accuracy;
+
+                return a;
+            }
+        }
+
+        // ***************************************************************************
         // Clone
         public Weapon Clone()
         {

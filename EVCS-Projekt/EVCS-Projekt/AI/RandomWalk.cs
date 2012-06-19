@@ -12,6 +12,9 @@ namespace EVCS_Projekt.AI
 {
     public class RandomWalk : Activity
     {
+        public override void DoActivity(Enemy e)
+        {
+        }
 
         private WayPoint SearchNearest(Vector2 position)
         {
@@ -61,7 +64,7 @@ namespace EVCS_Projekt.AI
         private float rotationTime;
 
         // Läuft zufällig in der Gegend rum
-        public override void DoAction(Enemy e)
+        public override void CalculateAction(Enemy e)
         {
             if ( noWayPointVisible)
                 return;

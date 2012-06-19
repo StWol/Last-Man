@@ -31,6 +31,8 @@ namespace EVCS_Projekt.Managers
     {
         public GameState GameState { get; set; }
 
+        // Update Rectangle
+        public Rectangle UpdateRectangle { get; set; }
 
         // Cachen von dem KeyboardState. Ist fur das Ein- und Ausschalten von GUI noetig 
         KeyboardState oldKeyState;
@@ -49,9 +51,11 @@ namespace EVCS_Projekt.Managers
         // ## Sonstiges
         Texture2D background;
 
+        // Update Delegates
         private delegate void UpdateDel();
-
         private UpdateDel updateDelegater;
+
+        
 
         // Tests
         private Texture2D test;
@@ -81,12 +85,16 @@ namespace EVCS_Projekt.Managers
             GameState = new GameState();
 
             // Renderer laden
+            Main.MainObject.MenuManager.LoadingText = "Loading images..";
             LoadRenderer();
 
             // Sounds laden
+            Main.MainObject.MenuManager.LoadingText = "Loading sounds..";
             Sound.LoadSounds();
 
             // GameState initialisieren
+            Main.MainObject.MenuManager.LoadingText = "Initialize objects..";
+
             GameState.MapSize = new Vector2(10000, 10000); // TODO: Mapgröße hier mitgeben
             GameState.QuadTreeEnemies = new QuadTree<Enemy>(0, 0, (int)GameState.MapSize.X, (int)GameState.MapSize.Y);
             GameState.QuadTreeSpawnPoints = new QuadTree<SpawnPoint>(0, 0, (int)GameState.MapSize.X, (int)GameState.MapSize.Y);
@@ -95,10 +103,12 @@ namespace EVCS_Projekt.Managers
             GameState.ShotListVsEnemies = new List<Shot>(); // Shots als Liste, da diese nur eine kurze Lebenszeit haben
             GameState.ShotListVsPlayer = new List<Shot>(); // Shots als Liste, da diese nur eine kurze Lebenszeit haben
 
+            Main.MainObject.MenuManager.LoadingText = "Loading map..";
             GameState.Karte = new Karte();
             GameState.Karte.LoadMap(GameState, "testmap");
 
             // Items laden
+            Main.MainObject.MenuManager.LoadingText = "Loading items..";
             Item.LoadItems();
 
             // Player
@@ -116,8 +126,8 @@ namespace EVCS_Projekt.Managers
             // Background laden
             background = Main.ContentManager.Load<Texture2D>("images/background");
 
-
-
+            // AI Thread starten
+            new Thread(new ThreadStart(AIThread.UpdateAI)).Start();
 
             // ################################################################################
             // ################################################################################
@@ -297,11 +307,11 @@ namespace EVCS_Projekt.Managers
         public void UpdateGame()
         {
             // Bildschirm Rectangle + 200 % in jede richtung
-            Rectangle screenRect = new Rectangle((int)(GameState.MapOffset.X - Configuration.GetInt("resolutionWidth") * 1), (int)(GameState.MapOffset.Y - Configuration.GetInt("resolutionHeight") * 1), (int)(Configuration.GetInt("resolutionWidth") * 3), (int)(Configuration.GetInt("resolutionHeight") * 3));
+            UpdateRectangle = new Rectangle((int)(GameState.MapOffset.X - Configuration.GetInt("resolutionWidth") * 1), (int)(GameState.MapOffset.Y - Configuration.GetInt("resolutionHeight") * 1), (int)(Configuration.GetInt("resolutionWidth") * 3), (int)(Configuration.GetInt("resolutionHeight") * 3));
 
             // Enemies, SO in UdpateRect
-            List<Enemy> enemies = GameState.QuadTreeEnemies.GetObjects(screenRect);
-            List<StaticObject> staticObjects = GameState.QuadTreeStaticObjects.GetObjects(screenRect);
+            List<Enemy> enemies = GameState.QuadTreeEnemies.GetObjects(UpdateRectangle);
+            List<StaticObject> staticObjects = GameState.QuadTreeStaticObjects.GetObjects(UpdateRectangle);
 
             updateObjects = enemies.Count;
 
@@ -334,6 +344,8 @@ namespace EVCS_Projekt.Managers
                 GameState.Player.Shoot();
             }
 
+            // AI can be updated
+            AIThread.IsUpdating = true;
 
             // ################################################################################
             // ################################################################################
@@ -982,6 +994,11 @@ namespace EVCS_Projekt.Managers
         // Prüfe ob zwei Punkte sichtkontakt haben (schießt sozusagen von Vector A nach Vector B un schaut ob er kollidiert.
         public static bool PointSeePoint(Vector2 start, Vector2 target)
         {
+            return PointSeePoint(start,target, new Vector2(1,1));
+        }
+
+        public static bool PointSeePoint(Vector2 start, Vector2 target, Vector2 size)
+        {
             Vector2 direction = new Vector2(target.X - start.X, target.Y - start.Y);
 
             int steps = (int)Math.Sqrt(Math.Pow(direction.X, 2) + Math.Pow(direction.Y, 2));
@@ -992,7 +1009,7 @@ namespace EVCS_Projekt.Managers
             {
                 start = start + direction;
 
-                if (!CheckRectangleInMap(new Rectangle((int)start.X, (int)start.Y, 1, 1)))
+                if (!CheckRectangleInMap(new Rectangle((int)(start.X - size.X / 2), (int)(start.Y - size.Y / 2), (int)size.X, (int)size.Y)))
                 {
                     return false;
                 }

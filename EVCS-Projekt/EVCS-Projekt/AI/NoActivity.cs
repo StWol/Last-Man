@@ -8,7 +8,11 @@ namespace EVCS_Projekt.AI
     class NoActivity : Activity
     {
         // Macht nichts
-        public override void DoAction(Enemy e)
+        public override void CalculateAction(Enemy e)
+        {
+        }
+
+        public override void DoActivity(Enemy e)
         {
         }
     }

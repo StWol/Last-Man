@@ -16,6 +16,7 @@ using EVCS_Projekt.Helper;
 using EVCS_Projekt.Objects;
 using EVCS_Projekt.Audio;
 using EVCS_Projekt.Helper.XMLManager;
+using EVCS_Projekt.AI;
 
 namespace EVCS_Projekt
 {
@@ -133,5 +134,16 @@ namespace EVCS_Projekt
 
             base.Draw(gameTime);
         }
+
+        protected override void OnExiting(Object sender, EventArgs args)
+        {
+            base.OnExiting(sender, args);
+
+            Debug.WriteLine("Laufende Threads beenden");
+
+            // Stop the threads
+            AIThread.Running = false;
+        }
+
     }
 }

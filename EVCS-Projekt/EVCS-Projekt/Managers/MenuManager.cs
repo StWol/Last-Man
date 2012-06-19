@@ -44,6 +44,7 @@ namespace EVCS_Projekt.Managers
         private Vector2 textPosition;
 
         private string text;
+        public string LoadingText { get; set; }
 
         //
         private delegate void DrawSub(SpriteBatch sb);
@@ -74,6 +75,7 @@ namespace EVCS_Projekt.Managers
             textPosition = new Vector2();
 
             text = "PROJEKT SS 2012 - MEDIENINFORMATIK ";
+            LoadingText = "";
 
             // Läd Texturen die bnötigt werden
             background = content.Load<Texture2D>("images/menu/background");
@@ -237,6 +239,7 @@ namespace EVCS_Projekt.Managers
 
             // Breite des texts
             Vector2 textSize = fontDefault.MeasureString(text);
+            Vector2 textSizeLoadingText = fontDefault.MeasureString(LoadingText);
 
             // Kleine animation. es blinken zwei punkte hinter dem loading schriftzug
             if (Main.GameTimeUpdate.TotalGameTime.TotalSeconds % 3 < 1)
@@ -246,9 +249,12 @@ namespace EVCS_Projekt.Managers
             else
                 text += "..";
 
-            Vector2 position = new Vector2(Configuration.GetInt("resolutionWidth") / 2 - textSize.X / 2, Configuration.GetInt("resolutionHeight") / 2 - textSize.Y / 2);
+            Vector2 position = new Vector2(Configuration.GetInt("resolutionWidth") / 2 - textSize.X / 2, Configuration.GetInt("resolutionHeight") / 2 - textSize.Y);
+
+            Vector2 positionLoadingText = new Vector2(Configuration.GetInt("resolutionWidth") / 2 - textSizeLoadingText.X / 2, Configuration.GetInt("resolutionHeight") / 2 - textSizeLoadingText.Y + textSizeLoadingText.Y * 1.2F);
 
             spriteBatch.DrawString(fontDefault, text, position, Color.White, 0F, new Vector2(0, 0), DrawHelper.Scale, SpriteEffects.None, 0);
+            spriteBatch.DrawString(fontDefault, LoadingText, positionLoadingText, Color.White, 0F, new Vector2(0, 0), DrawHelper.Scale, SpriteEffects.None, 0);
         }
 
         // ***************************************************************************

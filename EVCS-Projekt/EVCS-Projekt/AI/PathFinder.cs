@@ -24,9 +24,6 @@ namespace EVCS_Projekt.AI
             {
                 foreach (WayPoint t in Main.MainObject.GameManager.GameState.Karte.WayPoints.Values)
                 {
-                    if (s == t)
-                        continue;
-
                     PathFinder.FindePath(s, t);
                 }
             }
@@ -48,6 +45,16 @@ namespace EVCS_Projekt.AI
                 savedPaths = new Dictionary<int, Dictionary<int, PathNode>>();
 
             Debug.WriteLine("pfad berechnen von " + start.ID + " zu " + target.ID);
+
+            if (start == target)
+            {
+                if (!savedPaths.ContainsKey(start.ID))
+                    savedPaths.Add(start.ID, new Dictionary<int, PathNode>());
+
+                // Pfad clonen und speichern
+                savedPaths[start.ID].Add(target.ID, new PathNode(0, start.ID));
+                return new PathNode(0, start.ID);
+            }
 
             // Listen initialisieren
             openList = new List<PathNode>();
@@ -104,16 +111,15 @@ namespace EVCS_Projekt.AI
                     }
                 }
 
+                // Letztes Element noch anhängen
+                reverseCurrent.NextNode = found;
+
                 // Pfad speichern um ihn nicht erneut berechnen zu müssen
                 if (!savedPaths.ContainsKey(start.ID))
                     savedPaths.Add(start.ID, new Dictionary<int, PathNode>());
 
-                // bei nur einem knoten den zurückgeben
-                if (reverse == null || found.PreviousNode == null)
-                    return found;
-                
                 // Pfad clonen und speichern
-                savedPaths[target.ID].Add(target.ID, reverse.Clone());
+                savedPaths[start.ID].Add(target.ID, reverse.Clone());
 
                 // Pfad zurückgeben
                 return reverse;

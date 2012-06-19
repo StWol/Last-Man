@@ -12,13 +12,13 @@ namespace EVCS_Projekt.Objects.Items
     public class Stabilisator : Item
     {
         //Attributes
-        private float accuracy;
+        public float Accuracy { get; set; }
 
         //Constructor
         public Stabilisator( int id, EGroup group, String name, float accuracy, float weight, string description, ILocationBehavior locationBehavior)
             : base(  id,  group,  name,  description,  weight,  locationBehavior)
         {
-            this.accuracy = accuracy;
+            this.Accuracy = accuracy;
         }
 
         // ***************************************************************************
@@ -26,7 +26,7 @@ namespace EVCS_Projekt.Objects.Items
         public Stabilisator(StabilisatorInner si)
             : base(si.item)
         {
-            accuracy = si.accuracy;
+            Accuracy = si.accuracy;
         }
 
         // ***************************************************************************
@@ -42,22 +42,16 @@ namespace EVCS_Projekt.Objects.Items
         public StabilisatorInner GetInner()
         {
             StabilisatorInner si = new StabilisatorInner();
-            si.accuracy = accuracy;
+            si.accuracy = Accuracy;
             si.item = base.GetInner();
             return si;
-        }
-
-        //Functions
-        public float GetAccuracy()
-        {
-            return accuracy;
         }
 
         // ***************************************************************************
         // Clont Object
         public Stabilisator Clone()
         {
-            Stabilisator s = new Stabilisator(Id, Group, Name, accuracy, Weight, Description, LocationBehavior.Clone());
+            Stabilisator s = new Stabilisator(Id, Group, Name, Accuracy, Weight, Description, LocationBehavior.Clone());
             s.Renderer = Renderer;
             return s;
         }

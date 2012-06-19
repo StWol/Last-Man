@@ -17,7 +17,7 @@ namespace EVCS_Projekt
         public float Speed { get; private set; }
         public float Health { get; private set; }
         private float maxHealth;
-        private float sightiningDistance;
+        public float SightiningDistance { get; private set; }
         private float attackDistance;
         private float ratOfFire;
         private double lastAttack;
@@ -33,7 +33,7 @@ namespace EVCS_Projekt
         public static Dictionary<EEnemyType, Enemy> DefaultEnemies { get; set; }
 
         public Enemy(Enemy e, Vector2 position) :
-            this(e.LocationBehavior, e.Renderer, e.ratOfFire, e.attackDistance, e.sightiningDistance, e.maxHealth, e.Speed, e.Health, e.TypOfEnemy)
+            this(e.LocationBehavior, e.Renderer, e.ratOfFire, e.attackDistance, e.SightiningDistance, e.maxHealth, e.Speed, e.Health, e.TypOfEnemy)
         {
             LocationBehavior.Position = position;
         }
@@ -51,7 +51,7 @@ namespace EVCS_Projekt
             this.buffList = new List<Buff>();
             this.ratOfFire = ratOfFire;
             this.attackDistance = attackDistance;
-            this.sightiningDistance = sightiningDistance;
+            this.SightiningDistance = sightiningDistance;
             this.maxHealth = maxHealth;
             TypOfEnemy = typeOfEnemy;
 
@@ -66,7 +66,7 @@ namespace EVCS_Projekt
         // Clont den Gegner
         public Enemy Clone()
         {
-            Enemy c = new Enemy(LocationBehavior.Clone(), Renderer.Clone(), ratOfFire, attackDistance, sightiningDistance, maxHealth, Speed, Health, TypOfEnemy);
+            Enemy c = new Enemy(LocationBehavior.Clone(), Renderer.Clone(), ratOfFire, attackDistance, SightiningDistance, maxHealth, Speed, Health, TypOfEnemy);
             return c;
         }
 
@@ -110,10 +110,16 @@ namespace EVCS_Projekt
         }
 
 
+        // Berechnet was die neue activität genau machen soll
+        public void CalculateActivity()
+        {
+            Activity.CalculateAction(this);
+        }
+
         // Macht die Activität
         public void DoActivity()
         {
-            Activity.DoAction(this);
+            Activity.DoActivity(this);
         }
 
         // Hier ist es etwas seltsam, dass der Gegner ein Item bekommt, welches es dann auch glei droppt. Ausserdem ist die 
