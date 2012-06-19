@@ -19,46 +19,45 @@ namespace EVCS_Projekt.UI
         {
             get
             {
-                return (int)(Helper.DrawHelper.Get(this.GetHashCode() + "Size").X);
+                return ( int ) ( Helper.DrawHelper.Get( this.GetHashCode() + "Size" ).X );
             }
         }
         protected int height
         {
             get
             {
-                return (int)(Helper.DrawHelper.Get(this.GetHashCode() + "Size").Y);
+                return ( int ) ( Helper.DrawHelper.Get( this.GetHashCode() + "Size" ).Y );
             }
         }
         protected Vector2 position
         {
             get
             {
-                Vector2 pos = Helper.DrawHelper.Get(this.GetHashCode() + "Position");
-                int x = (int)(pos.X);
-                int y = (int)(pos.Y);
+                Vector2 pos = Helper.DrawHelper.Get( this.GetHashCode() + "Position" );
+                int x = ( int ) ( pos.X );
+                int y = ( int ) ( pos.Y );
 
-                if (parent != null)
+                if ( parent != null )
                 {
-                    x += (int)parent.GetPosition().X;
-                    y += (int)parent.GetPosition().Y;
+                    x += ( int ) parent.GetPosition().X;
+                    y += ( int ) parent.GetPosition().Y;
                 }
 
-                return new Vector2(x, y);
+                return new Vector2( x, y );
             }
-            private set 
+            private set
             {
                 string key = this.GetHashCode() + "Position";
-                Helper.DrawHelper.AddDimension(key, (int)value.X, (int)value.Y);
+                Helper.DrawHelper.AddDimension( key, ( int ) value.X, ( int ) value.Y );
             }
         }
 
-        public Texture2D CurrentTexture
+        public virtual Texture2D CurrentTexture
         {
             get
             {
-                if(isHover)
+                if ( isHover )
                 {
-                    Debug.WriteLine("Hover True");
                     return hoverTexture;
                 }
                 else
@@ -71,27 +70,29 @@ namespace EVCS_Projekt.UI
 
         protected List<UIActionListener> listener;
         protected UIElement parent;
-        private bool isHover;
+        protected bool isHover;
         private bool mouseDown;
 
-        public UIElement(int width, int height, Vector2 position)
+        protected MouseState oldState = Mouse.GetState();
+
+        public UIElement( int width, int height, Vector2 position )
         {
             string key = this.GetHashCode() + "Size";
-            Helper.DrawHelper.AddDimension(key, width, height);
-            
+            Helper.DrawHelper.AddDimension( key, width, height );
+
             this.position = position;
             listener = new List<UIActionListener>();
         }
 
-        public UIElement(int width, int height, Vector2 position, Texture2D texture, Texture2D hoverTexture) :
-            this(width,height,position)
+        public UIElement( int width, int height, Vector2 position, Texture2D texture, Texture2D hoverTexture ) :
+            this( width, height, position )
         {
             this.texture = texture;
             this.hoverTexture = hoverTexture;
         }
 
 
-        public void SetParent(UIElement parent)
+        public void SetParent( UIElement parent )
         {
             this.parent = parent;
         }
@@ -112,40 +113,40 @@ namespace EVCS_Projekt.UI
             return position;
         }
 
-        public void SetPosition(Vector2 pos)
+        public void SetPosition( Vector2 pos )
         {
             position = pos;
         }
 
         // Wird von den Unterklassen überschrieben
-        public virtual void Draw(SpriteBatch sb)
+        public virtual void Draw( SpriteBatch sb )
         {
         }
 
         // Wird von den Unterklassen überschrieben
         public virtual void Update()
         {
-            MouseState state = Mouse.GetState();
+
 
             // Wenn nicht mehr gedrückt, aber im vorherigen Durchgang gedrückt war => Man kann die Maustaste gedrückt halten ohne das jedesmal ein Event ausgelöst wird
-            if (IsMousePressed())
+            if ( IsMousePressed() )
             {
-                List<UIActionListener> listenerList = new List<UIActionListener>(listener);
-                foreach (UIActionListener al in listenerList)
+                List<UIActionListener> listenerList = new List<UIActionListener>( listener );
+                foreach ( UIActionListener al in listenerList )
                 {
-                    al.OnMouseDown(this);
+                    al.OnMouseDown( this );
                 }
             }
-            
 
-            if (state.LeftButton == ButtonState.Pressed)
-            {
-                mouseDown = true;
-            }
-            else
-            {
-                mouseDown = false;
-            }
+
+            //if ( state.LeftButton == ButtonState.Pressed )
+            //{
+            //    mouseDown = true;
+            //}
+            //else
+            //{
+            //    mouseDown = false;
+            //}
         }
 
 
@@ -154,12 +155,12 @@ namespace EVCS_Projekt.UI
             MouseState state = Mouse.GetState();
             int mX = state.X;
             int mY = state.Y;
-            int x = (int)(GetPosition().X);
-            int y = (int)(GetPosition().Y);
+            int x = ( int ) ( GetPosition().X );
+            int y = ( int ) ( GetPosition().Y );
             int w = GetWidth();
             int h = GetHeight();
 
-            if (mX > x && mX < x + w && mY > y && mY < y + h)
+            if ( mX > x && mX < x + w && mY > y && mY < y + h )
             {
                 isHover = true;
                 return true;
@@ -174,22 +175,24 @@ namespace EVCS_Projekt.UI
 
         protected bool IsMousePressed()
         {
-            MouseState state = Mouse.GetState();
-            if (IsMouseOver() && state.LeftButton != ButtonState.Pressed && mouseDown == true)
-            {
-                return true;
-            }
-            return false;
+
+            MouseState newState = Mouse.GetState();
+
+            bool isPressed = IsMouseOver() && oldState.LeftButton != ButtonState.Pressed && newState.LeftButton == ButtonState.Pressed;
+
+            oldState = newState;
+            
+            return isPressed;
         }
 
-        public void AddActionListener(UIActionListener al)
+        public void AddActionListener( UIActionListener al )
         {
-            listener.Add(al);
+            listener.Add( al );
         }
 
-        public void RemoveActionListener(UIActionListener al)
+        public void RemoveActionListener( UIActionListener al )
         {
-            listener.Remove(al);
+            listener.Remove( al );
         }
     }
 }
