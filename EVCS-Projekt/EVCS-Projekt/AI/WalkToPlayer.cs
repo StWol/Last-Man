@@ -11,14 +11,20 @@ namespace EVCS_Projekt.AI
 {
     public class WalkToPlayer : Activity
     {
+        // Calculate
         private PathNode _path { get; set; }
         private WayPoint _target { get; set; }
+        private WayPoint _currentWayPoint { get; set; }
+        private Vector2 _lastPlayerPosition { get; set; }
+
+        // Do
+        private bool _lookAtPlayer { get; set; }
 
         public WalkToPlayer()
         {
         }
 
-        public override void DoAction(Enemy e)
+        public override void CalculateAction(Enemy e)
         {
             WayPoint target = Main.MainObject.GameManager.GameState.Player.NearestWayPoint;
 
@@ -27,37 +33,53 @@ namespace EVCS_Projekt.AI
 
             if (_path == null || target != _target)
             {
-                Debug.WriteLine("target = "+target.ID);
+                Debug.WriteLine("target = " + target.ID);
                 _target = target;
 
-                WayPoint start = Karte.SearchNearest(e.LocationBehavior.Position);
-                
+                if (_currentWayPoint == null)
+                    _currentWayPoint = Karte.SearchNearest(e.LocationBehavior.Position);
 
-                if (start == null || target == null)
+
+                if (_currentWayPoint == null || target == null)
                 {
                     e.Activity = new NoActivity();
                     return;
                 }
 
-                _path = PathFinder.FindePath(start, target);
+                _path = PathFinder.FindePath(_currentWayPoint, target);
             }
 
             WayPoint next = Main.MainObject.GameManager.GameState.Karte.WayPoints[_path.ID];
 
             if (Vector2.Distance(next.Location.Position, e.LocationBehavior.Position) < next.Location.Size.X)
             {
+                _currentWayPoint = Main.MainObject.GameManager.GameState.Karte.WayPoints[next.ID];
+
                 if (_path.NextNode != null)
                     _path = _path.NextNode;
             }
+
+            if ( GameManager.PointSeePoint(e.LocationBehavior.Position, Main.MainObject.GameManager.GameState.Player.LocationBehavior.Position, e.LocationBehavior.Size))
+            {
+                _lookAtPlayer = true;
+                _lastPlayerPosition = Main.MainObject.GameManager.GameState.Player.LocationBehavior.Position;
+            }
             else
             {
-                e.LookAt(next.Location.Position);
+                // Wenn er player aus den augen verloren hat, nearest waypoint suchen
+                if (_lookAtPlayer == true)
+                {
+                    _path = null;
+                    _currentWayPoint = Karte.SearchNearest(_lastPlayerPosition);
+                }
 
-                Move(e);
+                _lookAtPlayer = false;
             }
+
+            //Debug.WriteLineIf(_path == null, "path is null");
         }
 
-        
+
 
         private void Move(Enemy e)
         {
@@ -79,6 +101,22 @@ namespace EVCS_Projekt.AI
             {
                 e.HasMoved = false;
             }
+        }
+
+        public override void DoActivity(Enemy e)
+        {
+            if (_lookAtPlayer)
+            {
+                e.LookAt(Main.MainObject.GameManager.GameState.Player.LocationBehavior.Position);
+            }
+            else if (_path != null)
+            {
+                WayPoint next = Main.MainObject.GameManager.GameState.Karte.WayPoints[_path.ID];
+
+                e.LookAt(next.Location.Position);
+            }
+
+            Move(e);
         }
     }
 }

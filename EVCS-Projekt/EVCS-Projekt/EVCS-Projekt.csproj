@@ -73,6 +73,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AI\Activity.cs" />
+    <Compile Include="AI\AIThread.cs" />
     <Compile Include="AI\PathFinder.cs" />
     <Compile Include="AI\PathNode.cs" />
     <Compile Include="AI\RandomWalk.cs" />
@@ -135,7 +136,6 @@
     <Compile Include="UI\UIElement.cs" />
     <Compile Include="UI\UIList.cs" />
     <Compile Include="UI\UIPanel.cs" />
-    <Compile Include="UI\UIToggleButton.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Game.ico" />

@@ -41,6 +41,7 @@ namespace EVCS_Projekt.Map
             ReadMapFile(mapFile);
 
             // Wege berechnen
+            Main.MainObject.MenuManager.LoadingText = "Calculating enemy routes..";
             PathFinder.CalculatePath();
         }
 
@@ -188,6 +189,13 @@ namespace EVCS_Projekt.Map
             int sizeX = 1000, sizeY = 1000;
             List<WayPoint> wpList = Main.MainObject.GameManager.GameState.Karte.QuadTreeWayPoints.GetObjects(new Rectangle((int)(position.X - sizeX / 2), (int)(position.Y - sizeY / 2), sizeX, sizeY));
 
+            WayPoint nearest = SearchNearest(position, wpList);
+
+            return nearest;
+        }
+
+        public static WayPoint SearchNearest(Vector2 position, List<WayPoint> wpList )
+        {
             // Nearest
             WayPoint nearest = null;
             float dist = 0;

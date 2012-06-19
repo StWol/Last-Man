@@ -18,7 +18,11 @@ namespace EVCS_Projekt.AI
             _walkTo = walkTo;
         }
 
-        public override void DoAction(Enemy e)
+        public override void DoActivity(Enemy e)
+        {
+        }
+
+        public override void CalculateAction(Enemy e)
         {
             if (_path == null)
             {
