@@ -7,6 +7,7 @@ namespace EVCS_Projekt.UI
 {
     interface UIActionListener
     {
-        void ActionEvent(UIElement element);
+        void OnMouseDown(UIElement element);
+        void OnMouseUp(UIElement element);
     }
 }

@@ -253,7 +253,7 @@ namespace EVCS_Projekt.Managers
 
         // ***************************************************************************
         // Listener für die Buttons
-        void UIActionListener.ActionEvent(UIElement element)
+        void UIActionListener.OnMouseDown(UIElement element)
         {
             if (element == btnExit)
                 Environment.Exit(0);
@@ -263,6 +263,11 @@ namespace EVCS_Projekt.Managers
                 Debug.WriteLine("Option Button");
             else if (element == btnCredits)
                 Debug.WriteLine("Credits Button");
+        }
+
+        void UIActionListener.OnMouseUp(UIElement element)
+        {
+            // leer
         }
 
         // ***************************************************************************

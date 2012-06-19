@@ -15,8 +15,8 @@ namespace EVCS_Projekt.UI
         private readonly List<Item> itemList;
         private readonly Dictionary<int, int> countItemsDict;
         private int firsVisibleButtonIndex = 0;
-        private const int MAX_VISIBLE_BUTTON_COUNT = 5;
-
+        private int MAX_VISIBLE_BUTTON_COUNT = 5;
+        private const int DEFAULT_HEIGHT = 48;
         private Rectangle box;
 
         private readonly UIButton btnPrevious;
@@ -25,10 +25,11 @@ namespace EVCS_Projekt.UI
         public UIList( int width, int height, Vector2 position, List<Item> itemList )
             : base( width, height, position )
         {
+            MAX_VISIBLE_BUTTON_COUNT = height/DEFAULT_HEIGHT;
             this.itemList = itemList;
             buttonList = new List<UIElement>();
             countItemsDict = new Dictionary<int, int>();
-            box = new Rectangle((int)position.X, (int)position.Y, width, height);
+            
             CountItems();
 
             var imgPreviousButton = Main.ContentManager.Load<Texture2D>( "images/gui/list_previous" );
@@ -67,8 +68,8 @@ namespace EVCS_Projekt.UI
             {
                 var item = itemList[ i ];
                 var x = ( int ) ( position.X );
-                var y = (int)(position.Y + (50 * i)) + btnPrevious.GetHeight();
-                var button = new UIListButton(width, 24, new Vector2(x, y), item.Icon, item.Name, countItemsDict[item.Id], item.Weight);
+                var y = (int)((50 * i)) + btnPrevious.GetHeight();
+                var button = new UIListButton(width, 24, new Vector2(0, y), item.Icon, item.Name, countItemsDict[item.Id], item.Weight);
 
                 buttonList.Add( button );
             }
@@ -77,13 +78,17 @@ namespace EVCS_Projekt.UI
         public override void Draw( SpriteBatch sb )
         {
             Clear();
-            sb.Draw( Main.ContentManager.Load<Texture2D>( "images/pixelWhite" ), box, Color.Fuchsia );
+//            box = new Rectangle((int)position.X, (int)position.Y, width, height);
+//            sb.Draw( Main.ContentManager.Load<Texture2D>( "images/pixelWhite" ), box, Color.Fuchsia );
             Add( btnPrevious );
-            Debug.WriteLine("Position  x:" + btnPrevious.GetPosition().X + " y:" + btnPrevious.GetPosition().Y);
-            for ( int i = firsVisibleButtonIndex; i < MAX_VISIBLE_BUTTON_COUNT + firsVisibleButtonIndex; i++ )
+
+            int j = 0;
+            for ( int i = firsVisibleButtonIndex; i < MAX_VISIBLE_BUTTON_COUNT + firsVisibleButtonIndex; i++ , j++)
             {
-                Add( buttonList[ i ] );
                 
+                    UIListButton button = (UIListButton)buttonList[i];
+                    button.SetPosition(new Vector2(0, j * 50 + 18));
+                    Add(buttonList[i]);
             }
             Add( btnNext );
             base.Draw( sb );
@@ -100,24 +105,28 @@ namespace EVCS_Projekt.UI
             private readonly UIButton btnItemCount;
             private readonly UIButton btnWeightIcon;
             private readonly UIButton btnWeightCount;
-            private const int DEFAULT_HEIGHT = 48;
+            public Color Color;
+            public Color HoverColor;
 
             public UIListButton( int width, int height, Vector2 position, Texture2D itemIcon, string name, int count, float weigth )
                 : base(width, DEFAULT_HEIGHT, position)
             {
                 var weightIcon = Main.ContentManager.Load<Texture2D>("images/gui/weight");
 
-                this.btnIcon = new UIButton(DEFAULT_HEIGHT,DEFAULT_HEIGHT, new Vector2( 0, 0 ), itemIcon, itemIcon );
+                this.btnIcon = new UIButton(DEFAULT_HEIGHT,DEFAULT_HEIGHT, new Vector2( 0, 0 ), itemIcon, itemIcon, "");
                 this.btnName = new UIButton(width - DEFAULT_HEIGHT*4, DEFAULT_HEIGHT, new Vector2(DEFAULT_HEIGHT, 0), name);
                 this.btnItemCount = new UIButton(DEFAULT_HEIGHT, DEFAULT_HEIGHT, new Vector2(width - DEFAULT_HEIGHT * 3, 0), count + "");
-                this.btnWeightIcon = new UIButton(DEFAULT_HEIGHT, DEFAULT_HEIGHT, new Vector2(width - DEFAULT_HEIGHT * 2, 0), weightIcon, weightIcon);
+                this.btnWeightIcon = new UIButton(DEFAULT_HEIGHT, DEFAULT_HEIGHT, new Vector2(width - DEFAULT_HEIGHT * 2, 0), weightIcon, weightIcon, "");
                 this.btnWeightCount = new UIButton(DEFAULT_HEIGHT, DEFAULT_HEIGHT, new Vector2(width - DEFAULT_HEIGHT, 0), weigth.ToString());
 
-                btnIcon.BackgroundColor = Color.Peru;
-                btnName.BackgroundColor = Color.Salmon;
-                btnItemCount.BackgroundColor = Color.Green;
-                btnWeightIcon.BackgroundColor = Color.RoyalBlue;
-                btnWeightCount.BackgroundColor = Color.White;
+//                btnIcon.BackgroundColor = Color.Peru;
+//                btnName.BackgroundColor = Color.Salmon;
+//                btnItemCount.BackgroundColor = Color.Green;
+//                btnWeightIcon.BackgroundColor = Color.RoyalBlue;
+//                btnWeightCount.BackgroundColor = Color.White;
+
+                Color = Color.Gray;
+                HoverColor = Color.White;
 
                 Add( this.btnIcon );
                 Add( this.btnName );
@@ -125,20 +134,48 @@ namespace EVCS_Projekt.UI
                 Add( this.btnWeightIcon );
                 Add( this.btnWeightCount );
             }
+
+            public override void  Draw(SpriteBatch sb)
+            {
+                Color active;
+                if(IsMouseOver())
+                {
+                    active = HoverColor;
+                }
+                else
+                {
+                    active = Color;
+                }
+
+                foreach (UIButton button in children)
+                    button.BackgroundColor = active;
+                sb.Draw(Main.ContentManager.Load<Texture2D>("images/pixelWhite"), new Rectangle((int)position.X, (int)position.Y, width, height), active);
+
+                base.Draw(sb);
+            }
         }
 
-        public void ActionEvent( UIElement element )
+        public void OnMouseDown(UIElement element)
         {
-            Debug.WriteLine("Action");
-            if ( element == btnPrevious && firsVisibleButtonIndex > 0 )
-            {
-                firsVisibleButtonIndex--;
-                Debug.WriteLine("Action");
-            }
-            else if ( element == btnNext )
-            {
-                firsVisibleButtonIndex++;
-            }
+            
+                if (element == btnPrevious && firsVisibleButtonIndex > 0)
+                {
+                    firsVisibleButtonIndex--;
+                }
+                   
+                else if (element == btnNext)
+                {
+                    if ((firsVisibleButtonIndex + MAX_VISIBLE_BUTTON_COUNT) < buttonList.Count)
+                    {
+                        firsVisibleButtonIndex++;
+                    }
+                }
+            
+        }
+
+        public void OnMouseUp(UIElement element)
+        {
+            // leer
         }
     }
 }

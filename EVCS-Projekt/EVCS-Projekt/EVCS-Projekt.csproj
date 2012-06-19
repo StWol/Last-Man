@@ -131,6 +131,7 @@
     <Compile Include="UI\UIElement.cs" />
     <Compile Include="UI\UIList.cs" />
     <Compile Include="UI\UIPanel.cs" />
+    <Compile Include="UI\UIToggleButton.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Game.ico" />

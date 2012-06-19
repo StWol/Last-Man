@@ -120,6 +120,10 @@ Content\images\character\standing_big.xnb
 Content\images\character\standing_big_shot.xnb
 Content\images\character\standing_small.xnb
 Content\images\character\standing_small_shot.xnb
+Content\fonts\lunaBarMedium.xnb
+Content\fonts\serenaSmall.xnb
+Content\fonts\lunaBarSmall.xnb
+Content\fonts\serenaMedium.xnb
 Content\music\Greendjohn_-_Look_Behind.wma
 Content\config.ini
 Content\renderer.ini

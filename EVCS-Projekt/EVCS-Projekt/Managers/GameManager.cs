@@ -49,6 +49,10 @@ namespace EVCS_Projekt.Managers
         // ## Sonstiges
         Texture2D background;
 
+        private delegate void UpdateDel();
+
+        private UpdateDel updateDelegater;
+
         // Tests
         private Texture2D test;
         private SpriteFont testFont;
@@ -69,6 +73,9 @@ namespace EVCS_Projekt.Managers
         public void Load()
         {
             Debug.WriteLine("Läd das eigentliche Spiel");
+
+            // Update Delegator setzen
+            updateDelegater = UpdateGame;
 
             // Variablen initialisiwerung
             GameState = new GameState();
@@ -283,9 +290,11 @@ namespace EVCS_Projekt.Managers
             tr.Close();
         }
 
-        // ***************************************************************************
-        // Update
-        public override void Update()
+        public void UpdateGui()
+        {
+            inventar.Update();
+        }
+        public void UpdateGame()
         {
             // Bildschirm Rectangle + 50 % in jede richtung
             Rectangle screenRect = new Rectangle((int)(GameState.MapOffset.X - Configuration.GetInt("resolutionWidth") * 0.5), (int)(GameState.MapOffset.Y - Configuration.GetInt("resolutionHeight") * 0.5), (int)(Configuration.GetInt("resolutionWidth") * 2), (int)(Configuration.GetInt("resolutionHeight") * 2));
@@ -381,7 +390,6 @@ namespace EVCS_Projekt.Managers
 
 
             if (Keyboard.GetState().IsKeyDown(Keys.D1))
-
             {
                 foreach (Enemy e in GameState.QuadTreeEnemies)
                 {
@@ -416,14 +424,7 @@ namespace EVCS_Projekt.Managers
                     e.Renderer = LoadedRenderer.Get("A_StachelKrabbe_Move");
                 }
             }
-            else if ( newState.IsKeyDown( Keys.I ) && !oldKeyState.IsKeyDown( Keys.I ) )
-            {
-
-                inventar.Visible = !inventar.Visible;
-
-            }
-
-            oldKeyState = newState;
+            
 
             float mr = Mouse.GetState().ScrollWheelValue - mausrad;
             if (mr > 0)
@@ -481,6 +482,33 @@ namespace EVCS_Projekt.Managers
 
             // TEST-ENDE
             // ###############################################################################
+        }
+
+        // ***************************************************************************
+        // Update
+        public override void Update()
+        {
+            updateDelegater();
+
+            var newState = Keyboard.GetState();
+
+            if (newState.IsKeyDown(Keys.I) && !oldKeyState.IsKeyDown(Keys.I))
+            {
+                if(inventar.Visible)
+                {
+                    updateDelegater = UpdateGame;
+                    inventar.Visible = false;
+                }else
+                {
+                    updateDelegater = UpdateGui;
+                    inventar.Visible = true;
+                }
+                 
+                
+            }
+            
+
+            oldKeyState = newState;
         }
 
         // ***************************************************************************
