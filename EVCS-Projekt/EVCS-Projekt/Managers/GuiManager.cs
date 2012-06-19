@@ -49,9 +49,9 @@ namespace EVCS_Projekt.Managers
 
 
             btnKonstruktor = new UIButton(new Vector2(0, 0), imgKonstruktor, imgKonstruktorHover);
-            btnMap = new UIButton(new Vector2(160, 0), imgMap, imgMapHover);
-            btnMission = new UIButton(new Vector2(320, 0), imgMission, imgMissionHover);
-            btnInventar = new UIButton(new Vector2(480, 0), imgInventar, imgInventarHover);
+            btnMap = new UIButton(new Vector2(150, 0), imgMap, imgMapHover);
+            btnMission = new UIButton(new Vector2(300, 0), imgMission, imgMissionHover);
+            btnInventar = new UIButton(new Vector2(450, 0), imgInventar, imgInventarHover);
 
             btnKonstruktor.AddActionListener(this);
             btnMap.AddActionListener(this);

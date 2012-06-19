@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
@@ -30,7 +31,19 @@ namespace EVCS_Projekt.UI
         }
         protected Vector2 position
         {
-            get { return Helper.DrawHelper.Get(this.GetHashCode() + "Position"); }
+            get
+            {
+                Vector2 pos = Helper.DrawHelper.Get(this.GetHashCode() + "Position");
+                int x = (int)(pos.X);
+                int y = (int)(pos.Y);
+                if (parent != null)
+                {
+                    x += (int)parent.GetPosition().X;
+                    y += (int)parent.GetPosition().Y;
+                }
+
+                return new Vector2(x, y);
+            }
             private set 
             {
                 string key = this.GetHashCode() + "Position";
@@ -38,6 +51,23 @@ namespace EVCS_Projekt.UI
                 Helper.DrawHelper.AddDimension(key, (int)value.X, (int)value.Y);
             }
         }
+
+        public Texture2D CurrentTexture
+        {
+            get
+            {
+                if(isHover)
+                {
+                    Debug.WriteLine("Hover True");
+                    return hoverTexture;
+                }
+                else
+                    return texture;
+            }
+        }
+
+        private Texture2D texture;
+        private Texture2D hoverTexture;
 
         protected List<UIActionListener> listener;
         protected UIElement parent;
@@ -52,6 +82,14 @@ namespace EVCS_Projekt.UI
             this.position = position;
             listener = new List<UIActionListener>();
         }
+
+        public UIElement(int width, int height, Vector2 position, Texture2D texture, Texture2D hoverTexture) :
+            this(width,height,position)
+        {
+            this.texture = texture;
+            this.hoverTexture = hoverTexture;
+        }
+
 
         public void SetParent(UIElement parent)
         {
@@ -70,6 +108,7 @@ namespace EVCS_Projekt.UI
 
         public Vector2 GetPosition()
         {
+
             return position;
         }
 
@@ -95,7 +134,7 @@ namespace EVCS_Projekt.UI
             if (mX > x && mX < x + w && mY > y && mY < y + h)
             {
                 isHover = true;
-
+                
                 // Wenn nicht mehr gedrückt, aber im vorherigen Durchgang gedrückt war => Man kann die Maustaste gedrückt halten ohne das jedesmal ein Event ausgelöst wird
                 if (state.LeftButton != ButtonState.Pressed && mouseDown == true)
                 {

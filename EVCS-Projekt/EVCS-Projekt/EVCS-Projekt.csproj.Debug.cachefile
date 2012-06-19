@@ -116,6 +116,8 @@ Content\images\gui\weight.xnb
 Content\images\waypoint.xnb
 Content\audio\sounds\Colt Desert Eagle-SoundBible.com-1042567256.xnb
 Content\audio\sounds\shotgun-reload-old_school-RA_The_Sun_God-580332022.xnb
+Content\images\gui\list_next_hover.xnb
+Content\images\gui\list_previous_hover.xnb
 Content\music\Greendjohn_-_Look_Behind.wma
 Content\config.ini
 Content\renderer.ini

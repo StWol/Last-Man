@@ -131,7 +131,8 @@ namespace EVCS_Projekt.Managers
             GameState.Player.Inventar.Add(Item.AllItems[4]);
             GameState.Player.Inventar.Add(Item.AllItems[6]);
             GameState.Player.Inventar.Add(Item.AllItems[7]);
-
+            GameState.Player.Inventar.Add(Item.AllItems[7]);
+            GameState.Player.Inventar.Add(Item.AllItems[7]);
             //User Interface erstellen
             InitGui();
 

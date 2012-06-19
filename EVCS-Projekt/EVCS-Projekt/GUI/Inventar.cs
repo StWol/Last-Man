@@ -17,7 +17,7 @@ namespace EVCS_Projekt.GUI
 
         public Inventar(int width, int height, Vector2 position) : base(width, height, position)
         {
-            inventarList = new UIList( 300, 300, position, Main.MainObject.GameManager.GameState.Player.Inventar );
+            inventarList = new UIList( 400, 300, position, Main.MainObject.GameManager.GameState.Player.Inventar );
 
             Add(inventarList);
             Visible = false;
@@ -25,7 +25,8 @@ namespace EVCS_Projekt.GUI
             if ( pixel == null )
                 pixel = Main.ContentManager.Load<Texture2D>( "images/pixelWhite" );
 
-            background = new Rectangle((int) position.X, (int) position.Y, width, height);
+            background = new Rectangle((int) GetPosition().X, (int) GetPosition().Y, width, height);
+            Add(inventarList);
         }
 
 
