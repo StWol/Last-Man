@@ -424,18 +424,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="images\character\moving_1.png">
-      <Name>moving_1</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-    <Compile Include="images\character\moving_2.png">
-      <Name>moving_2</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="images\effects\guns\gun_fire.png">
       <Name>gun_fire</Name>
       <Importer>TextureImporter</Importer>
@@ -564,6 +552,7 @@
       <Importer>XmlImporter</Importer>
       <Processor>PassThroughProcessor</Processor>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -770,6 +759,30 @@
       <Name>shotgun-reload-old_school-RA_The_Sun_God-580332022</Name>
       <Importer>WavImporter</Importer>
       <Processor>SoundEffectProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="images\character\standing_big.png">
+      <Name>standing_big</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="images\character\standing_big_shot.png">
+      <Name>standing_big_shot</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="images\character\standing_small.png">
+      <Name>standing_small</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="images\character\standing_small_shot.png">
+      <Name>standing_small_shot</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>

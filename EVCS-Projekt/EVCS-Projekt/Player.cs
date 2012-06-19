@@ -22,6 +22,9 @@ namespace EVCS_Projekt
 {
     public class Player : GameObject
     {
+        //  Wie lange das schussbild gezeigt wird
+        private static float ShotTime = 0.05F;
+
         //Attributes
         private float maxHealth;
         public float Health { get; private set; }
@@ -32,6 +35,35 @@ namespace EVCS_Projekt
         private Dictionary<int, Item> shortcuts;
         private List<Buff> bufflist;
         public Vector2 Direction { get; set; }
+
+        // ob ein schuss eine gewisse zeit her war
+        private float shotTimer;
+        public bool BigWeapon { get; set; }
+
+        public new IRenderBehavior Renderer
+        {
+            get
+            {
+                if (Weapon == null)
+                    return RendererStanding;
+
+                if (Weapon.BigWeapon)
+                {
+                    if (shotTimer > 0)
+                        return RendererBigWeaponShot;
+                    return RendererBigWeapon;
+                }
+                else
+                {
+                    if (shotTimer > 0)
+                        return RendererSmallWeaponShot;
+                    return RendererSmallWeapon;
+                }
+            }
+            set
+            {
+            }
+        }
 
         public float Reloading { get; set; }
 
@@ -67,8 +99,14 @@ namespace EVCS_Projekt
         }
 
         // Verschiedene Renderer
-        private AnimationRenderer RendererMoving { get; set; }
         private StaticRenderer RendererStanding { get; set; }
+        private StaticRenderer RendererBigWeapon { get; set; }
+        private StaticRenderer RendererBigWeaponShot { get; set; }
+
+        private StaticRenderer RendererSmallWeapon { get; set; }
+        private StaticRenderer RendererSmallWeaponShot { get; set; }
+
+        // Füße
         private AnimationRenderer RendererFootMoving { get; set; }
 
         // 
@@ -85,14 +123,17 @@ namespace EVCS_Projekt
             Speed = speed;
 
             // Texturen für Renderer laden
-            Texture2D textureStanding = Main.ContentManager.Load<Texture2D>("images/character/standing");
-            RendererStanding = new StaticRenderer(textureStanding);
+            RendererStanding = LoadedRenderer.GetStatic("S_Player_Standing");
+            RendererBigWeapon = LoadedRenderer.GetStatic("S_Player_BW");
+            RendererBigWeaponShot = LoadedRenderer.GetStatic("S_Player_BW_Shot");
+            RendererSmallWeapon = LoadedRenderer.GetStatic("S_Player_SW");
+            RendererSmallWeaponShot = LoadedRenderer.GetStatic("S_Player_SW_Shot");
 
-            Texture2D[] textureMoving = new Texture2D[]{ 
+            /*Texture2D[] textureMoving = new Texture2D[]{ 
                 Main.ContentManager.Load<Texture2D>("images/character/moving_1"),
                 Main.ContentManager.Load<Texture2D>("images/character/moving_2")
-            };
-            RendererMoving = new AnimationRenderer(textureMoving, 4F);
+            };*/
+            //RendererMoving = new AnimationRenderer(textureMoving, 4F);
 
             Texture2D[] textureFootMoving = new Texture2D[]{ 
                 Main.ContentManager.Load<Texture2D>("images/character/left_foot"),
@@ -106,13 +147,17 @@ namespace EVCS_Projekt
             footLocation = new MapLocation(locationBehavior.Position, new Vector2(textureFootMoving[0].Width, textureFootMoving[0].Height));
 
             // Standardmäßig den StandingRenderer zuweisen
-            Renderer = RendererStanding;
+            Renderer = RendererBigWeapon;
 
             // LocationSize anpassen
             LocationSizing();
+            LocationBehavior.Size = Renderer.Size; // Sollte LocationSizing machen
 
             // InventarListe init
             Inventar = new List<Item>();
+
+            // Schusstime auf 0 setzten
+            shotTimer = 0;
 
             // Rect Methode setzten
             base.GetRect = base.RectPlayer;
@@ -127,7 +172,6 @@ namespace EVCS_Projekt
 
             // Character oberteil
             Renderer.Draw(spriteBatch, LocationBehavior);
-
         }
 
         // ***************************************************************************
@@ -146,7 +190,11 @@ namespace EVCS_Projekt
 
             // ReloadTimer
             if (Reloading > 0)
-                Reloading -= (float) Main.GameTimeUpdate.ElapsedGameTime.TotalSeconds;
+                Reloading -= (float)Main.GameTimeUpdate.ElapsedGameTime.TotalSeconds;
+
+            // ShotTimer verringer
+            if (shotTimer > 0)
+                shotTimer -= (float)Main.GameTimeUpdate.ElapsedGameTime.TotalSeconds;
         }
 
         // ***************************************************************************
@@ -180,6 +228,9 @@ namespace EVCS_Projekt
 
                 // Sound abspielen
                 Sound.Sounds[Weapon.Antrieb.SoundId].Play();
+
+                // Shottimer setzten
+                shotTimer = ShotTime;
             }
             else if (Weapon.Cooldown <= 0 && Weapon.ShotCount == 0)
             {

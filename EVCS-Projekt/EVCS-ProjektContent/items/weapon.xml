@@ -5,6 +5,7 @@
 		<antrieb>1</antrieb>
 		<stabilisator>6</stabilisator>
 		<hauptteil>2</hauptteil>
+    <bigWeapon>true</bigWeapon>
 		<item>
 			<weight>123</weight>
 			<id>8</id>
@@ -21,6 +22,7 @@
     <antrieb>9</antrieb>
     <stabilisator>6</stabilisator>
     <hauptteil>2</hauptteil>
+    <bigWeapon>true</bigWeapon>
     <item>
       <weight>123</weight>
       <id>10</id>
@@ -37,6 +39,7 @@
     <antrieb>16</antrieb>
     <stabilisator>6</stabilisator>
     <hauptteil>17</hauptteil>
+    <bigWeapon>false</bigWeapon>
     <item>
       <weight>123</weight>
       <id>15</id>
