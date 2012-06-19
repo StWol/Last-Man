@@ -125,7 +125,6 @@ namespace EVCS_Projekt.Managers
             // TEST
             // Test für ladebilschirm
 
-
             MapLocation mmm = new MapLocation(new Rectangle(1, 2, 3, 4));
             Shot s = new Shot(1, EGroup.FeuerGross, 2, new Vector2(1, 2), 3, "name", 4, "desc", 5, mmm);
             s.Renderer = LoadedRenderer.GetStatic("S_Shot_Normal");
@@ -209,6 +208,7 @@ namespace EVCS_Projekt.Managers
                 GameState.QuadTreeEnemies.Add(x);
             }
 
+            
             // TEST-ENDE
             // ################################################################################
 
@@ -296,8 +296,8 @@ namespace EVCS_Projekt.Managers
         }
         public void UpdateGame()
         {
-            // Bildschirm Rectangle + 50 % in jede richtung
-            Rectangle screenRect = new Rectangle((int)(GameState.MapOffset.X - Configuration.GetInt("resolutionWidth") * 0.5), (int)(GameState.MapOffset.Y - Configuration.GetInt("resolutionHeight") * 0.5), (int)(Configuration.GetInt("resolutionWidth") * 2), (int)(Configuration.GetInt("resolutionHeight") * 2));
+            // Bildschirm Rectangle + 200 % in jede richtung
+            Rectangle screenRect = new Rectangle((int)(GameState.MapOffset.X - Configuration.GetInt("resolutionWidth") * 1), (int)(GameState.MapOffset.Y - Configuration.GetInt("resolutionHeight") * 1), (int)(Configuration.GetInt("resolutionWidth") * 3), (int)(Configuration.GetInt("resolutionHeight") * 3));
 
             // Enemies, SO in UdpateRect
             List<Enemy> enemies = GameState.QuadTreeEnemies.GetObjects(screenRect);
@@ -830,6 +830,7 @@ namespace EVCS_Projekt.Managers
             foreach ( WayPoint w in GameState.Karte.WayPoints.Values)
             {
                 WayPoint.Renderer.Draw(spriteBatch, w.Location);
+                spriteBatch.DrawString(testFont, ""+w.ID, w.Location.RelativePosition, Color.Black);
 
                 foreach ( WayPoint wDest in w.connectedPoints )
                 {

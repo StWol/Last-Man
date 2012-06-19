@@ -73,8 +73,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AI\Activity.cs" />
+    <Compile Include="AI\PathFinder.cs" />
+    <Compile Include="AI\PathNode.cs" />
     <Compile Include="AI\RandomWalk.cs" />
     <Compile Include="AI\NoActivity.cs" />
+    <Compile Include="AI\WalkTo.cs" />
+    <Compile Include="AI\WalkToPlayer.cs" />
     <Compile Include="Audio\Sound.cs" />
     <Compile Include="Configuration.cs" />
     <Compile Include="Enemy.cs" />

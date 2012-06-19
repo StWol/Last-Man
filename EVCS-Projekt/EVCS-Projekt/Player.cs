@@ -16,6 +16,7 @@ using Microsoft.Xna.Framework.Media;
 using System.Diagnostics;
 using EVCS_Projekt.Renderer;
 using EVCS_Projekt.Audio;
+using EVCS_Projekt.Map;
 
 
 namespace EVCS_Projekt
@@ -35,10 +36,14 @@ namespace EVCS_Projekt
         private Dictionary<int, Item> shortcuts;
         private List<Buff> bufflist;
         public Vector2 Direction { get; set; }
+        public WayPoint NearestWayPoint { get; private set; }
 
         // ob ein schuss eine gewisse zeit her war
         private float shotTimer;
         public bool BigWeapon { get; set; }
+
+        // wegpunkt timeout.. nur einmal pro sekunde wegpunkt updaten
+        private float _waypointTimeout = 1F;
 
         public new IRenderBehavior Renderer
         {
@@ -178,6 +183,17 @@ namespace EVCS_Projekt
         // Player Update
         public void Update()
         {
+            // nähester wegpunkt suchen
+            if (_waypointTimeout < 0)
+            {
+                NearestWayPoint = Karte.SearchNearest(LocationBehavior.Position);
+                _waypointTimeout = 1;
+            }
+            else
+            {
+                _waypointTimeout -= (float)Main.GameTimeUpdate.ElapsedGameTime.TotalSeconds;
+            }
+
             // Renderer Updaten
             Renderer.Update();
             footRenderer.Update();
