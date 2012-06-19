@@ -236,7 +236,7 @@ namespace EVCS_Projekt.Managers
             // TEST ENDE
             // ################################################################################
 
-            inventar = new Inventar(600, 400, new Vector2(100, 100));
+            inventar = new Inventar(700, 400, new Vector2(100, 100));
         }
 
 

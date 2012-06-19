@@ -15,7 +15,7 @@ namespace EVCS_Projekt.UI
 
         public string Text { get; set; }
 
-        private bool mouseDown = false;
+        protected bool mouseDown = false;
 
         private Boolean isHover;
         private SpriteFont fontDefault;
