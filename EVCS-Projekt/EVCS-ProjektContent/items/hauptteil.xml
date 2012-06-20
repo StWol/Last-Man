@@ -16,8 +16,8 @@
     </item>
   </HauptteilInner>
   <HauptteilInner>
-    <rateOfFire>3</rateOfFire>
-    <shotCount>3</shotCount>
+    <rateOfFire>5</rateOfFire>
+    <shotCount>5</shotCount>
     <bigWeapon>false</bigWeapon>
     <item>
       <weight>0</weight>

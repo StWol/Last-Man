@@ -9,6 +9,7 @@ using EVCS_Projekt.Renderer;
 using EVCS_Projekt.Objects.Items;
 using System.Diagnostics;
 using EVCS_Projekt.AI;
+using EVCS_Projekt.Audio;
 
 namespace EVCS_Projekt
 {
@@ -18,13 +19,13 @@ namespace EVCS_Projekt
         public float Health { get; private set; }
         private float maxHealth;
         public float SightiningDistance { get; private set; }
-        private float attackDistance;
+        public float AttackDistance { get; private set; }
         private float ratOfFire;
         private double lastAttack;
         private List<Buff> buffList;
         public EEnemyType TypOfEnemy { get; private set; }
         public bool IsDead { get { if (Health <= 0F) return true; else return false; } }
-        //public bool IsMoving { get; set; }
+        public bool CanSeePlayer { get; set; }
 
         // Action die der Gegner ausführt
         public Activity Activity { get; set; }
@@ -33,7 +34,7 @@ namespace EVCS_Projekt
         public static Dictionary<EEnemyType, Enemy> DefaultEnemies { get; set; }
 
         public Enemy(Enemy e, Vector2 position) :
-            this(e.LocationBehavior, e.Renderer, e.ratOfFire, e.attackDistance, e.SightiningDistance, e.maxHealth, e.Speed, e.Health, e.TypOfEnemy)
+            this(e.LocationBehavior, e.Renderer, e.ratOfFire, e.AttackDistance, e.SightiningDistance, e.maxHealth, e.Speed, e.Health, e.TypOfEnemy)
         {
             LocationBehavior.Position = position;
         }
@@ -50,7 +51,7 @@ namespace EVCS_Projekt
         {
             this.buffList = new List<Buff>();
             this.ratOfFire = ratOfFire;
-            this.attackDistance = attackDistance;
+            this.AttackDistance = attackDistance;
             this.SightiningDistance = sightiningDistance;
             this.maxHealth = maxHealth;
             TypOfEnemy = typeOfEnemy;
@@ -66,7 +67,7 @@ namespace EVCS_Projekt
         // Clont den Gegner
         public Enemy Clone()
         {
-            Enemy c = new Enemy(LocationBehavior.Clone(), Renderer.Clone(), ratOfFire, attackDistance, SightiningDistance, maxHealth, Speed, Health, TypOfEnemy);
+            Enemy c = new Enemy(LocationBehavior.Clone(), Renderer.Clone(), ratOfFire, AttackDistance, SightiningDistance, maxHealth, Speed, Health, TypOfEnemy);
             return c;
         }
 
@@ -80,7 +81,7 @@ namespace EVCS_Projekt
             this.Health -= shot.Damage;
         }
 
-        public void Attack(GameState gameState)
+        public void Attack()
         {
             // Schießt ein Shot auf den Player
             if (Main.GameTimeUpdate.TotalGameTime.TotalSeconds - lastAttack > ratOfFire)
@@ -104,8 +105,11 @@ namespace EVCS_Projekt
                 s.SetDirection(-LocationBehavior.Direction);
                 s.LocationSizing();
 
+                // Play Sound
+                Sound.Sounds["Monster_Attack_01"].Play();
+
                 // Schuss in gameState liste aufnehmen
-                gameState.ShotListVsPlayer.Add(s);
+                Main.MainObject.GameManager.GameState.ShotListVsPlayer.Add(s);
             }
         }
 

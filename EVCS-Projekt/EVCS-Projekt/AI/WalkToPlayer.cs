@@ -16,33 +16,49 @@ namespace EVCS_Projekt.AI
         private WayPoint _target { get; set; }
         private WayPoint _currentWayPoint { get; set; }
         private Vector2 _lastPlayerPosition { get; set; }
+        private bool _walkToLastPlayerPosition { get; set; }
 
         // Do
         private bool _lookAtPlayer { get; set; }
+        private bool _attacking { get; set; }
 
         public WalkToPlayer()
         {
+            _attacking = true;
         }
 
         public override void CalculateAction(Enemy e)
         {
             if (GameManager.PointSeePoint(e.LocationBehavior.Position, Main.MainObject.GameManager.GameState.Player.LocationBehavior.Position, e.LocationBehavior.Size))
             {
+                e.CanSeePlayer = true;
+
                 _lookAtPlayer = true;
                 _lastPlayerPosition = Main.MainObject.GameManager.GameState.Player.LocationBehavior.Position;
-
+                _walkToLastPlayerPosition = false;
                 return;
             }
             else
             {
+                e.CanSeePlayer = false;
+
                 // Wenn er player aus den augen verloren hat, nearest waypoint suchen
                 if (_lookAtPlayer == true)
                 {
                     _path = null;
-                    _currentWayPoint = Karte.SearchNearest(_lastPlayerPosition);
+                    //_currentWayPoint = Karte.SearchNearest(_lastPlayerPosition);
+                    _walkToLastPlayerPosition = true;
                 }
 
                 _lookAtPlayer = false;
+            }
+
+            if (_walkToLastPlayerPosition)
+            {
+                if (Vector2.Distance(_lastPlayerPosition, e.LocationBehavior.Position) < e.LocationBehavior.Size.X)
+                    _walkToLastPlayerPosition = false;
+                else
+                    return;
             }
 
             WayPoint target = Main.MainObject.GameManager.GameState.Player.NearestWayPoint;
@@ -50,7 +66,7 @@ namespace EVCS_Projekt.AI
             if (target == null)
                 return;
 
-            if (_path == null || target != _target && !PathNode.IsWaypointInPath(target.ID, _path) )
+            if (_path == null || target != _target && !PathNode.IsWaypointInPath(target.ID, _path))
             {
                 //Debug.WriteLine("target = " + target.ID);
                 _target = target;
@@ -78,7 +94,7 @@ namespace EVCS_Projekt.AI
                     _path = _path.NextNode;
             }
 
-            
+
 
             //Debug.WriteLineIf(_path == null, "path is null");
         }
@@ -92,7 +108,7 @@ namespace EVCS_Projekt.AI
             moveVector.Normalize();
             moveVector = moveVector * (float)Main.GameTimeUpdate.ElapsedGameTime.TotalSeconds * e.Speed;
 
-            if (e.MoveGameObject(moveVector))
+            if ( e.MoveGameObject(moveVector, true, true))
             {
                 e.HasMoved = true;
 
@@ -107,7 +123,13 @@ namespace EVCS_Projekt.AI
 
         public override void DoActivity(Enemy e)
         {
-            if (_lookAtPlayer)
+            bool move = true;
+
+            if (_walkToLastPlayerPosition)
+            {
+                e.LookAt(_lastPlayerPosition);
+            }
+            else if (_lookAtPlayer)
             {
                 e.LookAt(Main.MainObject.GameManager.GameState.Player.LocationBehavior.Position);
             }
@@ -118,7 +140,18 @@ namespace EVCS_Projekt.AI
                 e.LookAt(next.Location.Position);
             }
 
-            Move(e);
+            // attack when distance < attackdistance
+            if (_attacking && e.CanSeePlayer && e.DistanceLessThan(Main.MainObject.GameManager.GameState.Player, e.AttackDistance) )
+            {
+                if ( e.DistanceLessThan(Main.MainObject.GameManager.GameState.Player, e.AttackDistance/2) )
+                    move = false;
+
+                //e.LookAt(Main.MainObject.GameManager.GameState.Player.LocationBehavior.Position);
+                e.Attack();
+            }
+
+            if ( move )
+                Move(e);
         }
     }
 }

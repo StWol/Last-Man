@@ -8,6 +8,7 @@ using System.Diagnostics;
 using Microsoft.Xna.Framework.Graphics;
 using System.Xml;
 using EVCS_Projekt.Helper;
+using System.Collections.Generic;
 
 namespace EVCS_Projekt.Objects
 {
@@ -447,6 +448,13 @@ namespace EVCS_Projekt.Objects
         }
 
         // ***************************************************************************
+        // Prüft ob das objekt das andere objekt sehen kann
+        public bool CanSee(GameObject g)
+        {
+            return GameManager.PointSeePoint(LocationBehavior.Position, g.LocationBehavior.Position);
+        }
+
+        // ***************************************************************************
         // Bewegt ein object
         public bool MoveGameObject(Vector2 moveVector)
         {
@@ -467,6 +475,23 @@ namespace EVCS_Projekt.Objects
         // Bewegt ein object und gibt die bewegung zurück und zusätzlich kann angegeben werden, ob überhaupt bewegt werden soll
         public bool MoveGameObject(Vector2 moveVector, out Vector2 realMoveVector, bool onlyCheck)
         {
+            return MoveGameObject(moveVector, out realMoveVector, onlyCheck, false, false);
+        }
+
+        // ***************************************************************************
+        // Bewegt ein object und prüft kollision mit enemie falls gewünscht
+        public bool MoveGameObject(Vector2 moveVector, bool checkEnemyCollision, bool checkPlayerCollision)
+        {
+            // der out vector wird verworfen
+            Vector2 trash = new Vector2();
+
+            return MoveGameObject(moveVector, out trash, false, checkEnemyCollision, checkPlayerCollision);
+        }
+
+        // ***************************************************************************
+        // Bewegt ein object und gibt die bewegung zurück und zusätzlich kann angegeben werden, ob überhaupt bewegt werden soll
+        public bool MoveGameObject(Vector2 moveVector, out Vector2 realMoveVector, bool onlyCheck, bool checkEnemyCollision, bool checkPlayerCollision)
+        {
             // CurrentPosition
             Vector2 initPosition = LocationBehavior.Position;
 
@@ -479,7 +504,10 @@ namespace EVCS_Projekt.Objects
             LocationBehavior.Position = LocationBehavior.Position + moveVector;
 
             // Prüfen ob man an neuer Position gehen kann
-            if (GameManager.CheckRectangleInMap(Rect))
+            if (GameManager.CheckRectangleInMap(Rect) &&
+                (Main.MainObject.GameManager.GameState.QuadTreeEnemies.GetObjects(Rect).Count <= 1 || !checkEnemyCollision) &&
+                (!PPCollisionWith(Main.MainObject.GameManager.GameState.Player) || !checkPlayerCollision)
+                )
             {
                 // das rect kann wie gewünscht fahren
                 realMoveVector = moveVector;
@@ -491,7 +519,10 @@ namespace EVCS_Projekt.Objects
                 // Prüfen ob man an neuer Position in Y richtung gehen kann
                 LocationBehavior.Position = new Vector2(initPosition.X, initPosition.Y + moveVector.Y);
 
-                if (GameManager.CheckRectangleInMap(Rect))
+                if (GameManager.CheckRectangleInMap(Rect) &&
+                    (Main.MainObject.GameManager.GameState.QuadTreeEnemies.GetObjects(Rect).Count <= 1 || !checkEnemyCollision) &&
+                    (!PPCollisionWith(Main.MainObject.GameManager.GameState.Player) || !checkPlayerCollision)
+                    )
                 {
                     // das rect kann nur in Y richtung fahren
                     realMoveVector = new Vector2(0, moveVector.Y);
@@ -504,7 +535,10 @@ namespace EVCS_Projekt.Objects
                 // Prüfen ob man an neuer Position in X richtung gehen kann
                 LocationBehavior.Position = new Vector2(initPosition.X + moveVector.X, initPosition.Y);
 
-                if (GameManager.CheckRectangleInMap(Rect))
+                if (GameManager.CheckRectangleInMap(Rect) &&
+                    (Main.MainObject.GameManager.GameState.QuadTreeEnemies.GetObjects(Rect).Count <= 1 || !checkEnemyCollision) &&
+                    (!PPCollisionWith(Main.MainObject.GameManager.GameState.Player) || !checkPlayerCollision)
+                    )
                 {
                     // das rect kann nur in X richtung fahren
                     realMoveVector = new Vector2(moveVector.X, 0);
