@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using EVCS_Projekt.Objects;
 using EVCS_Projekt.Objects.Items;
 using EVCS_Projekt.UI;
@@ -13,11 +11,23 @@ namespace EVCS_Projekt.GUI
 {
     class UIInventarPanel : UIPanel, UIActionListener, UIMouseHoverListener
     {
-        private UIList inventarList;
-        private Texture2D pixel;
-        public bool Visible { get; set; }
+        private readonly UIList inventarList;
+        private readonly Texture2D pixel;
+        public bool Visible
+        {
+            get { return isVisible; }
+            set { 
+                if(value && !isVisible)
+                {
+                    playerInventar = Main.MainObject.GameManager.GameState.Player.Inventar;
+                    GenerateFilteredLists(playerInventar);
+                    GenerateUiComponents();
+                }
+                isVisible = value;
+            }
+        }
+
         private Rectangle background;
-        private UIPanel checkBoxPanel;
         private Color backgroundColor = Color.Gray;
         private Dictionary<int,int> playerInventar;
 
@@ -35,12 +45,18 @@ namespace EVCS_Projekt.GUI
         private Dictionary<int, int> listMunition;
         private Dictionary<int, int> listVisier;
         private Dictionary<int, int> listAntrieb;
- 
+
+        private Player player;
+        
+
+        private bool isVisible;
+
 
         public UIInventarPanel( int width, int height, Vector2 position )
             : base( width, height, position )
         {
-            playerInventar = Main.MainObject.GameManager.GameState.Player.Inventar;
+            player = Main.MainObject.GameManager.GameState.Player;
+            playerInventar = player.Inventar;
             inventarList = new UIList( 380, 250, new Vector2( 300, 100 ));
 
             Add( inventarList );
@@ -52,10 +68,22 @@ namespace EVCS_Projekt.GUI
             background = new Rectangle( ( int ) GetPosition().X, ( int ) GetPosition().Y, width, height );
             Add( inventarList );
 
+            //GenerateUiComponents();
             GenerateFilteredLists(playerInventar);
             CreateCheckBoxPanel();
         }
 
+        private void GenerateUiComponents()
+        {
+            UIButton shortCutTitel = new UIButton(260, 40, new Vector2(20, 20), "Shortcuts"){BackgroundColor = Color.LightGray};
+
+            Dictionary<int, Weapon> shortcuts = player.GetShortcuts();
+            Weapon w = player.Weapon;
+            UIShortCutButton s = new UIShortCutButton(260, 50, new Vector2(20, 70), 1, w);
+            Add(shortCutTitel);
+            Add(s);
+        }
+        
         private void GenerateFilteredLists(Dictionary<int, int> inventar)
         {
             listWaffe = new Dictionary<int, int>();
@@ -104,35 +132,35 @@ namespace EVCS_Projekt.GUI
         {
             ContentManager content = Main.ContentManager;
 
-            Texture2D waffe = content.Load<Texture2D>( "images/gui/inventar/waffe" );
-            Texture2D waffeH = content.Load<Texture2D>( "images/gui/inventar/waffe_h" );
-            Texture2D waffeA = content.Load<Texture2D>( "images/gui/inventar/waffe_a" );
-            Texture2D waffeAH = content.Load<Texture2D>( "images/gui/inventar/waffe_a_h" );
+            var waffe = content.Load<Texture2D>( "images/gui/inventar/waffe" );
+            var waffeH = content.Load<Texture2D>( "images/gui/inventar/waffe_h" );
+            var waffeA = content.Load<Texture2D>( "images/gui/inventar/waffe_a" );
+            var waffeAH = content.Load<Texture2D>( "images/gui/inventar/waffe_a_h" );
 
-            Texture2D hauptteil = content.Load<Texture2D>( "images/gui/inventar/hauptteil" );
-            Texture2D hauptteilH = content.Load<Texture2D>( "images/gui/inventar/hauptteil_h" );
-            Texture2D hauptteilA = content.Load<Texture2D>( "images/gui/inventar/hauptteil_a" );
-            Texture2D hauptteilAH = content.Load<Texture2D>( "images/gui/inventar/hauptteil_a_h" );
+            var hauptteil = content.Load<Texture2D>( "images/gui/inventar/hauptteil" );
+            var hauptteilH = content.Load<Texture2D>( "images/gui/inventar/hauptteil_h" );
+            var hauptteilA = content.Load<Texture2D>( "images/gui/inventar/hauptteil_a" );
+            var hauptteilAH = content.Load<Texture2D>( "images/gui/inventar/hauptteil_a_h" );
 
-            Texture2D stabilisator = content.Load<Texture2D>( "images/gui/inventar/stabilisator" );
-            Texture2D stabilisatorH = content.Load<Texture2D>( "images/gui/inventar/stabilisator_h" );
-            Texture2D stabilisatorA = content.Load<Texture2D>( "images/gui/inventar/stabilisator_a" );
-            Texture2D stabilisatorAH = content.Load<Texture2D>( "images/gui/inventar/stabilisator_a_h" );
+            var stabilisator = content.Load<Texture2D>( "images/gui/inventar/stabilisator" );
+            var stabilisatorH = content.Load<Texture2D>( "images/gui/inventar/stabilisator_h" );
+            var stabilisatorA = content.Load<Texture2D>( "images/gui/inventar/stabilisator_a" );
+            var stabilisatorAH = content.Load<Texture2D>( "images/gui/inventar/stabilisator_a_h" );
 
-            Texture2D munition = content.Load<Texture2D>( "images/gui/inventar/munition" );
-            Texture2D munitionH = content.Load<Texture2D>( "images/gui/inventar/munition_h" );
-            Texture2D munitionA = content.Load<Texture2D>( "images/gui/inventar/munition_a" );
-            Texture2D munitionAH = content.Load<Texture2D>( "images/gui/inventar/munition_a_h" );
+            var munition = content.Load<Texture2D>( "images/gui/inventar/munition" );
+            var munitionH = content.Load<Texture2D>( "images/gui/inventar/munition_h" );
+            var munitionA = content.Load<Texture2D>( "images/gui/inventar/munition_a" );
+            var munitionAH = content.Load<Texture2D>( "images/gui/inventar/munition_a_h" );
 
-            Texture2D visier = content.Load<Texture2D>( "images/gui/inventar/visier" );
-            Texture2D visierH = content.Load<Texture2D>( "images/gui/inventar/visier_h" );
-            Texture2D visierA = content.Load<Texture2D>( "images/gui/inventar/visier_a" );
-            Texture2D visierAH = content.Load<Texture2D>( "images/gui/inventar/visier_a_h" );
+            var visier = content.Load<Texture2D>( "images/gui/inventar/visier" );
+            var visierH = content.Load<Texture2D>( "images/gui/inventar/visier_h" );
+            var visierA = content.Load<Texture2D>( "images/gui/inventar/visier_a" );
+            var visierAH = content.Load<Texture2D>( "images/gui/inventar/visier_a_h" );
             
-            Texture2D antrieb = content.Load<Texture2D>( "images/gui/inventar/antrieb" );
-            Texture2D antriebH = content.Load<Texture2D>( "images/gui/inventar/antrieb_h" );
-            Texture2D antriebA = content.Load<Texture2D>( "images/gui/inventar/antrieb_a" );
-            Texture2D antriebAH = content.Load<Texture2D>( "images/gui/inventar/antrieb_a_h" );
+            var antrieb = content.Load<Texture2D>( "images/gui/inventar/antrieb" );
+            var antriebH = content.Load<Texture2D>( "images/gui/inventar/antrieb_h" );
+            var antriebA = content.Load<Texture2D>( "images/gui/inventar/antrieb_a" );
+            var antriebAH = content.Load<Texture2D>( "images/gui/inventar/antrieb_a_h" );
 
             toggleWaffe = new UIToggleButton( 120, 30, new Vector2( 300, 20 ), waffe, waffeH, waffeA, waffeAH, "" );
             toggleHauptteil = new UIToggleButton( 120, 30, new Vector2( 430, 20 ), hauptteil, hauptteilH, hauptteilA, hauptteilAH, "" );
@@ -164,6 +192,7 @@ namespace EVCS_Projekt.GUI
 
         public void OnMouseDown(UIElement element)
         {
+            inventarList.FirsVisibleButtonIndex = 0;
             if (element == toggleWaffe)
             {
                 inventarList.AddItemList(listWaffe);
@@ -192,6 +221,7 @@ namespace EVCS_Projekt.GUI
 
         public void OnMouseUp(UIElement element)
         {
+            inventarList.FirsVisibleButtonIndex = 0;
             if (element == toggleWaffe)
             {
                 inventarList.RemoveItems(listWaffe);

@@ -150,9 +150,25 @@ namespace EVCS_Projekt.Managers
             it2.LocationBehavior.Position = new Vector2(1200, 4150);
             it2.LocationSizing();
 
+            Item it3 = Item.Get(8);
+            it3.LocationBehavior.Position = new Vector2(1300, 4150);
+            it3.LocationSizing();
+
+            Item it4 = Item.Get(10);
+            it4.LocationBehavior.Position = new Vector2(1400, 4150);
+            it4.LocationSizing();
+
+            Item it5 = Item.Get(10);
+            it5.LocationBehavior.Position = new Vector2(1500, 4150);
+            it5.LocationSizing();
+
             GameState.QuadTreeItems.Add(it1);
             GameState.QuadTreeItems.Add(it2);
-            
+            GameState.QuadTreeItems.Add(it3);
+            GameState.QuadTreeItems.Add(it4);
+            GameState.QuadTreeItems.Add(it5);
+
+            GameState.Player.AddWeaponToShortcutList(1, (Weapon) it3);
             //User Interface erstellen
             InitGui();
 

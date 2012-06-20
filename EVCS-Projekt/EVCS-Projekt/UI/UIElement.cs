@@ -15,6 +15,9 @@ namespace EVCS_Projekt.UI
 {
     abstract class UIElement
     {
+
+        public const int DEFAULT_HEIGHT = 48;
+
         protected int width
         {
             get

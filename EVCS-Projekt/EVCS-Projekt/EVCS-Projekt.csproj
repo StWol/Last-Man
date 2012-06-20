@@ -139,6 +139,7 @@
     <Compile Include="UI\UIMouseEvent.cs" />
     <Compile Include="UI\UIMouseHoverListener.cs" />
     <Compile Include="UI\UIPanel.cs" />
+    <Compile Include="UI\UIShortCutButton.cs" />
     <Compile Include="UI\UIToggleButton.cs" />
   </ItemGroup>
   <ItemGroup>

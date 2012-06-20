@@ -33,7 +33,8 @@ namespace EVCS_Projekt
         public float[] Liquid { get; set; }
         public Weapon Weapon { set; get; }
         public Dictionary<int,int> Inventar { get; private set; }
-        private Dictionary<int, Item> shortcuts;
+        private Dictionary<int, Weapon> shortcuts;
+
         private List<Buff> bufflist;
         public Vector2 Direction { get; set; }
         public WayPoint NearestWayPoint { get; private set; }
@@ -86,10 +87,34 @@ namespace EVCS_Projekt
         {
             if (Inventar.ContainsKey(item.TypeId))
             {
-                Inventar.Remove(item.TypeId);
+                Inventar[item.TypeId] -= 1;
+                if (Inventar[item.TypeId] < 1)
+                    Inventar.Remove(item.TypeId);
                 return item;
             }
             return null;
+        }
+
+
+        public void AddWeaponToShortcutList(int key, Weapon weapon)
+        {
+            if(!shortcuts.ContainsKey(key))
+            {
+                shortcuts[key] = weapon;
+            }
+        }
+
+        public void RemoveWeaponFromShortcutList(int key)
+        {
+            if(shortcuts.ContainsKey(key))
+            {
+                shortcuts.Remove(key);
+            }
+        }
+
+        public Dictionary<int, Weapon> GetShortcuts()
+        {
+            return shortcuts;
         }
 
         public float Reloading { get; set; }
@@ -183,6 +208,7 @@ namespace EVCS_Projekt
             // InventarListe init
             Inventar = new Dictionary<int,int>();
 
+            shortcuts = new Dictionary<int, Weapon>();
             // Schusstime auf 0 setzten
             shotTimer = 0;
 

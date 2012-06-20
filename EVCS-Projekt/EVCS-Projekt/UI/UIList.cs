@@ -23,9 +23,10 @@ namespace EVCS_Projekt.UI
 
         private  Dictionary<int, int> countItemsDict;
 
+        public int FirsVisibleButtonIndex { get { return firsVisibleButtonIndex; } set { firsVisibleButtonIndex = 0; } }
         private int firsVisibleButtonIndex = 0;
         private int MAX_VISIBLE_BUTTON_COUNT = 5;
-        private const int DEFAULT_HEIGHT = 48;
+        
         private Rectangle box;
 
         private readonly UIButton btnPrevious;
