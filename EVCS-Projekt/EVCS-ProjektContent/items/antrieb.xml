@@ -9,7 +9,10 @@
 			<id>1</id>
 			<name>name</name>
 			<description>desc</description>
-      <group>DruckluftGross</group>
+        <group>DruckluftGross</group>
+		<gameObject>
+			<renderer>S_Item_01</renderer>
+		</gameObject>
 		</item>
 	</AntriebInner>
   <AntriebInner>

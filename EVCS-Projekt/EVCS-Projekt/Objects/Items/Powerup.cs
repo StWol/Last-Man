@@ -51,14 +51,8 @@ namespace EVCS_Projekt.Objects.Items
             return this.regeneration;
         }
 
-
-        // ***************************************************************************
-        // Clont Object
-        public Powerup Clone()
-        {
-            Powerup p = new Powerup(Id, Group, Name, regeneration, Description, Weight, LocationBehavior.Clone());
-            p.Renderer = Renderer;
-            return p;
+        public Powerup Clone () {
+            return new Powerup(GetInner());
         }
     }
 }
