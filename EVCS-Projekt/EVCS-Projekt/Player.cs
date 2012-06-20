@@ -27,7 +27,7 @@ namespace EVCS_Projekt
         private static float ShotTime = 0.05F;
 
         //Attributes
-        private float maxHealth;
+        public float MaxHealth { get; private set; }
         public float Health { get; private set; }
         public float Speed { get; set; }
         public float[] Liquid { get; set; }
@@ -148,6 +148,8 @@ namespace EVCS_Projekt
         {
             bufflist = new List<Buff>();
             Speed = speed;
+            MaxHealth = maxHealth;
+            Health = maxHealth;
 
             // Texturen für Renderer laden
             RendererStanding = LoadedRenderer.GetStatic("S_Player_Standing");

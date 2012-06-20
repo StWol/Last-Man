@@ -49,13 +49,13 @@ namespace EVCS_Projekt.Managers
         private float updateObjects = 0;
 
         // ## Sonstiges
-        Texture2D background;
+        Texture2D background, pixel;
 
         // Update Delegates
         private delegate void UpdateDel();
         private UpdateDel updateDelegater;
 
-        
+
 
         // Tests
         private Texture2D test;
@@ -71,6 +71,7 @@ namespace EVCS_Projekt.Managers
         private float gun_cd;
         SoundEffect peng, headshot;
         private UIInventarPanel uiInventarPanel;
+        bool showWaypoints = false;
 
         // ***************************************************************************
         // Läd den ganzen Stuff, den der GameManager benötigt
@@ -126,6 +127,7 @@ namespace EVCS_Projekt.Managers
 
             // Background laden
             background = Main.ContentManager.Load<Texture2D>("images/background");
+            pixel = Main.ContentManager.Load<Texture2D>("images/pixelWhite");
 
             // AI Thread starten
             new Thread(new ThreadStart(AIThread.UpdateAI)).Start();
@@ -142,17 +144,33 @@ namespace EVCS_Projekt.Managers
 
             Debug.WriteLine(">" + s.Renderer.Name);
 
-            Item it1 = Item.Get(1);
-            it1.LocationBehavior.Position = new Vector2(1100, 4150);
-            it1.LocationSizing();
-
-            Item it2 = Item.Get(1);
-            it2.LocationBehavior.Position = new Vector2(1200, 4150);
-            it2.LocationSizing();
-
-            GameState.QuadTreeItems.Add(it1);
-            GameState.QuadTreeItems.Add(it2);
+            {
+                Item it1 = Item.Get(1);
+                it1.LocationBehavior.Position = new Vector2(1100, 4150);
+                it1.LocationSizing();
+                GameState.QuadTreeItems.Add(it1);
+            }
+            {
+                Item it2 = Item.Get(1);
+                it2.LocationBehavior.Position = new Vector2(1200, 4150);
+                it2.LocationSizing();
+                GameState.QuadTreeItems.Add(it2);
+            }
+            {
+                Item it3 = Item.Get(8);
+                it3.LocationBehavior.Position = new Vector2(1300, 4150);
+                it3.LocationSizing();
+                GameState.QuadTreeItems.Add(it3);
+            }
+            {
+                Item it2 = Item.Get(10);
+                it2.LocationBehavior.Position = new Vector2(1400, 4150);
+                it2.LocationSizing();
+                GameState.QuadTreeItems.Add(it2);
+            }
             
+            
+
             //User Interface erstellen
             InitGui();
 
@@ -191,6 +209,7 @@ namespace EVCS_Projekt.Managers
             Enemy.DefaultEnemies = new Dictionary<EEnemyType, Enemy>();
 
             Enemy d1 = new Enemy(new MapLocation(new Vector2(0, 0)), LoadedRenderer.Get("A_RoterDrache_Move"), 1, 300, 1000, 100, 100, 100, 0);
+            d1.Damage = 5F;
             d1.LocationSizing();
 
             Enemy.DefaultEnemies.Add(EEnemyType.E1, d1);
@@ -222,7 +241,7 @@ namespace EVCS_Projekt.Managers
                 GameState.QuadTreeEnemies.Add(x);
             }
 
-            
+
             // TEST-ENDE
             // ################################################################################
 
@@ -255,8 +274,8 @@ namespace EVCS_Projekt.Managers
             // TEST ENDE
             // ################################################################################
 
-            int x = Configuration.GetInt("resolutionWidth")/2-350;
-            int y = Configuration.GetInt( "resolutionHeight" ) / 2-200;
+            int x = Configuration.GetInt("resolutionWidth") / 2 - 350;
+            int y = Configuration.GetInt("resolutionHeight") / 2 - 200;
             uiInventarPanel = new UIInventarPanel(700, 400, new Vector2(x, y));
         }
 
@@ -450,7 +469,14 @@ namespace EVCS_Projekt.Managers
                     e.Renderer = LoadedRenderer.Get("A_StachelKrabbe_Move");
                 }
             }
-            
+
+            if (newState.IsKeyDown(Keys.N))
+            {
+                if (showWaypoints)
+                    showWaypoints = false;
+                else
+                    showWaypoints = true;
+            }
 
             float mr = Mouse.GetState().ScrollWheelValue - mausrad;
             if (mr > 0)
@@ -520,19 +546,20 @@ namespace EVCS_Projekt.Managers
 
             if (newState.IsKeyDown(Keys.I) && !oldKeyState.IsKeyDown(Keys.I))
             {
-                if(uiInventarPanel.Visible)
+                if (uiInventarPanel.Visible)
                 {
                     updateDelegater = UpdateGame;
                     uiInventarPanel.Visible = false;
-                }else
+                }
+                else
                 {
                     updateDelegater = UpdateGui;
                     uiInventarPanel.Visible = true;
                 }
-                 
-                
+
+
             }
-            
+
 
             oldKeyState = newState;
         }
@@ -543,7 +570,8 @@ namespace EVCS_Projekt.Managers
             // Items die mit dem spieler kollidieren
             List<Item> itemsOnScreen = GameState.QuadTreeItems.GetObjects(GameState.Player.Rect);
 
-            foreach (Item i in itemsOnScreen) {
+            foreach (Item i in itemsOnScreen)
+            {
                 // Item in inventar zufügem
                 GameState.Player.AddItemToInventar(i);
 
@@ -647,7 +675,7 @@ namespace EVCS_Projekt.Managers
                 // Prüfen ob man laufen kann, wenn ja bewegen
                 //if (CheckRectCanMove( new FRectangle(GameState.Player.LittleBoundingBox), moveVector, out mov))
                 //if (CheckPlayerCanMove(moveVector, out newPosition))
-                if ( GameState.Player.MoveGameObject(moveVector) )
+                if (GameState.Player.MoveGameObject(moveVector))
                 {
                     GameState.Player.FootRotation = GetMoveRotation();
 
@@ -867,26 +895,37 @@ namespace EVCS_Projekt.Managers
             foreach (Enemy e in enemiesOnScreen)
             {
                 e.Renderer.Draw(spriteBatch, e.LocationBehavior);
+
+                int x = (int)(e.LocationBehavior.RelativePosition.X - e.LocationBehavior.Size.X / 2);
+                int y = (int)(e.LocationBehavior.RelativePosition.Y - e.LocationBehavior.Size.Y/2 - 4);
+                int w = (int)(e.LocationBehavior.Size.X);
+                int h = 4;
+
+                int w2 = (int)(e.LocationBehavior.Size.X / e.MaxHealth * e.Health);
+
+                spriteBatch.Draw(pixel, new Rectangle(x, y, w, h), new Color(255, 0, 0, 64));
+                spriteBatch.Draw(pixel, new Rectangle(x, y, w2, h), new Color(255, 0, 0, 192));
             }
 
             // Player zeichnen mit verschiedenen Renderern (deswegen hat er ne eigene methode)
             GameState.Player.Draw(spriteBatch);
 
-           
+
             // ################################################################################
             // ################################################################################
             // TEST
 
-            foreach ( WayPoint w in GameState.Karte.WayPoints.Values)
-            {
-                WayPoint.Renderer.Draw(spriteBatch, w.Location);
-                spriteBatch.DrawString(testFont, ""+w.ID, w.Location.RelativePosition, Color.Black);
-
-                foreach ( WayPoint wDest in w.connectedPoints )
+            if (showWaypoints)
+                foreach (WayPoint w in GameState.Karte.WayPoints.Values)
                 {
-                   Draw2D.DrawLine(spriteBatch, 1, Color.Red, w.Location.RelativePosition, wDest.Location.RelativePosition);
+                    WayPoint.Renderer.Draw(spriteBatch, w.Location);
+                    spriteBatch.DrawString(testFont, "" + w.ID, w.Location.RelativePosition, Color.Black);
+
+                    foreach (WayPoint wDest in w.connectedPoints)
+                    {
+                        Draw2D.DrawLine(spriteBatch, 1, Color.Red, w.Location.RelativePosition, wDest.Location.RelativePosition);
+                    }
                 }
-            }
 
             if (shoting)
             {
@@ -895,7 +934,7 @@ namespace EVCS_Projekt.Managers
 
             spriteBatch.DrawString(testFont, "Enemies: " + GameState.QuadTreeEnemies.Count + " FPS: " + (1 / Main.GameTimeDraw.ElapsedGameTime.TotalSeconds), new Vector2(0, 0), Color.Green);
             spriteBatch.DrawString(testFont, "Munition: " + GameState.Player.Weapon.Munition.Count, new Vector2(0, 30), Color.Red);
-            spriteBatch.DrawString(testFont, "", new Vector2(0, 60), Color.Red);
+            spriteBatch.DrawString(testFont, "Health: " + GameState.Player.Health, new Vector2(0, 60), Color.Red);
             spriteBatch.DrawString(testFont, "Accu: " + GameState.Player.Weapon.Accuracy, new Vector2(0, 90), Color.Blue);
 
             if (uiInventarPanel.Visible)
@@ -907,7 +946,7 @@ namespace EVCS_Projekt.Managers
 
 
             // Cursor zeichnen
-            MouseCursor.DrawMouse( spriteBatch );
+            MouseCursor.DrawMouse(spriteBatch);
 
             spriteBatch.End();
         }
@@ -1022,7 +1061,7 @@ namespace EVCS_Projekt.Managers
         {
             List<StaticObject> objects = Main.MainObject.GameManager.GameState.Karte.QuadTreeWalkable.GetObjects(newPosition);
 
-            if (objects.Count <= 0 )
+            if (objects.Count <= 0)
                 return true;
             else
                 return false;
@@ -1032,7 +1071,7 @@ namespace EVCS_Projekt.Managers
         // Prüfe ob zwei Punkte sichtkontakt haben (schießt sozusagen von Vector A nach Vector B un schaut ob er kollidiert.
         public static bool PointSeePoint(Vector2 start, Vector2 target)
         {
-            return PointSeePoint(start,target, new Vector2(1,1));
+            return PointSeePoint(start, target, new Vector2(1, 1));
         }
 
         public static bool PointSeePoint(Vector2 start, Vector2 target, Vector2 size)
@@ -1069,7 +1108,7 @@ namespace EVCS_Projekt.Managers
 
             rect.X += moveVector.X;
             rect.Y += moveVector.Y;
-            
+
             // Prüfen ob man an neuer Position gehen kann
             if (CheckRectangleInMap(rect.Rect()))
             {

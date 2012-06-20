@@ -12,7 +12,7 @@
 			<description>desc</description>
 			<group>Nahkampf</group>
 			<gameObject>
-				<renderer>NoRenderer</renderer>
+				<renderer>S_Item_8</renderer>
 			</gameObject>
 		</item>
 	</WeaponInner>
@@ -28,7 +28,7 @@
       <description>desc</description>
       <group>Nahkampf</group>
       <gameObject>
-        <renderer>NoRenderer</renderer>
+        <renderer>S_Item_10</renderer>
       </gameObject>
     </item>
   </WeaponInner>

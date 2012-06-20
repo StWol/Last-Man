@@ -18,7 +18,7 @@ namespace EVCS_Projekt.Objects
         // Baucht man die Vererbung der GameComponent von XNA und die initialize methode?
 
         public IRenderBehavior Renderer { get; set; }
-        public ILocationBehavior LocationBehavior { get; private set; }
+        public ILocationBehavior LocationBehavior { get; set; }
 
         protected delegate Rectangle GetRectanlge();
         protected GetRectanlge GetRect { get; set; }
