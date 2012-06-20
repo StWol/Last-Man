@@ -216,7 +216,8 @@ namespace EVCS_Projekt.Objects.Items
         public Weapon Clone()
         {
             Weapon w = new Weapon(GetInner());
-            w.Renderer = Renderer;
+            w.Renderer = Renderer.Clone();
+            w.LocationBehavior = LocationBehavior.Clone();
             return w;
         }
     }

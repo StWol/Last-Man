@@ -17,7 +17,7 @@ namespace EVCS_Projekt
     {
         public float Speed { get; private set; }
         public float Health { get; private set; }
-        private float maxHealth;
+        public float MaxHealth { get; private set; }
         public float SightiningDistance { get; private set; }
         public float AttackDistance { get; private set; }
         private float ratOfFire;
@@ -26,6 +26,7 @@ namespace EVCS_Projekt
         public EEnemyType TypOfEnemy { get; private set; }
         public bool IsDead { get { if (Health <= 0F) return true; else return false; } }
         public bool CanSeePlayer { get; set; }
+        public float Damage { get; set; }
 
         // Action die der Gegner ausführt
         public Activity Activity { get; set; }
@@ -34,7 +35,7 @@ namespace EVCS_Projekt
         public static Dictionary<EEnemyType, Enemy> DefaultEnemies { get; set; }
 
         public Enemy(Enemy e, Vector2 position) :
-            this(e.LocationBehavior, e.Renderer, e.ratOfFire, e.AttackDistance, e.SightiningDistance, e.maxHealth, e.Speed, e.Health, e.TypOfEnemy)
+            this(e.LocationBehavior, e.Renderer, e.ratOfFire, e.AttackDistance, e.SightiningDistance, e.MaxHealth, e.Speed, e.Health, e.TypOfEnemy)
         {
             LocationBehavior.Position = position;
         }
@@ -53,7 +54,7 @@ namespace EVCS_Projekt
             this.ratOfFire = ratOfFire;
             this.AttackDistance = attackDistance;
             this.SightiningDistance = sightiningDistance;
-            this.maxHealth = maxHealth;
+            this.MaxHealth = maxHealth;
             TypOfEnemy = typeOfEnemy;
 
             lastAttack = 0;
@@ -67,7 +68,8 @@ namespace EVCS_Projekt
         // Clont den Gegner
         public Enemy Clone()
         {
-            Enemy c = new Enemy(LocationBehavior.Clone(), Renderer.Clone(), ratOfFire, AttackDistance, SightiningDistance, maxHealth, Speed, Health, TypOfEnemy);
+            Enemy c = new Enemy(LocationBehavior.Clone(), Renderer.Clone(), ratOfFire, AttackDistance, SightiningDistance, MaxHealth, Speed, Health, TypOfEnemy);
+            c.Damage = Damage;
             return c;
         }
 
@@ -89,7 +91,7 @@ namespace EVCS_Projekt
                 lastAttack = Main.GameTimeUpdate.TotalGameTime.TotalSeconds;
 
                 // Schuss erstellen
-                Shot s = new Shot(0, 0, 1000, -LocationBehavior.Direction, 10, "", 0, "", 0, new MapLocation(LocationBehavior.Position));
+                Shot s = new Shot(0, 0, 1000, -LocationBehavior.Direction, Damage, "", 0, "", 0, new MapLocation(LocationBehavior.Position));
 
                 // Je nach Gegner andere SchussGrafik
                 switch (TypOfEnemy)

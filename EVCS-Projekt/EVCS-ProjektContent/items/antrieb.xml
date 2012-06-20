@@ -11,7 +11,7 @@
 			<description>desc</description>
         <group>DruckluftGross</group>
 		<gameObject>
-			<renderer>S_Item_01</renderer>
+			<renderer>S_Item_1</renderer>
 		</gameObject>
 		</item>
 	</AntriebInner>
