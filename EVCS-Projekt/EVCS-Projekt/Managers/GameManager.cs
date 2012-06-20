@@ -99,6 +99,7 @@ namespace EVCS_Projekt.Managers
             GameState.QuadTreeEnemies = new QuadTree<Enemy>(0, 0, (int)GameState.MapSize.X, (int)GameState.MapSize.Y);
             GameState.QuadTreeSpawnPoints = new QuadTree<SpawnPoint>(0, 0, (int)GameState.MapSize.X, (int)GameState.MapSize.Y);
             GameState.QuadTreeStaticObjects = new QuadTree<StaticObject>(0, 0, (int)GameState.MapSize.X, (int)GameState.MapSize.Y);
+            GameState.QuadTreeItems = new QuadTree<Item>(0, 0, (int)GameState.MapSize.X, (int)GameState.MapSize.Y);
 
             GameState.ShotListVsEnemies = new List<Shot>(); // Shots als Liste, da diese nur eine kurze Lebenszeit haben
             GameState.ShotListVsPlayer = new List<Shot>(); // Shots als Liste, da diese nur eine kurze Lebenszeit haben
@@ -141,7 +142,16 @@ namespace EVCS_Projekt.Managers
 
             Debug.WriteLine(">" + s.Renderer.Name);
 
+            Item it1 = Item.Get(1);
+            it1.LocationBehavior.Position = new Vector2(1100, 4150);
+            it1.LocationSizing();
 
+            Item it2 = Item.Get(1);
+            it2.LocationBehavior.Position = new Vector2(1200, 4150);
+            it2.LocationSizing();
+
+            GameState.QuadTreeItems.Add(it1);
+            GameState.QuadTreeItems.Add(it2);
             
             //User Interface erstellen
             InitGui();
@@ -328,6 +338,9 @@ namespace EVCS_Projekt.Managers
             // Kollisionen der SChüsse prüfen
             CheckShotsVsEnemies(enemies);
             CheckShotsVsPlayer();
+
+            // Itemkollision prüfen
+            ItemColission();
 
             // Renderer des Players
             GameState.Player.Update();
@@ -522,6 +535,21 @@ namespace EVCS_Projekt.Managers
             
 
             oldKeyState = newState;
+        }
+
+        // Colision mit items
+        private void ItemColission()
+        {
+            // Items die mit dem spieler kollidieren
+            List<Item> itemsOnScreen = GameState.QuadTreeItems.GetObjects(GameState.Player.Rect);
+
+            foreach (Item i in itemsOnScreen) {
+                // Item in inventar zufügem
+                GameState.Player.AddItemToInventar(i);
+
+                // Item aus quadtree löschen
+                GameState.QuadTreeItems.Remove(i);
+            }
         }
 
         // ***************************************************************************
@@ -785,6 +813,9 @@ namespace EVCS_Projekt.Managers
             //Static Objects im Bild
             List<StaticObject> staticOnScreen = GameState.QuadTreeStaticObjects.GetObjects(screenRect);
 
+            //Static Objects im Bild
+            List<Item> itemsOnScreen = GameState.QuadTreeItems.GetObjects(screenRect);
+
             // Alle gegner im Bilschirm
             List<Enemy> enemiesOnScreen = GameState.QuadTreeEnemies.GetObjects(screenRect);
 
@@ -814,6 +845,12 @@ namespace EVCS_Projekt.Managers
             foreach (StaticObject so in staticOnScreen)
             {
                 so.Renderer.Draw(spriteBatch, so.LocationBehavior);
+            }
+
+            // Items zeichnen
+            foreach (Item it in itemsOnScreen)
+            {
+                it.Renderer.Draw(spriteBatch, it.LocationBehavior);
             }
 
             // Shots werden alle gezeichnet, da es von ihnen nicht viele gibt und diese normalerweise alle innerhalb des bildschirms liegen

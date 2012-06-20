@@ -18,6 +18,8 @@ namespace EVCS_Projekt
         public QuadTree<SpawnPoint> QuadTreeSpawnPoints { get; set; }
         // QT für statische Objekte
         public QuadTree<StaticObject> QuadTreeStaticObjects { get; set; }
+        // QT für Items
+        public QuadTree<Item> QuadTreeItems { get; set; }
         // List für alle Schüsse von Spieler
         public List<Shot> ShotListVsEnemies { get; set; }
         public List<Shot> ShotListVsPlayer { get; set; }

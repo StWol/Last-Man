@@ -83,10 +83,13 @@ namespace EVCS_Projekt.Objects
                     continue;
 
                 Texture2D ico;
-                if (File.Exists(Configuration.Get("iconDir") + i.Id))
+                try
+                {
                     ico = Main.ContentManager.Load<Texture2D>(Configuration.Get("iconDir") + i.Id);
-                else
+                } catch
+                {
                     ico = Main.ContentManager.Load<Texture2D>(Configuration.Get("iconDir") + "dummy");
+                }
 
                 ItemIcons.Add(i.Id, ico);
             }
@@ -250,6 +253,33 @@ namespace EVCS_Projekt.Objects
         protected int HashCode()
         {
             return 0;
+        }
+
+        //
+        public static Item Get(int x)
+        {
+            Item i = AllItems[x];
+
+            if (i.GetType() == typeof(Antrieb))
+                return ((Antrieb)i).Clone();
+            if (i.GetType() == typeof(Hauptteil))
+                return ((Hauptteil)i).Clone();
+            if (i.GetType() == typeof(Liquid))
+                return ((Liquid)i).Clone();
+            if (i.GetType() == typeof(Munition))
+                return ((Munition)i).Clone();
+            if (i.GetType() == typeof(Powerup))
+                return ((Powerup)i).Clone();
+            if (i.GetType() == typeof(Shot))
+                return ((Shot)i).Clone();
+            if (i.GetType() == typeof(Stabilisator))
+                return ((Stabilisator)i).Clone();
+            if (i.GetType() == typeof(Visier))
+                return ((Visier)i).Clone();
+            if (i.GetType() == typeof(Weapon))
+                return ((Weapon)i).Clone();
+
+            return null;
         }
     }
 }

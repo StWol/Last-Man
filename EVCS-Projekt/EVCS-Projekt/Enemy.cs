@@ -106,7 +106,7 @@ namespace EVCS_Projekt
                 s.LocationSizing();
 
                 // Play Sound
-                Sound.Sounds["Monster_Attack_01"].Play();
+                Sound.Sounds["Monster_Attack_02"].Play();
 
                 // Schuss in gameState liste aufnehmen
                 Main.MainObject.GameManager.GameState.ShotListVsPlayer.Add(s);
