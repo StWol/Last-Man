@@ -156,7 +156,7 @@ namespace EVCS_Projekt.UI
             public override void  Draw(SpriteBatch sb)
             {
                 Color active;
-                if(IsMouseOver())
+                if (IsMouseOver())
                 {
                     active = HoverColor;
                 }
@@ -190,6 +190,7 @@ namespace EVCS_Projekt.UI
                 }
             
         }
+
 
         public void OnMouseUp(UIElement element)
         {

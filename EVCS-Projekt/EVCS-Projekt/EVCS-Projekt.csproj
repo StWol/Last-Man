@@ -135,6 +135,7 @@
     <Compile Include="UI\UIButton.cs" />
     <Compile Include="UI\UIElement.cs" />
     <Compile Include="UI\UIList.cs" />
+    <Compile Include="UI\UIMouseEvent.cs" />
     <Compile Include="UI\UIPanel.cs" />
     <Compile Include="UI\UIToggleButton.cs" />
   </ItemGroup>

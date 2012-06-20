@@ -56,7 +56,7 @@ namespace EVCS_Projekt.UI
         {
             get
             {
-                if ( isHover )
+                if ( IsHover )
                 {
                     return hoverTexture;
                 }
@@ -68,9 +68,11 @@ namespace EVCS_Projekt.UI
         private Texture2D texture;
         private Texture2D hoverTexture;
 
-        protected List<UIActionListener> listener;
+        protected List<UIActionListener> actionListener;
+        protected List<UIMouseHoverListener> hoverListener;
+
         protected UIElement parent;
-        protected bool isHover;
+        public bool IsHover;
 
         protected MouseState oldState = Mouse.GetState();
 
@@ -80,7 +82,9 @@ namespace EVCS_Projekt.UI
             Helper.DrawHelper.AddDimension( key, width, height );
 
             this.position = position;
-            listener = new List<UIActionListener>();
+            hoverListener = new List<UIMouseHoverListener>();
+            actionListener = new List<UIActionListener>();
+            
         }
 
         public UIElement( int width, int height, Vector2 position, Texture2D texture, Texture2D hoverTexture ) :
@@ -130,7 +134,7 @@ namespace EVCS_Projekt.UI
             // Wenn nicht mehr gedrückt, aber im vorherigen Durchgang gedrückt war => Man kann die Maustaste gedrückt halten ohne das jedesmal ein Event ausgelöst wird
             if ( IsMousePressed() )
             {
-                List<UIActionListener> listenerList = new List<UIActionListener>( listener );
+                List<UIActionListener> listenerList = new List<UIActionListener>( actionListener );
                 foreach ( UIActionListener al in listenerList )
                 {
                     al.OnMouseDown( this );
@@ -148,27 +152,40 @@ namespace EVCS_Projekt.UI
             //}
         }
 
-
         protected bool IsMouseOver()
         {
-            MouseState state = Mouse.GetState();
-            int mX = state.X;
-            int mY = state.Y;
-            int x = ( int ) ( GetPosition().X );
-            int y = ( int ) ( GetPosition().Y );
-            int w = GetWidth();
-            int h = GetHeight();
+            var state = Mouse.GetState();
 
-            if ( mX > x && mX < x + w && mY > y && mY < y + h )
+            var mouseEvent = new UIMouseEvent(state);
+
+            if (mouseEvent.isMouseIn(GetBoundingBox()))
             {
-                isHover = true;
-                return true;
+                if(!IsHover)
+                {
+                    var listenerList = new List<UIMouseHoverListener>(hoverListener);
+                    foreach (UIMouseHoverListener al in listenerList)
+                    {
+                        al.OnMouseIn(this);
+                    }
+                }
+                
+                IsHover = true;
             }
             else
             {
-                isHover = false;
-                return false;
+                if (IsHover)
+                {
+                    var listenerList = new List<UIMouseHoverListener>(hoverListener);
+                    foreach (UIMouseHoverListener al in listenerList)
+                    {
+                        al.OnMouseOut(this);
+                    }
+                    
+                }
+                IsHover = false;
             }
+            return IsHover;
+
         }
 
 
@@ -184,14 +201,15 @@ namespace EVCS_Projekt.UI
             return isPressed;
         }
 
-        public void AddActionListener( UIActionListener al )
-        {
-            listener.Add( al );
-        }
 
         public void RemoveActionListener( UIActionListener al )
         {
-            listener.Remove( al );
+            actionListener.Remove( al );
+        }
+
+        public Rectangle GetBoundingBox()
+        {
+            return new Rectangle((int) GetPosition().X, (int) GetPosition().Y,GetWidth(),GetHeight());
         }
     }
 }

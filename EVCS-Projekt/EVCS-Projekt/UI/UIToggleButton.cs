@@ -29,7 +29,7 @@ namespace EVCS_Projekt.UI
             {
                 if ( isActive )
                 {
-                    if ( isHover )
+                    if ( IsHover )
                         return activeTextureHover;
                     return activeTexture;
                 }
@@ -41,7 +41,7 @@ namespace EVCS_Projekt.UI
         {
             if ( IsMousePressed() )
             {
-                var listenerList = new List<UIActionListener>( listener );
+                var listenerList = new List<UIActionListener>( actoinListener );
                 foreach ( UIActionListener al in listenerList )
                 {
                     if ( isActive )

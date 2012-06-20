@@ -10,15 +10,15 @@ namespace EVCS_Projekt.UI
 {
     class UIPanel : UIElement
     {
+
+
         protected List<UIElement> children;
-        
-        
 
         public UIPanel(int width, int height, Vector2 position)
             : base(width, height, position)
         {
+
             children = new List<UIElement>();
-            
         }
 
         public void Add(UIElement element)

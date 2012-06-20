@@ -5,9 +5,7 @@ using System.Text;
 
 namespace EVCS_Projekt.UI
 {
-    interface UIActionListener: UIListener
+    interface UIListener
     {
-        void OnMouseDown(UIElement element);
-        void OnMouseUp(UIElement element);
     }
 }

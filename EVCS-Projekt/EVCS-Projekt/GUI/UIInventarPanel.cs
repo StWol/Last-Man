@@ -11,7 +11,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace EVCS_Projekt.GUI
 {
-    class UIInventarPanel : UIPanel, UIActionListener
+    class UIInventarPanel : UIPanel, UIActionListener, UIMouseHoverListener
     {
         private UIList inventarList;
         private Texture2D pixel;
@@ -214,6 +214,16 @@ namespace EVCS_Projekt.GUI
             {
                 inventarList.RemoveItems(listAntrieb);
             }
+        }
+
+        public void OnMouseIn(UIElement element)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void OnMouseOut(UIElement element)
+        {
+            throw new NotImplementedException();
         }
     }
 }
