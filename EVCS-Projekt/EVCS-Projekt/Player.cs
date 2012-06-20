@@ -32,7 +32,7 @@ namespace EVCS_Projekt
         public float Speed { get; set; }
         public float[] Liquid { get; set; }
         public Weapon Weapon { set; get; }
-        public List<Item> Inventar { get; private set; }
+        public Dictionary<Item,int> Inventar { get; private set; }
         private Dictionary<int, Item> shortcuts;
         private List<Buff> bufflist;
         public Vector2 Direction { get; set; }
@@ -68,6 +68,28 @@ namespace EVCS_Projekt
             set
             {
             }
+        }
+
+        public void AddItemToInventar(Item item)
+        {
+            if(Inventar.ContainsKey(item))
+            {
+                Inventar[item] += 1;
+            }
+            else
+            {
+                Inventar[item] = 1;
+            }
+        }
+
+        public Item RemoveItemFromInventar(Item item)
+        {
+            if (Inventar.ContainsKey(item))
+            {
+                Inventar.Remove(item);
+                return item;
+            }
+            return null;
         }
 
         public float Reloading { get; set; }
@@ -159,7 +181,7 @@ namespace EVCS_Projekt
             LocationBehavior.Size = Renderer.Size; // Sollte LocationSizing machen
 
             // InventarListe init
-            Inventar = new List<Item>();
+            Inventar = new Dictionary<Item,int>();
 
             // Schusstime auf 0 setzten
             shotTimer = 0;

@@ -12,7 +12,15 @@ namespace EVCS_Projekt.UI
     class UIList : UIPanel, UIActionListener
     {
         private  List<UIElement> buttonList;
-        public  List<Item> ItemList;
+
+        public Dictionary<Item,int> ItemList
+        {
+            get { return itemList; }
+            set { itemList = value;
+            GenerateButtons();}
+        }
+
+
         private  Dictionary<int, int> countItemsDict;
 
         private int firsVisibleButtonIndex = 0;
@@ -22,17 +30,16 @@ namespace EVCS_Projekt.UI
 
         private readonly UIButton btnPrevious;
         private readonly UIButton btnNext;
+        private Dictionary<Item, int> itemList;
 
-        public UIList( int width, int height, Vector2 position, List<Item> itemList )
+        public UIList( int width, int height, Vector2 position)
             : base( width, height, position )
         {
             MAX_VISIBLE_BUTTON_COUNT = height/DEFAULT_HEIGHT;
-            ItemList = itemList;
+            itemList = new Dictionary<Item,int>();
             buttonList = new List<UIElement>();
             countItemsDict = new Dictionary<int, int>();
             
-            CountItems();
-
             var imgPreviousButton = Main.ContentManager.Load<Texture2D>( "images/gui/inventar/list_previous" );
             var imgPreviousButtonHover = Main.ContentManager.Load<Texture2D>( "images/gui/inventar/list_previous_hover" );
 
@@ -46,33 +53,39 @@ namespace EVCS_Projekt.UI
 
             btnPrevious.AddActionListener( this );
             btnNext.AddActionListener( this );
-
-
-            GenerateButtons();
-
         }
 
-        private void CountItems()
+        public void AddItemList(Dictionary<Item, int> list)
         {
-            foreach ( var item in ItemList )
+            foreach (KeyValuePair<Item, int> pair in list)
             {
-                if ( !countItemsDict.ContainsKey( item.Id ) )
-                    countItemsDict.Add( item.Id, 0 );
-                else
-                    countItemsDict[ item.Id ] += 1;
+                ItemList.Add(pair.Key, pair.Value);
+                GenerateButtons();
             }
+        }
+
+        public void RemoveItems(Dictionary<Item, int> list)
+        {
+            foreach (KeyValuePair<Item, int> pair in list)
+            {
+                if (ItemList.ContainsKey(pair.Key))
+                    ItemList.Remove(pair.Key);
+            }
+            GenerateButtons();
         }
 
         private void GenerateButtons()
         {
-            for ( int i = 0; i < ItemList.Count; i++ )
+            buttonList.Clear();
+            int i = 0;
+            foreach(Item item in itemList.Keys)
             {
-                var item = ItemList[ i ];
                 var x = ( int ) ( position.X );
                 var y = (int)((50 * i)) + btnPrevious.GetHeight();
-                var button = new UIListButton(width, 24, new Vector2(0, y), item.Icon, item.Name, countItemsDict[item.Id], item.Weight);
+                var button = new UIListButton(width, 24, new Vector2(0, y), item.Icon, item.Name, itemList[item], item.Weight);
 
                 buttonList.Add( button );
+                i++;
             }
         }
 
@@ -83,14 +96,18 @@ namespace EVCS_Projekt.UI
 //            sb.Draw( Main.ContentManager.Load<Texture2D>( "images/pixelWhite" ), box, Color.Fuchsia );
             Add( btnPrevious );
 
-            int j = 0;
-            for ( int i = firsVisibleButtonIndex; i < MAX_VISIBLE_BUTTON_COUNT + firsVisibleButtonIndex; i++ , j++)
+            if(buttonList.Count>0)
             {
-                
+                int j = 0;
+                for (int i = firsVisibleButtonIndex; (i < MAX_VISIBLE_BUTTON_COUNT + firsVisibleButtonIndex) && (i < buttonList.Count) ; i++, j++)
+                {
+
                     UIListButton button = (UIListButton)buttonList[i];
                     button.SetPosition(new Vector2(0, j * 50 + 18));
                     Add(buttonList[i]);
+                }
             }
+            
             Add( btnNext );
             base.Draw( sb );
         }

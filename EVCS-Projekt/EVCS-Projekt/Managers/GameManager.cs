@@ -142,13 +142,7 @@ namespace EVCS_Projekt.Managers
             Debug.WriteLine(">" + s.Renderer.Name);
 
 
-            GameState.Player.Inventar.Add(Item.AllItems[2]);
-            GameState.Player.Inventar.Add(Item.AllItems[3]);
-            GameState.Player.Inventar.Add(Item.AllItems[4]);
-            GameState.Player.Inventar.Add(Item.AllItems[6]);
-            GameState.Player.Inventar.Add(Item.AllItems[7]);
-            GameState.Player.Inventar.Add(Item.AllItems[7]);
-            GameState.Player.Inventar.Add(Item.AllItems[7]);
+            
             //User Interface erstellen
             InitGui();
 
@@ -236,12 +230,17 @@ namespace EVCS_Projekt.Managers
             // ################################################################################
             // TEST 
 
-
-            GameState.Player.Inventar.Add(Item.AllItems[2]);
-            GameState.Player.Inventar.Add(Item.AllItems[3]);
-            GameState.Player.Inventar.Add(Item.AllItems[4]);
-            GameState.Player.Inventar.Add(Item.AllItems[6]);
-            GameState.Player.Inventar.Add(Item.AllItems[7]);
+            GameState.Player.AddItemToInventar(Item.AllItems[3]);
+            GameState.Player.AddItemToInventar(Item.AllItems[4]);
+            GameState.Player.AddItemToInventar(Item.AllItems[6]);
+            GameState.Player.AddItemToInventar(Item.AllItems[7]);
+            GameState.Player.AddItemToInventar(Item.AllItems[7]);
+            GameState.Player.AddItemToInventar(Item.AllItems[7]);
+            GameState.Player.AddItemToInventar(Item.AllItems[2]);
+            GameState.Player.AddItemToInventar(Item.AllItems[3]);
+            GameState.Player.AddItemToInventar(Item.AllItems[4]);
+            GameState.Player.AddItemToInventar(Item.AllItems[6]);
+            GameState.Player.AddItemToInventar(Item.AllItems[7]);
 
             // TEST ENDE
             // ################################################################################

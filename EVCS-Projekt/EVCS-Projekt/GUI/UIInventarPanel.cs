@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using EVCS_Projekt.Objects;
+using EVCS_Projekt.Objects.Items;
 using EVCS_Projekt.UI;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
@@ -18,7 +19,7 @@ namespace EVCS_Projekt.GUI
         private Rectangle background;
         private UIPanel checkBoxPanel;
         private Color backgroundColor = Color.Gray;
-        private List<Item> playerInventar;
+        private Dictionary<Item,int> playerInventar;
 
         private UIToggleButton toggleWaffe;
         private UIToggleButton toggleHauptteil;
@@ -27,11 +28,20 @@ namespace EVCS_Projekt.GUI
         private UIToggleButton toggleVisier;
         private UIToggleButton toggleAntrieb;
 
+
+        private Dictionary<Item, int> listWaffe;
+        private Dictionary<Item, int> listHauptteil;
+        private Dictionary<Item, int> listStabilisator;
+        private Dictionary<Item, int> listMunition;
+        private Dictionary<Item, int> listVisier;
+        private Dictionary<Item, int> listAntrieb;
+ 
+
         public UIInventarPanel( int width, int height, Vector2 position )
             : base( width, height, position )
         {
             playerInventar = Main.MainObject.GameManager.GameState.Player.Inventar;
-            inventarList = new UIList( 380, 250, new Vector2( 300, 100 ), playerInventar );
+            inventarList = new UIList( 380, 250, new Vector2( 300, 100 ));
 
             Add( inventarList );
             Visible = false;
@@ -42,10 +52,50 @@ namespace EVCS_Projekt.GUI
             background = new Rectangle( ( int ) GetPosition().X, ( int ) GetPosition().Y, width, height );
             Add( inventarList );
 
-
+            GenerateFilteredLists(playerInventar);
             CreateCheckBoxPanel();
+        }
+
+        private void GenerateFilteredLists(Dictionary<Item, int> inventar)
+        {
+            listWaffe = new Dictionary<Item, int>();
+            listHauptteil = new Dictionary<Item, int>();
+            listStabilisator = new Dictionary<Item, int>();
+            listMunition = new Dictionary<Item, int>();
+            listVisier = new Dictionary<Item, int>();
+            listAntrieb = new Dictionary<Item, int>();
 
 
+            foreach(KeyValuePair<Item, int> pair in inventar)
+            {
+                var item = pair.Key;
+                int count = pair.Value;
+
+                var type = item.GetType();
+                if (type == typeof(Weapon))
+                {
+                    listWaffe[item] = count;
+                }else if(type == typeof(Hauptteil))
+                {
+                    listHauptteil[item] = count;
+                }
+                else if (type == typeof(Stabilisator))
+                {
+                    listStabilisator[item] = count;
+                }
+                else if (type == typeof(Munition))
+                {
+                    listMunition[item] = count;
+                }
+                else if (type == typeof(Visier))
+                {
+                    listVisier[item] = count;
+                }
+                else if (type == typeof(Antrieb))
+                {
+                    listAntrieb[item] = count;
+                }
+            }
         }
 
         private void CreateCheckBoxPanel()
@@ -96,7 +146,6 @@ namespace EVCS_Projekt.GUI
             toggleVisier.AddActionListener( this );
             toggleAntrieb.AddActionListener( this );
 
-
             Add( toggleWaffe );
             Add( toggleHauptteil );
             Add( toggleStabilisator );
@@ -113,12 +162,58 @@ namespace EVCS_Projekt.GUI
 
         public void OnMouseDown(UIElement element)
         {
-            backgroundColor = Color.Green;
+            if (element == toggleWaffe)
+            {
+                inventarList.AddItemList(listWaffe);
+            }
+            else if (element == toggleHauptteil)
+            {
+                inventarList.AddItemList(listHauptteil);
+            }
+            else if (element == toggleMunition)
+            {
+                inventarList.AddItemList(listMunition);
+            }
+            else if (element == toggleStabilisator)
+            {
+                inventarList.AddItemList(listStabilisator);
+            }
+            else if (element == toggleVisier)
+            {
+                inventarList.AddItemList(listVisier);
+            }
+            else if (element == toggleAntrieb)
+            {
+                inventarList.AddItemList(listAntrieb);
+            }
         }
 
         public void OnMouseUp(UIElement element)
         {
-            backgroundColor = Color.Gray;
+            if (element == toggleWaffe)
+            {
+                inventarList.RemoveItems(listWaffe);
+            }
+            else if (element == toggleHauptteil)
+            {
+                inventarList.RemoveItems(listHauptteil);
+            }
+            else if (element == toggleMunition)
+            {
+                inventarList.RemoveItems(listMunition);
+            }
+            else if (element == toggleStabilisator)
+            {
+                inventarList.RemoveItems(listStabilisator);
+            }
+            else if (element == toggleVisier)
+            {
+                inventarList.RemoveItems(listVisier);
+            }
+            else if (element == toggleAntrieb)
+            {
+                inventarList.RemoveItems(listAntrieb);
+            }
         }
     }
 }

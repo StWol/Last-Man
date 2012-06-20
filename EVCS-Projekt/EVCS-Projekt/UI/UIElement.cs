@@ -71,7 +71,6 @@ namespace EVCS_Projekt.UI
         protected List<UIActionListener> listener;
         protected UIElement parent;
         protected bool isHover;
-        private bool mouseDown;
 
         protected MouseState oldState = Mouse.GetState();
 
