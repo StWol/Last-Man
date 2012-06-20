@@ -19,7 +19,7 @@ namespace EVCS_Projekt.GUI
         private Rectangle background;
         private UIPanel checkBoxPanel;
         private Color backgroundColor = Color.Gray;
-        private Dictionary<Item,int> playerInventar;
+        private Dictionary<int,int> playerInventar;
 
         private UIToggleButton toggleWaffe;
         private UIToggleButton toggleHauptteil;
@@ -29,12 +29,12 @@ namespace EVCS_Projekt.GUI
         private UIToggleButton toggleAntrieb;
 
 
-        private Dictionary<Item, int> listWaffe;
-        private Dictionary<Item, int> listHauptteil;
-        private Dictionary<Item, int> listStabilisator;
-        private Dictionary<Item, int> listMunition;
-        private Dictionary<Item, int> listVisier;
-        private Dictionary<Item, int> listAntrieb;
+        private Dictionary<int, int> listWaffe;
+        private Dictionary<int, int> listHauptteil;
+        private Dictionary<int, int> listStabilisator;
+        private Dictionary<int, int> listMunition;
+        private Dictionary<int, int> listVisier;
+        private Dictionary<int, int> listAntrieb;
  
 
         public UIInventarPanel( int width, int height, Vector2 position )
@@ -56,44 +56,46 @@ namespace EVCS_Projekt.GUI
             CreateCheckBoxPanel();
         }
 
-        private void GenerateFilteredLists(Dictionary<Item, int> inventar)
+        private void GenerateFilteredLists(Dictionary<int, int> inventar)
         {
-            listWaffe = new Dictionary<Item, int>();
-            listHauptteil = new Dictionary<Item, int>();
-            listStabilisator = new Dictionary<Item, int>();
-            listMunition = new Dictionary<Item, int>();
-            listVisier = new Dictionary<Item, int>();
-            listAntrieb = new Dictionary<Item, int>();
+            listWaffe = new Dictionary<int, int>();
+            listHauptteil = new Dictionary<int, int>();
+            listStabilisator = new Dictionary<int, int>();
+            listMunition = new Dictionary<int, int>();
+            listVisier = new Dictionary<int, int>();
+            listAntrieb = new Dictionary<int, int>();
 
 
-            foreach(KeyValuePair<Item, int> pair in inventar)
+            foreach (KeyValuePair<int, int> pair in inventar)
             {
-                var item = pair.Key;
+                int typeId = pair.Key;
                 int count = pair.Value;
+
+                Item item = Item.Get(typeId);
 
                 var type = item.GetType();
                 if (type == typeof(Weapon))
                 {
-                    listWaffe[item] = count;
+                    listWaffe[typeId] = count;
                 }else if(type == typeof(Hauptteil))
                 {
-                    listHauptteil[item] = count;
+                    listHauptteil[typeId] = count;
                 }
                 else if (type == typeof(Stabilisator))
                 {
-                    listStabilisator[item] = count;
+                    listStabilisator[typeId] = count;
                 }
                 else if (type == typeof(Munition))
                 {
-                    listMunition[item] = count;
+                    listMunition[typeId] = count;
                 }
                 else if (type == typeof(Visier))
                 {
-                    listVisier[item] = count;
+                    listVisier[typeId] = count;
                 }
                 else if (type == typeof(Antrieb))
                 {
-                    listAntrieb[item] = count;
+                    listAntrieb[typeId] = count;
                 }
             }
         }

@@ -71,7 +71,7 @@ namespace EVCS_Projekt.Objects.Items
         // Clont Object
         public Antrieb Clone()
         {
-            Antrieb a = new Antrieb(Id, Group, Name, RateOfFire, Damage, SoundId, Weight, Description, LocationBehavior.Clone());
+            Antrieb a = new Antrieb(TypeId, Group, Name, RateOfFire, Damage, SoundId, Weight, Description, LocationBehavior.Clone());
             a.Renderer = Renderer;
             return a;
         }

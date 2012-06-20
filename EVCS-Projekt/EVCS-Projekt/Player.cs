@@ -32,7 +32,7 @@ namespace EVCS_Projekt
         public float Speed { get; set; }
         public float[] Liquid { get; set; }
         public Weapon Weapon { set; get; }
-        public Dictionary<Item,int> Inventar { get; private set; }
+        public Dictionary<int,int> Inventar { get; private set; }
         private Dictionary<int, Item> shortcuts;
         private List<Buff> bufflist;
         public Vector2 Direction { get; set; }
@@ -72,21 +72,21 @@ namespace EVCS_Projekt
 
         public void AddItemToInventar(Item item)
         {
-            if(Inventar.ContainsKey(item))
+            if(Inventar.ContainsKey(item.TypeId))
             {
-                Inventar[item] += 1;
+                Inventar[item.TypeId] += 1;
             }
             else
             {
-                Inventar[item] = 1;
+                Inventar[item.TypeId] = 1;
             }
         }
 
         public Item RemoveItemFromInventar(Item item)
         {
-            if (Inventar.ContainsKey(item))
+            if (Inventar.ContainsKey(item.TypeId))
             {
-                Inventar.Remove(item);
+                Inventar.Remove(item.TypeId);
                 return item;
             }
             return null;
@@ -181,7 +181,7 @@ namespace EVCS_Projekt
             LocationBehavior.Size = Renderer.Size; // Sollte LocationSizing machen
 
             // InventarListe init
-            Inventar = new Dictionary<Item,int>();
+            Inventar = new Dictionary<int,int>();
 
             // Schusstime auf 0 setzten
             shotTimer = 0;
@@ -298,7 +298,7 @@ namespace EVCS_Projekt
         // Entfernt das Item aus dem UIInventarPanel
         public void EatItem(Item item)
         {
-            this.Inventar.Remove(item);
+            this.Inventar.Remove(item.TypeId);
         }
 
         // ***************************************************************************

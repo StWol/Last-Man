@@ -85,13 +85,13 @@ namespace EVCS_Projekt.Objects
                 Texture2D ico;
                 try
                 {
-                    ico = Main.ContentManager.Load<Texture2D>(Configuration.Get("iconDir") + i.Id);
+                    ico = Main.ContentManager.Load<Texture2D>(Configuration.Get("iconDir") + i.TypeId);
                 } catch
                 {
                     ico = Main.ContentManager.Load<Texture2D>(Configuration.Get("iconDir") + "dummy");
                 }
 
-                ItemIcons.Add(i.Id, ico);
+                ItemIcons.Add(i.TypeId, ico);
             }
         }
 
@@ -123,76 +123,76 @@ namespace EVCS_Projekt.Objects
                 {
                     Antrieb v = (Antrieb)instance;
                     // Adden
-                    DefaultAntrieb.Add(v.Id, v);
-                    AllItems.Add(v.Id, v);
+                    DefaultAntrieb.Add(v.TypeId, v);
+                    AllItems.Add(v.TypeId, v);
                 }
                 else if (typeof(Outter) == typeof(Hauptteil))
                 {
                     Hauptteil v = (Hauptteil)instance;
                     // Adden
-                    DefaultHauptteil.Add(v.Id, v);
-                    AllItems.Add(v.Id, v);
+                    DefaultHauptteil.Add(v.TypeId, v);
+                    AllItems.Add(v.TypeId, v);
                 }
                 else if (typeof(Outter) == typeof(Munition))
                 {
                     Munition v = (Munition)instance;
                     // Adden
-                    DefaultMunition.Add(v.Id, v);
-                    AllItems.Add(v.Id, v);
+                    DefaultMunition.Add(v.TypeId, v);
+                    AllItems.Add(v.TypeId, v);
                 }
                 else if (typeof(Outter) == typeof(Powerup))
                 {
                     Powerup v = (Powerup)instance;
                     // Adden
-                    DefaultPowerups.Add(v.Id, v);
-                    AllItems.Add(v.Id, v);
+                    DefaultPowerups.Add(v.TypeId, v);
+                    AllItems.Add(v.TypeId, v);
                 }
                 else if (typeof(Outter) == typeof(Shot))
                 {
                     Shot v = (Shot)instance;
                     // Adden
-                    DefaultShots.Add(v.Id, v);
-                    AllItems.Add(v.Id, v);
+                    DefaultShots.Add(v.TypeId, v);
+                    AllItems.Add(v.TypeId, v);
                 }
                 else if (typeof(Outter) == typeof(Stabilisator))
                 {
                     Stabilisator v = (Stabilisator)instance;
                     // Adden
-                    DefaultStabilisatoren.Add(v.Id, v);
-                    AllItems.Add(v.Id, v);
+                    DefaultStabilisatoren.Add(v.TypeId, v);
+                    AllItems.Add(v.TypeId, v);
                 }
                 else if (typeof(Outter) == typeof(Visier))
                 {
                     Visier v = (Visier)instance;
                     // Adden
-                    DefaultVisiere.Add(v.Id, v);
-                    AllItems.Add(v.Id, v);
+                    DefaultVisiere.Add(v.TypeId, v);
+                    AllItems.Add(v.TypeId, v);
                 }
                 else if (typeof(Outter) == typeof(Weapon))
                 {
                     Weapon v = (Weapon)instance;
                     // Adden
-                    DefaultWeapon.Add(v.Id, v);
-                    AllItems.Add(v.Id, v);
+                    DefaultWeapon.Add(v.TypeId, v);
+                    AllItems.Add(v.TypeId, v);
                 }
             }
         }
 
         //Attributes
-        public int Id { get; private set; }
+        public int TypeId { get; private set; }
         public EGroup Group { get; private set; }
         public string Name { get; private set; }
         public string Description { get; private set; }
         public float Weight { get; private set; }
 
-        public Texture2D Icon { get { return ItemIcons[Id]; } }
+        public Texture2D Icon { get { return ItemIcons[TypeId]; } }
 
         // ***************************************************************************
         // Konstruktor 1
         public Item(int id, EGroup group, string name, string description, float weight, ILocationBehavior locationBehavior, IRenderBehavior renderBehavior)
             : base(locationBehavior, renderBehavior)
         {
-            this.Id = id;
+            this.TypeId = id;
             Name = name;
             Description = description;
             Weight = weight;
@@ -204,7 +204,7 @@ namespace EVCS_Projekt.Objects
         public Item(int id, EGroup group, string name, string description, float weight, ILocationBehavior locationBehavior)
             : base(locationBehavior)
         {
-            this.Id = id;
+            this.TypeId = id;
             Name = name;
             Description = description;
             Weight = weight;
@@ -216,7 +216,7 @@ namespace EVCS_Projekt.Objects
         public Item(ItemInner ii)
             : base(ii.gameObject)
         {
-            Id = ii.id;
+            TypeId = ii.id;
             Name = ii.name;
             Description = ii.description;
             Weight = ii.weight;
@@ -239,7 +239,7 @@ namespace EVCS_Projekt.Objects
         public ItemInner GetInner()
         {
             ItemInner ii = new ItemInner();
-            ii.id = Id;
+            ii.id = TypeId;
             ii.weight = Weight;
             ii.name = Name;
             ii.description = Description;

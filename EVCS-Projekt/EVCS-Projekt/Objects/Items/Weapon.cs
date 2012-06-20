@@ -73,14 +73,14 @@ namespace EVCS_Projekt.Objects.Items
         {
             WeaponInner wi = new WeaponInner();
 
-            wi.visier = Visier.Id;
+            wi.visier = Visier.TypeId;
             if (Munition != null)
-                wi.munition = Munition.Id;
+                wi.munition = Munition.TypeId;
             else
                 wi.munition = 0;
-            wi.antrieb = Antrieb.Id;
-            wi.stabilisator = Stabilisator.Id;
-            wi.hauptteil = Hauptteil.Id;
+            wi.antrieb = Antrieb.TypeId;
+            wi.stabilisator = Stabilisator.TypeId;
+            wi.hauptteil = Hauptteil.TypeId;
 
             wi.item = base.GetInner();
             return wi;

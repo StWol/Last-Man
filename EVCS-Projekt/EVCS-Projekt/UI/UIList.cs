@@ -13,7 +13,7 @@ namespace EVCS_Projekt.UI
     {
         private  List<UIElement> buttonList;
 
-        public Dictionary<Item,int> ItemList
+        public Dictionary<int,int> ItemList
         {
             get { return itemList; }
             set { itemList = value;
@@ -30,13 +30,13 @@ namespace EVCS_Projekt.UI
 
         private readonly UIButton btnPrevious;
         private readonly UIButton btnNext;
-        private Dictionary<Item, int> itemList;
+        private Dictionary<int, int> itemList;
 
         public UIList( int width, int height, Vector2 position)
             : base( width, height, position )
         {
             MAX_VISIBLE_BUTTON_COUNT = height/DEFAULT_HEIGHT;
-            itemList = new Dictionary<Item,int>();
+            itemList = new Dictionary<int,int>();
             buttonList = new List<UIElement>();
             countItemsDict = new Dictionary<int, int>();
             
@@ -55,18 +55,18 @@ namespace EVCS_Projekt.UI
             btnNext.AddActionListener( this );
         }
 
-        public void AddItemList(Dictionary<Item, int> list)
+        public void AddItemList(Dictionary<int, int> list)
         {
-            foreach (KeyValuePair<Item, int> pair in list)
+            foreach (KeyValuePair<int, int> pair in list)
             {
                 ItemList.Add(pair.Key, pair.Value);
                 GenerateButtons();
             }
         }
 
-        public void RemoveItems(Dictionary<Item, int> list)
+        public void RemoveItems(Dictionary<int, int> list)
         {
-            foreach (KeyValuePair<Item, int> pair in list)
+            foreach (KeyValuePair<int, int> pair in list)
             {
                 if (ItemList.ContainsKey(pair.Key))
                     ItemList.Remove(pair.Key);
@@ -78,11 +78,12 @@ namespace EVCS_Projekt.UI
         {
             buttonList.Clear();
             int i = 0;
-            foreach(Item item in itemList.Keys)
+            foreach(int typeId in itemList.Keys)
             {
+                Item item = Item.Get(typeId);
                 var x = ( int ) ( position.X );
                 var y = (int)((50 * i)) + btnPrevious.GetHeight();
-                var button = new UIListButton(width, 24, new Vector2(0, y), item.Icon, item.Name, itemList[item], item.Weight);
+                var button = new UIListButton(width, 24, new Vector2(0, y), item.Icon, item.Name, itemList[typeId], item.Weight);
 
                 buttonList.Add( button );
                 i++;
@@ -191,6 +192,7 @@ namespace EVCS_Projekt.UI
             
         }
 
+        
 
         public void OnMouseUp(UIElement element)
         {

@@ -75,7 +75,7 @@ namespace EVCS_Projekt.Objects.Items
         // Clont Object
         public Munition Clone()
         {
-            Munition m = new Munition(Id, Group, Name, new List<int>(buffIDs), Count, ShotId, Damage, Description, Weight, LocationBehavior.Clone());
+            Munition m = new Munition(TypeId, Group, Name, new List<int>(buffIDs), Count, ShotId, Damage, Description, Weight, LocationBehavior.Clone());
             m.Renderer = Renderer;
             return m;
         }

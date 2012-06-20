@@ -123,7 +123,7 @@ namespace EVCS_Projekt.Objects.Items
         // Clont Object
         public Shot Clone()
         {
-            Shot s = new Shot(Id, Group, Speed, new Vector2(Direction.X, Direction.Y), Damage, Name, Distance, Description, Weight, LocationBehavior.Clone());
+            Shot s = new Shot(TypeId, Group, Speed, new Vector2(Direction.X, Direction.Y), Damage, Name, Distance, Description, Weight, LocationBehavior.Clone());
             s.Renderer = Renderer;
             return s;
         }

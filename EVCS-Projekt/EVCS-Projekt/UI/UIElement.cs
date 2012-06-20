@@ -71,6 +71,8 @@ namespace EVCS_Projekt.UI
         protected List<UIActionListener> actionListener;
         protected List<UIMouseHoverListener> hoverListener;
 
+        
+
         protected UIElement parent;
         public bool IsHover;
 
@@ -201,6 +203,10 @@ namespace EVCS_Projekt.UI
             return isPressed;
         }
 
+        public void AddActionListener(UIActionListener l)
+        {
+            actionListener.Add(l);
+        }
 
         public void RemoveActionListener( UIActionListener al )
         {

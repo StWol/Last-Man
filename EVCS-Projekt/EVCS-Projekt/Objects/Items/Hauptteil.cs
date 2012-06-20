@@ -62,7 +62,7 @@ namespace EVCS_Projekt.Objects.Items
         // Clont Object
         public Hauptteil Clone()
         {
-            Hauptteil h = new Hauptteil(Id, Group, Name,RateOfFire, Weight,Description, LocationBehavior.Clone());
+            Hauptteil h = new Hauptteil(TypeId, Group, Name,RateOfFire, Weight,Description, LocationBehavior.Clone());
             h.Renderer = Renderer;
             return h;
         }

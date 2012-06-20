@@ -31,7 +31,7 @@ namespace EVCS_Projekt.Objects.Items
         // Clont Object
         public Liquid Clone()
         {
-            Liquid l = new Liquid(Id, TypeOfLiquid, Name, Amount, Group, Description, Weight, LocationBehavior.Clone());
+            Liquid l = new Liquid(TypeId, TypeOfLiquid, Name, Amount, Group, Description, Weight, LocationBehavior.Clone());
             return l;
         }
 
