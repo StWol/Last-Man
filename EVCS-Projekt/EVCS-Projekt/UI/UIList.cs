@@ -11,9 +11,10 @@ namespace EVCS_Projekt.UI
 {
     class UIList : UIPanel, UIActionListener
     {
-        private readonly List<UIElement> buttonList;
-        private readonly List<Item> itemList;
-        private readonly Dictionary<int, int> countItemsDict;
+        private  List<UIElement> buttonList;
+        public  List<Item> ItemList;
+        private  Dictionary<int, int> countItemsDict;
+
         private int firsVisibleButtonIndex = 0;
         private int MAX_VISIBLE_BUTTON_COUNT = 5;
         private const int DEFAULT_HEIGHT = 48;
@@ -26,20 +27,20 @@ namespace EVCS_Projekt.UI
             : base( width, height, position )
         {
             MAX_VISIBLE_BUTTON_COUNT = height/DEFAULT_HEIGHT;
-            this.itemList = itemList;
+            ItemList = itemList;
             buttonList = new List<UIElement>();
             countItemsDict = new Dictionary<int, int>();
             
             CountItems();
 
-            var imgPreviousButton = Main.ContentManager.Load<Texture2D>( "images/gui/list_previous" );
-            var imgPreviousButtonHover = Main.ContentManager.Load<Texture2D>( "images/gui/list_previous_hover" );
+            var imgPreviousButton = Main.ContentManager.Load<Texture2D>( "images/gui/inventar/list_previous" );
+            var imgPreviousButtonHover = Main.ContentManager.Load<Texture2D>( "images/gui/inventar/list_previous_hover" );
 
-            var imgNextButton = Main.ContentManager.Load<Texture2D>( "images/gui/list_next" );
-            var imgNextButtonHover = Main.ContentManager.Load<Texture2D>( "images/gui/list_next_hover" );
+            var imgNextButton = Main.ContentManager.Load<Texture2D>( "images/gui/inventar/list_next" );
+            var imgNextButtonHover = Main.ContentManager.Load<Texture2D>( "images/gui/inventar/list_next_hover" );
 
-            btnPrevious = new UIButton( new Vector2(0,0), imgPreviousButton, imgPreviousButtonHover );
-            btnNext = new UIButton( new Vector2(0, height - imgNextButton.Height ), imgNextButton, imgNextButtonHover );
+            btnPrevious = new UIButton( width, imgPreviousButton.Height, new Vector2( 0, 0 ), imgPreviousButton, imgPreviousButtonHover, "" );
+            btnNext = new UIButton( width, imgNextButton.Height, new Vector2( 0, height - imgNextButton.Height ), imgNextButton, imgNextButtonHover, "" );
 
             
 
@@ -53,7 +54,7 @@ namespace EVCS_Projekt.UI
 
         private void CountItems()
         {
-            foreach ( var item in itemList )
+            foreach ( var item in ItemList )
             {
                 if ( !countItemsDict.ContainsKey( item.Id ) )
                     countItemsDict.Add( item.Id, 0 );
@@ -64,9 +65,9 @@ namespace EVCS_Projekt.UI
 
         private void GenerateButtons()
         {
-            for ( int i = 0; i < itemList.Count; i++ )
+            for ( int i = 0; i < ItemList.Count; i++ )
             {
-                var item = itemList[ i ];
+                var item = ItemList[ i ];
                 var x = ( int ) ( position.X );
                 var y = (int)((50 * i)) + btnPrevious.GetHeight();
                 var button = new UIListButton(width, 24, new Vector2(0, y), item.Icon, item.Name, countItemsDict[item.Id], item.Weight);
@@ -111,7 +112,7 @@ namespace EVCS_Projekt.UI
             public UIListButton( int width, int height, Vector2 position, Texture2D itemIcon, string name, int count, float weigth )
                 : base(width, DEFAULT_HEIGHT, position)
             {
-                var weightIcon = Main.ContentManager.Load<Texture2D>("images/gui/weight");
+                var weightIcon = Main.ContentManager.Load<Texture2D>( "images/gui/inventar/weight" );
 
                 this.btnIcon = new UIButton(DEFAULT_HEIGHT,DEFAULT_HEIGHT, new Vector2( 0, 0 ), itemIcon, itemIcon, "");
                 this.btnName = new UIButton(width - DEFAULT_HEIGHT*4, DEFAULT_HEIGHT, new Vector2(DEFAULT_HEIGHT, 0), name);

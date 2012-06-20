@@ -285,7 +285,7 @@ namespace EVCS_Projekt
         }
 
         // ***************************************************************************
-        // Entfernt das Item aus dem Inventar
+        // Entfernt das Item aus dem UIInventarPanel
         public void EatItem(Item item)
         {
             this.Inventar.Remove(item);

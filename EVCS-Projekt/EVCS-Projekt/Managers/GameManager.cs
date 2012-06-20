@@ -70,7 +70,7 @@ namespace EVCS_Projekt.Managers
         StaticRenderer gun;
         private float gun_cd;
         SoundEffect peng, headshot;
-        private Inventar inventar;
+        private UIInventarPanel uiInventarPanel;
 
         // ***************************************************************************
         // Läd den ganzen Stuff, den der GameManager benötigt
@@ -248,7 +248,7 @@ namespace EVCS_Projekt.Managers
 
             int x = Configuration.GetInt("resolutionWidth")/2-350;
             int y = Configuration.GetInt( "resolutionHeight" ) / 2-200;
-            inventar = new Inventar(700, 400, new Vector2(x, y));
+            uiInventarPanel = new UIInventarPanel(700, 400, new Vector2(x, y));
         }
 
 
@@ -304,7 +304,7 @@ namespace EVCS_Projekt.Managers
 
         public void UpdateGui()
         {
-            inventar.Update();
+            uiInventarPanel.Update();
         }
         public void UpdateGame()
         {
@@ -508,14 +508,14 @@ namespace EVCS_Projekt.Managers
 
             if (newState.IsKeyDown(Keys.I) && !oldKeyState.IsKeyDown(Keys.I))
             {
-                if(inventar.Visible)
+                if(uiInventarPanel.Visible)
                 {
                     updateDelegater = UpdateGame;
-                    inventar.Visible = false;
+                    uiInventarPanel.Visible = false;
                 }else
                 {
                     updateDelegater = UpdateGui;
-                    inventar.Visible = true;
+                    uiInventarPanel.Visible = true;
                 }
                  
                 
@@ -862,8 +862,8 @@ namespace EVCS_Projekt.Managers
             spriteBatch.DrawString(testFont, "Player: " + GameState.Player.LocationBehavior.RelativeBoundingBox + " Shots: " + GameState.ShotListVsEnemies.Count, new Vector2(0, 60), Color.Red);
             spriteBatch.DrawString(testFont, "PlayerDirection: " + GameState.Player.LocationBehavior.Direction + " Accu (Mausrad): " + GameState.Player.Weapon.Accuracy, new Vector2(0, 90), Color.Blue);
 
-            if (inventar.Visible)
-                inventar.Draw(spriteBatch);
+            if (uiInventarPanel.Visible)
+                uiInventarPanel.Draw(spriteBatch);
 
             // TEST-ENDE
             // ################################################################################

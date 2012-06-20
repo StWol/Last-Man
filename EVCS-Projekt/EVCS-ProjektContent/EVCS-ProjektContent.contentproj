@@ -717,12 +717,12 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-    <Compile Include="images\gui\list_next.png">
+    <Compile Include="images\gui\inventar\list_next.png">
       <Name>list_next</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-    <Compile Include="images\gui\list_previous.png">
+    <Compile Include="images\gui\inventar\list_previous.png">
       <Name>list_previous</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
@@ -756,7 +756,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="images\gui\weight.png">
+    <Compile Include="images\gui\inventar\weight.png">
       <Name>weight</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
@@ -808,35 +808,135 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="images\gui\list_next_hover.png">
+    <Compile Include="images\gui\inventar\list_next_hover.png">
       <Name>list_next_hover</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-    <Compile Include="images\gui\list_previous_hover.png">
+    <Compile Include="images\gui\inventar\list_previous_hover.png">
       <Name>list_previous_hover</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="images\gui\toggle_active_antrieb.png">
-      <Name>toggle_active_antrieb</Name>
+    <Compile Include="images\gui\inventar\antrieb.png">
+      <Name>antrieb</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-    <Compile Include="images\gui\toggle_active_antriebHover.png">
-      <Name>toggle_active_antriebHover</Name>
+    <Compile Include="images\gui\inventar\antrieb_a.png">
+      <Name>antrieb_a</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-    <Compile Include="images\gui\toggle_antrieb.png">
-      <Name>toggle_antrieb</Name>
+    <Compile Include="images\gui\inventar\antrieb_a_h.png">
+      <Name>antrieb_a_h</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-    <Compile Include="images\gui\toggle_antriebHover.png">
-      <Name>toggle_antriebHover</Name>
+    <Compile Include="images\gui\inventar\antrieb_h.png">
+      <Name>antrieb_h</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="images\gui\inventar\hauptteil.png">
+      <Name>hauptteil</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="images\gui\inventar\hauptteil_a.png">
+      <Name>hauptteil_a</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="images\gui\inventar\hauptteil_a_h.png">
+      <Name>hauptteil_a_h</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="images\gui\inventar\hauptteil_h.png">
+      <Name>hauptteil_h</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="images\gui\inventar\munition.png">
+      <Name>munition</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="images\gui\inventar\munition_a.png">
+      <Name>munition_a</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="images\gui\inventar\munition_a_h.png">
+      <Name>munition_a_h</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="images\gui\inventar\munition_h.png">
+      <Name>munition_h</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="images\gui\inventar\stabilisator.png">
+      <Name>stabilisator</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="images\gui\inventar\stabilisator_a.png">
+      <Name>stabilisator_a</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="images\gui\inventar\stabilisator_a_h.png">
+      <Name>stabilisator_a_h</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="images\gui\inventar\stabilisator_h.png">
+      <Name>stabilisator_h</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="images\gui\inventar\visier.png">
+      <Name>visier</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="images\gui\inventar\visier_a.png">
+      <Name>visier_a</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="images\gui\inventar\visier_a_h.png">
+      <Name>visier_a_h</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="images\gui\inventar\visier_h.png">
+      <Name>visier_h</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="images\gui\inventar\waffe.png">
+      <Name>waffe</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="images\gui\inventar\waffe_a.png">
+      <Name>waffe_a</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="images\gui\inventar\waffe_a_h.png">
+      <Name>waffe_a_h</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="images\gui\inventar\waffe_h.png">
+      <Name>waffe_h</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>

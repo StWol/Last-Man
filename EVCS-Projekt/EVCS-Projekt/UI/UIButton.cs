@@ -29,7 +29,7 @@ namespace EVCS_Projekt.UI
             isHover = false;
             fontDefault = Main.ContentManager.Load<SpriteFont>("fonts/serenaSmall");
             BackgroundColor = Color.Gray;
-            Text = text;
+            Text = text.Trim();
         }
 
         
@@ -54,9 +54,10 @@ namespace EVCS_Projekt.UI
 
             if (CurrentTexture == null)
             {
+                Vector2 measureString = fontDefault.MeasureString( Text );
 
                 sb.Draw(Main.ContentManager.Load<Texture2D>("images/pixelWhite"), new Rectangle(x, y, width, height), BackgroundColor);
-                sb.DrawString(fontDefault, Text, new Vector2(x, y), Color.Black);
+                sb.DrawString( fontDefault, Text, new Vector2( x + 10, y + measureString.Y / 2 ), Color.Black );
 
             }
             else
