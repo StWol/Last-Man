@@ -58,21 +58,21 @@ namespace EVCS_Projekt.Objects
             ItemIcons = new Dictionary<int, Texture2D>();
 
             // Laden
-            Debug.WriteLine("Lade antrieb.xml");
+            //Debug.WriteLine("Lade antrieb.xml");
             LoadXML<Antrieb, Antrieb.AntriebInner>("antrieb.xml");
-            Debug.WriteLine("Lade hauptteil.xml");
+            //Debug.WriteLine("Lade hauptteil.xml");
             LoadXML<Hauptteil, Hauptteil.HauptteilInner>("hauptteil.xml");
-            Debug.WriteLine("Lade munition.xml");
+            //Debug.WriteLine("Lade munition.xml");
             LoadXML<Munition, Munition.MunitionInner>("munition.xml");
-            Debug.WriteLine("Lade powerup.xml");
+            //Debug.WriteLine("Lade powerup.xml");
             LoadXML<Powerup, Powerup.PowerupInner>("powerup.xml");
-            Debug.WriteLine("Lade shot.xml");
+            //Debug.WriteLine("Lade shot.xml");
             LoadXML<Shot, Shot.ShotInner>("shot.xml");
-            Debug.WriteLine("Lade stabilisator.xml");
+            //Debug.WriteLine("Lade stabilisator.xml");
             LoadXML<Stabilisator, Stabilisator.StabilisatorInner>("stabilisator.xml");
-            Debug.WriteLine("Lade visier.xml");
+            //Debug.WriteLine("Lade visier.xml");
             LoadXML<Visier, Visier.VisierInner>("visier.xml");
-            Debug.WriteLine("Lade weapon.xml");
+            //Debug.WriteLine("Lade weapon.xml");
             LoadXML<Weapon, Weapon.WeaponInner>("weapon.xml");
 
             // Icons

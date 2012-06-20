@@ -180,7 +180,7 @@ namespace EVCS_Projekt.Managers
             // DefaultEnemies laden
             Enemy.DefaultEnemies = new Dictionary<EEnemyType, Enemy>();
 
-            Enemy d1 = new Enemy(new MapLocation(new Vector2(0, 0)), LoadedRenderer.Get("A_RoterDrache_Move"), 1, 0, 0, 100, 100, 100, 0);
+            Enemy d1 = new Enemy(new MapLocation(new Vector2(0, 0)), LoadedRenderer.Get("A_RoterDrache_Move"), 1, 300, 1000, 100, 100, 100, 0);
             d1.LocationSizing();
 
             Enemy.DefaultEnemies.Add(EEnemyType.E1, d1);
@@ -283,14 +283,14 @@ namespace EVCS_Projekt.Managers
                     int frames = int.Parse(split[2]);
                     float fps = float.Parse(split[3]);
 
-                    Debug.WriteLine("AR: " + split[0] + "=" + split[1] + " " + frames + " frames mit " + fps + " fps");
+                    //Debug.WriteLine("AR: " + split[0] + "=" + split[1] + " " + frames + " frames mit " + fps + " fps");
 
                     // AnimationRenderer laden
                     AnimationRenderer.Load(split[0], split[1], frames, fps);
                 }
                 else if (split[0].Substring(0, 1).Equals("S"))
                 {
-                    Debug.WriteLine("SR: " + split[0] + "=" + split[1]);
+                    //Debug.WriteLine("SR: " + split[0] + "=" + split[1]);
 
                     // StaticRenderer laden
                     StaticRenderer.Load(split[0], split[1]);

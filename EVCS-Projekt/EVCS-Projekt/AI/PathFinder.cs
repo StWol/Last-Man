@@ -17,33 +17,40 @@ namespace EVCS_Projekt.AI
 
         private static bool callculated = false;
 
-        public static void CalculatePath()
+        public static void InitPaths()
         {
+            savedPaths = new Dictionary<int, Dictionary<int, PathNode>>();
+
             //Debug.WriteLine("Pfade berechnen..");
-            foreach (WayPoint s in Main.MainObject.GameManager.GameState.Karte.WayPoints.Values)
+            //int c = 0;
+            /*foreach (WayPoint s in Main.MainObject.GameManager.GameState.Karte.WayPoints.Values)
             {
+                //c++;
                 foreach (WayPoint t in Main.MainObject.GameManager.GameState.Karte.WayPoints.Values)
                 {
                     PathFinder.FindePath(s, t);
                 }
-            }
 
-            callculated = true;
+                //Debug.WriteLineIf(c % 100 == 0, c + " pfade berechnet");
+            }*/
+
+            //callculated = true;
         }
 
         public static PathNode FindePath(WayPoint start, WayPoint target)
         {
             if (!callculated)
+            {
+                if ( savedPaths.ContainsKey(start.ID) && savedPaths[start.ID].ContainsKey(target.ID) )
+                    return savedPaths[start.ID][target.ID].Clone();
                 return _findePath(start, target);
+            }
             else
                 return savedPaths[start.ID][target.ID].Clone();
         }
 
         private static PathNode _findePath(WayPoint start, WayPoint target)
         {
-            if (savedPaths == null)
-                savedPaths = new Dictionary<int, Dictionary<int, PathNode>>();
-
             //Debug.WriteLine("pfad berechnen von " + start.ID + " zu " + target.ID);
 
             if (start == target)

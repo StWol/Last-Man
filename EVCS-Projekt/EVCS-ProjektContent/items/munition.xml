@@ -22,7 +22,7 @@
 		<buffIDs>
 			<int>1337</int>
 		</buffIDs>
-		<count>20</count>
+		<count>200</count>
 		<shotId>11</shotId>
 		<damage>20</damage>
 		<item>

@@ -38,11 +38,12 @@ namespace EVCS_Projekt.Map
             QuadTreeWalkable = new QuadTree<StaticObject>(0, 0, (int)gameState.MapSize.X, (int)gameState.MapSize.Y);
 
             // MapFile einlesen
+            Main.MainObject.MenuManager.LoadingText = "Loading map..";
             ReadMapFile(mapFile);
 
             // Wege berechnen
             Main.MainObject.MenuManager.LoadingText = "Calculating enemy routes..";
-            PathFinder.CalculatePath();
+            PathFinder.InitPaths();
         }
 
         private bool ReadMapFile(string mapFile)
