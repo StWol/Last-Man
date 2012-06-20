@@ -857,10 +857,10 @@ namespace EVCS_Projekt.Managers
                 gun.Draw(spriteBatch, GameState.Player.LocationBehavior);
             }
 
-            spriteBatch.DrawString(testFont, "Enemies: " + GameState.QuadTreeEnemies.Count + " Draws: " + enemiesOnScreen.Count + " Updates: " + updateObjects + " FPS: " + (1 / Main.GameTimeDraw.ElapsedGameTime.TotalSeconds), new Vector2(0, 0), Color.Green);
-            spriteBatch.DrawString(testFont, "Munition: " + GameState.Player.Weapon.Munition.Count + " PlayerPos: " + GameState.Player.LocationBehavior.Position + " PlayerRel: " + GameState.Player.LocationBehavior.RelativePosition, new Vector2(0, 30), Color.Red);
-            spriteBatch.DrawString(testFont, "Player: " + GameState.Player.LocationBehavior.RelativeBoundingBox + " Shots: " + GameState.ShotListVsEnemies.Count, new Vector2(0, 60), Color.Red);
-            spriteBatch.DrawString(testFont, "PlayerDirection: " + GameState.Player.LocationBehavior.Direction + " Accu (Mausrad): " + GameState.Player.Weapon.Accuracy, new Vector2(0, 90), Color.Blue);
+            spriteBatch.DrawString(testFont, "Enemies: " + GameState.QuadTreeEnemies.Count + " FPS: " + (1 / Main.GameTimeDraw.ElapsedGameTime.TotalSeconds), new Vector2(0, 0), Color.Green);
+            spriteBatch.DrawString(testFont, "Munition: " + GameState.Player.Weapon.Munition.Count, new Vector2(0, 30), Color.Red);
+            spriteBatch.DrawString(testFont, "", new Vector2(0, 60), Color.Red);
+            spriteBatch.DrawString(testFont, "Accu: " + GameState.Player.Weapon.Accuracy, new Vector2(0, 90), Color.Blue);
 
             if (uiInventarPanel.Visible)
                 uiInventarPanel.Draw(spriteBatch);

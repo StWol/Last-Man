@@ -19,9 +19,6 @@ namespace EVCS_Projekt.Objects.Items
 
         public float Cooldown { get; private set; }
 
-        public bool BigWeapon { get; set; }
-        public int ShotCount { get; set; }
-
         // ***************************************************************************
         // Konstruktor
         public Weapon(int visierId, int antriebId, int stabilisatorId, int hauptteilId, int id, EGroup group, String name, float weight, string description, ILocationBehavior locationBehavior)
@@ -55,9 +52,6 @@ namespace EVCS_Projekt.Objects.Items
             Antrieb = Item.DefaultAntrieb[wi.antrieb];
             Stabilisator = Item.DefaultStabilisatoren[wi.stabilisator];
             Hauptteil = Item.DefaultHauptteil[wi.hauptteil];
-
-            BigWeapon = wi.bigWeapon;
-            ShotCount = wi.shotCount;
         }
 
         // ***************************************************************************
@@ -69,9 +63,6 @@ namespace EVCS_Projekt.Objects.Items
             public int antrieb;
             public int stabilisator;
             public int hauptteil;
-
-            public bool bigWeapon;
-            public int shotCount;
 
             public ItemInner item;
         }
@@ -90,8 +81,6 @@ namespace EVCS_Projekt.Objects.Items
             wi.antrieb = Antrieb.Id;
             wi.stabilisator = Stabilisator.Id;
             wi.hauptteil = Hauptteil.Id;
-            wi.bigWeapon = BigWeapon;
-            wi.shotCount = ShotCount;
 
             wi.item = base.GetInner();
             return wi;
@@ -192,13 +181,33 @@ namespace EVCS_Projekt.Objects.Items
 
         // ***************************************************************************
         // Gewicht wird berechnet
-        public new float Accuracy
+        public float Accuracy
         {
             get
             {
-                float w = Math.Max( (10 - (Visier.Accuracy + Stabilisator.Accuracy)) / 2 / 10 , 0 );
+                float w = Math.Max((10 - (Visier.Accuracy + Stabilisator.Accuracy)) / 2 / 10, 0);
 
                 return w;
+            }
+        }
+
+        // ***************************************************************************
+        // Wieviele schüsse werden geschossen
+        public int ShotCount
+        {
+            get
+            {
+                return Hauptteil.ShotCount;
+            }
+        }
+
+        // ***************************************************************************
+        // handelt es sich um eine große waffe
+        public bool BigWeapon
+        {
+            get
+            {
+                return Hauptteil.BigWeapon;
             }
         }
 

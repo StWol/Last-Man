@@ -50,9 +50,9 @@ namespace EVCS_Projekt.AI
             if (target == null)
                 return;
 
-            if (_path == null || target != _target)
+            if (_path == null || target != _target && !PathNode.IsWaypointInPath(target.ID, _path) )
             {
-                Debug.WriteLine("target = " + target.ID);
+                //Debug.WriteLine("target = " + target.ID);
                 _target = target;
 
                 if (_currentWayPoint == null)
@@ -82,8 +82,6 @@ namespace EVCS_Projekt.AI
 
             //Debug.WriteLineIf(_path == null, "path is null");
         }
-
-
 
         private void Move(Enemy e)
         {
