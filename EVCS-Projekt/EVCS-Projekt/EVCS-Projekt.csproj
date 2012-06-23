@@ -85,6 +85,7 @@
     <Compile Include="Enemy.cs" />
     <Compile Include="GameState.cs" />
     <Compile Include="GUI\UIInventarPanel.cs" />
+    <Compile Include="UI\UIListButton.cs" />
     <Compile Include="Helper\Draw2D.cs" />
     <Compile Include="Helper\DrawHelper.cs" />
     <Compile Include="Helper\FRectangle.cs" />
@@ -134,12 +135,13 @@
     <Compile Include="UI\UIActionListener.cs" />
     <Compile Include="UI\UIButton.cs" />
     <Compile Include="UI\UIElement.cs" />
+    <Compile Include="UI\UIInfoPanel.cs" />
     <Compile Include="UI\UIList.cs" />
     <Compile Include="UI\UIListener.cs" />
     <Compile Include="UI\UIMouseEvent.cs" />
     <Compile Include="UI\UIMouseHoverListener.cs" />
     <Compile Include="UI\UIPanel.cs" />
-    <Compile Include="UI\UIShortCutButton.cs" />
+    <Compile Include="UI\UIShortcutButton.cs" />
     <Compile Include="UI\UIToggleButton.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -89,7 +89,10 @@ namespace EVCS_Projekt
             {
                 Inventar[item.TypeId] -= 1;
                 if (Inventar[item.TypeId] < 1)
+                {
                     Inventar.Remove(item.TypeId);
+                    return null;
+                }
                 return item;
             }
             return null;
@@ -110,6 +113,16 @@ namespace EVCS_Projekt
             {
                 shortcuts.Remove(key);
             }
+        }
+
+        public float GetTotalWeight()
+        {
+            float sum = 0;
+            foreach(KeyValuePair<int,int> pair in Inventar)
+            {
+                sum += Item.Get(pair.Key).Weight*pair.Value;
+            }
+            return sum;
         }
 
         public Dictionary<int, Weapon> GetShortcuts()

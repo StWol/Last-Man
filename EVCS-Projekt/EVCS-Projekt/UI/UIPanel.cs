@@ -14,29 +14,29 @@ namespace EVCS_Projekt.UI
 
         protected List<UIElement> children;
 
-        public UIPanel(int width, int height, Vector2 position)
-            : base(width, height, position)
+        public UIPanel( int width, int height, Vector2 position )
+            : base( width, height, position )
         {
 
             children = new List<UIElement>();
         }
 
-        public void Add(UIElement element)
+        public void Add( UIElement element )
         {
-            element.SetParent(this);
-            children.Add(element);
+            element.SetParent( this );
+            children.Add( element );
         }
 
-        public void Remove(UIElement element)
+        public void Remove( UIElement element )
         {
-            children.Remove(element);
+            children.Remove( element );
         }
 
-        public override void Draw(SpriteBatch sb)
+        public override void Draw( SpriteBatch sb )
         {
-            foreach (UIElement e in children)
+            foreach ( UIElement e in children )
             {
-                e.Draw(sb);
+                e.Draw( sb );
             }
         }
 
@@ -47,8 +47,9 @@ namespace EVCS_Projekt.UI
 
         public override void Update()
         {
-            List<UIElement> clone = new List<UIElement>(children);
-            foreach (UIElement e in clone)
+            base.Update();
+            List<UIElement> clone = new List<UIElement>( children );
+            foreach ( UIElement e in clone )
             {
                 e.Update();
             }

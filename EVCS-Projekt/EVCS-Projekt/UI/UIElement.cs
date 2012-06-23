@@ -16,7 +16,7 @@ namespace EVCS_Projekt.UI
     abstract class UIElement
     {
 
-        public const int DEFAULT_HEIGHT = 48;
+        public const int DEFAULT_HEIGHT = 40;
 
         protected int width
         {
@@ -59,7 +59,7 @@ namespace EVCS_Projekt.UI
         {
             get
             {
-                if ( IsHover )
+                if ( IsHover && IsEnabled)
                 {
                     return hoverTexture;
                 }
@@ -71,14 +71,16 @@ namespace EVCS_Projekt.UI
         private Texture2D texture;
         private Texture2D hoverTexture;
 
+        public Texture2D BackgroundTextur;
+
         protected List<UIActionListener> actionListener;
         protected List<UIMouseHoverListener> hoverListener;
 
-        
+
 
         protected UIElement parent;
         public bool IsHover;
-
+        public bool IsEnabled;
         protected MouseState oldState = Mouse.GetState();
 
         public UIElement( int width, int height, Vector2 position )
@@ -89,7 +91,8 @@ namespace EVCS_Projekt.UI
             this.position = position;
             hoverListener = new List<UIMouseHoverListener>();
             actionListener = new List<UIActionListener>();
-            
+            IsEnabled = true;
+
         }
 
         public UIElement( int width, int height, Vector2 position, Texture2D texture, Texture2D hoverTexture ) :
@@ -161,31 +164,31 @@ namespace EVCS_Projekt.UI
         {
             var state = Mouse.GetState();
 
-            var mouseEvent = new UIMouseEvent(state);
+            var mouseEvent = new UIMouseEvent( state );
 
-            if (mouseEvent.isMouseIn(GetBoundingBox()))
+            if ( mouseEvent.isMouseIn( GetBoundingBox() ) )
             {
-                if(!IsHover)
+                if ( !IsHover )
                 {
-                    var listenerList = new List<UIMouseHoverListener>(hoverListener);
-                    foreach (UIMouseHoverListener al in listenerList)
+                    var listenerList = new List<UIMouseHoverListener>( hoverListener );
+                    foreach ( UIMouseHoverListener al in listenerList )
                     {
-                        al.OnMouseIn(this);
+                        al.OnMouseIn( this );
                     }
                 }
-                
+
                 IsHover = true;
             }
             else
             {
-                if (IsHover)
+                if ( IsHover )
                 {
-                    var listenerList = new List<UIMouseHoverListener>(hoverListener);
-                    foreach (UIMouseHoverListener al in listenerList)
+                    var listenerList = new List<UIMouseHoverListener>( hoverListener );
+                    foreach ( UIMouseHoverListener al in listenerList )
                     {
-                        al.OnMouseOut(this);
+                        al.OnMouseOut( this );
                     }
-                    
+
                 }
                 IsHover = false;
             }
@@ -202,13 +205,13 @@ namespace EVCS_Projekt.UI
             bool isPressed = IsMouseOver() && oldState.LeftButton != ButtonState.Pressed && newState.LeftButton == ButtonState.Pressed;
 
             oldState = newState;
-            
+
             return isPressed;
         }
 
-        public void AddActionListener(UIActionListener l)
+        public void AddActionListener( UIActionListener l )
         {
-            actionListener.Add(l);
+            actionListener.Add( l );
         }
 
         public void RemoveActionListener( UIActionListener al )
@@ -218,7 +221,7 @@ namespace EVCS_Projekt.UI
 
         public Rectangle GetBoundingBox()
         {
-            return new Rectangle((int) GetPosition().X, (int) GetPosition().Y,GetWidth(),GetHeight());
+            return new Rectangle( ( int ) GetPosition().X, ( int ) GetPosition().Y, GetWidth(), GetHeight() );
         }
     }
 }
