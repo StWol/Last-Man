@@ -999,13 +999,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="images\pixelGrau50.png">
-      <Name>pixelGrau50</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="images\gui\inventar\listitem.png">
       <Name>listitem</Name>
       <Importer>TextureImporter</Importer>

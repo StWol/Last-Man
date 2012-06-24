@@ -115,7 +115,18 @@ namespace EVCS_Projekt.Managers
 
             // Player
             MapLocation playerPosition = new MapLocation( GameState.Karte.PlayerStart );
+
             GameState.Player = new Player( playerPosition, 100, 100, 200 );
+            Weapon w1 = Item.DefaultWeapon[8].Clone();
+            w1.Munition = Item.DefaultMunition[3].Clone();
+            GameState.Player.AddItemToInventar(w1);
+            GameState.Player.AddWeaponToShortcutList(1, w1);
+
+
+            Weapon w2 = Item.DefaultWeapon[15].Clone();
+            w2.Munition = Item.DefaultMunition[3].Clone();
+            GameState.Player.AddItemToInventar(w2);
+            GameState.Player.AddWeaponToShortcutList(2, w2);
 
             CalculateMapOffset();
 
@@ -149,7 +160,6 @@ namespace EVCS_Projekt.Managers
             it1.LocationBehavior.Position = new Vector2( 1100, 4150 );
             it1.LocationSizing();
 
-
             Item it2 = Item.Get( 1 );
             it2.LocationBehavior.Position = new Vector2( 1200, 4150 );
             it2.LocationSizing();
@@ -172,13 +182,11 @@ namespace EVCS_Projekt.Managers
             GameState.QuadTreeItems.Add( it4 );
             GameState.QuadTreeItems.Add( it5 );
 
-            GameState.Player.AddWeaponToShortcutList( 1, ( Weapon ) it3 );
             //User Interface erstellen
             InitGui();
 
-            GameState.Player.Weapon = Item.DefaultWeapon[ 8 ].Clone();
+            
 
-            GameState.Player.Weapon.Munition = Item.DefaultMunition[ 3 ].Clone();
 
             gun_cd = 0.10F;
 
@@ -210,7 +218,7 @@ namespace EVCS_Projekt.Managers
             // DefaultEnemies laden
             Enemy.DefaultEnemies = new Dictionary<EEnemyType, Enemy>();
 
-            Enemy d1 = new Enemy( new MapLocation( new Vector2( 0, 0 ) ), LoadedRenderer.Get( "A_RoterDrache_Move" ), 1, 300, 1000, 100, 100, 100, 0 );
+            Enemy d1 = new Enemy(new MapLocation(new Vector2(0, 0)), LoadedRenderer.Get("A_Hellboy_Move"), 1, 300, 1000, 100, 100, 100, 0);
             d1.Damage = 5F;
             d1.LocationSizing();
 
@@ -265,6 +273,7 @@ namespace EVCS_Projekt.Managers
             GameState.Player.AddItemToInventar( Item.AllItems[ 4 ] );
             GameState.Player.AddItemToInventar( Item.AllItems[ 6 ] );
             GameState.Player.AddItemToInventar( Item.AllItems[ 7 ] );
+            GameState.Player.AddItemToInventar( Item.AllItems[ 12 ] );
             GameState.Player.AddItemToInventar( Item.AllItems[ 7 ] );
             GameState.Player.AddItemToInventar( Item.AllItems[ 7 ] );
             GameState.Player.AddItemToInventar( Item.AllItems[ 2 ] );
@@ -404,21 +413,24 @@ namespace EVCS_Projekt.Managers
                 e.DoActivity();
             }
 
-            if ( Mouse.GetState().RightButton == ButtonState.Pressed && GameState.Player.Reloading <= 0 )
+            if (Keyboard.GetState().IsKeyDown(Keys.D1) && GameState.Player.Reloading <= 0)
             {
-                GameState.Player.Weapon = Item.DefaultWeapon[ 15 ].Clone();
-
-                GameState.Player.Weapon.Munition = Item.DefaultMunition[ 12 ].Clone();
+                GameState.Player.ActiveShortcut = 1;
 
                 Sound.Sounds[ "Weapon_Reload" ].Play();
                 GameState.Player.Reloading = ( float ) Sound.Sounds[ "Weapon_Reload" ].Duration.TotalSeconds;
             }
 
-            if ( Keyboard.GetState().IsKeyDown( Keys.M ) && GameState.Player.Reloading <= 0 )
+            if (Keyboard.GetState().IsKeyDown(Keys.D2) && GameState.Player.Reloading <= 0)
             {
-                GameState.Player.Weapon = Item.DefaultWeapon[ 8 ].Clone();
+                GameState.Player.ActiveShortcut = 2;
 
-                GameState.Player.Weapon.Munition = Item.DefaultMunition[ 3 ].Clone();
+                Sound.Sounds[ "Weapon_Reload" ].Play();
+                GameState.Player.Reloading = ( float ) Sound.Sounds[ "Weapon_Reload" ].Duration.TotalSeconds;
+            }
+            if (Keyboard.GetState().IsKeyDown(Keys.R) && GameState.Player.Reloading <= 0)
+            {
+                GameState.Player.Weapon.Reload();
 
                 Sound.Sounds[ "Weapon_Reload" ].Play();
                 GameState.Player.Reloading = ( float ) Sound.Sounds[ "Weapon_Reload" ].Duration.TotalSeconds;

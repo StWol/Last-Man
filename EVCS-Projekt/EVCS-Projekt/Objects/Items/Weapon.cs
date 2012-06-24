@@ -113,8 +113,34 @@ namespace EVCS_Projekt.Objects.Items
             // Munition abziehen
             Munition.Count -= 1;
 
+            //if (Munition.Count <= 0)
+                //Main.MainObject.GameManager.GameState.Player.RemoveItemFromInventar(Item.Get(Munition.TypeId));
             return s;
         }
+
+
+        public void Reload()
+        {
+            var player = Main.MainObject.GameManager.GameState.Player;
+
+            int diff =0;
+            if (player.Inventar.ContainsKey(Munition.TypeId))
+            {
+                if (player.Inventar[Munition.TypeId] >= Munition.MagazineSize)
+                {
+                    diff = Munition.MagazineSize - Munition.Count;
+                    Munition.Count = Munition.MagazineSize;
+                }
+                else
+                {
+                    diff = player.Inventar[Munition.TypeId];
+                    Munition.Count += diff;
+                }
+            
+
+            player.RemoveRangeItemFromInventar(Munition, diff);
+        }
+    }
 
         // ***************************************************************************
         // Schusscount

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Mime;
 using System.Text;
 using EVCS_Projekt.Location;
 using EVCS_Projekt.Objects.Items;
@@ -17,12 +18,14 @@ namespace EVCS_Projekt.UI
         public Weapon Weapon
         {
             get { return weapon; }
-            set { weapon = value; }
+            set
+            {
+                weapon = value;
+            }
         }
 
 
-        private readonly UIButton btnKey;
-        private readonly UIButton btnMun;
+
         private Texture2D weaponTexture;
         private Texture2D weaponBackgroundTexture;
 
@@ -37,29 +40,33 @@ namespace EVCS_Projekt.UI
 
             //weapon.Renderer.Draw(spriteBatch, new UILocation(new Rectangle(0,0,10,10));
 
-
-
-            btnKey = new UIButton( DEFAULT_HEIGHT , DEFAULT_HEIGHT, new Vector2( 0, 0 ), key + "" );
-
             weaponBackgroundTexture = Main.ContentManager.Load<Texture2D>( "images/gui/inventar/shortcut_weapon" );
-
-            btnMun = new UIButton( DEFAULT_HEIGHT, DEFAULT_HEIGHT, new Vector2( width - DEFAULT_HEIGHT, 0 ), "0" );
-
-            Add( btnKey );
-            Add( btnMun );
         }
 
 
         public override void Draw( SpriteBatch sb )
         {
-            btnKey.Draw( sb );
+            int x = (int) GetPosition().X;
+            int y = (int) GetPosition().Y;
 
-            sb.Draw( weaponBackgroundTexture, new Rectangle( ( int ) GetPosition().X + DEFAULT_HEIGHT, ( int ) GetPosition().Y, width - ( DEFAULT_HEIGHT + DEFAULT_HEIGHT  ), height ), Color.White );
+            Vector2 measureString = UIButton.FONT_DEFAULT.MeasureString(Key + "");
+
+            sb.DrawString(UIButton.FONT_DEFAULT, Key + "", new Vector2(x + 10, y + height / 2 - measureString.Y / 2), Color.Black);
+            
+            sb.Draw( weaponBackgroundTexture, new Rectangle( ( int ) GetPosition().X + DEFAULT_HEIGHT, ( int ) GetPosition().Y, width - ( DEFAULT_HEIGHT*3  ), height ), Color.White );
 
             if ( weapon != null )
-                sb.Draw( weaponTexture, new Rectangle( ( int ) GetPosition().X + DEFAULT_HEIGHT, ( int ) GetPosition().Y, width - ( DEFAULT_HEIGHT * 2 ), height ), Color.Beige );
+            {
+                sb.Draw(weaponTexture, new Rectangle((int)GetPosition().X + DEFAULT_HEIGHT, (int)GetPosition().Y, width - (DEFAULT_HEIGHT*3 ), height), Color.White);
+                if (weapon.Munition != null)
+                {
+                    sb.Draw(weapon.Munition.Icon, new Rectangle((int)x + width - DEFAULT_HEIGHT*2, (int)GetPosition().Y, DEFAULT_HEIGHT, DEFAULT_HEIGHT), Color.White);
+                    sb.DrawString(UIButton.FONT_DEFAULT, weapon.Munition.Count + "", new Vector2(x + 10 + width - DEFAULT_HEIGHT, y + height / 2 - measureString.Y / 2), Color.Black);
+                }
+            }
 
-            btnMun.Draw( sb );
+            
+            //btnMun.Draw( sb );
         }
 
     }

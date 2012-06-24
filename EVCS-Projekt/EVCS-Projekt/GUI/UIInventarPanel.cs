@@ -343,7 +343,7 @@ namespace EVCS_Projekt.GUI
 
                 infoPanel.Item = activeItem;
 
-                if ( activeItem.GetType() == typeof( Weapon ) || activeItem.GetType() == typeof( Powerup ) )
+                if ( activeItem.GetType() == typeof( Powerup ) )
                 {
                     //aus der Liste in die Shortcuts
                     btnOk.IsEnabled = true;
@@ -392,15 +392,55 @@ namespace EVCS_Projekt.GUI
             if ( element.GetType() == typeof( UIShortcutButton ) )
             {
                 UIShortcutButton button = ( UIShortcutButton ) element;
-                if ( activeItem == null || activeItem.GetType() != typeof( Weapon ) )
+                
+                
+                if (activeItem.GetType() == typeof(Munition) && button.Weapon != null)
+                {
+                    
+
+                    
+                    Munition mun = (Munition) activeItem;
+                    Munition oldMun = button.Weapon.Munition;
+                    int diff = mun.MagazineSize;
+
+                    Munition newMun = mun.Clone();
+
+                    if (oldMun != null )
+                    {    
+                        if(mun.TypeId == oldMun.TypeId)
+                        {
+                            button.Weapon.Reload();
+                        }
+                        else 
+                        {
+                            player.AddItemToInventar(oldMun);
+                            //newMun.Count = player.Inventar[mun.TypeId];
+                            button.Weapon.Munition = newMun;
+                            button.Weapon.Reload();
+                            player.RemoveItemFromInventar(newMun);
+                        }
+                    }
+                    else
+                    {
+                        
+                    }
+
+                    
+
+                    //button.Weapon.Munition = newMun;
+
+                    
+                    activeItem = null;
+                }
+                else if ( activeItem == null || activeItem.GetType() != typeof( Weapon ) )
                 {
                     player.RemoveWeaponFromShortcutList( button.Key );
                     button.Weapon = null;
                 }
-                else if ( activeItem.GetType() == typeof( Weapon ) )
+                else if (activeItem.GetType() == typeof(Weapon))
                 {
-                    player.AddWeaponToShortcutList( lastFreeShortcutIndex + 1, ( Weapon ) activeItem );
-                    button.Weapon = ( Weapon ) activeItem;
+                    player.AddWeaponToShortcutList(lastFreeShortcutIndex + 1, (Weapon)activeItem);
+                    button.Weapon = (Weapon)activeItem;
                     activeItem = null;
                 }
 

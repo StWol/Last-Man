@@ -18,6 +18,7 @@ namespace EVCS_Projekt.Objects.Items
         public int Count { get; set; }
         public int ShotId { get; private set; }
         public float Damage { get; private set; }
+        public int MagazineSize { get; set; }
 
         //Constructor
         public Munition( int id, EGroup group, String name, List<int> buffIDs, int count, int shotId, float damage, string description, float weight, ILocationBehavior locationBehavior)
@@ -25,6 +26,7 @@ namespace EVCS_Projekt.Objects.Items
         {
             this.buffIDs = buffIDs;
             Count = count;
+            MagazineSize = count;
             ShotId = shotId;
             Damage = damage;
         }
@@ -78,6 +80,11 @@ namespace EVCS_Projekt.Objects.Items
             Munition m = new Munition(TypeId, Group, Name, new List<int>(buffIDs), Count, ShotId, Damage, Description, Weight, LocationBehavior.Clone());
             m.Renderer = Renderer;
             return m;
+        }
+
+        public void ResetCount()
+        {
+            Count = MagazineSize;
         }
     }
 }

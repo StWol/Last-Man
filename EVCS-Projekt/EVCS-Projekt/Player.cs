@@ -31,7 +31,20 @@ namespace EVCS_Projekt
         public float Health { get; private set; }
         public float Speed { get; set; }
         public float[] Liquid { get; set; }
-        public Weapon Weapon { set; get; }
+
+        //Waffe wird über ActiveShortcut gesetzt
+        public Weapon Weapon { get
+            {
+                if (shortcuts != null)
+                {
+                    if (shortcuts.ContainsKey(ActiveShortcut))
+                        return shortcuts[ActiveShortcut];
+                    return shortcuts[1];
+                }
+                return null;
+            }
+        }
+
         public Dictionary<int,int> Inventar { get; private set; }
         private Dictionary<int, Weapon> shortcuts;
 
@@ -71,23 +84,42 @@ namespace EVCS_Projekt
             }
         }
 
+
         public void AddItemToInventar(Item item)
+        {
+            int anzahl = 1;
+            if (item.GetType() == typeof(Munition))
+                anzahl = ((Munition)item).Count;
+            AddRangeItemToInventar(item, anzahl);
+        }
+
+
+        public void AddRangeItemToInventar(Item item,int range)
         {
             if(Inventar.ContainsKey(item.TypeId))
             {
-                Inventar[item.TypeId] += 1;
+                Inventar[item.TypeId] += range;
             }
             else
             {
-                Inventar[item.TypeId] = 1;
+                Inventar[item.TypeId] = range;
             }
         }
 
         public Item RemoveItemFromInventar(Item item)
         {
+            int anzahl = 1;
+            if (item.GetType() == typeof(Munition))
+                anzahl = ((Munition)item).Count;
+            return RemoveRangeItemFromInventar(item,anzahl);
+        }
+
+        public Item RemoveRangeItemFromInventar(Item item, int range)
+        {
+
             if (Inventar.ContainsKey(item.TypeId))
             {
-                Inventar[item.TypeId] -= 1;
+                Inventar[item.TypeId] -= range;
                 if (Inventar[item.TypeId] < 1)
                 {
                     Inventar.Remove(item.TypeId);
@@ -97,8 +129,6 @@ namespace EVCS_Projekt
             }
             return null;
         }
-
-
         public void AddWeaponToShortcutList(int key, Weapon weapon)
         {
             if(!shortcuts.ContainsKey(key))
@@ -177,6 +207,7 @@ namespace EVCS_Projekt
         // 
         private IRenderBehavior footRenderer;
         private MapLocation footLocation;
+        public int ActiveShortcut;
 
 
         // ***************************************************************************

@@ -80,7 +80,8 @@ namespace EVCS_Projekt.UI
         {
             foreach ( KeyValuePair<int, int> pair in list )
             {
-                ItemList.Add( pair.Key, pair.Value );
+                if (!ItemList.ContainsKey(pair.Key))
+                    ItemList.Add( pair.Key, pair.Value );
             }
             GenerateButtons();
         }
