@@ -1,9 +1,5 @@
 <?xml version="1.0"?>
 <ArrayOfMunitionInner xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-
-
-
-
 	<MunitionInner>
 		<buffIDs>
 			<int>1337</int>
@@ -13,7 +9,7 @@
 		<item>
 			<weight>0.02</weight>
 			<id>200</id>
-			<name>Hartplastikkugeln</name>
+			<name>Plastikkugeln</name>
 			<description>Eine Packung Plastikkugeln</description>
 			<group>FeuerKlein</group>
 			<gameObject>

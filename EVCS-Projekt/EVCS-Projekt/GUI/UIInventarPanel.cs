@@ -116,8 +116,6 @@ namespace EVCS_Projekt.GUI
             var inventarTitel = new UIButton( 250, 40, new Vector2( 280, 20 ), "Inventar" ) { BackgroundColor = Color.LightGray };
             var filterTitel = new UIButton( 120, 40, new Vector2( 560, 20 ), "Filter" ) { BackgroundColor = Color.LightGray };
 
-
-
             var ok = Main.ContentManager.Load<Texture2D>( "images/gui/inventar/btn_ok" );
             var ok_h = Main.ContentManager.Load<Texture2D>( "images/gui/inventar/btn_ok_h" );
             var cancel = Main.ContentManager.Load<Texture2D>( "images/gui/inventar/btn_cancel" );
@@ -276,7 +274,6 @@ namespace EVCS_Projekt.GUI
 
             DrawInfoPanel( sb );
 
-
         }
 
         private void DrawInfoPanel( SpriteBatch sb )
@@ -415,67 +412,184 @@ namespace EVCS_Projekt.GUI
             {
 
             }
-            GenerateFilteredLists( player.Inventar );
         }
+
+
+        private void SwitchWeapon(Weapon newWeapon, UIShortcutButton button)
+        {
+            Weapon oldWeapon = button.Weapon;
+
+            
+                if (oldWeapon != null)
+                {
+                    if (oldWeapon.Munition != null)
+                    {
+                        // munition ins Inventar
+                        player.AddItemToInventar(oldWeapon.Munition);
+                        inventarList.AddItem(oldWeapon.Munition);
+                    }
+
+                    //Waffe ins inventar
+                    player.RemoveWeaponFromShortcutList(button.Key);
+                    player.AddItemToInventar(oldWeapon);
+                    inventarList.AddItem(oldWeapon);
+                    button.Weapon = null;
+                }
+                if (newWeapon != null)
+                {
+                    //Waffe ändern
+
+
+                    player.AddWeaponToShortcutList(button.Key, newWeapon);
+                    player.RemoveItemFromInventar(newWeapon);
+                    button.Weapon = newWeapon;
+
+                }
+            
+        }
+
+        private void SwitchMun(Munition newMunition, UIShortcutButton button)
+        {
+            Weapon oldWeapon = button.Weapon;
+            
+            if(oldWeapon !=null)
+            {
+                if(oldWeapon.Munition != null)
+                {
+                    Munition oldMun = button.Weapon.Munition;
+                    Munition newMun = newMunition.Clone();
+
+                    if (newMun.TypeId == oldMun.TypeId)
+                    {
+                        button.Weapon.Reload();
+                    }
+                    else
+                    {
+                        //mun setzten
+                        player.AddItemToInventar(oldMun);
+                        inventarList.AddItem(oldMun);
+
+                        newMun.Count = Math.Min(player.Inventar[newMun.TypeId], newMun.MagazineSize);
+
+                        button.Weapon.Munition = newMun;
+                        player.RemoveItemFromInventar(newMun);
+                    }
+                    
+                }
+                else
+                {
+                    //mun ändern
+                    // Wenn die Waffe, die am Shortcut "klebt" auch munition hat
+                    newMunition.Count = Math.Min(player.Inventar[newMunition.TypeId], newMunition.MagazineSize);
+                    button.Weapon.Munition = newMunition;
+                    player.RemoveItemFromInventar(newMunition);
+                }
+            }
+        }
+
 
         private void HandleShortcutButtonClick( UIShortcutButton element )
         {
             UIShortcutButton button = element;
 
-            if ( activeItem == null || (activeItem.GetType() != typeof( Munition ) && activeItem.GetType() != typeof( Weapon )) )
+
+            if (activeItem == null )
             {
-                player.RemoveWeaponFromShortcutList( button.Key );
-                player.AddItemToInventar( button.Weapon );
-                player.AddItemToInventar( button.Weapon.Munition );
-                button.Weapon = null;
-                activeItem = null;
-            }
-            else
-            {
-                if ( activeItem.GetType() == typeof( Munition ) )
+                if (player.GetShortcuts().Values.Count > 1)
                 {
-                    if ( button.Weapon != null )
-                    {
-                        Munition oldMun = button.Weapon.Munition;
-                        Munition newMun = ( ( Munition ) activeItem ).Clone();
-
-                        if ( oldMun != null )
-                        {
-                            if ( newMun.TypeId == oldMun.TypeId )
-                            {
-                                button.Weapon.Reload();
-                            }
-                            else
-                            {
-                                player.AddItemToInventar( oldMun );
-                                newMun.Count = Math.Min( player.Inventar[ newMun.TypeId ], newMun.MagazineSize );
-
-                                button.Weapon.Munition = newMun;
-                                player.RemoveItemFromInventar( newMun );
-                            }
-                        }
-                        else
-                        {
-
-                            newMun.Count = Math.Min( player.Inventar[ newMun.TypeId ], newMun.MagazineSize );
-
-                            button.Weapon.Munition = newMun;
-                            player.RemoveItemFromInventar( newMun );
-                        }
-
-                        activeItem = null;
-                    }
-
-                }
-                else if ( activeItem.GetType() == typeof( Weapon ) )
-                {
-                    player.AddWeaponToShortcutList( button.Key, ( Weapon ) activeItem );
-                    player.RemoveItemFromInventar( activeItem );
-                    button.Weapon = ( Weapon ) activeItem;
-                    activeItem = null;
+                    SwitchWeapon(null, button);
                 }
             }
+            else if (activeItem.GetType() == typeof( Weapon ))
+            {
+                SwitchWeapon((Weapon) activeItem, button);
+            }
+            else if (activeItem.GetType() == typeof(Munition))
+            {
+                SwitchMun((Munition)activeItem, button);
+            }else
+            {
+                if (player.GetShortcuts().Values.Count > 1)
+                {
+                    SwitchWeapon(null, button);
+                }
+            }
+            activeItem = null;
 
+            //if ( activeItem == null || (activeItem.GetType() != typeof( Munition ) && activeItem.GetType() != typeof( Weapon )) )
+            //{
+            //    // Wenn Shortcut geclickt wurde, aber keine Waffe oder Munition aktiv ist
+            //    if (button.Weapon != null)
+            //    {
+            //        //Wenn Shortcut nicht null ist
+            //        if (button.Weapon.Munition != null)
+            //        {
+            //            // Wenn die Waffe, die am Shortcut "klebt" auch munition hat
+            //            player.AddItemToInventar(button.Weapon.Munition);
+            //            inventarList.AddItem(button.Weapon.Munition);
+            //            button.Weapon.Munition = null;
+            //        }
+
+            //        player.RemoveWeaponFromShortcutList(button.Key);
+            //        player.AddItemToInventar(button.Weapon);
+            //        inventarList.AddItem(button.Weapon);
+            //        button.Weapon = null;
+
+            //    }
+                
+            //    activeItem = null;
+            //}
+            //else
+            //{
+            //    if ( activeItem.GetType() == typeof( Munition ) )
+            //    {
+            //        // Wenn Munition aktiv ist
+            //        if ( button.Weapon != null )
+            //        {
+            //            //Wenn dem Shortcut eine Waffe zugeordnet wurde
+            //            Munition oldMun = button.Weapon.Munition;
+            //            Munition newMun = ( ( Munition ) activeItem ).Clone();
+
+            //            if ( oldMun != null )
+            //            {
+            //                // Wenn die Waffe Munition hatte
+            //                if ( newMun.TypeId == oldMun.TypeId )
+            //                {
+            //                    button.Weapon.Reload();
+            //                }
+            //                else
+            //                {
+            //                    // alte Munition raus aus der Waffe und zurück ins Inventar, neue raus aus dem Inventar und rein in die Waffe
+            //                    player.AddItemToInventar( oldMun );
+            //                    inventarList.AddItem(oldMun);
+
+            //                    newMun.Count = Math.Min( player.Inventar[ newMun.TypeId ], newMun.MagazineSize );
+
+            //                    button.Weapon.Munition = newMun;
+            //                    player.RemoveItemFromInventar( newMun );
+            //                }
+            //            }
+            //            else
+            //            {
+            //                newMun.Count = Math.Min( player.Inventar[ newMun.TypeId ], newMun.MagazineSize );
+            //                button.Weapon.Munition = newMun;
+            //                player.RemoveItemFromInventar( newMun );
+            //            }
+            //            activeItem = null;
+            //        }
+
+            //    }
+            //    else if ( activeItem.GetType() == typeof( Weapon ) )
+            //    {
+            //        // Wenn Waffe aktiv ist und  
+            //        player.AddWeaponToShortcutList( button.Key, ( Weapon ) activeItem );
+            //        player.RemoveItemFromInventar( activeItem );
+            //        button.Weapon = ( Weapon ) activeItem;
+            //        activeItem = null;
+            //    }
+                
+            //}
+            inventarList.RefreshItemList();
 
             btnOk.IsEnabled = false;
             btnCancel.IsEnabled = false;

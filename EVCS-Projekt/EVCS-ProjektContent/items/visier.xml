@@ -7,7 +7,7 @@
 		<item>
 			<weight>1</weight>
 			<id>300</id>
-			<name>Laserpointer (schwach)</name>
+			<name>Laserpointer</name>
 			<description>Ein billiger Laserpointer</description>
 			<group>FeuerGross</group>
 		</item>
@@ -17,7 +17,7 @@
 		<item>
 			<weight>2</weight>
 			<id>301</id>
-			<name>Laserpointer (stark)</name>
+			<name>Laserpointer</name>
 			<description>Ein starker Laserpointer</description>
 			<group>FeuerGross</group>
 		</item>
@@ -37,7 +37,7 @@
 		<item>
 			<weight>4</weight>
 			<id>303</id>
-			<name>Taschenlampe (schwach)</name>
+			<name>Taschenlampe</name>
 			<description>Eine billige Taschenlampe</description>
 			<group>FeuerGross</group>
 		</item>
@@ -47,7 +47,7 @@
 		<item>
 			<weight>5</weight>
 			<id>304</id>
-			<name>Taschenlampe (mittel)</name>
+			<name>Taschenlampe</name>
 			<description>Eine normale Taschenlampe</description>
 			<group>FeuerGross</group>
 		</item>
@@ -57,7 +57,7 @@
 		<item>
 			<weight>6</weight>
 			<id>305</id>
-			<name>Taschenlampe (stark)</name>
+			<name>Taschenlampe</name>
 			<description>Eine starke Taschenlampe</description>
 			<group>FeuerGross</group>
 		</item>
