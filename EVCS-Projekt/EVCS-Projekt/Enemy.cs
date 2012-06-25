@@ -10,6 +10,7 @@ using EVCS_Projekt.Objects.Items;
 using System.Diagnostics;
 using EVCS_Projekt.AI;
 using EVCS_Projekt.Audio;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace EVCS_Projekt
 {
@@ -33,6 +34,25 @@ namespace EVCS_Projekt
 
         // Vordefinierte Gegner
         public static Dictionary<EEnemyType, Enemy> DefaultEnemies { get; set; }
+
+
+        private IRenderBehavior moveRenderer;
+        private IRenderBehavior standRenderer;
+
+        public new IRenderBehavior Renderer
+        {
+            get
+            {
+                if (HasMoved)
+                    return moveRenderer;
+                else
+                    return standRenderer;
+            }
+            set
+            {
+            }
+        }
+
 
         public Enemy(Enemy e, Vector2 position) :
             this(e.LocationBehavior, e.Renderer, e.ratOfFire, e.AttackDistance, e.SightiningDistance, e.MaxHealth, e.Speed, e.Health, e.TypOfEnemy)
@@ -62,7 +82,21 @@ namespace EVCS_Projekt
             this.Speed = speed;
             this.Health = health;
 
+            switch ( typeOfEnemy) {
+                case EEnemyType.E1:
+                    moveRenderer = LoadedRenderer.Get("A_Hellboy_Move");
+                    standRenderer = LoadedRenderer.Get("A_Hellboy_Stand");
+                    break;
+            }
+
             this.Activity = new NoActivity();
+        }
+
+        // Update des Enemy (Renderer etc)
+        public void Update()
+        {
+            moveRenderer.Update();
+            standRenderer.Update();
         }
 
         // Clont den Gegner
@@ -115,6 +149,19 @@ namespace EVCS_Projekt
             }
         }
 
+        // Zeichner die heatlhbar
+        public void DrawHealthBar(SpriteBatch spriteBatch)
+        {
+            int x = (int)(LocationBehavior.RelativePosition.X - LocationBehavior.Size.X / 2);
+            int y = (int)(LocationBehavior.RelativePosition.Y - LocationBehavior.Size.Y / 2 - 4);
+            int w = (int)(LocationBehavior.Size.X);
+            int h = 4;
+
+            int w2 = (int)(LocationBehavior.Size.X / MaxHealth * Health);
+
+            spriteBatch.Draw(Main.MainObject.GameManager.PixelWhite, new Rectangle(x, y, w, h), new Color(255, 0, 0, 64));
+            spriteBatch.Draw(Main.MainObject.GameManager.PixelWhite, new Rectangle(x, y, w2, h), new Color(255, 0, 0, 192));
+        }
 
         // Berechnet was die neue activität genau machen soll
         public void CalculateActivity()

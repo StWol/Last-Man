@@ -376,7 +376,7 @@ namespace EVCS_Projekt
         public void TakeDamage( Shot shot )
         {
             // Schaden abziehen
-            Health -= shot.Damage;
+            Health = Health - shot.Damage;
 
             // Buffs übernehmen
             AddBuffs( shot.BuffList );

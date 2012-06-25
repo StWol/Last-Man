@@ -1,16 +1,65 @@
 <?xml version="1.0"?>
 <ArrayOfVisierInner xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+
+	<VisierInner>
+		<accuracy>1</accuracy>
+		<item>
+			<weight>1</weight>
+			<id>300</id>
+			<name>Laserpointer (schwach)</name>
+			<description>Ein billiger Laserpointer</description>
+			<group>FeuerGross</group>
+		</item>
+	</VisierInner>
+	<VisierInner>
+		<accuracy>2</accuracy>
+		<item>
+			<weight>2</weight>
+			<id>301</id>
+			<name>Laserpointer (stark)</name>
+			<description>Ein starker Laserpointer</description>
+			<group>FeuerGross</group>
+		</item>
+	</VisierInner>
+	<VisierInner>
+		<accuracy>3</accuracy>
+		<item>
+			<weight>3</weight>
+			<id>302</id>
+			<name>Glasflasche</name>
+			<description>Eine leere Glasflasche</description>
+			<group>FeuerGross</group>
+		</item>
+	</VisierInner>
+	<VisierInner>
+		<accuracy>4</accuracy>
+		<item>
+			<weight>4</weight>
+			<id>303</id>
+			<name>Taschenlampe (schwach)</name>
+			<description>Eine billige Taschenlampe</description>
+			<group>FeuerGross</group>
+		</item>
+	</VisierInner>
 	<VisierInner>
 		<accuracy>5</accuracy>
 		<item>
-			<weight>2.5</weight>
-			<id>7</id>
-			<name>TestVisier</name>
-			<description>desc</description>
+			<weight>5</weight>
+			<id>304</id>
+			<name>Taschenlampe (mittel)</name>
+			<description>Eine normale Taschenlampe</description>
 			<group>FeuerGross</group>
-			<gameObject>
-		    <renderer>NoRenderer</renderer>
-			</gameObject>
+		</item>
+	</VisierInner>
+	<VisierInner>
+		<accuracy>6</accuracy>
+		<item>
+			<weight>6</weight>
+			<id>305</id>
+			<name>Taschenlampe (stark)</name>
+			<description>Eine starke Taschenlampe</description>
+			<group>FeuerGross</group>
 		</item>
 	</VisierInner>
 </ArrayOfVisierInner>

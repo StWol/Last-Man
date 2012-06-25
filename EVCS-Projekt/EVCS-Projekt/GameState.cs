@@ -33,5 +33,8 @@ namespace EVCS_Projekt
         public float NextSpawn { get; set; }
         // Die Map selbst
         public Karte Karte { get; set; }
+
+        // Getötete Monster
+        public int KilledMonsters { get; set; }
     }
 }

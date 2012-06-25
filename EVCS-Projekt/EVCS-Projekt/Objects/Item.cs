@@ -79,17 +79,22 @@ namespace EVCS_Projekt.Objects
             foreach (Item i in AllItems.Values)
             {
                 // Schüsse skippen
-                if ( i.GetType() == typeof(Shot) )
+                if (i.GetType() == typeof(Shot))
                     continue;
 
                 Texture2D ico;
                 try
                 {
                     ico = Main.ContentManager.Load<Texture2D>(Configuration.Get("iconDir") + i.TypeId);
-                } catch
+                }
+                catch
                 {
                     ico = Main.ContentManager.Load<Texture2D>(Configuration.Get("iconDir") + "dummy");
                 }
+
+                // StaticRenderer erstellen, da icons immer staticrenderer haben! is so
+                StaticRenderer s = new StaticRenderer(ico);
+                LoadedRenderer.DefaultRenderer.Add("S_IconRenderer_" + i.TypeId, s);
 
                 ItemIcons.Add(i.TypeId, ico);
             }
@@ -115,6 +120,9 @@ namespace EVCS_Projekt.Objects
             // itterien
             foreach (Inner i in loaded)
             {
+                // itemid
+                int id = 0;
+
                 // Objekt erstellen
                 object instance = ctor.Invoke(new object[] { i });
 
@@ -122,6 +130,8 @@ namespace EVCS_Projekt.Objects
                 if (typeof(Outter) == typeof(Antrieb))
                 {
                     Antrieb v = (Antrieb)instance;
+                    id = v.TypeId;
+
                     // Adden
                     DefaultAntrieb.Add(v.TypeId, v);
                     AllItems.Add(v.TypeId, v);
@@ -129,6 +139,8 @@ namespace EVCS_Projekt.Objects
                 else if (typeof(Outter) == typeof(Hauptteil))
                 {
                     Hauptteil v = (Hauptteil)instance;
+                    id = v.TypeId;
+
                     // Adden
                     DefaultHauptteil.Add(v.TypeId, v);
                     AllItems.Add(v.TypeId, v);
@@ -136,6 +148,8 @@ namespace EVCS_Projekt.Objects
                 else if (typeof(Outter) == typeof(Munition))
                 {
                     Munition v = (Munition)instance;
+                    id = v.TypeId;
+
                     // Adden
                     DefaultMunition.Add(v.TypeId, v);
                     AllItems.Add(v.TypeId, v);
@@ -143,6 +157,8 @@ namespace EVCS_Projekt.Objects
                 else if (typeof(Outter) == typeof(Powerup))
                 {
                     Powerup v = (Powerup)instance;
+                    id = v.TypeId;
+
                     // Adden
                     DefaultPowerups.Add(v.TypeId, v);
                     AllItems.Add(v.TypeId, v);
@@ -150,6 +166,8 @@ namespace EVCS_Projekt.Objects
                 else if (typeof(Outter) == typeof(Shot))
                 {
                     Shot v = (Shot)instance;
+                    id = v.TypeId;
+
                     // Adden
                     DefaultShots.Add(v.TypeId, v);
                     AllItems.Add(v.TypeId, v);
@@ -157,6 +175,8 @@ namespace EVCS_Projekt.Objects
                 else if (typeof(Outter) == typeof(Stabilisator))
                 {
                     Stabilisator v = (Stabilisator)instance;
+                    id = v.TypeId;
+
                     // Adden
                     DefaultStabilisatoren.Add(v.TypeId, v);
                     AllItems.Add(v.TypeId, v);
@@ -164,6 +184,8 @@ namespace EVCS_Projekt.Objects
                 else if (typeof(Outter) == typeof(Visier))
                 {
                     Visier v = (Visier)instance;
+                    id = v.TypeId;
+
                     // Adden
                     DefaultVisiere.Add(v.TypeId, v);
                     AllItems.Add(v.TypeId, v);
@@ -171,10 +193,14 @@ namespace EVCS_Projekt.Objects
                 else if (typeof(Outter) == typeof(Weapon))
                 {
                     Weapon v = (Weapon)instance;
+                    id = v.TypeId;
+
                     // Adden
                     DefaultWeapon.Add(v.TypeId, v);
                     AllItems.Add(v.TypeId, v);
                 }
+
+                //AllItems[id].FixRenderer();
             }
         }
 
@@ -197,6 +223,9 @@ namespace EVCS_Projekt.Objects
             Description = description;
             Weight = weight;
             this.Group = group;
+
+            // RendererFix
+            //FixRenderer();
         }
 
         // ***************************************************************************
@@ -209,6 +238,9 @@ namespace EVCS_Projekt.Objects
             Description = description;
             Weight = weight;
             this.Group = group;
+
+            // RendererFix
+            //FixRenderer();
         }
 
         // ***************************************************************************
@@ -221,6 +253,15 @@ namespace EVCS_Projekt.Objects
             Description = ii.description;
             Weight = ii.weight;
             Group = ii.group;
+
+            // RendererFix
+            //FixRenderer();
+        }
+
+        // ItemIcon in den Renderer Quetschen
+        private void FixRenderer()
+        {
+            Renderer = LoadedRenderer.GetStatic("S_IconRenderer_" + TypeId);
         }
 
         // ***************************************************************************
@@ -260,26 +301,31 @@ namespace EVCS_Projekt.Objects
         {
             Item i = AllItems[x];
 
-            if (i.GetType() == typeof(Antrieb))
-                return ((Antrieb)i).Clone();
-            if (i.GetType() == typeof(Hauptteil))
-                return ((Hauptteil)i).Clone();
-            if (i.GetType() == typeof(Liquid))
-                return ((Liquid)i).Clone();
-            if (i.GetType() == typeof(Munition))
-                return ((Munition)i).Clone();
-            if (i.GetType() == typeof(Powerup))
-                return ((Powerup)i).Clone();
-            if (i.GetType() == typeof(Shot))
-                return ((Shot)i).Clone();
-            if (i.GetType() == typeof(Stabilisator))
-                return ((Stabilisator)i).Clone();
-            if (i.GetType() == typeof(Visier))
-                return ((Visier)i).Clone();
-            if (i.GetType() == typeof(Weapon))
-                return ((Weapon)i).Clone();
+            Item ret = null;
 
-            return null;
+            if (i.GetType() == typeof(Antrieb))
+                ret = ((Antrieb)i).Clone();
+            if (i.GetType() == typeof(Hauptteil))
+                ret = ((Hauptteil)i).Clone();
+            if (i.GetType() == typeof(Liquid))
+                ret = ((Liquid)i).Clone();
+            if (i.GetType() == typeof(Munition))
+                ret = ((Munition)i).Clone();
+            if (i.GetType() == typeof(Powerup))
+                ret = ((Powerup)i).Clone();
+            if (i.GetType() == typeof(Shot))
+                ret = ((Shot)i).Clone();
+            if (i.GetType() == typeof(Stabilisator))
+                ret = ((Stabilisator)i).Clone();
+            if (i.GetType() == typeof(Visier))
+                ret = ((Visier)i).Clone();
+            if (i.GetType() == typeof(Weapon))
+                ret = ((Weapon)i).Clone();
+
+            if (ret != null)
+                ret.FixRenderer();
+
+            return ret;
         }
     }
 }

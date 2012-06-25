@@ -1,33 +1,66 @@
 <?xml version="1.0"?>
 <ArrayOfHauptteilInner xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <HauptteilInner>
-    <rateOfFire>5</rateOfFire>
-    <shotCount>1</shotCount>
-    <bigWeapon>true</bigWeapon>
-    <item>
-      <weight>0</weight>
-      <id>2</id>
-      <name>hauptteil_2</name>
-      <description>desc</description>
-      <group>DruckluftKlein</group>
-      <gameObject>
-        <renderer>NoRenderer</renderer>
-      </gameObject>
-    </item>
-  </HauptteilInner>
-  <HauptteilInner>
-    <rateOfFire>5</rateOfFire>
-    <shotCount>5</shotCount>
-    <bigWeapon>false</bigWeapon>
-    <item>
-      <weight>0</weight>
-      <id>17</id>
-      <name>hauptteil_2</name>
-      <description>desc</description>
-      <group>DruckluftKlein</group>
-      <gameObject>
-        <renderer>NoRenderer</renderer>
-      </gameObject>
-    </item>
-  </HauptteilInner>
+  
+
+
+	<HauptteilInner>
+		<rateOfFire>6</rateOfFire>
+		<shotCount>1</shotCount>
+		<bigWeapon>false</bigWeapon>
+		<item>
+			<weight>4</weight>
+			<id>100</id>
+			<name>Plastikrohr (klein)</name>
+			<description>Ein Bein von einem Tisch</description>
+			<group>DruckluftKlein</group>
+			<gameObject>
+				<renderer>NoRenderer</renderer>
+			</gameObject>
+		</item>
+	</HauptteilInner>
+	<HauptteilInner>
+		<rateOfFire>7</rateOfFire>
+		<shotCount>1</shotCount>
+		<bigWeapon>true</bigWeapon>
+		<item>
+			<weight>5</weight>
+			<id>101</id>
+			<name>Plastikrohr (groß)</name>
+			<description>Ein großes Plastikrohr</description>
+			<group>DruckluftGross</group>
+			<gameObject>
+				<renderer>NoRenderer</renderer>
+			</gameObject>
+		</item>
+	</HauptteilInner>
+	<HauptteilInner>
+		<rateOfFire>8</rateOfFire>
+		<shotCount>1</shotCount>
+		<bigWeapon>false</bigWeapon>
+		<item>
+			<weight>7</weight>
+			<id>102</id>
+			<name>Metallrohr (klein)</name>
+			<description>Ein kleines Metallrohr</description>
+			<group>FeuerKlein</group>
+			<gameObject>
+				<renderer>NoRenderer</renderer>
+			</gameObject>
+		</item>
+	</HauptteilInner>
+	<HauptteilInner>
+		<rateOfFire>9</rateOfFire>
+		<shotCount>1</shotCount>
+		<bigWeapon>true</bigWeapon>
+		<item>
+			<weight>8</weight>
+			<id>103</id>
+			<name>Metallrohr (groß)</name>
+			<description>Ein großes Metallrohr</description>
+			<group>FeuerGross</group>
+			<gameObject>
+				<renderer>NoRenderer</renderer>
+			</gameObject>
+		</item>
+	</HauptteilInner>
 </ArrayOfHauptteilInner>

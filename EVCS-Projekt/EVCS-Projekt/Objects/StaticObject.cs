@@ -19,6 +19,8 @@ namespace EVCS_Projekt.Objects
         {
             if (locationSizing)
                 LocationSizing();
+
+            allowToRotate = true;
         }
     }
 }
