@@ -110,7 +110,7 @@ namespace EVCS_Projekt.Objects.Items
             // Schuss erzeugen
             //Shot s = Item.DefaultShots[Munition.ShotId].Clone();
             Shot s = new Shot(750F, Damage, 2000);
-            s.Renderer = Munition.Renderer;
+            s.Renderer = Munition.ShotRenderer;
             s.Damage = Damage;
 
             // Munition abziehen
