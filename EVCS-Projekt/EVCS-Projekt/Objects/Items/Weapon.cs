@@ -3,6 +3,7 @@ using EVCS_Projekt.Location;
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using System.Diagnostics;
+using EVCS_Projekt.Renderer;
 
 namespace EVCS_Projekt.Objects.Items
 {
@@ -107,7 +108,9 @@ namespace EVCS_Projekt.Objects.Items
             ResetCooldown();
 
             // Schuss erzeugen
-            Shot s = Item.DefaultShots[Munition.ShotId].Clone();
+            //Shot s = Item.DefaultShots[Munition.ShotId].Clone();
+            Shot s = new Shot(750F, Damage, 2000);
+            s.Renderer = Munition.Renderer;
             s.Damage = Damage;
 
             // Munition abziehen

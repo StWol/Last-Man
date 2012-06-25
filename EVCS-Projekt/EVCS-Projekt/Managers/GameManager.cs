@@ -119,13 +119,13 @@ namespace EVCS_Projekt.Managers
 
             GameState.Player = new Player(playerPosition, 100, 100, 200);
             Weapon w1 = Item.DefaultWeapon[8].Clone();
-            w1.Munition = Item.DefaultMunition[3].Clone();
+            w1.Munition = Item.DefaultMunition[200].Clone();
             //GameState.Player.AddItemToInventar(w1);
             GameState.Player.AddWeaponToShortcutList(1, w1);
 
 
             Weapon w2 = Item.DefaultWeapon[15].Clone();
-            w2.Munition = Item.DefaultMunition[3].Clone();
+            w2.Munition = Item.DefaultMunition[201].Clone();
             //GameState.Player.AddItemToInventar(w2);
             GameState.Player.AddWeaponToShortcutList(2, w2);
 
@@ -145,36 +145,31 @@ namespace EVCS_Projekt.Managers
             // AI Thread starten
             new Thread(new ThreadStart(AIThread.UpdateAI)).Start();
 
+            //User Interface erstellen
+            InitGui();
+
             // ################################################################################
             // ################################################################################
             // ################################################################################
             // TEST
-            // Test für ladebilschirm
 
-            MapLocation mmm = new MapLocation(new Rectangle(1, 2, 3, 4));
-            Shot s = new Shot(1, EGroup.FeuerGross, 2, new Vector2(1, 2), 3, "name", 4, "desc", 5, mmm);
-            s.Renderer = LoadedRenderer.GetStatic("S_Shot_Normal");
-
-            Debug.WriteLine(">" + s.Renderer.Name);
-
-
-            Item it1 = Item.Get(1);
+            Item it1 = Item.Get(100);
             it1.LocationBehavior.Position = new Vector2(1100, 4150);
             it1.LocationSizing();
 
-            Item it2 = Item.Get(1);
+            Item it2 = Item.Get(200);
             it2.LocationBehavior.Position = new Vector2(1200, 4150);
             it2.LocationSizing();
 
-            Item it3 = Item.Get(8);
+            Item it3 = Item.Get(300);
             it3.LocationBehavior.Position = new Vector2(1300, 4150);
             it3.LocationSizing();
 
-            Item it4 = Item.Get(10);
+            Item it4 = Item.Get(400);
             it4.LocationBehavior.Position = new Vector2(1400, 4150);
             it4.LocationSizing();
 
-            Item it5 = Item.Get(10);
+            Item it5 = Item.Get(500);
             it5.LocationBehavior.Position = new Vector2(1500, 4150);
             it5.LocationSizing();
 
@@ -185,17 +180,7 @@ namespace EVCS_Projekt.Managers
             GameState.QuadTreeItems.Add(it4);
             GameState.QuadTreeItems.Add(it5);
 
-            //User Interface erstellen
-            InitGui();
-
-
-
-
-            gun_cd = 0.10F;
-
-            gun_fire = Main.ContentManager.Load<Texture2D>("images/effects/guns/gun_fire");
-            gun = new StaticRenderer(gun_fire);
-
+           
             //peng = Main.ContentManager.Load<SoundEffect>("test/Skorpion-Kibblesbob-1109158827");
             headshot = Main.ContentManager.Load<SoundEffect>("test/headshot2");
 
@@ -211,11 +196,6 @@ namespace EVCS_Projekt.Managers
             test = Main.ContentManager.Load<Texture2D>("images/pixelWhite");
             testFont = Main.ContentManager.Load<SpriteFont>("fonts/arialSmall");
 
-            // Test für quadtree
-            Random random = new Random();
-
-            Texture2D monster = Main.ContentManager.Load<Texture2D>("test/red_monster_small");
-            Texture2D monster2 = Main.ContentManager.Load<Texture2D>("test/red_monster_happy");
 
 
             // DefaultEnemies laden
@@ -226,34 +206,6 @@ namespace EVCS_Projekt.Managers
             d1.LocationSizing();
 
             Enemy.DefaultEnemies.Add(EEnemyType.E1, d1);
-
-            Texture2D[] ani = new Texture2D[] { monster, monster2, monster3 };
-
-            for (int i = 0; i < 00; i++)
-            {
-                // 20 % chance, dass gegner ne richtige textur bekommt..
-                IRenderBehavior render;
-                if (random.Next(0, 100) < 50)
-                {
-                    render = new AnimationRenderer(ani, random.Next(1, 9));
-                }
-                else if (random.Next(0, 100) < 30)
-                {
-                    render = new StaticRenderer(ani[random.Next(0, 3)]);
-                }
-                else
-                {
-                    render = new SimpleRenderer(new Color(random.Next(0, 255), random.Next(0, 255), random.Next(0, 200)));
-                }
-
-                MapLocation m = new MapLocation(new Rectangle(random.Next(0, (int)GameState.MapSize.X), random.Next(0, (int)GameState.MapSize.Y), random.Next(10, 30), random.Next(10, 30)));
-
-                Enemy x = new Enemy(m, render, 0, 0, 0, 0, 0, 150, 0);
-                x.LocationSizing();
-
-                GameState.QuadTreeEnemies.Add(x);
-            }
-
 
             // TEST-ENDE
             // ################################################################################
@@ -272,18 +224,16 @@ namespace EVCS_Projekt.Managers
             // ################################################################################
             // TEST 
 
-            GameState.Player.AddItemToInventar(Item.AllItems[3]);
-            GameState.Player.AddItemToInventar(Item.AllItems[4]);
-            GameState.Player.AddItemToInventar(Item.AllItems[6]);
-            GameState.Player.AddItemToInventar(Item.AllItems[7]);
-            GameState.Player.AddItemToInventar(Item.AllItems[12]);
-            GameState.Player.AddItemToInventar(Item.AllItems[7]);
-            GameState.Player.AddItemToInventar(Item.AllItems[7]);
-            GameState.Player.AddItemToInventar(Item.AllItems[2]);
-            GameState.Player.AddItemToInventar(Item.AllItems[3]);
-            GameState.Player.AddItemToInventar(Item.AllItems[4]);
-            GameState.Player.AddItemToInventar(Item.AllItems[6]);
-            GameState.Player.AddItemToInventar(Item.AllItems[7]);
+            GameState.Player.AddItemToInventar(Item.AllItems[100]);
+            GameState.Player.AddItemToInventar(Item.AllItems[200]);
+            GameState.Player.AddItemToInventar(Item.AllItems[300]);
+            GameState.Player.AddItemToInventar(Item.AllItems[400]);
+            GameState.Player.AddItemToInventar(Item.AllItems[500]);
+            GameState.Player.AddItemToInventar(Item.AllItems[100]);
+            GameState.Player.AddItemToInventar(Item.AllItems[200]);
+            GameState.Player.AddItemToInventar(Item.AllItems[300]);
+            GameState.Player.AddItemToInventar(Item.AllItems[400]);
+            GameState.Player.AddItemToInventar(Item.AllItems[500]);
 
             // TEST ENDE
             // ################################################################################
@@ -906,7 +856,7 @@ namespace EVCS_Projekt.Managers
 
             spriteBatch.DrawString(testFont, "Munition: " + munCount, new Vector2(0, 30), Color.Red);
             spriteBatch.DrawString(testFont, "Health: " + GameState.Player.Health, new Vector2(0, 60), Color.Red);
-            spriteBatch.DrawString(testFont, "Accu: " + GameState.Player.Weapon.Accuracy, new Vector2(0, 90), Color.Blue);
+            spriteBatch.DrawString(testFont, "Accu: " + GameState.Player.Weapon.Accuracy + " Kills: " + GameState.KilledMonsters, new Vector2(0, 90), Color.Blue);
 
             if (uiInventarPanel.Visible)
                 uiInventarPanel.Draw(spriteBatch);
@@ -939,6 +889,27 @@ namespace EVCS_Projekt.Managers
             }
         }
 
+        // ***************************************************************************
+        // Prüfe ob Player an neue Position laufen darf
+        public void KillEnemie(Enemy e)
+        {
+            // Killcounter erhöhen
+            GameState.KilledMonsters = GameState.KilledMonsters + 1;
+
+            //Test new StaticRenderer(blood)
+            AnimationRenderer a = LoadedRenderer.GetAnimation("A_Splatter_01");
+            a.PlayOnce();
+
+            StaticObject splatter = new StaticObject(new MapLocation(e.LocationBehavior.Position), a);
+
+            GameState.QuadTreeStaticObjects.Add(splatter);
+
+            // FEHLER BEIM LÖSCHEN!!!!!!!!!!!!!!!!
+            if (!GameState.QuadTreeEnemies.Remove(e))
+            {
+                Debug.WriteLine("Fehler beim löschen");
+            }
+        }
 
         // ***************************************************************************
         // Prüfe schüsse gegen Spieler
@@ -971,17 +942,6 @@ namespace EVCS_Projekt.Managers
                 // Kopiere die lsite, um getroffene schüsse gleich entfernen zu können
                 List<Shot> tempList = new List<Shot>(GameState.ShotListVsEnemies);
 
-                if (e.IsDead)
-                {
-                    // FEHLER BEIM LÖSCHEN!!!!!!!!!!!!!!!! dieser gegner kann nicht gelöscht werden, falls es hier rein geht
-                    foreach (Enemy x in GameState.QuadTreeEnemies)
-                    {
-                        if (x == e)
-                            Debug.WriteLine("found");
-                    }
-
-                }
-
                 // Prüfe kollision mit jedem schuss
                 foreach (Shot s in tempList)
                 {
@@ -1005,22 +965,7 @@ namespace EVCS_Projekt.Managers
                 // Töte Enemie - am besten in eigene Methode auslagern
                 if (e.IsDead)
                 {
-                    //Test new StaticRenderer(blood)
-                    AnimationRenderer a = LoadedRenderer.GetAnimation("A_Splatter_01");
-                    a.PlayOnce();
-
-                    StaticObject splatter = new StaticObject(new MapLocation(e.LocationBehavior.Position), a);
-
-                    //headshot.Play();
-
-                    GameState.QuadTreeStaticObjects.Add(splatter);
-                    //Debug.WriteLine("Entferne Gegner"); 381 1986
-
-                    // FEHLER BEIM LÖSCHEN!!!!!!!!!!!!!!!!
-                    if (!GameState.QuadTreeEnemies.Remove(e))
-                    {
-                        Debug.WriteLine("Fehler beim löschen");
-                    }
+                    KillEnemie(e);
                 }
             }
 

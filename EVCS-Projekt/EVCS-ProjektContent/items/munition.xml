@@ -1,20 +1,23 @@
 <?xml version="1.0"?>
 <ArrayOfMunitionInner xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+
+
+
 	<MunitionInner>
 		<buffIDs>
 			<int>1337</int>
 		</buffIDs>
-		<count>25</count>
-		<shotId>5</shotId>
-		<damage>10</damage>
+		<count>20</count>
+		<damage>3</damage>
 		<item>
-			<weight>345</weight>
-			<id>3</id>
-			<name>muni_3</name>
-			<description>desc</description>
-			<group>DruckluftKlein</group>
+			<weight>0.02</weight>
+			<id>200</id>
+			<name>Hartplastikkugeln</name>
+			<description>Eine Packung Plastikkugeln</description>
+			<group>FeuerKlein</group>
 			<gameObject>
-				<renderer>NoRenderer</renderer>
+				<renderer>S_Shot_Normal</renderer>
 			</gameObject>
 		</item>
 	</MunitionInner>
@@ -22,17 +25,237 @@
 		<buffIDs>
 			<int>1337</int>
 		</buffIDs>
-		<count>200</count>
-		<shotId>11</shotId>
-		<damage>20</damage>
+		<count>50</count>
+		<damage>2</damage>
 		<item>
-			<weight>345</weight>
-			<id>12</id>
-			<name>Bleistift</name>
-			<description>desc</description>
-			<group>DruckluftKlein</group>
+			<weight>0.05</weight>
+			<id>201</id>
+			<name>Hustenbonbons</name>
+			<description>Wär hats erfuhndän?</description>
+			<group>FeuerKlein</group>
 			<gameObject>
-				<renderer>NoRenderer</renderer>
+				<renderer>S_Shot_Normal</renderer>
+			</gameObject>
+		</item>
+	</MunitionInner>
+	<MunitionInner>
+		<buffIDs>
+			<int>1337</int>
+		</buffIDs>
+		<count>50</count>
+		<damage>2</damage>
+		<item>
+			<weight>0.04</weight>
+			<id>202</id>
+			<name>Alte M'n'Ms</name>
+			<description>Alte Schokokugeln</description>
+			<group>FeuerKlein</group>
+			<gameObject>
+				<renderer>S_Shot_Normal</renderer>
+			</gameObject>
+		</item>
+	</MunitionInner>
+	<MunitionInner>
+		<buffIDs>
+			<int>1337</int>
+		</buffIDs>
+		<count>10</count>
+		<damage>3</damage>
+		<item>
+			<weight>0.10</weight>
+			<id>203</id>
+			<name>Walnüsse</name>
+			<description>Ein paar Walnüsse</description>
+			<group>FeuerGross</group>
+			<gameObject>
+				<renderer>S_Shot_Normal</renderer>
+			</gameObject>
+		</item>
+	</MunitionInner>
+	<MunitionInner>
+		<buffIDs>
+			<int>1337</int>
+		</buffIDs>
+		<count>6</count>
+		<damage>5</damage>
+		<item>
+			<weight>0.08</weight>
+			<id>204</id>
+			<name>Batterien</name>
+			<description>Ein paar Batterien</description>
+			<group>FeuerKlein</group>
+			<gameObject>
+				<renderer>S_Shot_Normal</renderer>
+			</gameObject>
+		</item>
+	</MunitionInner>
+	<MunitionInner>
+		<buffIDs>
+			<int>1337</int>
+		</buffIDs>
+		<count>20</count>
+		<damage>7</damage>
+		<item>
+			<weight>0.20</weight>
+			<id>205</id>
+			<name>Glasmurmeln</name>
+			<description>Zeit zum Spielen..</description>
+			<group>FeuerKlein</group>
+			<gameObject>
+				<renderer>S_Shot_Normal</renderer>
+			</gameObject>
+		</item>
+	</MunitionInner>
+	<MunitionInner>
+		<buffIDs>
+			<int>1337</int>
+		</buffIDs>
+		<count>3</count>
+		<damage>6</damage>
+		<item>
+			<weight>0.80</weight>
+			<id>206</id>
+			<name>Tennisbälle</name>
+			<description>Ein paar Tennisbälle</description>
+			<group>FeuerGross</group>
+			<gameObject>
+				<renderer>S_Shot_Normal</renderer>
+			</gameObject>
+		</item>
+	</MunitionInner>
+	<MunitionInner>
+		<buffIDs>
+			<int>1337</int>
+		</buffIDs>
+		<count>5</count>
+		<damage>3</damage>
+		<item>
+			<weight>0.07</weight>
+			<id>207</id>
+			<name>Kleine Kerzen</name>
+			<description>Ein paar Kerzen</description>
+			<group>FeuerKlein</group>
+			<gameObject>
+				<renderer>S_Shot_Normal</renderer>
+			</gameObject>
+		</item>
+	</MunitionInner>
+	<MunitionInner>
+		<buffIDs>
+			<int>1337</int>
+		</buffIDs>
+		<count>15</count>
+		<damage>4</damage>
+		<item>
+			<weight>0.08</weight>
+			<id>208</id>
+			<name>Farbstifte</name>
+			<description>Es lebe die Kunst</description>
+			<group>FeuerKlein</group>
+			<gameObject>
+				<renderer>S_Shot_Normal</renderer>
+			</gameObject>
+		</item>
+	</MunitionInner>
+	<MunitionInner>
+		<buffIDs>
+			<int>1337</int>
+		</buffIDs>
+		<count>3</count>
+		<damage>4</damage>
+		<item>
+			<weight>0.80</weight>
+			<id>209</id>
+			<name>Karotten</name>
+			<description>Gemüse ist Gesund</description>
+			<group>FeuerGross</group>
+			<gameObject>
+				<renderer>S_Shot_Normal</renderer>
+			</gameObject>
+		</item>
+	</MunitionInner>
+	<MunitionInner>
+		<buffIDs>
+			<int>1337</int>
+		</buffIDs>
+		<count>10</count>
+		<damage>8</damage>
+		<item>
+			<weight>0.50</weight>
+			<id>210</id>
+			<name>Nägel</name>
+			<description>Eine Packung Nägel</description>
+			<group>FeuerKlein</group>
+			<gameObject>
+				<renderer>S_Shot_Normal</renderer>
+			</gameObject>
+		</item>
+	</MunitionInner>
+	<MunitionInner>
+		<buffIDs>
+			<int>1337</int>
+		</buffIDs>
+		<count>1</count>
+		<damage>8</damage>
+		<item>
+			<weight>1.50</weight>
+			<id>211</id>
+			<name>Bierdose</name>
+			<description>Der Marke Öttincker</description>
+			<group>FeuerGross</group>
+			<gameObject>
+				<renderer>S_Shot_Normal</renderer>
+			</gameObject>
+		</item>
+	</MunitionInner>
+	<MunitionInner>
+		<buffIDs>
+			<int>1337</int>
+		</buffIDs>
+		<count>1</count>
+		<damage>9</damage>
+		<item>
+			<weight>1.00</weight>
+			<id>212</id>
+			<name>Deoroller</name>
+			<description>Ein Deoroller. 1400h-Dry</description>
+			<group>FeuerGross</group>
+			<gameObject>
+				<renderer>S_Shot_Normal</renderer>
+			</gameObject>
+		</item>
+	</MunitionInner>
+	<MunitionInner>
+		<buffIDs>
+			<int>1337</int>
+		</buffIDs>
+		<count>1</count>
+		<damage>10</damage>
+		<item>
+			<weight>1.20</weight>
+			<id>213</id>
+			<name>Farbspray</name>
+			<description>Eine Spraydose</description>
+			<group>FeuerGross</group>
+			<gameObject>
+				<renderer>S_Shot_Normal</renderer>
+			</gameObject>
+		</item>
+	</MunitionInner>
+	<MunitionInner>
+		<buffIDs>
+			<int>1337</int>
+		</buffIDs>
+		<count>9</count>
+		<damage>6</damage>
+		<item>
+			<weight>1.00</weight>
+			<id>214</id>
+			<name>Toilettenpapier</name>
+			<description>Toilettenpapier</description>
+			<group>FeuerGross</group>
+			<gameObject>
+				<renderer>S_Shot_Normal</renderer>
 			</gameObject>
 		</item>
 	</MunitionInner>

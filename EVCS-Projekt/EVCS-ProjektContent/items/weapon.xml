@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
 <ArrayOfWeaponInner xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
 	<WeaponInner>
-		<visier>7</visier>
-		<antrieb>1</antrieb>
-		<stabilisator>6</stabilisator>
-		<hauptteil>2</hauptteil>
+		<visier>300</visier>
+		<antrieb>500</antrieb>
+		<stabilisator>400</stabilisator>
+		<hauptteil>100</hauptteil>
 		<item>
 			<weight>123</weight>
 			<id>8</id>
@@ -16,36 +16,36 @@
 			</gameObject>
 		</item>
 	</WeaponInner>
-  <WeaponInner>
-    <visier>7</visier>
-    <antrieb>9</antrieb>
-    <stabilisator>6</stabilisator>
-    <hauptteil>2</hauptteil>
-    <item>
-      <weight>123</weight>
-      <id>10</id>
-      <name>test</name>
-      <description>desc</description>
-      <group>Nahkampf</group>
-      <gameObject>
-        <renderer>S_Item_10</renderer>
-      </gameObject>
-    </item>
-  </WeaponInner>
-  <WeaponInner>
-    <visier>7</visier>
-    <antrieb>16</antrieb>
-    <stabilisator>6</stabilisator>
-    <hauptteil>17</hauptteil>
-    <item>
-      <weight>123</weight>
-      <id>15</id>
-      <name>Pistole</name>
-      <description>desc</description>
-      <group>Nahkampf</group>
-      <gameObject>
-        <renderer>NoRenderer</renderer>
-      </gameObject>
-    </item>
-  </WeaponInner>
+	<WeaponInner>
+		<visier>301</visier>
+		<antrieb>501</antrieb>
+		<stabilisator>401</stabilisator>
+		<hauptteil>101</hauptteil>
+		<item>
+			<weight>123</weight>
+			<id>10</id>
+			<name>test</name>
+			<description>desc</description>
+			<group>Nahkampf</group>
+			<gameObject>
+				<renderer>S_Item_10</renderer>
+			</gameObject>
+		</item>
+	</WeaponInner>
+	<WeaponInner>
+		<visier>302</visier>
+		<antrieb>502</antrieb>
+		<stabilisator>402</stabilisator>
+		<hauptteil>102</hauptteil>
+		<item>
+			<weight>123</weight>
+			<id>15</id>
+			<name>Pistole</name>
+			<description>desc</description>
+			<group>Nahkampf</group>
+			<gameObject>
+				<renderer>NoRenderer</renderer>
+			</gameObject>
+		</item>
+	</WeaponInner>
 </ArrayOfWeaponInner>

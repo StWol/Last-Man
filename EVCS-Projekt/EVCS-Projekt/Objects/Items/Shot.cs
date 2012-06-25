@@ -37,6 +37,17 @@ namespace EVCS_Projekt.Objects.Items
             Lifetime = 2000;// TODO: Das irgendwie auslagern oder so
         }
 
+        //Constructor
+        public Shot(float speed, float damage, float distance)
+            : base(0, 0, "", "", 0, new MapLocation(new Vector2()) )
+        {
+            this.Speed = speed;
+            this.Damage = damage;
+            this.Distance = distance;
+
+            Lifetime = 2000;// TODO: Das irgendwie auslagern oder so
+        }
+
         public List<Buff> BuffList
         {
             get

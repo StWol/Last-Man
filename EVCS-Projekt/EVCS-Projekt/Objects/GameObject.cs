@@ -20,8 +20,11 @@ namespace EVCS_Projekt.Objects
         public IRenderBehavior Renderer { get; set; }
         public ILocationBehavior LocationBehavior { get; set; }
 
-        protected delegate Rectangle GetRectanlge();
+        protected delegate Rectangle GetRectanlge(bool rotate);
         protected GetRectanlge GetRect { get; set; }
+
+        //
+        protected bool allowToRotate = false;
 
         // ***************************************************************************
         // Konstruktor 1
@@ -589,7 +592,7 @@ namespace EVCS_Projekt.Objects
 
         // ***************************************************************************
         // Gibt Position als Rectangle zurück / BoundingBox
-        protected Rectangle RectDefault()
+        protected Rectangle RectDefault(bool rotate)
         {
             Rectangle r = LocationBehavior.BoundingBox;
             //r.X = (int)( LocationBehavior.Position.X - LocationBehavior.Size.X / 2F);
@@ -597,18 +600,15 @@ namespace EVCS_Projekt.Objects
             r.X -= r.Width / 2;
             r.Y -= r.Height / 2;
 
-            Debug.WriteLine("------------------");
-            Debug.WriteLine(r);
-            r = RotateRectangle(r, LocationBehavior.Rotation);
-            Debug.WriteLine(r);
-
+            if (allowToRotate && rotate && LocationBehavior.Rotation != 0)
+                r = RotateRectangle(r, LocationBehavior.Rotation);
 
             return r;
         }
 
         // ***************************************************************************
         // Gibt Position als Rectangle zurück / BoundingBox
-        protected Rectangle RectPlayer()
+        protected Rectangle RectPlayer(bool rotate)
         {
             int size = 32;
             Rectangle r = new Rectangle((int)(LocationBehavior.Position.X - size / 2), (int)(LocationBehavior.Position.Y - size / 2), size, size);
@@ -619,10 +619,15 @@ namespace EVCS_Projekt.Objects
         // Für Quadtree benötigt - Gibt Position als Rectangle zurück / BoundingBox
         public Rectangle Rect
         {
-            get { return GetRect(); }
+            get { return GetRect(true); }
         }
 
-
+        // ***************************************************************************
+        // Für Quadtree benötigt - Gibt Position als Rectangle zurück / BoundingBox
+        public Rectangle RectWithoutRotation
+        {
+            get { return GetRect(false); }
+        }
 
         // ***************************************************************************
         // Für Quadtree benötigt - Muss auf True gesetzt werden, falls sich das Objekt bewegt hat

@@ -90,10 +90,10 @@ namespace EVCS_Projekt.Objects
                 // Darf er Spawnen ?
                 if (s.IsSpawning() >= random)
                 {
-                    Enemy defEnemy = Enemy.DefaultEnemies[s.EnemyType].Clone();
+                    Enemy newEnemie = Enemy.DefaultEnemies[s.EnemyType].Clone();
 
                     // Spawn ein gegner
-                    Enemy newEnemie = new Enemy( defEnemy, s.Location.Position);
+                    newEnemie.LocationBehavior.Position = s.Location.Position;
 
                     // Darf er Spawnen und ist an der SpawnPosition überhaupt die Map
                     if (AllowToSpawn(gameState, newEnemie) && GameManager.CheckRectangleInMap(newEnemie.Rect) )

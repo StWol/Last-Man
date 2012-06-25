@@ -1,16 +1,76 @@
 <?xml version="1.0"?>
 <ArrayOfStabilisatorInner xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <StabilisatorInner>
-    <accuracy>2</accuracy>
-    <item>
-      <weight>5</weight>
-      <id>6</id>
-      <name>stabi_6</name>
-      <description>name</description>
-      <group>DruckluftKlein</group>
-      <gameObject>
-        <renderer>NoRenderer</renderer>
-      </gameObject>
-    </item>
-  </StabilisatorInner>
+
+
+
+	<StabilisatorInner>
+		<accuracy>4</accuracy>
+		<item>
+			<weight>4</weight>
+			<id>400</id>
+			<name>Türgriff</name>
+			<description>Ein toller Türgriff</description>
+			<group>FeuerGross</group>
+		</item>
+	</StabilisatorInner>
+	<StabilisatorInner>
+		<accuracy>4</accuracy>
+		<item>
+			<weight>4</weight>
+			<id>401</id>
+			<name>Türgriff</name>
+			<description>Ein toller Türgriff</description>
+			<group>FeuerGross</group>
+		</item>
+	</StabilisatorInner>
+	<StabilisatorInner>
+		<accuracy>3</accuracy>
+		<item>
+			<weight>2</weight>
+			<id>402</id>
+			<name>Handtuch</name>
+			<description>Ein sauberes Handtuch</description>
+			<group>FeuerGross</group>
+		</item>
+	</StabilisatorInner>
+	<StabilisatorInner>
+		<accuracy>1</accuracy>
+		<item>
+			<weight>2</weight>
+			<id>403</id>
+			<name>Hosenträger</name>
+			<description>Hosenträger...</description>
+			<group>FeuerGross</group>
+		</item>
+	</StabilisatorInner>
+	<StabilisatorInner>
+		<accuracy>5</accuracy>
+		<item>
+			<weight>3</weight>
+			<id>404</id>
+			<name>Ledergürtel</name>
+			<description>Ein Bio-Ledergürtel!</description>
+			<group>FeuerGross</group>
+		</item>
+	</StabilisatorInner>
+	<StabilisatorInner>
+		<accuracy>2</accuracy>
+		<item>
+			<weight>1</weight>
+			<id>405</id>
+			<name>Schnur</name>
+			<description>Baumwollschnur. Selbstgemacht!</description>
+			<group>FeuerGross</group>
+		</item>
+	</StabilisatorInner>
+	<StabilisatorInner>
+		<accuracy>10</accuracy>
+		<item>
+			<weight>5</weight>
+			<id>406</id>
+			<name>Schraubzange</name>
+			<description>Eine Schraubzange</description>
+			<group>FeuerGross</group>
+		</item>
+	</StabilisatorInner>
 </ArrayOfStabilisatorInner>
