@@ -6,6 +6,7 @@ using System.Net.Mime;
 using System.Text;
 using EVCS_Projekt.GUI;
 using EVCS_Projekt.Objects;
+using EVCS_Projekt.Objects.Items;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -38,8 +39,10 @@ namespace EVCS_Projekt.UI
         private readonly UIButton btnNext;
         private static Dictionary<int, int> itemList;
 
-        private UIListButton activeItem;
+        private UIListButton activeItemButton;
         private UIActionListener listener;
+
+        private Player player;
 
         public UIList( int width, int height, Vector2 position, UIActionListener listener )
             : base( width, height, position )
@@ -60,10 +63,27 @@ namespace EVCS_Projekt.UI
 
             this.listener = listener;
 
+            player = Main.MainObject.GameManager.GameState.Player;
+
             btnPrevious.AddActionListener( this );
             btnNext.AddActionListener( this );
         }
 
+
+        public void RefreshActivItem()
+        {
+            Item item = activeItemButton.Item;
+            int itemCount = player.GetItemCountFromInventar(item.TypeId);
+
+            if (itemCount > 0)
+                activeItemButton.CountString = itemCount + "";
+            else
+            {
+                RemoveActiveItem();
+            }
+
+
+        }
         public void SetItems( Dictionary<int, int> inventar )
         {
             ItemList.Clear();
@@ -86,6 +106,15 @@ namespace EVCS_Projekt.UI
             GenerateButtons();
         }
 
+     
+        public void AddItem(Item item)
+        {
+            if(!itemList.ContainsKey(item.TypeId))
+            {
+                itemList[item.TypeId] = 1;
+            }
+        }
+
         public void RemoveItems( Dictionary<int, int> list )
         {
             foreach ( KeyValuePair<int, int> pair in list )
@@ -102,30 +131,68 @@ namespace EVCS_Projekt.UI
             int i = 0;
             foreach ( int typeId in itemList.Keys )
             {
+                
                 Item item = Item.Get( typeId );
-                var x = ( int ) ( position.X );
-                var y = ( int ) ( ( DEFAULT_HEIGHT * i ) ) + btnPrevious.GetHeight();
-                var button = new UIListButton( width, 24, new Vector2( 0, y ), item, itemList[ typeId ] );
+                AddButton(item);
 
-                button.AddActionListener( this );
-                button.AddActionListener( listener );
-                buttonList.Add( button );
-                i++;
+                //var y = ( int ) ( ( DEFAULT_HEIGHT * i ) ) + btnPrevious.GetHeight();
+                //var button = new UIListButton( width, 24, new Vector2( 0, y ), item, itemList[ typeId ] );
+
+                //button.AddActionListener( this );
+                //button.AddActionListener( listener );
+                //buttonList.Add( button );
+                //i++;
             }
         }
 
 
+        public void RefreshItemList()
+        {
+            Dictionary<int, int> temp = new Dictionary<int, int>(ItemList);
+            foreach (KeyValuePair<int, int> pair in ItemList)
+            {
+                if (player.GetItemCountFromInventar(pair.Key) <= 0)
+                    temp.Remove(pair.Key);
+            }
+
+            ItemList.Clear();
+            foreach (KeyValuePair<int, int> pair in player.Inventar)
+            {
+                if (temp.ContainsKey(pair.Key))
+                    ItemList[pair.Key] = pair.Value ;
+            }
+            GenerateButtons();
+        }
+
+
+        private void AddButton(Item item)
+        {
+            
+            var y = (int)((DEFAULT_HEIGHT * buttonList.Count)) + btnPrevious.GetHeight();
+            var button = new UIListButton(width, 24, new Vector2(0, y), item, player.GetItemCountFromInventar(item.TypeId));
+
+            button.AddActionListener(this);
+            button.AddActionListener(listener);
+            buttonList.Add(button);
+
+        }
+
         public void RemoveActiveItem()
         {
-            if ( ItemList.ContainsKey( activeItem.Item.TypeId ) )
+            if ( ItemList.ContainsKey( activeItemButton.Item.TypeId ) )
             {
-                ItemList[ activeItem.Item.TypeId ] -= 1;
-                activeItem.CountString = ItemList[activeItem.Item.TypeId]+"";
-                if ( ItemList[ activeItem.Item.TypeId ] < 1 )
+                int anzahl = 1;
+                if(activeItemButton.Item.GetType() == typeof(Munition))
                 {
-                    ItemList.Remove( activeItem.Item.TypeId );
-                    buttonList.Remove( activeItem );
-                    activeItem = null;
+                    anzahl = Math.Min(ItemList[activeItemButton.Item.TypeId], ((Munition) activeItemButton.Item).MagazineSize);
+                }
+                ItemList[activeItemButton.Item.TypeId] -= anzahl;
+                activeItemButton.CountString = ItemList[activeItemButton.Item.TypeId]+"";
+                if ( ItemList[ activeItemButton.Item.TypeId ] < 1 )
+                {
+                    ItemList.Remove( activeItemButton.Item.TypeId );
+                    buttonList.Remove( activeItemButton );
+                    activeItemButton = null;
                 }
             }
             
@@ -193,11 +260,10 @@ namespace EVCS_Projekt.UI
                     }
                 }
 
-                if ( activeItem != null )
-                    activeItem.Color = Color.Gray;
-                activeItem = ( UIListButton ) element;
-                activeItem.Color = Color.Green;
-
+                if ( activeItemButton != null )
+                    activeItemButton.Color = Color.Gray;
+                activeItemButton = ( UIListButton ) element;
+                activeItemButton.Color = Color.Green;
             }
         }
 
