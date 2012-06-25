@@ -95,8 +95,15 @@ namespace EVCS_Projekt
         // Update des Enemy (Renderer etc)
         public void Update()
         {
+            // Renderer updaten
             moveRenderer.Update();
             standRenderer.Update();
+
+            // Buff updaten
+            foreach (Buff b in buffList)
+            {
+                b.Update();
+            }
         }
 
         // Clont den Gegner
@@ -137,6 +144,9 @@ namespace EVCS_Projekt
                         s.Renderer = LoadedRenderer.DefaultRenderer["S_Shot_Normal"];
                         break;
                 }
+
+                // TEST BUFF
+                s.AddBuff(new Buff(0, 10, 5, EBuffType.FireDamage));
 
                 s.SetDirection(-LocationBehavior.Direction);
                 s.LocationSizing();
@@ -183,7 +193,7 @@ namespace EVCS_Projekt
 
         }
 
-        public void AddBuffs(List<Buff> buffs)
+        public void AddBuffs(Dictionary<EBuffType, Buff> buffs)
         {
         }
 

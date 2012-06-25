@@ -18,7 +18,7 @@ namespace EVCS_Projekt.Objects.Items
         public float Speed { get; private set; }
         public float Damage { get; set; }
         public float Distance { get; private set; }
-        public List<int> BuffId { get; set; }
+        public Dictionary<EBuffType, Buff> Buffs { get; set; }
         public bool Delete { get; set; }
 
         public float Lifetime { get; set; } 
@@ -35,6 +35,8 @@ namespace EVCS_Projekt.Objects.Items
             this.Direction.Normalize();
 
             Lifetime = 2000;// TODO: Das irgendwie auslagern oder so
+
+            Buffs = new Dictionary<EBuffType, Buff>();
         }
 
         //Constructor
@@ -48,13 +50,13 @@ namespace EVCS_Projekt.Objects.Items
             Lifetime = 2000;// TODO: Das irgendwie auslagern oder so
         }
 
-        public List<Buff> BuffList
+        // Buff adden
+        public void AddBuff(Buff buff)
         {
-            get
-            {
-                List<Buff> l = new List<Buff>();
-                return l;
-            }
+            if (Buffs.ContainsKey(buff.Type))
+                Buffs[buff.Type] = buff;
+            else
+                Buffs.Add(buff.Type, buff);
         }
 
         // ***************************************************************************
