@@ -1,14 +1,11 @@
 <?xml version="1.0"?>
 <ArrayOfAntriebInner xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-	
-
 	<AntriebInner>
 		<rateOfFire>10</rateOfFire>
 		<damage>1</damage>
 		<soundId>Weapon_01</soundId>
 		<item>
 			<weight>1</weight>
-
 			<id>500</id>
 			<name>Feder</name>
 			<description>Eine starke Metallfeder</description>
@@ -16,14 +13,12 @@
 		</item>
 	</AntriebInner>
 	<AntriebInner>
-
 		<rateOfFire>7</rateOfFire>
 		<damage>2</damage>
 		<soundId>Weapon_01</soundId>
 		<item>
 			<weight>1</weight>
 			<id>501</id>
-
 			<name>Deo</name>
 			<description>Ein Deo der Firma AXE'L</description>
 			<group>FeuerKlein</group>
@@ -31,14 +26,12 @@
 	</AntriebInner>
 	<AntriebInner>
 		<rateOfFire>7</rateOfFire>
-
 		<damage>3</damage>
 		<soundId>Weapon_01</soundId>
 		<item>
 			<weight>1</weight>
 			<id>502</id>
 			<name>Co2-Flasche</name>
-
 			<description>Eine Co2-Flasche</description>
 			<group>FeuerKlein</group>
 		</item>
@@ -46,14 +39,12 @@
 	<AntriebInner>
 		<rateOfFire>6</rateOfFire>
 		<damage>5</damage>
-
 		<soundId>Weapon_01</soundId>
 		<item>
 			<weight>6</weight>
 			<id>503</id>
-			<name>Ein Feuerlöscher</name>
+			<name>Feuerlöscher</name>
 			<description>Toll. Rot. Feuerlöscher!</description>
-
 			<group>FeuerGross</group>
 		</item>
 	</AntriebInner>
@@ -61,29 +52,13 @@
 		<rateOfFire>5</rateOfFire>
 		<damage>6</damage>
 		<soundId>Weapon_01</soundId>
-
 		<item>
 			<weight>4</weight>
 			<id>504</id>
 			<name>Schnaps</name>
 			<description>Ein Flachmann mit Schnaps</description>
 			<group>FeuerGross</group>
-
 		</item>
-	</AntriebInner>
-	<AntriebInner>
-		<rateOfFire>5</rateOfFire>
-		<damage>6</damage>
-		<soundId>Weapon_01</soundId>
-		<item>
-
-			<weight>4</weight>
-			<id>505</id>
-			<name>Terpentin</name>
-			<description>Eine Dose Terpentin</description>
-			<group>FeuerGross</group>
-		</item>
-
 	</AntriebInner>
 	<AntriebInner>
 		<rateOfFire>5</rateOfFire>
@@ -91,7 +66,18 @@
 		<soundId>Weapon_01</soundId>
 		<item>
 			<weight>4</weight>
-
+			<id>505</id>
+			<name>Terpentin</name>
+			<description>Eine Dose Terpentin</description>
+			<group>FeuerGross</group>
+		</item>
+	</AntriebInner>
+	<AntriebInner>
+		<rateOfFire>5</rateOfFire>
+		<damage>6</damage>
+		<soundId>Weapon_01</soundId>
+		<item>
+			<weight>4</weight>
 			<id>506</id>
 			<name>Benzin</name>
 			<description>Ein Kanister mit Benzin</description>
