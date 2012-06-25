@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using EVCS_Projekt.GUI;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -34,6 +36,10 @@ namespace EVCS_Projekt.UI
 
         public override void Draw( SpriteBatch sb )
         {
+            if(this.GetType() == typeof(UIInventarPanel ))
+            {
+                Debug.WriteLine("");
+            }
             foreach ( UIElement e in children )
             {
                 e.Draw( sb );

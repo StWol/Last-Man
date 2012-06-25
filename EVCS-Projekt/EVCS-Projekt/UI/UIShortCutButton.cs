@@ -46,26 +46,26 @@ namespace EVCS_Projekt.UI
 
         public override void Draw( SpriteBatch sb )
         {
-            int x = (int) GetPosition().X;
-            int y = (int) GetPosition().Y;
+            int x = ( int ) GetPosition().X;
+            int y = ( int ) GetPosition().Y;
 
-            Vector2 measureString = UIButton.FONT_DEFAULT.MeasureString(Key + "");
+            Vector2 measureString = UIButton.FONT_DEFAULT.MeasureString( Key + "" );
 
-            sb.DrawString(UIButton.FONT_DEFAULT, Key + "", new Vector2(x + 10, y + height / 2 - measureString.Y / 2), Color.Black);
-            
-            sb.Draw( weaponBackgroundTexture, new Rectangle( ( int ) GetPosition().X + DEFAULT_HEIGHT, ( int ) GetPosition().Y, width - ( DEFAULT_HEIGHT*3  ), height ), Color.White );
+            sb.DrawString( UIButton.FONT_DEFAULT, Key + "", new Vector2( x + 10, y + height / 2 - measureString.Y / 2 ), Color.Black );
+
+            sb.Draw( weaponBackgroundTexture, new Rectangle( ( int ) GetPosition().X + height, ( int ) GetPosition().Y, width - ( height * 3 ), height ), Color.White );
 
             if ( weapon != null )
             {
-                sb.Draw(weaponTexture, new Rectangle((int)GetPosition().X + DEFAULT_HEIGHT, (int)GetPosition().Y, width - (DEFAULT_HEIGHT*3 ), height), Color.White);
-                if (weapon.Munition != null)
+                sb.Draw( weaponTexture, new Rectangle( ( int ) GetPosition().X + height, ( int ) GetPosition().Y, width - ( height * 3 ), height ), Color.White );
+                if ( weapon.Munition != null )
                 {
-                    sb.Draw(weapon.Munition.Icon, new Rectangle((int)x + width - DEFAULT_HEIGHT*2, (int)GetPosition().Y, DEFAULT_HEIGHT, DEFAULT_HEIGHT), Color.White);
-                    sb.DrawString(UIButton.FONT_DEFAULT, weapon.Munition.Count + "", new Vector2(x + 10 + width - DEFAULT_HEIGHT, y + height / 2 - measureString.Y / 2), Color.Black);
+                    sb.Draw( weapon.Munition.Icon, new Rectangle( ( int ) x + width - height * 2, ( int ) GetPosition().Y, height, height ), Color.White );
+                    sb.DrawString( UIButton.FONT_DEFAULT, weapon.Munition.Count + "", new Vector2( x + 10 + width - height, y + height / 2 - measureString.Y / 2 ), Color.Black );
                 }
             }
 
-            
+
             //btnMun.Draw( sb );
         }
 
