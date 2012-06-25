@@ -5,10 +5,10 @@
 
 
 IDs:
-hauptteile : 1 - 4
-Mun : 5 - 22
-visiere : 23 - 28
-stabi : 29 - 35
-antrieb : 36 - 43
-powerups : 44 - 53
-shot : 54 - 
+hauptteile : 100 - 199
+Mun : 200 - 299
+visiere : 300 - 399
+stabi : 400 - 499
+antrieb : 500 - 599
+powerups : 600 - 699
+shot : 700 - 799

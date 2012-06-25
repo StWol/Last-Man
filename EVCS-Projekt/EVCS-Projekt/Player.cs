@@ -87,6 +87,13 @@ namespace EVCS_Projekt
         }
 
 
+        public int GetItemCountFromInventar(int key)
+        {
+            if (Inventar.ContainsKey(key))
+                return Inventar[key];
+            return 0;
+        }
+
         public void AddItemToInventar( Item item )
         {
             int anzahl = 1;
@@ -209,8 +216,15 @@ namespace EVCS_Projekt
         // 
         private IRenderBehavior footRenderer;
         private MapLocation footLocation;
-        public int ActiveShortcut = 1;
-
+        public int ActiveShortcut { get { return activeShortcut; } 
+            set
+        {
+            if(shortcuts.ContainsKey(value))
+            {
+                activeShortcut = value;
+            }
+        } }
+        private int activeShortcut = 1;
 
         // ***************************************************************************
         // Konstruktor
