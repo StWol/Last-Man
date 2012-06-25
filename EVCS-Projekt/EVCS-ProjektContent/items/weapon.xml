@@ -6,7 +6,6 @@
 		<stabilisator>400</stabilisator>
 		<hauptteil>100</hauptteil>
 		<item>
-			<weight>123</weight>
 			<id>8</id>
 			<name>test</name>
 			<description>desc</description>
@@ -22,7 +21,6 @@
 		<stabilisator>401</stabilisator>
 		<hauptteil>101</hauptteil>
 		<item>
-			<weight>123</weight>
 			<id>10</id>
 			<name>test</name>
 			<description>desc</description>
@@ -38,7 +36,6 @@
 		<stabilisator>402</stabilisator>
 		<hauptteil>102</hauptteil>
 		<item>
-			<weight>123</weight>
 			<id>15</id>
 			<name>Pistole</name>
 			<description>desc</description>

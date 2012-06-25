@@ -1,16 +1,16 @@
 <?xml version="1.0"?>
 <ArrayOfPowerupInner xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <PowerupInner>
-    <regeneration>5</regeneration>
+    <effect>A_Healing_2</effect>
+    <buffRefList>
+      <int>1</int>
+    </buffRefList>
     <item>
-      <weight>345</weight>
-      <id>4</id>
-      <name>powerup_4</name>
+      <weight>10</weight>
+      <id>700</id>
+      <name>Apfel</name>
       <description>desc</description>
       <group>DruckluftKlein</group>
-      <gameObject>
-        <renderer>NoRenderer</renderer>
-      </gameObject>
     </item>
   </PowerupInner>
 </ArrayOfPowerupInner>
