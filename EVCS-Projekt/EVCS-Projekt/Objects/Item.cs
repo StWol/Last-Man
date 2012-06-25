@@ -261,6 +261,9 @@ namespace EVCS_Projekt.Objects
         // ItemIcon in den Renderer Quetschen
         private void FixRenderer()
         {
+            if (typeof(Munition) == GetType())
+                ((Munition)this).ShotRenderer = Renderer;
+
             Renderer = LoadedRenderer.GetStatic("S_IconRenderer_" + TypeId);
         }
 

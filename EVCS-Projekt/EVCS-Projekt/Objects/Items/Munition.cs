@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using EVCS_Projekt.Location;
 using Microsoft.Xna.Framework;
+using EVCS_Projekt.Renderer;
 
 namespace EVCS_Projekt.Objects.Items
 {
@@ -19,16 +20,16 @@ namespace EVCS_Projekt.Objects.Items
         public int ShotId { get; private set; }
         public float Damage { get; private set; }
         public int MagazineSize { get; set; }
+        public IRenderBehavior ShotRenderer { get; set; }
 
         //Constructor
-        public Munition( int id, EGroup group, String name, List<int> buffIDs, int count, int shotId, float damage, string description, float weight, ILocationBehavior locationBehavior)
-            : base( id,  group,  name,  description,  weight,  locationBehavior)
+        public Munition(int id, EGroup group, String name, List<int> buffIDs, int count, int shotId, float damage, string description, float weight, ILocationBehavior locationBehavior)
+            : base(id, group, name, description, weight, locationBehavior)
         {
             this.buffIDs = buffIDs;
             Count = count;
             MagazineSize = count;
             ShotId = shotId;
-            Damage = damage;
         }
 
         // ***************************************************************************
@@ -79,6 +80,7 @@ namespace EVCS_Projekt.Objects.Items
         {
             Munition m = new Munition(TypeId, Group, Name, new List<int>(buffIDs), Count, ShotId, Damage, Description, Weight, LocationBehavior.Clone());
             m.Renderer = Renderer;
+            m.ShotRenderer = Renderer;
             return m;
         }
 

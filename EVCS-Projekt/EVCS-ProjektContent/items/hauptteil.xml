@@ -10,8 +10,8 @@
 		<item>
 			<weight>4</weight>
 			<id>100</id>
-			<name>Plastikrohr (klein)</name>
-			<description>Ein Bein von einem Tisch</description>
+			<name>Plastikrohr</name>
+			<description>Ein kleines Rohr</description>
 			<group>DruckluftKlein</group>
 			<gameObject>
 				<renderer>NoRenderer</renderer>
@@ -25,7 +25,7 @@
 		<item>
 			<weight>5</weight>
 			<id>101</id>
-			<name>Plastikrohr (groß)</name>
+			<name>Plastikrohr</name>
 			<description>Ein großes Plastikrohr</description>
 			<group>DruckluftGross</group>
 			<gameObject>
@@ -40,7 +40,7 @@
 		<item>
 			<weight>7</weight>
 			<id>102</id>
-			<name>Metallrohr (klein)</name>
+			<name>Metallrohr</name>
 			<description>Ein kleines Metallrohr</description>
 			<group>FeuerKlein</group>
 			<gameObject>
@@ -55,7 +55,7 @@
 		<item>
 			<weight>8</weight>
 			<id>103</id>
-			<name>Metallrohr (groß)</name>
+			<name>Metallrohr</name>
 			<description>Ein großes Metallrohr</description>
 			<group>FeuerGross</group>
 			<gameObject>

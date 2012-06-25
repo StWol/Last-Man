@@ -50,7 +50,7 @@ namespace EVCS_Projekt.Managers
 
         // ## Sonstiges
         Texture2D background;
-        public Texture2D PixelWhite {get; private set;}
+        public Texture2D PixelWhite { get; private set; }
         public Texture2D PixelTransparent { get; private set; }
 
         // Update Delegates
@@ -180,7 +180,7 @@ namespace EVCS_Projekt.Managers
             GameState.QuadTreeItems.Add(it4);
             GameState.QuadTreeItems.Add(it5);
 
-           
+
             //peng = Main.ContentManager.Load<SoundEffect>("test/Skorpion-Kibblesbob-1109158827");
             headshot = Main.ContentManager.Load<SoundEffect>("test/headshot2");
 
@@ -306,6 +306,7 @@ namespace EVCS_Projekt.Managers
             // Enemies, SO in UdpateRect
             List<Enemy> enemies = GameState.QuadTreeEnemies.GetObjects(UpdateRectangle);
             List<StaticObject> staticObjects = GameState.QuadTreeStaticObjects.GetObjects(UpdateRectangle);
+            List<Item> itemsOnScreen = GameState.QuadTreeItems.GetObjects(UpdateRectangle);
 
             updateObjects = enemies.Count;
 
@@ -332,6 +333,12 @@ namespace EVCS_Projekt.Managers
             foreach (StaticObject s in staticObjects)
             {
                 s.Renderer.Update();
+            }
+
+            // Items updaten
+            foreach (Item i in itemsOnScreen)
+            {
+                i.LocationBehavior.Rotation = (float)(Main.GameTimeUpdate.TotalGameTime.TotalSeconds * 2) % MathHelper.TwoPi;
             }
 
             // Enemies updaten
@@ -820,7 +827,7 @@ namespace EVCS_Projekt.Managers
             foreach (Enemy e in enemiesOnScreen)
             {
                 e.Renderer.Draw(spriteBatch, e.LocationBehavior);
-                e.DrawHealthBar(spriteBatch);    
+                e.DrawHealthBar(spriteBatch);
             }
 
             // Player zeichnen mit verschiedenen Renderern (deswegen hat er ne eigene methode)
