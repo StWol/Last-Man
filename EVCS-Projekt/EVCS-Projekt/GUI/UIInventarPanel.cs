@@ -24,6 +24,7 @@ namespace EVCS_Projekt.GUI
                     GenerateFilteredLists( player.Inventar );
                     GenerateUiComponents();
                     inventarList.SetItems( player.Inventar );
+                    ResetToggleButtons();
                 }
                 isVisible = value;
             }
@@ -193,6 +194,16 @@ namespace EVCS_Projekt.GUI
             }
         }
 
+        private void ResetToggleButtons()
+        {
+            toggleWaffe.isActive = true;
+            toggleHauptteil.isActive = true;
+            toggleStabilisator.isActive = true;
+            toggleMunition.isActive = true;
+            toggleVisier.isActive = true;
+            toggleAntrieb.isActive = true;
+            togglePowerup.isActive = true;
+        }
         private void CreateCheckBoxPanel()
         {
             ContentManager content = Main.ContentManager;
@@ -263,8 +274,13 @@ namespace EVCS_Projekt.GUI
             base.Draw( sb );
 
 
+            DrawInfoPanel( sb );
 
 
+        }
+
+        private void DrawInfoPanel( SpriteBatch sb )
+        {
             sb.DrawString( UIButton.FONT_DEFAULT, "Gewicht: " + player.GetTotalWeight(), new Vector2( GetPosition().X + 410, GetPosition().Y + 326 ), Color.Black );
 
             string group;
@@ -391,63 +407,82 @@ namespace EVCS_Projekt.GUI
 
             if ( element.GetType() == typeof( UIShortcutButton ) )
             {
-                UIShortcutButton button = ( UIShortcutButton ) element;
-                
-                
-                if (activeItem.GetType() == typeof(Munition) && button.Weapon != null)
-                {
-                    
-
-                    
-                    Munition mun = (Munition) activeItem;
-                    Munition oldMun = button.Weapon.Munition;
-                    int diff = mun.MagazineSize;
-
-                    Munition newMun = mun.Clone();
-
-                    if (oldMun != null )
-                    {    
-                        if(mun.TypeId == oldMun.TypeId)
-                        {
-                            button.Weapon.Reload();
-                        }
-                        else 
-                        {
-                            player.AddItemToInventar(oldMun);
-                            //newMun.Count = player.Inventar[mun.TypeId];
-                            button.Weapon.Munition = newMun;
-                            button.Weapon.Reload();
-                            player.RemoveItemFromInventar(newMun);
-                        }
-                    }
-                    else
-                    {
-                        
-                    }
-
-                    
-
-                    //button.Weapon.Munition = newMun;
-
-                    
-                    activeItem = null;
-                }
-                else if ( activeItem == null || activeItem.GetType() != typeof( Weapon ) )
-                {
-                    player.RemoveWeaponFromShortcutList( button.Key );
-                    button.Weapon = null;
-                }
-                else if (activeItem.GetType() == typeof(Weapon))
-                {
-                    player.AddWeaponToShortcutList(lastFreeShortcutIndex + 1, (Weapon)activeItem);
-                    button.Weapon = (Weapon)activeItem;
-                    activeItem = null;
-                }
-
-                btnOk.IsEnabled = false;
-                btnCancel.IsEnabled = false;
+                HandleShortcutButtonClick( ( UIShortcutButton ) element );
             }
+
+
+            if ( activeItem == null )
+            {
+
+            }
+            GenerateFilteredLists( player.Inventar );
         }
+
+        private void HandleShortcutButtonClick( UIShortcutButton element )
+        {
+            UIShortcutButton button = element;
+
+            if ( activeItem == null || (activeItem.GetType() != typeof( Munition ) && activeItem.GetType() != typeof( Weapon )) )
+            {
+                player.RemoveWeaponFromShortcutList( button.Key );
+                player.AddItemToInventar( button.Weapon );
+                player.AddItemToInventar( button.Weapon.Munition );
+                button.Weapon = null;
+                activeItem = null;
+            }
+            else
+            {
+                if ( activeItem.GetType() == typeof( Munition ) )
+                {
+                    if ( button.Weapon != null )
+                    {
+                        Munition oldMun = button.Weapon.Munition;
+                        Munition newMun = ( ( Munition ) activeItem ).Clone();
+
+                        if ( oldMun != null )
+                        {
+                            if ( newMun.TypeId == oldMun.TypeId )
+                            {
+                                button.Weapon.Reload();
+                            }
+                            else
+                            {
+                                player.AddItemToInventar( oldMun );
+                                newMun.Count = Math.Min( player.Inventar[ newMun.TypeId ], newMun.MagazineSize );
+
+                                button.Weapon.Munition = newMun;
+                                player.RemoveItemFromInventar( newMun );
+                            }
+                        }
+                        else
+                        {
+
+                            newMun.Count = Math.Min( player.Inventar[ newMun.TypeId ], newMun.MagazineSize );
+
+                            button.Weapon.Munition = newMun;
+                            player.RemoveItemFromInventar( newMun );
+                        }
+
+                        activeItem = null;
+                    }
+
+                }
+                else if ( activeItem.GetType() == typeof( Weapon ) )
+                {
+                    player.AddWeaponToShortcutList( button.Key, ( Weapon ) activeItem );
+                    player.RemoveItemFromInventar( activeItem );
+                    button.Weapon = ( Weapon ) activeItem;
+                    activeItem = null;
+                }
+            }
+
+
+            btnOk.IsEnabled = false;
+            btnCancel.IsEnabled = false;
+        }
+
+
+
 
         public void OnMouseUp( UIElement element )
         {

@@ -126,7 +126,7 @@ namespace EVCS_Projekt.Objects.Items
             int diff =0;
             if (player.Inventar.ContainsKey(Munition.TypeId))
             {
-                if (player.Inventar[Munition.TypeId] >= Munition.MagazineSize)
+                if (player.Inventar[Munition.TypeId]+Munition.Count >= Munition.MagazineSize)
                 {
                     diff = Munition.MagazineSize - Munition.Count;
                     Munition.Count = Munition.MagazineSize;
@@ -246,5 +246,8 @@ namespace EVCS_Projekt.Objects.Items
             w.LocationBehavior = LocationBehavior.Clone();
             return w;
         }
+
+        
+        
     }
 }

@@ -86,5 +86,10 @@ namespace EVCS_Projekt.Objects.Items
         {
             Count = MagazineSize;
         }
+
+        public override string ToString()
+        {
+            return Name + ": " + Count;
+        }
     }
 }

@@ -117,8 +117,6 @@ namespace EVCS_Projekt.UI
 
         public void RemoveActiveItem()
         {
-            
-            
             if ( ItemList.ContainsKey( activeItem.Item.TypeId ) )
             {
                 ItemList[ activeItem.Item.TypeId ] -= 1;

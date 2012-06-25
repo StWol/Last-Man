@@ -117,16 +117,16 @@ namespace EVCS_Projekt.Managers
             MapLocation playerPosition = new MapLocation( GameState.Karte.PlayerStart );
 
             GameState.Player = new Player( playerPosition, 100, 100, 200 );
-            Weapon w1 = Item.DefaultWeapon[8].Clone();
-            w1.Munition = Item.DefaultMunition[3].Clone();
-            GameState.Player.AddItemToInventar(w1);
-            GameState.Player.AddWeaponToShortcutList(1, w1);
+            Weapon w1 = Item.DefaultWeapon[ 8 ].Clone();
+            w1.Munition = Item.DefaultMunition[ 3 ].Clone();
+            //GameState.Player.AddItemToInventar(w1);
+            GameState.Player.AddWeaponToShortcutList( 1, w1 );
 
 
-            Weapon w2 = Item.DefaultWeapon[15].Clone();
-            w2.Munition = Item.DefaultMunition[3].Clone();
-            GameState.Player.AddItemToInventar(w2);
-            GameState.Player.AddWeaponToShortcutList(2, w2);
+            Weapon w2 = Item.DefaultWeapon[ 15 ].Clone();
+            w2.Munition = Item.DefaultMunition[ 3 ].Clone();
+            //GameState.Player.AddItemToInventar(w2);
+            GameState.Player.AddWeaponToShortcutList( 2, w2 );
 
             CalculateMapOffset();
 
@@ -176,6 +176,7 @@ namespace EVCS_Projekt.Managers
             it5.LocationBehavior.Position = new Vector2( 1500, 4150 );
             it5.LocationSizing();
 
+
             GameState.QuadTreeItems.Add( it1 );
             GameState.QuadTreeItems.Add( it2 );
             GameState.QuadTreeItems.Add( it3 );
@@ -185,7 +186,7 @@ namespace EVCS_Projekt.Managers
             //User Interface erstellen
             InitGui();
 
-            
+
 
 
             gun_cd = 0.10F;
@@ -218,7 +219,7 @@ namespace EVCS_Projekt.Managers
             // DefaultEnemies laden
             Enemy.DefaultEnemies = new Dictionary<EEnemyType, Enemy>();
 
-            Enemy d1 = new Enemy(new MapLocation(new Vector2(0, 0)), LoadedRenderer.Get("A_Hellboy_Move"), 1, 300, 1000, 100, 100, 100, 0);
+            Enemy d1 = new Enemy( new MapLocation( new Vector2( 0, 0 ) ), LoadedRenderer.Get( "A_Hellboy_Move" ), 1, 300, 1000, 100, 100, 100, 0 );
             d1.Damage = 5F;
             d1.LocationSizing();
 
@@ -413,7 +414,7 @@ namespace EVCS_Projekt.Managers
                 e.DoActivity();
             }
 
-            if (Keyboard.GetState().IsKeyDown(Keys.D1) && GameState.Player.Reloading <= 0)
+            if ( Keyboard.GetState().IsKeyDown( Keys.D1 ) && GameState.Player.Reloading <= 0 )
             {
                 GameState.Player.ActiveShortcut = 1;
 
@@ -421,14 +422,14 @@ namespace EVCS_Projekt.Managers
                 GameState.Player.Reloading = ( float ) Sound.Sounds[ "Weapon_Reload" ].Duration.TotalSeconds;
             }
 
-            if (Keyboard.GetState().IsKeyDown(Keys.D2) && GameState.Player.Reloading <= 0)
+            if ( Keyboard.GetState().IsKeyDown( Keys.D2 ) && GameState.Player.Reloading <= 0 )
             {
                 GameState.Player.ActiveShortcut = 2;
 
                 Sound.Sounds[ "Weapon_Reload" ].Play();
                 GameState.Player.Reloading = ( float ) Sound.Sounds[ "Weapon_Reload" ].Duration.TotalSeconds;
             }
-            if (Keyboard.GetState().IsKeyDown(Keys.R) && GameState.Player.Reloading <= 0)
+            if ( Keyboard.GetState().IsKeyDown( Keys.R ) && GameState.Player.Reloading <= 0 )
             {
                 GameState.Player.Weapon.Reload();
 
@@ -946,8 +947,13 @@ namespace EVCS_Projekt.Managers
                 gun.Draw( spriteBatch, GameState.Player.LocationBehavior );
             }
 
+            string munCount = "0";
             spriteBatch.DrawString( testFont, "Enemies: " + GameState.QuadTreeEnemies.Count + " FPS: " + ( 1 / Main.GameTimeDraw.ElapsedGameTime.TotalSeconds ), new Vector2( 0, 0 ), Color.Green );
-            spriteBatch.DrawString( testFont, "Munition: " + GameState.Player.Weapon.Munition.Count, new Vector2( 0, 30 ), Color.Red );
+
+            if ( GameState.Player.Weapon.Munition != null)
+                munCount = GameState.Player.Weapon.Munition.Count + "";
+
+            spriteBatch.DrawString( testFont, "Munition: " + munCount, new Vector2( 0, 30 ), Color.Red );
             spriteBatch.DrawString( testFont, "Health: " + GameState.Player.Health, new Vector2( 0, 60 ), Color.Red );
             spriteBatch.DrawString( testFont, "Accu: " + GameState.Player.Weapon.Accuracy, new Vector2( 0, 90 ), Color.Blue );
 

@@ -2,3 +2,13 @@
 - Flüssigkeiten
 - Konstruktionsmenü
 - Items aus dem Inventar entfernen (funktioniert) und auf der Karte zeichnen lassen (funktioniert noch nicht!)
+
+
+IDs:
+hauptteile : 1 - 4
+Mun : 5 - 22
+visiere : 23 - 28
+stabi : 29 - 35
+antrieb : 36 - 43
+powerups : 44 - 53
+shot : 54 - 

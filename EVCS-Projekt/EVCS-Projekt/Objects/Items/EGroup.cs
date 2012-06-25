@@ -6,6 +6,7 @@
         DruckluftKlein,
         DruckluftGross,
         FeuerKlein,
-        FeuerGross
+        FeuerGross,
+        PowerUp
     }
 }
