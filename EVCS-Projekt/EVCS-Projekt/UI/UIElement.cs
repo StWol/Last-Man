@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using EVCS_Projekt.Helper;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
@@ -16,7 +17,7 @@ namespace EVCS_Projekt.UI
     abstract class UIElement
     {
 
-        public const int DEFAULT_HEIGHT = 40;
+        public static int DEFAULT_HEIGHT = 40;
 
         protected int width
         {

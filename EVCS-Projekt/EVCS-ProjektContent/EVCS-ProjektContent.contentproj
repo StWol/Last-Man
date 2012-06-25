@@ -1218,11 +1218,8 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-<<<<<<< HEAD
-=======
   </ItemGroup>
   <ItemGroup>
->>>>>>> c354ac1c974d611cb8e81e72d061ada887d46aa8
     <Compile Include="images\itemIcons\300.png">
       <Name>300</Name>
       <Importer>TextureImporter</Importer>

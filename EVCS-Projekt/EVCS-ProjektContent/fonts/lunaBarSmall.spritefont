@@ -11,8 +11,7 @@ with.
     <!--
     Modify this string to change the font that will be imported.
     -->
-    <!--<FontName>Luna Bar</FontName>-->
-	  <FontName>Arial</FontName>
+    <FontName>Luna Bar</FontName>
 
     <!--
     Size is a float value, measured in points. Modify this value to change

@@ -267,5 +267,10 @@ namespace EVCS_Projekt.UI
         {
             inventarList.RefreshItemList();
         }
+
+        public void SetItems(Dictionary<int, int> inventar)
+        {
+           inventarList.SetItems(inventar);
+        }
     }
 }

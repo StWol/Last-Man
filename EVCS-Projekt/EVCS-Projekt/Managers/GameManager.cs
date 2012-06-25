@@ -238,8 +238,11 @@ namespace EVCS_Projekt.Managers
             // TEST ENDE
             // ################################################################################
 
-            int x = Configuration.GetInt("resolutionWidth") / 2 - 350;
-            int y = Configuration.GetInt("resolutionHeight") / 2 - 200;
+            DrawHelper.AddDimension("Inventar",350, 200);
+            //574
+
+            int x = (int) (Configuration.GetInt("resolutionWidth") / 2 - DrawHelper.Get("Inventar").X);
+            int y = (int) (Configuration.GetInt("resolutionHeight") / 2 - DrawHelper.Get("Inventar").Y);
             uiInventarPanel = new UIInventarPanel(700, 400, new Vector2(x, y));
         }
 
