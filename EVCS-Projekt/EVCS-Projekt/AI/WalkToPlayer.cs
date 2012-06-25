@@ -29,7 +29,7 @@ namespace EVCS_Projekt.AI
 
         public override void CalculateAction(Enemy e)
         {
-            if (GameManager.PointSeePoint(e.LocationBehavior.Position, Main.MainObject.GameManager.GameState.Player.LocationBehavior.Position, e.LocationBehavior.Size))
+            if (GameManager.PointSeePoint(e.LocationBehavior.Position, Main.MainObject.GameManager.GameState.Player.LocationBehavior.Position, e.LocationBehavior.Size/4))
             {
                 e.CanSeePlayer = true;
 
@@ -150,8 +150,10 @@ namespace EVCS_Projekt.AI
                 e.Attack();
             }
 
-            if ( move )
+            if (move)
                 Move(e);
+            else
+                e.HasMoved = false;
         }
     }
 }

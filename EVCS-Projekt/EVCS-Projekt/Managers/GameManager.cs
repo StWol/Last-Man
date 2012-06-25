@@ -49,12 +49,13 @@ namespace EVCS_Projekt.Managers
         private float updateObjects = 0;
 
         // ## Sonstiges
-        Texture2D background, pixel;
+        Texture2D background;
+        public Texture2D PixelWhite {get; private set;}
+        public Texture2D PixelTransparent { get; private set; }
 
         // Update Delegates
         private delegate void UpdateDel();
         private UpdateDel updateDelegater;
-
 
 
         // Tests
@@ -77,7 +78,7 @@ namespace EVCS_Projekt.Managers
         // Läd den ganzen Stuff, den der GameManager benötigt
         public void Load()
         {
-            Debug.WriteLine( "Läd das eigentliche Spiel" );
+            Debug.WriteLine("Läd das eigentliche Spiel");
 
             // Update Delegator setzen
             updateDelegater = UpdateGame;
@@ -96,52 +97,53 @@ namespace EVCS_Projekt.Managers
             // GameState initialisieren
             Main.MainObject.MenuManager.LoadingText = "Initialize objects..";
 
-            GameState.MapSize = new Vector2( 10000, 10000 ); // TODO: Mapgröße hier mitgeben
-            GameState.QuadTreeEnemies = new QuadTree<Enemy>( 0, 0, ( int ) GameState.MapSize.X, ( int ) GameState.MapSize.Y );
-            GameState.QuadTreeSpawnPoints = new QuadTree<SpawnPoint>( 0, 0, ( int ) GameState.MapSize.X, ( int ) GameState.MapSize.Y );
-            GameState.QuadTreeStaticObjects = new QuadTree<StaticObject>( 0, 0, ( int ) GameState.MapSize.X, ( int ) GameState.MapSize.Y );
-            GameState.QuadTreeItems = new QuadTree<Item>( 0, 0, ( int ) GameState.MapSize.X, ( int ) GameState.MapSize.Y );
+            GameState.MapSize = new Vector2(10000, 10000); // TODO: Mapgröße hier mitgeben
+            GameState.QuadTreeEnemies = new QuadTree<Enemy>(0, 0, (int)GameState.MapSize.X, (int)GameState.MapSize.Y);
+            GameState.QuadTreeSpawnPoints = new QuadTree<SpawnPoint>(0, 0, (int)GameState.MapSize.X, (int)GameState.MapSize.Y);
+            GameState.QuadTreeStaticObjects = new QuadTree<StaticObject>(0, 0, (int)GameState.MapSize.X, (int)GameState.MapSize.Y);
+            GameState.QuadTreeItems = new QuadTree<Item>(0, 0, (int)GameState.MapSize.X, (int)GameState.MapSize.Y);
 
             GameState.ShotListVsEnemies = new List<Shot>(); // Shots als Liste, da diese nur eine kurze Lebenszeit haben
             GameState.ShotListVsPlayer = new List<Shot>(); // Shots als Liste, da diese nur eine kurze Lebenszeit haben
 
             Main.MainObject.MenuManager.LoadingText = "Loading map..";
             GameState.Karte = new Karte();
-            GameState.Karte.LoadMap( GameState, "testmap" );
+            GameState.Karte.LoadMap(GameState, "testmap");
 
             // Items laden
             Main.MainObject.MenuManager.LoadingText = "Loading items..";
             Item.LoadItems();
 
             // Player
-            MapLocation playerPosition = new MapLocation( GameState.Karte.PlayerStart );
+            MapLocation playerPosition = new MapLocation(GameState.Karte.PlayerStart);
 
-            GameState.Player = new Player( playerPosition, 100, 100, 200 );
-            Weapon w1 = Item.DefaultWeapon[ 8 ].Clone();
-            w1.Munition = Item.DefaultMunition[ 3 ].Clone();
+            GameState.Player = new Player(playerPosition, 100, 100, 200);
+            Weapon w1 = Item.DefaultWeapon[8].Clone();
+            w1.Munition = Item.DefaultMunition[3].Clone();
             //GameState.Player.AddItemToInventar(w1);
-            GameState.Player.AddWeaponToShortcutList( 1, w1 );
+            GameState.Player.AddWeaponToShortcutList(1, w1);
 
 
-            Weapon w2 = Item.DefaultWeapon[ 15 ].Clone();
-            w2.Munition = Item.DefaultMunition[ 3 ].Clone();
+            Weapon w2 = Item.DefaultWeapon[15].Clone();
+            w2.Munition = Item.DefaultMunition[3].Clone();
             //GameState.Player.AddItemToInventar(w2);
-            GameState.Player.AddWeaponToShortcutList( 2, w2 );
+            GameState.Player.AddWeaponToShortcutList(2, w2);
 
             CalculateMapOffset();
 
             // Keybelegung
-            keyMoveUp = ( Keys ) Enum.Parse( typeof( Keys ), Configuration.Get( "keyMoveUp" ) );
-            keyMoveDown = ( Keys ) Enum.Parse( typeof( Keys ), Configuration.Get( "keyMoveDown" ) );
-            keyMoveLeft = ( Keys ) Enum.Parse( typeof( Keys ), Configuration.Get( "keyMoveLeft" ) );
-            keyMoveRight = ( Keys ) Enum.Parse( typeof( Keys ), Configuration.Get( "keyMoveRight" ) );
+            keyMoveUp = (Keys)Enum.Parse(typeof(Keys), Configuration.Get("keyMoveUp"));
+            keyMoveDown = (Keys)Enum.Parse(typeof(Keys), Configuration.Get("keyMoveDown"));
+            keyMoveLeft = (Keys)Enum.Parse(typeof(Keys), Configuration.Get("keyMoveLeft"));
+            keyMoveRight = (Keys)Enum.Parse(typeof(Keys), Configuration.Get("keyMoveRight"));
 
             // Background laden
-            background = Main.ContentManager.Load<Texture2D>( "images/background" );
-            pixel = Main.ContentManager.Load<Texture2D>( "images/pixelWhite" );
+            background = Main.ContentManager.Load<Texture2D>("images/background");
+            PixelWhite = Main.ContentManager.Load<Texture2D>("images/pixelWhite");
+            PixelTransparent = Main.ContentManager.Load<Texture2D>("images/pixelTransparent");
 
             // AI Thread starten
-            new Thread( new ThreadStart( AIThread.UpdateAI ) ).Start();
+            new Thread(new ThreadStart(AIThread.UpdateAI)).Start();
 
             // ################################################################################
             // ################################################################################
@@ -149,39 +151,39 @@ namespace EVCS_Projekt.Managers
             // TEST
             // Test für ladebilschirm
 
-            MapLocation mmm = new MapLocation( new Rectangle( 1, 2, 3, 4 ) );
-            Shot s = new Shot( 1, EGroup.FeuerGross, 2, new Vector2( 1, 2 ), 3, "name", 4, "desc", 5, mmm );
-            s.Renderer = LoadedRenderer.GetStatic( "S_Shot_Normal" );
+            MapLocation mmm = new MapLocation(new Rectangle(1, 2, 3, 4));
+            Shot s = new Shot(1, EGroup.FeuerGross, 2, new Vector2(1, 2), 3, "name", 4, "desc", 5, mmm);
+            s.Renderer = LoadedRenderer.GetStatic("S_Shot_Normal");
 
-            Debug.WriteLine( ">" + s.Renderer.Name );
+            Debug.WriteLine(">" + s.Renderer.Name);
 
 
-            Item it1 = Item.Get( 1 );
-            it1.LocationBehavior.Position = new Vector2( 1100, 4150 );
+            Item it1 = Item.Get(1);
+            it1.LocationBehavior.Position = new Vector2(1100, 4150);
             it1.LocationSizing();
 
-            Item it2 = Item.Get( 1 );
-            it2.LocationBehavior.Position = new Vector2( 1200, 4150 );
+            Item it2 = Item.Get(1);
+            it2.LocationBehavior.Position = new Vector2(1200, 4150);
             it2.LocationSizing();
 
-            Item it3 = Item.Get( 8 );
-            it3.LocationBehavior.Position = new Vector2( 1300, 4150 );
+            Item it3 = Item.Get(8);
+            it3.LocationBehavior.Position = new Vector2(1300, 4150);
             it3.LocationSizing();
 
-            Item it4 = Item.Get( 10 );
-            it4.LocationBehavior.Position = new Vector2( 1400, 4150 );
+            Item it4 = Item.Get(10);
+            it4.LocationBehavior.Position = new Vector2(1400, 4150);
             it4.LocationSizing();
 
-            Item it5 = Item.Get( 10 );
-            it5.LocationBehavior.Position = new Vector2( 1500, 4150 );
+            Item it5 = Item.Get(10);
+            it5.LocationBehavior.Position = new Vector2(1500, 4150);
             it5.LocationSizing();
 
 
-            GameState.QuadTreeItems.Add( it1 );
-            GameState.QuadTreeItems.Add( it2 );
-            GameState.QuadTreeItems.Add( it3 );
-            GameState.QuadTreeItems.Add( it4 );
-            GameState.QuadTreeItems.Add( it5 );
+            GameState.QuadTreeItems.Add(it1);
+            GameState.QuadTreeItems.Add(it2);
+            GameState.QuadTreeItems.Add(it3);
+            GameState.QuadTreeItems.Add(it4);
+            GameState.QuadTreeItems.Add(it5);
 
             //User Interface erstellen
             InitGui();
@@ -191,65 +193,65 @@ namespace EVCS_Projekt.Managers
 
             gun_cd = 0.10F;
 
-            gun_fire = Main.ContentManager.Load<Texture2D>( "images/effects/guns/gun_fire" );
-            gun = new StaticRenderer( gun_fire );
+            gun_fire = Main.ContentManager.Load<Texture2D>("images/effects/guns/gun_fire");
+            gun = new StaticRenderer(gun_fire);
 
             //peng = Main.ContentManager.Load<SoundEffect>("test/Skorpion-Kibblesbob-1109158827");
-            headshot = Main.ContentManager.Load<SoundEffect>( "test/headshot2" );
+            headshot = Main.ContentManager.Load<SoundEffect>("test/headshot2");
 
-            monster3 = Main.ContentManager.Load<Texture2D>( "test/red_monster_angry" );
-            shot = Main.ContentManager.Load<Texture2D>( "test/shot" );
-            blood = Main.ContentManager.Load<Texture2D>( "test/blood" );
-            shot_01 = Main.ContentManager.Load<Texture2D>( "images/shots/shot_01" );
+            monster3 = Main.ContentManager.Load<Texture2D>("test/red_monster_angry");
+            shot = Main.ContentManager.Load<Texture2D>("test/shot");
+            blood = Main.ContentManager.Load<Texture2D>("test/blood");
+            shot_01 = Main.ContentManager.Load<Texture2D>("images/shots/shot_01");
 
 
             MouseCursor.CurrentCursor = MouseCursor.DefaultCursor;
 
             // Testtextur
-            test = Main.ContentManager.Load<Texture2D>( "images/pixelWhite" );
-            testFont = Main.ContentManager.Load<SpriteFont>( "fonts/arialSmall" );
+            test = Main.ContentManager.Load<Texture2D>("images/pixelWhite");
+            testFont = Main.ContentManager.Load<SpriteFont>("fonts/arialSmall");
 
             // Test für quadtree
             Random random = new Random();
 
-            Texture2D monster = Main.ContentManager.Load<Texture2D>( "test/red_monster_small" );
-            Texture2D monster2 = Main.ContentManager.Load<Texture2D>( "test/red_monster_happy" );
+            Texture2D monster = Main.ContentManager.Load<Texture2D>("test/red_monster_small");
+            Texture2D monster2 = Main.ContentManager.Load<Texture2D>("test/red_monster_happy");
 
 
             // DefaultEnemies laden
             Enemy.DefaultEnemies = new Dictionary<EEnemyType, Enemy>();
 
-            Enemy d1 = new Enemy( new MapLocation( new Vector2( 0, 0 ) ), LoadedRenderer.Get( "A_Hellboy_Move" ), 1, 300, 1000, 100, 100, 100, 0 );
+            Enemy d1 = new Enemy(new MapLocation(new Vector2(0, 0)), LoadedRenderer.Get("A_Hellboy_Move"), 1, 300, 1000, 100, 100, 100, 0);
             d1.Damage = 5F;
             d1.LocationSizing();
 
-            Enemy.DefaultEnemies.Add( EEnemyType.E1, d1 );
+            Enemy.DefaultEnemies.Add(EEnemyType.E1, d1);
 
             Texture2D[] ani = new Texture2D[] { monster, monster2, monster3 };
 
-            for ( int i = 0; i < 00; i++ )
+            for (int i = 0; i < 00; i++)
             {
                 // 20 % chance, dass gegner ne richtige textur bekommt..
                 IRenderBehavior render;
-                if ( random.Next( 0, 100 ) < 50 )
+                if (random.Next(0, 100) < 50)
                 {
-                    render = new AnimationRenderer( ani, random.Next( 1, 9 ) );
+                    render = new AnimationRenderer(ani, random.Next(1, 9));
                 }
-                else if ( random.Next( 0, 100 ) < 30 )
+                else if (random.Next(0, 100) < 30)
                 {
-                    render = new StaticRenderer( ani[ random.Next( 0, 3 ) ] );
+                    render = new StaticRenderer(ani[random.Next(0, 3)]);
                 }
                 else
                 {
-                    render = new SimpleRenderer( new Color( random.Next( 0, 255 ), random.Next( 0, 255 ), random.Next( 0, 200 ) ) );
+                    render = new SimpleRenderer(new Color(random.Next(0, 255), random.Next(0, 255), random.Next(0, 200)));
                 }
 
-                MapLocation m = new MapLocation( new Rectangle( random.Next( 0, ( int ) GameState.MapSize.X ), random.Next( 0, ( int ) GameState.MapSize.Y ), random.Next( 10, 30 ), random.Next( 10, 30 ) ) );
+                MapLocation m = new MapLocation(new Rectangle(random.Next(0, (int)GameState.MapSize.X), random.Next(0, (int)GameState.MapSize.Y), random.Next(10, 30), random.Next(10, 30)));
 
-                Enemy x = new Enemy( m, render, 0, 0, 0, 0, 0, 150, 0 );
+                Enemy x = new Enemy(m, render, 0, 0, 0, 0, 0, 150, 0);
                 x.LocationSizing();
 
-                GameState.QuadTreeEnemies.Add( x );
+                GameState.QuadTreeEnemies.Add(x);
             }
 
 
@@ -270,25 +272,25 @@ namespace EVCS_Projekt.Managers
             // ################################################################################
             // TEST 
 
-            GameState.Player.AddItemToInventar( Item.AllItems[ 3 ] );
-            GameState.Player.AddItemToInventar( Item.AllItems[ 4 ] );
-            GameState.Player.AddItemToInventar( Item.AllItems[ 6 ] );
-            GameState.Player.AddItemToInventar( Item.AllItems[ 7 ] );
-            GameState.Player.AddItemToInventar( Item.AllItems[ 12 ] );
-            GameState.Player.AddItemToInventar( Item.AllItems[ 7 ] );
-            GameState.Player.AddItemToInventar( Item.AllItems[ 7 ] );
-            GameState.Player.AddItemToInventar( Item.AllItems[ 2 ] );
-            GameState.Player.AddItemToInventar( Item.AllItems[ 3 ] );
-            GameState.Player.AddItemToInventar( Item.AllItems[ 4 ] );
-            GameState.Player.AddItemToInventar( Item.AllItems[ 6 ] );
-            GameState.Player.AddItemToInventar( Item.AllItems[ 7 ] );
+            GameState.Player.AddItemToInventar(Item.AllItems[3]);
+            GameState.Player.AddItemToInventar(Item.AllItems[4]);
+            GameState.Player.AddItemToInventar(Item.AllItems[6]);
+            GameState.Player.AddItemToInventar(Item.AllItems[7]);
+            GameState.Player.AddItemToInventar(Item.AllItems[12]);
+            GameState.Player.AddItemToInventar(Item.AllItems[7]);
+            GameState.Player.AddItemToInventar(Item.AllItems[7]);
+            GameState.Player.AddItemToInventar(Item.AllItems[2]);
+            GameState.Player.AddItemToInventar(Item.AllItems[3]);
+            GameState.Player.AddItemToInventar(Item.AllItems[4]);
+            GameState.Player.AddItemToInventar(Item.AllItems[6]);
+            GameState.Player.AddItemToInventar(Item.AllItems[7]);
 
             // TEST ENDE
             // ################################################################################
 
-            int x = Configuration.GetInt( "resolutionWidth" ) / 2 - 350;
-            int y = Configuration.GetInt( "resolutionHeight" ) / 2 - 200;
-            uiInventarPanel = new UIInventarPanel( 700, 400, new Vector2( x, y ) );
+            int x = Configuration.GetInt("resolutionWidth") / 2 - 350;
+            int y = Configuration.GetInt("resolutionHeight") / 2 - 200;
+            uiInventarPanel = new UIInventarPanel(700, 400, new Vector2(x, y));
         }
 
 
@@ -297,44 +299,44 @@ namespace EVCS_Projekt.Managers
         public void LoadRenderer()
         {
             //
-            Debug.WriteLine( "Renderer laden" );
+            Debug.WriteLine("Renderer laden");
 
             // Renderer initialisieren
             LoadedRenderer.DefaultRenderer = new Dictionary<string, IRenderBehavior>();
-            LoadedRenderer.DefaultRenderer.Add( "NoRenderer", new NoRenderer() );
-            LoadedRenderer.DefaultRenderer.Add( "SimpleRenderer", new SimpleRenderer( Color.White ) );
+            LoadedRenderer.DefaultRenderer.Add("NoRenderer", new NoRenderer());
+            LoadedRenderer.DefaultRenderer.Add("SimpleRenderer", new SimpleRenderer(Color.White));
 
             // Configuration File öffnen
-            TextReader tr = new StreamReader( Configuration.Get( "renderer" ) );
+            TextReader tr = new StreamReader(Configuration.Get("renderer"));
 
             // Alle lines einlesen, bei = trennen und diese in das dic adden
             string input;
-            while ( ( input = tr.ReadLine() ) != null )
+            while ((input = tr.ReadLine()) != null)
             {
                 // falls erstes zeichen eine # ist, dann ist die zeile ein kommenatar
-                if ( input.Length < 1 || input.Substring( 0, 1 ).Equals( "#" ) )
+                if (input.Length < 1 || input.Substring(0, 1).Equals("#"))
                 {
                     continue;
                 }
 
-                string[] split = input.Split( new char[] { ',' } );
+                string[] split = input.Split(new char[] { ',' });
 
-                if ( split[ 0 ].Substring( 0, 1 ).Equals( "A" ) )
+                if (split[0].Substring(0, 1).Equals("A"))
                 {
-                    int frames = int.Parse( split[ 2 ] );
-                    float fps = float.Parse( split[ 3 ] );
+                    int frames = int.Parse(split[2]);
+                    float fps = float.Parse(split[3]);
 
                     //Debug.WriteLine("AR: " + split[0] + "=" + split[1] + " " + frames + " frames mit " + fps + " fps");
 
                     // AnimationRenderer laden
-                    AnimationRenderer.Load( split[ 0 ], split[ 1 ], frames, fps );
+                    AnimationRenderer.Load(split[0], split[1], frames, fps);
                 }
-                else if ( split[ 0 ].Substring( 0, 1 ).Equals( "S" ) )
+                else if (split[0].Substring(0, 1).Equals("S"))
                 {
                     //Debug.WriteLine("SR: " + split[0] + "=" + split[1]);
 
                     // StaticRenderer laden
-                    StaticRenderer.Load( split[ 0 ], split[ 1 ] );
+                    StaticRenderer.Load(split[0], split[1]);
                 }
             }
 
@@ -349,11 +351,11 @@ namespace EVCS_Projekt.Managers
         public void UpdateGame()
         {
             // Bildschirm Rectangle + 200 % in jede richtung
-            UpdateRectangle = new Rectangle( ( int ) ( GameState.MapOffset.X - Configuration.GetInt( "resolutionWidth" ) * 1 ), ( int ) ( GameState.MapOffset.Y - Configuration.GetInt( "resolutionHeight" ) * 1 ), ( int ) ( Configuration.GetInt( "resolutionWidth" ) * 3 ), ( int ) ( Configuration.GetInt( "resolutionHeight" ) * 3 ) );
+            UpdateRectangle = new Rectangle((int)(GameState.MapOffset.X - Configuration.GetInt("resolutionWidth") * 1), (int)(GameState.MapOffset.Y - Configuration.GetInt("resolutionHeight") * 1), (int)(Configuration.GetInt("resolutionWidth") * 3), (int)(Configuration.GetInt("resolutionHeight") * 3));
 
             // Enemies, SO in UdpateRect
-            List<Enemy> enemies = GameState.QuadTreeEnemies.GetObjects( UpdateRectangle );
-            List<StaticObject> staticObjects = GameState.QuadTreeStaticObjects.GetObjects( UpdateRectangle );
+            List<Enemy> enemies = GameState.QuadTreeEnemies.GetObjects(UpdateRectangle);
+            List<StaticObject> staticObjects = GameState.QuadTreeStaticObjects.GetObjects(UpdateRectangle);
 
             updateObjects = enemies.Count;
 
@@ -367,7 +369,7 @@ namespace EVCS_Projekt.Managers
             UpdateShots();
 
             // Kollisionen der SChüsse prüfen
-            CheckShotsVsEnemies( enemies );
+            CheckShotsVsEnemies(enemies);
             CheckShotsVsPlayer();
 
             // Itemkollision prüfen
@@ -377,17 +379,26 @@ namespace EVCS_Projekt.Managers
             GameState.Player.Update();
 
             // StaticObjects Renderer updaten
-            foreach ( StaticObject s in staticObjects )
+            foreach (StaticObject s in staticObjects)
             {
                 s.Renderer.Update();
             }
 
+            // Enemies updaten
+            foreach (Enemy e in enemies)
+            {
+                e.Update();
+            }
+
             // Linke Maustaste gedrückt
-            if ( Mouse.GetState().LeftButton == ButtonState.Pressed )
+            if (Mouse.GetState().LeftButton == ButtonState.Pressed)
             {
                 // Player schießt
                 GameState.Player.Shoot();
             }
+
+            // Player richtung des Maustzeigers schauen lassen
+            GameState.Player.RelativeLookAt(new Vector2(Mouse.GetState().X, Mouse.GetState().Y));
 
             // AI can be updated
             AIThread.IsUpdating = true;
@@ -407,41 +418,41 @@ namespace EVCS_Projekt.Managers
 
                 GameState.QuadTreeEnemies.Move(e);
             }*/
-            Debug.WriteLineIf( !CheckRectangleInMap( GameState.Player.LittleBoundingBox ), "Player in Map!!!!!!!!!" );
+            Debug.WriteLineIf(!CheckRectangleInMap(GameState.Player.LittleBoundingBox), "Player in Map!!!!!!!!!");
 
-            foreach ( Enemy e in enemies )
+            foreach (Enemy e in enemies)
             {
                 e.DoActivity();
             }
 
-            if ( Keyboard.GetState().IsKeyDown( Keys.D1 ) && GameState.Player.Reloading <= 0 )
+            if (Keyboard.GetState().IsKeyDown(Keys.D1) && GameState.Player.Reloading <= 0)
             {
                 GameState.Player.ActiveShortcut = 1;
 
-                Sound.Sounds[ "Weapon_Reload" ].Play();
-                GameState.Player.Reloading = ( float ) Sound.Sounds[ "Weapon_Reload" ].Duration.TotalSeconds;
+                Sound.Sounds["Weapon_Reload"].Play();
+                GameState.Player.Reloading = (float)Sound.Sounds["Weapon_Reload"].Duration.TotalSeconds;
             }
 
-            if ( Keyboard.GetState().IsKeyDown( Keys.D2 ) && GameState.Player.Reloading <= 0 )
+            if (Keyboard.GetState().IsKeyDown(Keys.D2) && GameState.Player.Reloading <= 0)
             {
                 GameState.Player.ActiveShortcut = 2;
 
-                Sound.Sounds[ "Weapon_Reload" ].Play();
-                GameState.Player.Reloading = ( float ) Sound.Sounds[ "Weapon_Reload" ].Duration.TotalSeconds;
+                Sound.Sounds["Weapon_Reload"].Play();
+                GameState.Player.Reloading = (float)Sound.Sounds["Weapon_Reload"].Duration.TotalSeconds;
             }
-            if ( Keyboard.GetState().IsKeyDown( Keys.R ) && GameState.Player.Reloading <= 0 )
+            if (Keyboard.GetState().IsKeyDown(Keys.R) && GameState.Player.Reloading <= 0)
             {
                 GameState.Player.Weapon.Reload();
 
-                Sound.Sounds[ "Weapon_Reload" ].Play();
-                GameState.Player.Reloading = ( float ) Sound.Sounds[ "Weapon_Reload" ].Duration.TotalSeconds;
+                Sound.Sounds["Weapon_Reload"].Play();
+                GameState.Player.Reloading = (float)Sound.Sounds["Weapon_Reload"].Duration.TotalSeconds;
             }
 
             var newState = Keyboard.GetState();
 
-            if ( Keyboard.GetState().IsKeyDown( Keys.D0 ) )
+            if (Keyboard.GetState().IsKeyDown(Keys.D0))
             {
-                foreach ( Enemy e in GameState.QuadTreeEnemies )
+                foreach (Enemy e in GameState.QuadTreeEnemies)
                 {
                     e.Activity = new RandomWalk();
                 }
@@ -449,67 +460,31 @@ namespace EVCS_Projekt.Managers
 
 
 
-            if ( Keyboard.GetState().IsKeyDown( Keys.D1 ) )
+            if (newState.IsKeyDown(Keys.N))
             {
-                foreach ( Enemy e in GameState.QuadTreeEnemies )
-                {
-                    e.Renderer = LoadedRenderer.Get( "A_Krabbler_Move" );
-                }
-            }
-            else if ( newState.IsKeyDown( Keys.D2 ) )
-            {
-                foreach ( Enemy e in GameState.QuadTreeEnemies )
-                {
-                    e.Renderer = LoadedRenderer.Get( "A_Schleimer_Move" );
-                }
-            }
-            else if ( newState.IsKeyDown( Keys.D3 ) )
-            {
-                foreach ( Enemy e in GameState.QuadTreeEnemies )
-                {
-                    e.Renderer = LoadedRenderer.Get( "A_Hellboy_Move" );
-                }
-            }
-            else if ( newState.IsKeyDown( Keys.D4 ) )
-            {
-                foreach ( Enemy e in GameState.QuadTreeEnemies )
-                {
-                    e.Renderer = LoadedRenderer.Get( "A_RoterDrache_Move" );
-                }
-            }
-            else if ( newState.IsKeyDown( Keys.D5 ) )
-            {
-                foreach ( Enemy e in GameState.QuadTreeEnemies )
-                {
-                    e.Renderer = LoadedRenderer.Get( "A_StachelKrabbe_Move" );
-                }
-            }
-
-            if ( newState.IsKeyDown( Keys.N ) )
-            {
-                if ( showWaypoints )
+                if (showWaypoints)
                     showWaypoints = false;
                 else
                     showWaypoints = true;
             }
 
             float mr = Mouse.GetState().ScrollWheelValue - mausrad;
-            if ( mr > 0 )
+            if (mr > 0)
             {
                 accu += 0.05F;
             }
-            else if ( mr < 0 )
+            else if (mr < 0)
             {
                 accu -= 0.05F;
             }
             mausrad = Mouse.GetState().ScrollWheelValue;
 
             Random r = new Random();
-            if ( gun_cd <= 0 && Mouse.GetState().LeftButton == ButtonState.Pressed )
+            if (gun_cd <= 0 && Mouse.GetState().LeftButton == ButtonState.Pressed)
             {
-                Vector2 accuracy = new Vector2( ( float ) ( r.NextDouble() * accu - accu / 2 ), ( float ) ( r.NextDouble() * accu - accu / 2 ) );
+                Vector2 accuracy = new Vector2((float)(r.NextDouble() * accu - accu / 2), (float)(r.NextDouble() * accu - accu / 2));
 
-                if ( GameState.Player.IsMoving )
+                if (GameState.Player.IsMoving)
                 {
                     accuracy = accuracy * 3F;
                 }
@@ -528,23 +503,8 @@ namespace EVCS_Projekt.Managers
             }
             else
             {
-                gun_cd -= ( float ) Main.GameTimeUpdate.ElapsedGameTime.TotalSeconds;
+                gun_cd -= (float)Main.GameTimeUpdate.ElapsedGameTime.TotalSeconds;
                 shoting = false;
-            }
-
-
-
-            GameState.Player.RelativeLookAt( new Vector2( Mouse.GetState().X, Mouse.GetState().Y ) );
-
-            foreach ( Enemy e in enemies )
-            {
-                e.Renderer.Update();
-
-                /*if (e.DistanceLessThan(GameState.Player, 300) && PointSeePoint(e.LocationBehavior.Position, GameState.Player.LocationBehavior.Position))
-                {
-                    e.LookAt(GameState.Player.LocationBehavior.Position);
-                    e.Attack(GameState);
-                }*/
             }
 
             // TEST-ENDE
@@ -559,9 +519,9 @@ namespace EVCS_Projekt.Managers
 
             var newState = Keyboard.GetState();
 
-            if ( newState.IsKeyDown( Keys.I ) && !oldKeyState.IsKeyDown( Keys.I ) )
+            if (newState.IsKeyDown(Keys.I) && !oldKeyState.IsKeyDown(Keys.I))
             {
-                if ( uiInventarPanel.Visible )
+                if (uiInventarPanel.Visible)
                 {
                     updateDelegater = UpdateGame;
                     uiInventarPanel.Visible = false;
@@ -583,15 +543,15 @@ namespace EVCS_Projekt.Managers
         private void ItemColission()
         {
             // Items die mit dem spieler kollidieren
-            List<Item> itemsOnScreen = GameState.QuadTreeItems.GetObjects( GameState.Player.Rect );
+            List<Item> itemsOnScreen = GameState.QuadTreeItems.GetObjects(GameState.Player.Rect);
 
-            foreach ( Item i in itemsOnScreen )
+            foreach (Item i in itemsOnScreen)
             {
                 // Item in inventar zufügem
-                GameState.Player.AddItemToInventar( i );
+                GameState.Player.AddItemToInventar(i);
 
                 // Item aus quadtree löschen
-                GameState.QuadTreeItems.Remove( i );
+                GameState.QuadTreeItems.Remove(i);
             }
         }
 
@@ -600,54 +560,54 @@ namespace EVCS_Projekt.Managers
         public void UpdateShots()
         {
             // Schüsse gegen Gegner fliegen lassen - bei Kollision entfernen
-            List<Shot> shotListTemp = new List<Shot>( GameState.ShotListVsEnemies );
-            foreach ( Shot s in shotListTemp )
+            List<Shot> shotListTemp = new List<Shot>(GameState.ShotListVsEnemies);
+            foreach (Shot s in shotListTemp)
             {
                 s.UpdatePosition();
 
-                if ( !CheckRectangleInMap( s.Rect ) )
+                if (!CheckRectangleInMap(s.Rect))
                 {
                     // Wenn der Schuss das erste mal aus der Map fliegt, wird er korrigiert, dass er noch drinn ist und dann erst gelöscht
-                    if ( !s.Delete )
+                    if (!s.Delete)
                     {
                         s.Delete = true;
-                        for ( int i = 0; i < 100; i++ )
+                        for (int i = 0; i < 100; i++)
                         {
                             // Schuss in die Map schieben
                             s.AdjustShot();
-                            if ( CheckRectangleInMap( s.Rect ) )
+                            if (CheckRectangleInMap(s.Rect))
                                 break;
                         }
                     }
                     else
                         //Schuss entgültig löschen
-                        GameState.ShotListVsEnemies.Remove( s );
+                        GameState.ShotListVsEnemies.Remove(s);
                 }
             }
 
             // Schüsse gegen Player fliegen lassen - bei Kollision entfernen
-            shotListTemp = new List<Shot>( GameState.ShotListVsPlayer );
-            foreach ( Shot s in shotListTemp )
+            shotListTemp = new List<Shot>(GameState.ShotListVsPlayer);
+            foreach (Shot s in shotListTemp)
             {
                 s.UpdatePosition();
 
-                if ( !CheckRectangleInMap( s.Rect ) )
+                if (!CheckRectangleInMap(s.Rect))
                 {
                     // Wenn der Schuss das erste mal aus der Map fliegt, wird er korrigiert, dass er noch drinn ist und dann erst gelöscht
-                    if ( !s.Delete )
+                    if (!s.Delete)
                     {
                         s.Delete = true;
-                        for ( int i = 0; i < 100; i++ )
+                        for (int i = 0; i < 100; i++)
                         {
                             // Schuss in die Map schieben
                             s.AdjustShot();
-                            if ( CheckRectangleInMap( s.Rect ) )
+                            if (CheckRectangleInMap(s.Rect))
                                 break;
                         }
                     }
                     else
                         //Schuss entgültig löschen
-                        GameState.ShotListVsPlayer.Remove( s );
+                        GameState.ShotListVsPlayer.Remove(s);
                 }
             }
         }
@@ -659,38 +619,38 @@ namespace EVCS_Projekt.Managers
             // KeyState holen
             var keyState = Keyboard.GetState();
 
-            Vector2 moveVector = new Vector2( 0, 0 );
-            if ( keyState.IsKeyDown( keyMoveUp ) )
+            Vector2 moveVector = new Vector2(0, 0);
+            if (keyState.IsKeyDown(keyMoveUp))
             {
                 moveVector.Y -= 1;
             }
-            if ( keyState.IsKeyDown( keyMoveDown ) )
+            if (keyState.IsKeyDown(keyMoveDown))
             {
                 moveVector.Y += 1;
             }
-            if ( keyState.IsKeyDown( keyMoveLeft ) )
+            if (keyState.IsKeyDown(keyMoveLeft))
             {
                 moveVector.X -= 1;
             }
-            if ( keyState.IsKeyDown( keyMoveRight ) )
+            if (keyState.IsKeyDown(keyMoveRight))
             {
                 moveVector.X += 1;
             }
 
             // Player bewegen
-            if ( moveVector.X != 0 || moveVector.Y != 0 )
+            if (moveVector.X != 0 || moveVector.Y != 0)
             {
                 moveVector.Normalize();
 
                 // Neue Position
                 //Vector2 newPosition = new Vector2();
 
-                moveVector = moveVector * GameState.Player.Speed * ( float ) Main.GameTimeUpdate.ElapsedGameTime.TotalSeconds;
+                moveVector = moveVector * GameState.Player.Speed * (float)Main.GameTimeUpdate.ElapsedGameTime.TotalSeconds;
 
                 // Prüfen ob man laufen kann, wenn ja bewegen
                 //if (CheckRectCanMove( new FRectangle(GameState.Player.LittleBoundingBox), moveVector, out mov))
                 //if (CheckPlayerCanMove(moveVector, out newPosition))
-                if ( GameState.Player.MoveGameObject( moveVector ) )
+                if (GameState.Player.MoveGameObject(moveVector))
                 {
                     GameState.Player.FootRotation = GetMoveRotation();
 
@@ -715,37 +675,37 @@ namespace EVCS_Projekt.Managers
             // KeyState holen
             KeyboardState keyState = Keyboard.GetState();
 
-            if ( keyState.IsKeyDown( keyMoveLeft ) && keyState.IsKeyDown( keyMoveUp ) )
+            if (keyState.IsKeyDown(keyMoveLeft) && keyState.IsKeyDown(keyMoveUp))
             {
-                return ( float ) Math.PI * 1 / 4;
+                return (float)Math.PI * 1 / 4;
             }
-            if ( keyState.IsKeyDown( keyMoveUp ) && keyState.IsKeyDown( keyMoveRight ) )
+            if (keyState.IsKeyDown(keyMoveUp) && keyState.IsKeyDown(keyMoveRight))
             {
-                return ( float ) Math.PI * 3 / 4;
+                return (float)Math.PI * 3 / 4;
             }
-            if ( keyState.IsKeyDown( keyMoveRight ) && keyState.IsKeyDown( keyMoveDown ) )
+            if (keyState.IsKeyDown(keyMoveRight) && keyState.IsKeyDown(keyMoveDown))
             {
-                return ( float ) Math.PI * 5 / 4;
+                return (float)Math.PI * 5 / 4;
             }
-            if ( keyState.IsKeyDown( keyMoveDown ) && keyState.IsKeyDown( keyMoveLeft ) )
+            if (keyState.IsKeyDown(keyMoveDown) && keyState.IsKeyDown(keyMoveLeft))
             {
-                return ( float ) Math.PI * 7 / 4;
+                return (float)Math.PI * 7 / 4;
             }
-            if ( keyState.IsKeyDown( keyMoveLeft ) )
+            if (keyState.IsKeyDown(keyMoveLeft))
             {
                 return 0;
             }
-            if ( keyState.IsKeyDown( keyMoveUp ) )
+            if (keyState.IsKeyDown(keyMoveUp))
             {
-                return ( float ) Math.PI * 2 / 4;
+                return (float)Math.PI * 2 / 4;
             }
-            if ( keyState.IsKeyDown( keyMoveRight ) )
+            if (keyState.IsKeyDown(keyMoveRight))
             {
-                return ( float ) Math.PI;
+                return (float)Math.PI;
             }
-            if ( keyState.IsKeyDown( keyMoveDown ) )
+            if (keyState.IsKeyDown(keyMoveDown))
             {
-                return ( float ) Math.PI * 6 / 4;
+                return (float)Math.PI * 6 / 4;
             }
 
             return 0;
@@ -753,12 +713,12 @@ namespace EVCS_Projekt.Managers
 
         // ***************************************************************************
         // Prüft ob die neue postion blockiert ist
-        private bool CheckPlayerCanMove( Vector2 moveVector, out Vector2 newPosition )
+        private bool CheckPlayerCanMove(Vector2 moveVector, out Vector2 newPosition)
         {
-            float movement = ( float ) Main.GameTimeUpdate.ElapsedGameTime.TotalSeconds * GameState.Player.Speed;
+            float movement = (float)Main.GameTimeUpdate.ElapsedGameTime.TotalSeconds * GameState.Player.Speed;
 
-            float xPos = ( GameState.Player.LocationBehavior.Position.X + moveVector.X * movement );
-            float yPos = ( GameState.Player.LocationBehavior.Position.Y + moveVector.Y * movement );
+            float xPos = (GameState.Player.LocationBehavior.Position.X + moveVector.X * movement);
+            float yPos = (GameState.Player.LocationBehavior.Position.Y + moveVector.Y * movement);
 
             // CurrentPosition
             Vector2 currentPosition = GameState.Player.LocationBehavior.Position;
@@ -769,53 +729,53 @@ namespace EVCS_Projekt.Managers
             bool canMove = false;
 
             // Positon setzten
-            GameState.Player.LocationBehavior.Position = new Vector2( xPos, yPos );
+            GameState.Player.LocationBehavior.Position = new Vector2(xPos, yPos);
 
             // Prüfen ob man an neuer Position gehen kann
-            if ( CheckRectangleInMap( GameState.Player.LittleBoundingBox ) )
+            if (CheckRectangleInMap(GameState.Player.LittleBoundingBox))
             {
                 canMove = true;
 
                 // new Positon ausgeben
-                newPosition = new Vector2( xPos, yPos );
+                newPosition = new Vector2(xPos, yPos);
             }
 
-            if ( !canMove && moveVector.Y != 0 )
+            if (!canMove && moveVector.Y != 0)
             {
                 // Prüfen ob man an neuer Position in Y richtung gehen kann
-                GameState.Player.LocationBehavior.Position = new Vector2( currentPosition.X, yPos );
+                GameState.Player.LocationBehavior.Position = new Vector2(currentPosition.X, yPos);
 
-                if ( CheckRectangleInMap( GameState.Player.LittleBoundingBox ) )
+                if (CheckRectangleInMap(GameState.Player.LittleBoundingBox))
                 {
                     canMove = true;
 
                     // new Positon ausgeben
-                    newPosition = new Vector2( currentPosition.X, yPos );
+                    newPosition = new Vector2(currentPosition.X, yPos);
                 }
             }
 
-            if ( !canMove && moveVector.X != 0 )
+            if (!canMove && moveVector.X != 0)
             {
                 // Prüfen ob man an neuer Position in X richtung gehen kann
-                GameState.Player.LocationBehavior.Position = new Vector2( xPos, currentPosition.Y );
+                GameState.Player.LocationBehavior.Position = new Vector2(xPos, currentPosition.Y);
 
-                if ( CheckRectangleInMap( GameState.Player.LittleBoundingBox ) )
+                if (CheckRectangleInMap(GameState.Player.LittleBoundingBox))
                 {
                     canMove = true;
 
                     // new Positon ausgeben
-                    newPosition = new Vector2( xPos, currentPosition.Y );
+                    newPosition = new Vector2(xPos, currentPosition.Y);
                 }
             }
 
-            if ( canMove )
+            if (canMove)
             {
                 // Prüft ob ein Gegner im Weg steht
-                List<Enemy> enemies = GameState.QuadTreeEnemies.GetObjects( GameState.Player.LittleBoundingBox );
+                List<Enemy> enemies = GameState.QuadTreeEnemies.GetObjects(GameState.Player.LittleBoundingBox);
 
-                foreach ( Enemy e in enemies )
+                foreach (Enemy e in enemies)
                 {
-                    if ( e.PPCollisionWith( GameState.Player ) )
+                    if (e.PPCollisionWith(GameState.Player))
                     {
                         canMove = false;
                         break;
@@ -833,16 +793,16 @@ namespace EVCS_Projekt.Managers
         // Berechnung des MapOffset
         public void CalculateMapOffset()
         {
-            float x = MathHelper.Min( MathHelper.Max( GameState.Player.LocationBehavior.Position.X - Configuration.GetInt( "resolutionWidth" ) / 2, 0 ), GameState.MapSize.X - Configuration.GetInt( "resolutionWidth" ) );
-            float y = MathHelper.Min( MathHelper.Max( GameState.Player.LocationBehavior.Position.Y - Configuration.GetInt( "resolutionHeight" ) / 2, 0 ), GameState.MapSize.Y - Configuration.GetInt( "resolutionHeight" ) );
-            GameState.MapOffset = new Vector2( x, y );
+            float x = MathHelper.Min(MathHelper.Max(GameState.Player.LocationBehavior.Position.X - Configuration.GetInt("resolutionWidth") / 2, 0), GameState.MapSize.X - Configuration.GetInt("resolutionWidth"));
+            float y = MathHelper.Min(MathHelper.Max(GameState.Player.LocationBehavior.Position.Y - Configuration.GetInt("resolutionHeight") / 2, 0), GameState.MapSize.Y - Configuration.GetInt("resolutionHeight"));
+            GameState.MapOffset = new Vector2(x, y);
         }
 
         // ***************************************************************************
         // Draw
-        public override void Draw( SpriteBatch spriteBatch )
+        public override void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Begin( SpriteSortMode.Deferred, BlendState.AlphaBlend );
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend);
 
             // Hintergrund zeichnen
             /*for (int x = 0; x <= 1; x++)
@@ -851,16 +811,16 @@ namespace EVCS_Projekt.Managers
             */
 
             // Bildschirm Rectangle
-            Rectangle screenRect = new Rectangle( ( int ) GameState.MapOffset.X, ( int ) GameState.MapOffset.Y, Configuration.GetInt( "resolutionWidth" ), Configuration.GetInt( "resolutionHeight" ) );
+            Rectangle screenRect = new Rectangle((int)GameState.MapOffset.X, (int)GameState.MapOffset.Y, Configuration.GetInt("resolutionWidth"), Configuration.GetInt("resolutionHeight"));
 
             //Static Objects im Bild
-            List<StaticObject> staticOnScreen = GameState.QuadTreeStaticObjects.GetObjects( screenRect );
+            List<StaticObject> staticOnScreen = GameState.QuadTreeStaticObjects.GetObjects(screenRect);
 
             //Static Objects im Bild
-            List<Item> itemsOnScreen = GameState.QuadTreeItems.GetObjects( screenRect );
+            List<Item> itemsOnScreen = GameState.QuadTreeItems.GetObjects(screenRect);
 
             // Alle gegner im Bilschirm
-            List<Enemy> enemiesOnScreen = GameState.QuadTreeEnemies.GetObjects( screenRect );
+            List<Enemy> enemiesOnScreen = GameState.QuadTreeEnemies.GetObjects(screenRect);
 
             /* 
              * ## DRAWS
@@ -878,87 +838,78 @@ namespace EVCS_Projekt.Managers
              */
 
             // Map zeichnen
-            foreach ( StaticObject so in GameState.Karte.QuadTreeWalkable.GetObjects( screenRect ) )
+            foreach (StaticObject so in GameState.Karte.QuadTreeWalkable.GetObjects(screenRect))
             {
                 //Debug.WriteLine(so.LocationBehavior.Position + " " + so.LocationBehavior.Size);
-                so.Renderer.Draw( spriteBatch, so.LocationBehavior, Color.Black );
+                so.Renderer.Draw(spriteBatch, so.LocationBehavior, Color.Black);
             }
 
             // Statische Objekte zeichnen
-            foreach ( StaticObject so in staticOnScreen )
+            foreach (StaticObject so in staticOnScreen)
             {
-                so.Renderer.Draw( spriteBatch, so.LocationBehavior );
+                so.Renderer.Draw(spriteBatch, so.LocationBehavior);
             }
 
             // Items zeichnen
-            foreach ( Item it in itemsOnScreen )
+            foreach (Item it in itemsOnScreen)
             {
-                it.Renderer.Draw( spriteBatch, it.LocationBehavior );
+                it.Renderer.Draw(spriteBatch, it.LocationBehavior);
             }
 
             // Shots werden alle gezeichnet, da es von ihnen nicht viele gibt und diese normalerweise alle innerhalb des bildschirms liegen
-            foreach ( Shot s in GameState.ShotListVsEnemies )
+            foreach (Shot s in GameState.ShotListVsEnemies)
             {
-                s.Renderer.Draw( spriteBatch, s.LocationBehavior );
+                s.Renderer.Draw(spriteBatch, s.LocationBehavior);
             }
-            foreach ( Shot s in GameState.ShotListVsPlayer )
+            foreach (Shot s in GameState.ShotListVsPlayer)
             {
-                s.Renderer.Draw( spriteBatch, s.LocationBehavior );
+                s.Renderer.Draw(spriteBatch, s.LocationBehavior);
             }
 
             // Enemies zeichnen
-            foreach ( Enemy e in enemiesOnScreen )
+            foreach (Enemy e in enemiesOnScreen)
             {
-                e.Renderer.Draw( spriteBatch, e.LocationBehavior );
-
-                int x = ( int ) ( e.LocationBehavior.RelativePosition.X - e.LocationBehavior.Size.X / 2 );
-                int y = ( int ) ( e.LocationBehavior.RelativePosition.Y - e.LocationBehavior.Size.Y / 2 - 4 );
-                int w = ( int ) ( e.LocationBehavior.Size.X );
-                int h = 4;
-
-                int w2 = ( int ) ( e.LocationBehavior.Size.X / e.MaxHealth * e.Health );
-
-                spriteBatch.Draw( pixel, new Rectangle( x, y, w, h ), new Color( 255, 0, 0, 64 ) );
-                spriteBatch.Draw( pixel, new Rectangle( x, y, w2, h ), new Color( 255, 0, 0, 192 ) );
+                e.Renderer.Draw(spriteBatch, e.LocationBehavior);
+                e.DrawHealthBar(spriteBatch);    
             }
 
             // Player zeichnen mit verschiedenen Renderern (deswegen hat er ne eigene methode)
-            GameState.Player.Draw( spriteBatch );
+            GameState.Player.Draw(spriteBatch);
 
 
             // ################################################################################
             // ################################################################################
             // TEST
 
-            if ( showWaypoints )
-                foreach ( WayPoint w in GameState.Karte.WayPoints.Values )
+            if (showWaypoints)
+                foreach (WayPoint w in GameState.Karte.WayPoints.Values)
                 {
-                    WayPoint.Renderer.Draw( spriteBatch, w.Location );
-                    spriteBatch.DrawString( testFont, "" + w.ID, w.Location.RelativePosition, Color.Black );
+                    WayPoint.Renderer.Draw(spriteBatch, w.Location);
+                    spriteBatch.DrawString(testFont, "" + w.ID, w.Location.RelativePosition, Color.Black);
 
-                    foreach ( WayPoint wDest in w.connectedPoints )
+                    foreach (WayPoint wDest in w.connectedPoints)
                     {
-                        Draw2D.DrawLine( spriteBatch, 1, Color.Red, w.Location.RelativePosition, wDest.Location.RelativePosition );
+                        Draw2D.DrawLine(spriteBatch, 1, Color.Red, w.Location.RelativePosition, wDest.Location.RelativePosition);
                     }
                 }
 
-            if ( shoting )
+            if (shoting)
             {
-                gun.Draw( spriteBatch, GameState.Player.LocationBehavior );
+                gun.Draw(spriteBatch, GameState.Player.LocationBehavior);
             }
 
             string munCount = "0";
-            spriteBatch.DrawString( testFont, "Enemies: " + GameState.QuadTreeEnemies.Count + " FPS: " + ( 1 / Main.GameTimeDraw.ElapsedGameTime.TotalSeconds ), new Vector2( 0, 0 ), Color.Green );
+            spriteBatch.DrawString(testFont, "Enemies: " + GameState.QuadTreeEnemies.Count + " FPS: " + (1 / Main.GameTimeDraw.ElapsedGameTime.TotalSeconds), new Vector2(0, 0), Color.Green);
 
-            if ( GameState.Player.Weapon.Munition != null)
+            if (GameState.Player.Weapon.Munition != null)
                 munCount = GameState.Player.Weapon.Munition.Count + "";
 
-            spriteBatch.DrawString( testFont, "Munition: " + munCount, new Vector2( 0, 30 ), Color.Red );
-            spriteBatch.DrawString( testFont, "Health: " + GameState.Player.Health, new Vector2( 0, 60 ), Color.Red );
-            spriteBatch.DrawString( testFont, "Accu: " + GameState.Player.Weapon.Accuracy, new Vector2( 0, 90 ), Color.Blue );
+            spriteBatch.DrawString(testFont, "Munition: " + munCount, new Vector2(0, 30), Color.Red);
+            spriteBatch.DrawString(testFont, "Health: " + GameState.Player.Health, new Vector2(0, 60), Color.Red);
+            spriteBatch.DrawString(testFont, "Accu: " + GameState.Player.Weapon.Accuracy, new Vector2(0, 90), Color.Blue);
 
-            if ( uiInventarPanel.Visible )
-                uiInventarPanel.Draw( spriteBatch );
+            if (uiInventarPanel.Visible)
+                uiInventarPanel.Draw(spriteBatch);
 
             // TEST-ENDE
             // ################################################################################
@@ -966,7 +917,7 @@ namespace EVCS_Projekt.Managers
 
 
             // Cursor zeichnen
-            MouseCursor.DrawMouse( spriteBatch );
+            MouseCursor.DrawMouse(spriteBatch);
 
             spriteBatch.End();
         }
@@ -976,15 +927,15 @@ namespace EVCS_Projekt.Managers
         public void SpawnEnemy()
         {
             // NextSpawn verringern
-            GameState.NextSpawn -= ( float ) Main.GameTimeUpdate.ElapsedGameTime.TotalSeconds;
+            GameState.NextSpawn -= (float)Main.GameTimeUpdate.ElapsedGameTime.TotalSeconds;
 
-            if ( GameState.NextSpawn <= 0 )
+            if (GameState.NextSpawn <= 0)
             {
                 // NextSpawn resetten
                 GameState.NextSpawn = spawnInterval;
 
                 // Spawn starten
-                SpawnPoint.SpawnEnemies( GameState );
+                SpawnPoint.SpawnEnemies(GameState);
             }
         }
 
@@ -994,81 +945,81 @@ namespace EVCS_Projekt.Managers
         public void CheckShotsVsPlayer()
         {
             // Kopiere die lsite, um getroffene schüsse gleich entfernen zu können
-            List<Shot> tempList = new List<Shot>( GameState.ShotListVsPlayer );
+            List<Shot> tempList = new List<Shot>(GameState.ShotListVsPlayer);
 
-            foreach ( Shot s in tempList )
+            foreach (Shot s in tempList)
             {
                 // Bei collision
-                if ( s.PPCollisionWith( GameState.Player ) )
+                if (s.PPCollisionWith(GameState.Player))
                 {
                     // Schuss dem Player gegebn
-                    GameState.Player.TakeDamage( s );
+                    GameState.Player.TakeDamage(s);
 
                     // Schuss entfernen
-                    GameState.ShotListVsPlayer.Remove( s );
+                    GameState.ShotListVsPlayer.Remove(s);
                 }
             }
         }
 
         // ***************************************************************************
         // Prüfe schüsse gegen gegner
-        public void CheckShotsVsEnemies( List<Enemy> enemies )
+        public void CheckShotsVsEnemies(List<Enemy> enemies)
         {
 
-            foreach ( Enemy e in enemies )
+            foreach (Enemy e in enemies)
             {
                 // Kopiere die lsite, um getroffene schüsse gleich entfernen zu können
-                List<Shot> tempList = new List<Shot>( GameState.ShotListVsEnemies );
+                List<Shot> tempList = new List<Shot>(GameState.ShotListVsEnemies);
 
-                if ( e.IsDead )
+                if (e.IsDead)
                 {
                     // FEHLER BEIM LÖSCHEN!!!!!!!!!!!!!!!! dieser gegner kann nicht gelöscht werden, falls es hier rein geht
-                    foreach ( Enemy x in GameState.QuadTreeEnemies )
+                    foreach (Enemy x in GameState.QuadTreeEnemies)
                     {
-                        if ( x == e )
-                            Debug.WriteLine( "found" );
+                        if (x == e)
+                            Debug.WriteLine("found");
                     }
 
                 }
 
                 // Prüfe kollision mit jedem schuss
-                foreach ( Shot s in tempList )
+                foreach (Shot s in tempList)
                 {
                     // Shuss triff Gegner
-                    if ( s.PPCollisionWith( e ) )
+                    if (s.PPCollisionWith(e))
                     {
                         // Gegner schaden zufügen
-                        e.TakeDamage( s );
+                        e.TakeDamage(s);
 
                         // Buffs des Schusses auf den Gegner übertragen
-                        e.AddBuffs( s.BuffList );
+                        e.AddBuffs(s.BuffList);
 
                         //Debug.WriteLine("Health nach Schuss: " + e.Health);
 
-                        GameState.ShotListVsEnemies.Remove( s );
+                        GameState.ShotListVsEnemies.Remove(s);
 
                         continue;
                     }
                 }
 
                 // Töte Enemie - am besten in eigene Methode auslagern
-                if ( e.IsDead )
+                if (e.IsDead)
                 {
                     //Test new StaticRenderer(blood)
-                    AnimationRenderer a = LoadedRenderer.GetAnimation( "A_Splatter_01" );
+                    AnimationRenderer a = LoadedRenderer.GetAnimation("A_Splatter_01");
                     a.PlayOnce();
 
-                    StaticObject splatter = new StaticObject( new MapLocation( e.LocationBehavior.Position ), a );
+                    StaticObject splatter = new StaticObject(new MapLocation(e.LocationBehavior.Position), a);
 
                     //headshot.Play();
 
-                    GameState.QuadTreeStaticObjects.Add( splatter );
+                    GameState.QuadTreeStaticObjects.Add(splatter);
                     //Debug.WriteLine("Entferne Gegner"); 381 1986
 
                     // FEHLER BEIM LÖSCHEN!!!!!!!!!!!!!!!!
-                    if ( !GameState.QuadTreeEnemies.Remove( e ) )
+                    if (!GameState.QuadTreeEnemies.Remove(e))
                     {
-                        Debug.WriteLine( "Fehler beim löschen" );
+                        Debug.WriteLine("Fehler beim löschen");
                     }
                 }
             }
@@ -1077,11 +1028,11 @@ namespace EVCS_Projekt.Managers
 
         // ***************************************************************************
         // Prüfe ob Player an neue Position laufen darf
-        public static bool CheckRectangleInMap( Rectangle newPosition )
+        public static bool CheckRectangleInMap(Rectangle newPosition)
         {
-            List<StaticObject> objects = Main.MainObject.GameManager.GameState.Karte.QuadTreeWalkable.GetObjects( newPosition );
+            List<StaticObject> objects = Main.MainObject.GameManager.GameState.Karte.QuadTreeWalkable.GetObjects(newPosition);
 
-            if ( objects.Count <= 0 )
+            if (objects.Count <= 0)
                 return true;
             else
                 return false;
@@ -1089,24 +1040,24 @@ namespace EVCS_Projekt.Managers
 
         // ***************************************************************************
         // Prüfe ob zwei Punkte sichtkontakt haben (schießt sozusagen von Vector A nach Vector B un schaut ob er kollidiert.
-        public static bool PointSeePoint( Vector2 start, Vector2 target )
+        public static bool PointSeePoint(Vector2 start, Vector2 target)
         {
-            return PointSeePoint( start, target, new Vector2( 1, 1 ) );
+            return PointSeePoint(start, target, new Vector2(1, 1));
         }
 
-        public static bool PointSeePoint( Vector2 start, Vector2 target, Vector2 size )
+        public static bool PointSeePoint(Vector2 start, Vector2 target, Vector2 size)
         {
-            Vector2 direction = new Vector2( target.X - start.X, target.Y - start.Y );
+            Vector2 direction = new Vector2(target.X - start.X, target.Y - start.Y);
 
-            int steps = ( int ) Math.Sqrt( Math.Pow( direction.X, 2 ) + Math.Pow( direction.Y, 2 ) );
+            int steps = (int)Math.Sqrt(Math.Pow(direction.X, 2) + Math.Pow(direction.Y, 2));
 
             direction.Normalize();
 
-            for ( int i = 0; i < steps; i++ )
+            for (int i = 0; i < steps; i++)
             {
                 start = start + direction;
 
-                if ( !CheckRectangleInMap( new Rectangle( ( int ) ( start.X - size.X / 2 ), ( int ) ( start.Y - size.Y / 2 ), ( int ) size.X, ( int ) size.Y ) ) )
+                if (!CheckRectangleInMap(new Rectangle((int)(start.X - size.X / 2), (int)(start.Y - size.Y / 2), (int)size.X, (int)size.Y)))
                 {
                     return false;
                 }
@@ -1117,49 +1068,49 @@ namespace EVCS_Projekt.Managers
 
         // ***************************************************************************
         // Prüft ob die neue postion blockiert ist und falls bewegt werden kann gibt es die bewegung zurück
-        public static bool CheckRectCanMove( FRectangle rect, Vector2 moveVector, out Vector2 outVector )
+        public static bool CheckRectCanMove(FRectangle rect, Vector2 moveVector, out Vector2 outVector)
         {
 
             // CurrentPosition
-            Vector2 initPosition = new Vector2( rect.X, rect.Y );
+            Vector2 initPosition = new Vector2(rect.X, rect.Y);
 
             // out setzten
-            outVector = new Vector2( 0, 0 );
+            outVector = new Vector2(0, 0);
 
             rect.X += moveVector.X;
             rect.Y += moveVector.Y;
 
             // Prüfen ob man an neuer Position gehen kann
-            if ( CheckRectangleInMap( rect.Rect() ) )
+            if (CheckRectangleInMap(rect.Rect()))
             {
                 // das rect kann wie gewünscht fahren
                 outVector = moveVector;
                 return true;
             }
 
-            if ( moveVector.Y != 0 )
+            if (moveVector.Y != 0)
             {
                 // Prüfen ob man an neuer Position in Y richtung gehen kann
                 rect.X = initPosition.X;
 
-                if ( CheckRectangleInMap( rect.Rect() ) )
+                if (CheckRectangleInMap(rect.Rect()))
                 {
                     // das rect kann nur in Y richtung fahren
-                    outVector = new Vector2( 0, moveVector.Y );
+                    outVector = new Vector2(0, moveVector.Y);
                     return true;
                 }
             }
 
-            if ( moveVector.X != 0 )
+            if (moveVector.X != 0)
             {
                 // Prüfen ob man an neuer Position in X richtung gehen kann
                 rect.X += moveVector.X;
                 rect.Y = initPosition.Y;
 
-                if ( CheckRectangleInMap( rect.Rect() ) )
+                if (CheckRectangleInMap(rect.Rect()))
                 {
                     // das rect kann nur in X richtung fahren
-                    outVector = new Vector2( moveVector.X, 0 );
+                    outVector = new Vector2(moveVector.X, 0);
                     return true;
                 }
             }

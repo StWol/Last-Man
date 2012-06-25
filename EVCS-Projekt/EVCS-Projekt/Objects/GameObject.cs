@@ -287,6 +287,26 @@ namespace EVCS_Projekt.Objects
 
 
 
+        public static Rectangle RotateRectangle(Rectangle rect, float angle)
+        {
+            Vector2 origin = new Vector2(rect.Width / 2, rect.Height / 2);
+
+            // Build the block's transform
+            Matrix transform =
+                Matrix.CreateTranslation(new Vector3(-origin, 0.0f)) *
+                // Matrix.CreateScale(block.Scale) *  would go here
+                Matrix.CreateRotationZ(angle) *
+                Matrix.CreateTranslation(new Vector3(rect.X, rect.Y, 0.0f));
+
+            Rectangle transformed = CalculateBoundingRectangle(new Rectangle(0, 0, rect.Width, rect.Height), transform);
+            transformed.X = (int)(transformed.X + origin.X);
+            transformed.Y = (int)(transformed.Y + origin.Y);
+
+            return transformed;
+        }
+
+
+
         /// <summary>
         /// Determines if there is overlap of the non-transparent pixels
         /// between two sprites.
@@ -576,6 +596,13 @@ namespace EVCS_Projekt.Objects
             //r.Y = (int) (LocationBehavior.Position.Y - LocationBehavior.Size.Y/2F);
             r.X -= r.Width / 2;
             r.Y -= r.Height / 2;
+
+            Debug.WriteLine("------------------");
+            Debug.WriteLine(r);
+            r = RotateRectangle(r, LocationBehavior.Rotation);
+            Debug.WriteLine(r);
+
+
             return r;
         }
 
