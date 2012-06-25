@@ -50,7 +50,7 @@ namespace EVCS_Projekt
         public Dictionary<int, int> Inventar { get; private set; }
         private Dictionary<int, Weapon> shortcuts;
 
-        private List<Buff> bufflist;
+        private Dictionary<EBuffType, Buff> buffs;
         public Vector2 Direction { get; set; }
         public WayPoint NearestWayPoint { get; private set; }
 
@@ -231,7 +231,7 @@ namespace EVCS_Projekt
         public Player( ILocationBehavior locationBehavior, float maxHealth, float health, float speed )
             : base( locationBehavior )
         {
-            bufflist = new List<Buff>();
+            buffs = new Dictionary<EBuffType, Buff>();
             Speed = speed;
             MaxHealth = maxHealth;
             Health = maxHealth;
@@ -305,7 +305,7 @@ namespace EVCS_Projekt
             footRenderer.Update();
 
             // Waffe f+r cooldown etc
-            Weapon.Update( bufflist );
+            Weapon.Update( buffs );
 
             // Fußposition updaten
             footLocation.Position = LocationBehavior.Position;
@@ -317,6 +317,31 @@ namespace EVCS_Projekt
             // ShotTimer verringer
             if ( shotTimer > 0 )
                 shotTimer -= ( float ) Main.GameTimeUpdate.ElapsedGameTime.TotalSeconds;
+
+            // Buff updaten
+            Dictionary<EBuffType, Buff> tempDic = new Dictionary<EBuffType, Buff>(buffs);
+            foreach (Buff b in tempDic.Values)
+            {
+                // auswirkung
+                switch (b.Type)
+                {
+                    case EBuffType.HealthRegenaration:
+                        // Leben regenerieren
+                        Health = Health + b.ValueSinceLast;
+                        break;
+                    case EBuffType.FireDamage:
+                        // Leben regenerieren
+                        Health = Health - b.ValueSinceLast;
+                        break;
+                }
+
+                // Dauer updaten
+                b.Update();
+
+                // entfrnen falls abgelaufen
+                if (b.IsExpired)
+                    buffs.Remove(b.Type);
+            }
         }
 
         // ***************************************************************************
@@ -379,7 +404,7 @@ namespace EVCS_Projekt
             Health = Health - shot.Damage;
 
             // Buffs übernehmen
-            AddBuffs( shot.BuffList );
+            AddBuffs( shot.Buffs );
         }
 
         // ***************************************************************************
@@ -406,10 +431,29 @@ namespace EVCS_Projekt
         }
 
         // ***************************************************************************
-        // Fügt die übergebene Liste mit Buffs dem Player hinzu
-        public void AddBuffs( List<Buff> buffList )
+        // Fügt die übergebene dic mit Buffs dem Player hinzu
+        public void AddBuffs(Dictionary<EBuffType, Buff> buffs)
         {
-            this.bufflist.AddRange( bufflist );
+            foreach (Buff b in buffs.Values)
+            {
+                if (this.buffs.ContainsKey(b.Type))
+                    this.buffs[b.Type] = b;
+                else
+                    this.buffs.Add(b.Type, b);
+            }
+        }
+
+        // ***************************************************************************
+        // Fügt die übergebene Liste mit Buffs dem Player hinzu
+        public void AddBuffs(List<Buff> buffs)
+        {
+            foreach (Buff b in buffs)
+            {
+                if (this.buffs.ContainsKey(b.Type))
+                    this.buffs[b.Type] = b;
+                else
+                    this.buffs.Add(b.Type, b);
+            }
         }
 
         // Kleine BoundingBox

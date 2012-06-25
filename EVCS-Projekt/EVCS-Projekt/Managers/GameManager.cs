@@ -959,7 +959,7 @@ namespace EVCS_Projekt.Managers
                         e.TakeDamage(s);
 
                         // Buffs des Schusses auf den Gegner übertragen
-                        e.AddBuffs(s.BuffList);
+                        e.AddBuffs(s.Buffs);
 
                         //Debug.WriteLine("Health nach Schuss: " + e.Health);
 

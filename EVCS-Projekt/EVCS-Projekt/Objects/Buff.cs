@@ -14,34 +14,48 @@ namespace EVCS_Projekt.Objects
 
         //Attributes
         public float Duration { get; private set; }
-        public float Modifier { get; private set; }
+        public float ValuePerSecond { get; private set; }
         public float Value { get; private set; }
         public EBuffType Type { get; private set; }
-        public string Name { get; private set; }
 
-        private bool expired;
-
+        // *********************************************************************
         //Constructor
-        public Buff(String name, float value, float modifier, float duration, EBuffType type, bool expired)
+        public Buff(float value, float modifier, float duration, EBuffType type)
         {
-            this.Name = name;
-            this.Value = value;
-            this.Modifier = modifier;
-            this.Duration = duration;
-            this.Type = type;
-            this.expired = false;
+            Value = value;
+            ValuePerSecond = modifier;
+            Duration = duration;
+            Type = type;
         }
 
-
-        //other Functions
-        public void UpdateDuration()
+        // *********************************************************************
+        // Lebenszeit verringern
+        public void Update()
         {
-
+            Duration = Duration - (float)Main.GameTimeUpdate.ElapsedGameTime.TotalSeconds;
         }
 
-        public bool IsExpired()
+        // *********************************************************************
+        // Ist Buff abgelafuen?
+        public bool IsExpired
         {
-            return expired;
+            get
+            {
+                if (Duration < 0)
+                    return true;
+                else
+                    return false;
+            }
+        }
+
+        // ***********************************************************************
+        // Den berechneten Wert über die Zeit 
+        public float ValueSinceLast
+        {
+            get
+            {
+                return (float)Main.GameTimeUpdate.ElapsedGameTime.TotalSeconds * ValuePerSecond;
+            }
         }
     }
 }

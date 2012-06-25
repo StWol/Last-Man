@@ -3,6 +3,6 @@
     public enum EBuffType
     {
         FireDamage,
-        PowerUp
+        HealthRegenaration
     }
 }

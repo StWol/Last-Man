@@ -600,8 +600,8 @@ namespace EVCS_Projekt.Objects
             r.X -= r.Width / 2;
             r.Y -= r.Height / 2;
 
-            if (allowToRotate && rotate && LocationBehavior.Rotation != 0)
-                r = RotateRectangle(r, LocationBehavior.Rotation);
+            //if (allowToRotate && rotate && LocationBehavior.Rotation != 0)
+            //    r = RotateRectangle(r, LocationBehavior.Rotation);
 
             return r;
         }

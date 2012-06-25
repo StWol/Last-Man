@@ -89,7 +89,7 @@ namespace EVCS_Projekt.Objects.Items
 
         // ***************************************************************************
         // Updaten
-        public void Update(List<Buff> buffList)
+        public void Update(Dictionary<EBuffType, Buff> buffs)
         {
             if (Cooldown > 0)
             {

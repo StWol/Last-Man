@@ -64,7 +64,7 @@ namespace EVCS_Projekt.Objects.Items
         //Functions
         public float GetDamage()
         {
-            return damageBuff.Modifier;
+            return damageBuff.ValuePerSecond;
         }
 
         // ***************************************************************************
