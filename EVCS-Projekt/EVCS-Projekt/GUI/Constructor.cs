@@ -61,7 +61,6 @@ namespace EVCS_Projekt.GUI
             player = Main.MainObject.GameManager.GameState.Player;
 
             Visible = false;
-
             BackgroundTextur = Main.ContentManager.Load<Texture2D>( "images/gui/inventar/inventar_background" );
 
             Helper.DrawHelper.AddDimension( "TextLinePadding", 20, 20 );

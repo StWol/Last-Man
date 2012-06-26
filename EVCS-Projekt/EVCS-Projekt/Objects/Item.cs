@@ -206,7 +206,6 @@ namespace EVCS_Projekt.Objects
         } }
         public Vector3 RequiredLiquid { get; private set; }
 
-        public Texture2D Icon { get { return ItemIcons[TypeId]; } }
 
         // ***************************************************************************
         // Konstruktor 1
@@ -256,7 +255,8 @@ namespace EVCS_Projekt.Objects
         {
             if (typeof(Munition) == GetType())
             {
-                ((Munition)this).ShotRenderer = Renderer;
+                ((Munition) this).ShotRenderer = Renderer;
+            }
             if (typeof(Weapon) == GetType())
             {
                 Renderer = LoadedRenderer.GetStatic("S_Weapon_Deafault");
@@ -265,10 +265,6 @@ namespace EVCS_Projekt.Objects
             {
                 Renderer = LoadedRenderer.GetStatic("S_IconRenderer_" + TypeId);
             }
-            }
-
-            Renderer = LoadedRenderer.GetStatic("S_IconRenderer_" + TypeId);
-            
         }
 
         // ***************************************************************************

@@ -555,26 +555,21 @@ namespace EVCS_Projekt.Managers
             }
             if (newState.IsKeyDown(Keys.K) && !oldKeyState.IsKeyDown(Keys.K) && !constructorPanel.NameIsActive)
             {
-                if(inventarPanel.Visible)
+                if (inventarPanel.Visible)
                 {
                     inventarPanel.Visible = false;
                 }
-                if ( constructorPanel.Visible )
-            if (newState.IsKeyDown(Keys.K) && !oldKeyState.IsKeyDown(Keys.K))
-            {
                 if (constructorPanel.Visible)
                 {
                     updateDelegater = UpdateGame;
                     constructorPanel.Visible = false;
-                }
+                }     
                 else
                 {
                     updateDelegater = UpdateGui;
                     constructorPanel.Visible = true;
                 }
             }
-
-
             oldKeyState = newState;
         }
 

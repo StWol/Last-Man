@@ -1234,7 +1234,7 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-<<<<<<< HEAD
+
     <Compile Include="animation\heal_2\heal_2_15.png">
       <Name>heal_2_15</Name>
       <Importer>TextureImporter</Importer>
@@ -1242,10 +1242,11 @@
     </Compile>
     <Compile Include="animation\heal_2\heal_2_16.png">
       <Name>heal_2_16</Name>
-=======
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
     <Compile Include="images\itemIcons\500.png">
       <Name>500</Name>
->>>>>>> 4cab0141fee52e5e96e19f8264958da45507aed0
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
