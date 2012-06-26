@@ -84,6 +84,10 @@ namespace EVCS_Projekt
 
             switch ( typeOfEnemy) {
                 case EEnemyType.E1:
+                    moveRenderer = LoadedRenderer.Get("A_Krabbler_Move");
+                    standRenderer = LoadedRenderer.Get("A_Krabbler_Stand");
+                    break;
+                case EEnemyType.E2:
                     moveRenderer = LoadedRenderer.Get("A_Hellboy_Move");
                     standRenderer = LoadedRenderer.Get("A_Hellboy_Stand");
                     break;

@@ -4,5 +4,10 @@
     {
         FireDamage,
         HealthRegenaration
+        /*
+        MovementSlow
+        MovementFast
+        MoreFirerate
+        */ 
     }
 }

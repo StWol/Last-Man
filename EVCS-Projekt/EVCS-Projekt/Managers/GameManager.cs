@@ -62,23 +62,23 @@ namespace EVCS_Projekt.Managers
         private float health_bar_height { get; set; }
         private SpriteFont defaultFont;
 
+        private int buffIconPulse = 0;
+
         // Tests
         private Texture2D test;
         private SpriteFont testFont;
         Texture2D monster3;
-        Texture2D arrow, shot, blood, gun_fire, shot_01;
-        Enemy testEnemy;
+        Texture2D shot, blood, shot_01;
+
         float accu = 0.1F;
         float mausrad = 0F;
-        Texture2D[] bloodA;
-        bool shoting = false;
-        StaticRenderer gun;
+
         private float gun_cd;
-        SoundEffect peng, headshot;
+        SoundEffect headshot;
         private InventarPanel inventarPanel;
         private Constructor constructorPanel;
         bool showWaypoints = false;
-        
+
 
         // ***************************************************************************
         // Läd den ganzen Stuff, den der GameManager benötigt
@@ -154,7 +154,7 @@ namespace EVCS_Projekt.Managers
             // GUI elemente
             gui_overlay = Main.ContentManager.Load<Texture2D>("images/gui/gui_overlay");
             health_bar = Main.ContentManager.Load<Texture2D>("images/gui/health_bar");
-            
+
             defaultFont = Main.ContentManager.Load<SpriteFont>(Configuration.Get("defaultFont"));
 
             // Posi für Gui
@@ -162,6 +162,9 @@ namespace EVCS_Projekt.Managers
             DrawHelper.AddDimension("HealthBar_Size", 33, 153);
 
             DrawHelper.AddDimension("Munition_Position", 235, 535);
+
+            DrawHelper.AddDimension("BuffIcon_Position", 16, 365);
+            DrawHelper.AddDimension("BuffIcon_Size", 32, 32);
 
             // AI Thread starten
             new Thread(new ThreadStart(AIThread.UpdateAI)).Start();
@@ -222,7 +225,7 @@ namespace EVCS_Projekt.Managers
             // DefaultEnemies laden
             Enemy.DefaultEnemies = new Dictionary<EEnemyType, Enemy>();
 
-            Enemy d1 = new Enemy(new MapLocation(new Vector2(0, 0)), LoadedRenderer.Get("A_Hellboy_Move"), 1, 300, 1000, 100, 100, 100, 0);
+            Enemy d1 = new Enemy(new MapLocation(new Vector2(0, 0)), LoadedRenderer.Get("A_Krabbler_Move"), 1, 300, 1000, 100, 100, 100, EEnemyType.E1);
             d1.Damage = 5F;
             d1.LocationSizing();
 
@@ -260,7 +263,7 @@ namespace EVCS_Projekt.Managers
             // ################################################################################
 
             inventarPanel = new InventarPanel(760, 400, new Vector2(1024 / 2 - 760 / 2, 576 / 2 - 400 / 2));
-            constructorPanel = new Constructor(760, 400, new Vector2(1024/2 - 760/2, 576/2 - 400/2));
+            constructorPanel = new Constructor(760, 400, new Vector2(1024 / 2 - 760 / 2, 576 / 2 - 400 / 2));
         }
 
 
@@ -316,9 +319,9 @@ namespace EVCS_Projekt.Managers
 
         public void UpdateGui()
         {
-            if(inventarPanel.Visible)
+            if (inventarPanel.Visible)
                 inventarPanel.Update();
-            if(constructorPanel.Visible)
+            if (constructorPanel.Visible)
                 constructorPanel.Update();
         }
 
@@ -362,7 +365,9 @@ namespace EVCS_Projekt.Managers
             // Items updaten
             foreach (Item i in itemsOnScreen)
             {
-                i.LocationBehavior.Rotation = (float)(Main.GameTimeUpdate.TotalGameTime.TotalSeconds * 2) % MathHelper.TwoPi;
+                // Items rotieren lassen
+                if (i.GetType() != typeof(Liquid))
+                    i.LocationBehavior.Rotation = (float)(Main.GameTimeUpdate.TotalGameTime.TotalSeconds * 2) % MathHelper.TwoPi;
             }
 
             // Enemies updaten
@@ -387,23 +392,13 @@ namespace EVCS_Projekt.Managers
             // healthbar_rect berechnen
             health_bar_height = DrawHelper.Get("HealthBar_Size").Y / GameState.Player.MaxHealth * GameState.Player.Health;
 
+            // Pulls für bufficons
+            buffIconPulse = (int)((Main.GameTimeUpdate.TotalGameTime.TotalSeconds % 0.8F) / 0.2F);
 
             // ################################################################################
             // ################################################################################
             // ################################################################################
             // TEST
-            /*
-            foreach ( Enemy e in enemies )
-            {
-                int x = (int)e.LocationBehavior.Position.X + 1;
-                if ( x > GameState.MapSize.X)
-                    x = 0;
-                e.LocationBehavior.Position = new Vector2(x ,  e.LocationBehavior.Position.Y);
-                e.HasMoved = true;
-
-                GameState.QuadTreeEnemies.Move(e);
-            }*/
-            Debug.WriteLineIf(!CheckRectangleInMap(GameState.Player.LittleBoundingBox), "Player in Map!!!!!!!!!");
 
             foreach (Enemy e in enemies)
             {
@@ -453,44 +448,6 @@ namespace EVCS_Projekt.Managers
                     showWaypoints = true;
             }
 
-            float mr = Mouse.GetState().ScrollWheelValue - mausrad;
-            if (mr > 0)
-            {
-                accu += 0.05F;
-            }
-            else if (mr < 0)
-            {
-                accu -= 0.05F;
-            }
-            mausrad = Mouse.GetState().ScrollWheelValue;
-
-            Random r = new Random();
-            if (gun_cd <= 0 && Mouse.GetState().LeftButton == ButtonState.Pressed)
-            {
-                Vector2 accuracy = new Vector2((float)(r.NextDouble() * accu - accu / 2), (float)(r.NextDouble() * accu - accu / 2));
-
-                if (GameState.Player.IsMoving)
-                {
-                    accuracy = accuracy * 3F;
-                }
-
-                /*Shot s = new Shot(0, 0, 1000, -GameState.Player.LocationBehavior.Direction + accuracy, 10, "", 0, "", 0, new MapLocation(GameState.Player.LocationBehavior.Position));
-                s.Renderer = LoadedRenderer.DefaultRenderer["S_Shot_Normal"];
-                s.SetDirection(-GameState.Player.LocationBehavior.Direction + accuracy);
-                s.LocationSizing();
-
-
-                peng.Play(0.8F, -0.5F, 0);
-
-                GameState.ShotListVsEnemies.Add(s);
-                shoting = true;
-                gun_cd = 0.05F;*/
-            }
-            else
-            {
-                gun_cd -= (float)Main.GameTimeUpdate.ElapsedGameTime.TotalSeconds;
-                shoting = false;
-            }
 
             // TEST-ENDE
             // ###############################################################################
@@ -517,9 +474,9 @@ namespace EVCS_Projekt.Managers
                     inventarPanel.Visible = true;
                 }
             }
-            if ( newState.IsKeyDown( Keys.K ) && !oldKeyState.IsKeyDown( Keys.K ) )
+            if (newState.IsKeyDown(Keys.K) && !oldKeyState.IsKeyDown(Keys.K))
             {
-                if ( constructorPanel.Visible )
+                if (constructorPanel.Visible)
                 {
                     updateDelegater = UpdateGame;
                     constructorPanel.Visible = false;
@@ -529,7 +486,7 @@ namespace EVCS_Projekt.Managers
                     updateDelegater = UpdateGui;
                     constructorPanel.Visible = true;
                 }
-            } 
+            }
 
 
             oldKeyState = newState;
@@ -543,11 +500,23 @@ namespace EVCS_Projekt.Managers
 
             foreach (Item i in itemsInPlayer)
             {
-                // Item in inventar zufügem
-                GameState.Player.AddItemToInventar(i);
+                // Auf Liquid testen
+                if (i.GetType() == typeof(Liquid))
+                {
+                    // Liquid adden
+                    GameState.Player.AddLiquid(((Liquid)i).TypeOfLiquid, ((Liquid)i).Amount); 
 
-                // Item aus quadtree löschen
-                GameState.QuadTreeItems.Remove(i);
+                    // Item aus quadtree löschen
+                    GameState.QuadTreeItems.Remove(i);
+                }
+                else
+                {
+                    // Item in inventar zufügem
+                    GameState.Player.AddItemToInventar(i);
+
+                    // Item aus quadtree löschen
+                    GameState.QuadTreeItems.Remove(i);
+                }
             }
         }
 
@@ -646,7 +615,7 @@ namespace EVCS_Projekt.Managers
                 // Prüfen ob man laufen kann, wenn ja bewegen
                 //if (CheckRectCanMove( new FRectangle(GameState.Player.LittleBoundingBox), moveVector, out mov))
                 //if (CheckPlayerCanMove(moveVector, out newPosition))
-                if (GameState.Player.MoveGameObject(moveVector))
+                if (GameState.Player.MoveGameObject(moveVector, true, false))
                 {
                     GameState.Player.FootRotation = GetMoveRotation();
 
@@ -866,7 +835,16 @@ namespace EVCS_Projekt.Managers
             // Player zeichnen mit verschiedenen Renderern (deswegen hat er ne eigene methode)
             GameState.Player.Draw(spriteBatch);
 
+            // Hud zeichnen
             DrawHUD(spriteBatch);
+
+            // inventar zeichnen
+            if (inventarPanel.Visible)
+            {
+                spriteBatch.Draw(PixelWhite, new Rectangle(0, 0, Configuration.GetInt("resolutionWidth"), Configuration.GetInt("resolutionHeight")), new Color(0, 0, 0, 128));
+
+                inventarPanel.Draw(spriteBatch);
+            }
 
             // ################################################################################
             // ################################################################################
@@ -887,26 +865,17 @@ namespace EVCS_Projekt.Managers
                     }
                 }
 
-            if (shoting)
-            {
-                gun.Draw(spriteBatch, GameState.Player.LocationBehavior);
-            }
-
-            string munCount = "0";
             spriteBatch.DrawString(testFont, "Enemies: " + GameState.QuadTreeEnemies.Count + " FPS: " + (1 / Main.GameTimeDraw.ElapsedGameTime.TotalSeconds), new Vector2(0, 0), Color.Green);
 
-            if (GameState.Player.Weapon.Munition != null)
-                munCount = GameState.Player.Weapon.Munition.Count + "";
-
-            spriteBatch.DrawString(testFont, "", new Vector2(0, 30), Color.Red);
+            spriteBatch.DrawString(testFont, "Liquids: " + GameState.Player.Liquids, new Vector2(0, 30), Color.Red);
             spriteBatch.DrawString(testFont, "Health: " + GameState.Player.Health, new Vector2(0, 60), Color.Red);
             spriteBatch.DrawString(testFont, "Accu: " + GameState.Player.Weapon.Accuracy + " Kills: " + GameState.KilledMonsters, new Vector2(0, 90), Color.Blue);
 
-            if (inventarPanel.Visible)
-                inventarPanel.Draw(spriteBatch);
 
-            if ( constructorPanel.Visible)
-                constructorPanel.Draw( spriteBatch );
+
+            if (constructorPanel.Visible)
+                constructorPanel.Draw(spriteBatch);
+
             // TEST-ENDE
             // ################################################################################
             // ################################################################################
@@ -938,6 +907,18 @@ namespace EVCS_Projekt.Managers
                 munCount = GameState.Player.Weapon.Munition.Count + "";
 
             spriteBatch.DrawString(defaultFont, munCount, DrawHelper.Get("Munition_Position"), Color.Black);
+
+            // Buff Icons zeichnen
+            Vector2 bi_position = DrawHelper.Get("BuffIcon_Position");
+            Vector2 bi_size = DrawHelper.Get("BuffIcon_Size");
+
+            foreach (Buff b in GameState.Player.Buffs.Values)
+            {
+                spriteBatch.Draw(Buff.BuffIcons[b.Type], new Rectangle((int)bi_position.X - buffIconPulse, (int)bi_position.Y - buffIconPulse, (int)bi_size.X + 2 * buffIconPulse, (int)bi_size.Y + 2 * buffIconPulse), Color.White);
+
+                // Position weiterrücken
+                bi_position.X = bi_position.X + bi_size.X * 1.5F;
+            }
 
             // Overlay zeichnen
             spriteBatch.Draw(gui_overlay, new Rectangle(0, 0, Configuration.GetInt("resolutionWidth"), Configuration.GetInt("resolutionHeight")), Color.White);
@@ -971,14 +952,40 @@ namespace EVCS_Projekt.Managers
             AnimationRenderer a = LoadedRenderer.GetAnimation("A_Splatter_01");
             a.PlayOnce();
 
+            // Splatter erstellen und in quadtree einfügen
             StaticObject splatter = new StaticObject(new MapLocation(e.LocationBehavior.Position), a);
-
             GameState.QuadTreeStaticObjects.Add(splatter);
 
-            // FEHLER BEIM LÖSCHEN!!!!!!!!!!!!!!!!
+            // Liquid droppen
+            ELiquid droppedLiquidType = ELiquid.Green;
+            switch (e.TypOfEnemy)
+            {
+                //case EEnemyType.E1:
+                //case EEnemyType.E2:
+                //    droppedLiquidType = ELiquid.Green;
+                //    break;
+                case EEnemyType.E3:
+                case EEnemyType.E4:
+                    droppedLiquidType = ELiquid.Blue;
+                    break;
+                case EEnemyType.E5:
+                case EEnemyType.E6:
+                    droppedLiquidType = ELiquid.Red;
+                    break;
+            }
+
+            Random r = new Random();
+            Liquid droppedLiquid = Liquid.Get(droppedLiquidType, r.Next(1, 5));
+            droppedLiquid.LocationBehavior = new MapLocation(e.LocationBehavior.Position);
+            droppedLiquid.LocationSizing();
+
+            // Liquid den items hinzufügen
+            GameState.QuadTreeItems.Add(droppedLiquid);
+
+            // Remove enemie
             if (!GameState.QuadTreeEnemies.Remove(e))
             {
-                Debug.WriteLine("Fehler beim löschen");
+                Debug.WriteLine("Fehler beim löschen eines Gegners");
             }
         }
 

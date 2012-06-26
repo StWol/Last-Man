@@ -40,7 +40,6 @@ namespace EVCS_Projekt
             }
         }
         public float Speed { get; set; }
-        public float[] Liquid { get; set; }
 
         public float TotalInventarWeight
         {
@@ -71,9 +70,11 @@ namespace EVCS_Projekt
 
         public List<Powerup> ActivePowerups { get; private set; }
 
-        private Dictionary<EBuffType, Buff> buffs;
+        public Dictionary<EBuffType, Buff> Buffs;
         public Vector2 Direction { get; set; }
         public WayPoint NearestWayPoint { get; private set; }
+
+        public Vector3 Liquids { get; private set; }
 
         // ob ein schuss eine gewisse zeit her war
         private float shotTimer;
@@ -255,7 +256,7 @@ namespace EVCS_Projekt
         public Player(ILocationBehavior locationBehavior, float maxHealth, float health, float speed)
             : base(locationBehavior)
         {
-            buffs = new Dictionary<EBuffType, Buff>();
+            Buffs = new Dictionary<EBuffType, Buff>();
             Speed = speed;
             MaxHealth = maxHealth;
             Health = maxHealth;
@@ -295,6 +296,9 @@ namespace EVCS_Projekt
             // Poweruplist init
             ActivePowerups = new List<Powerup>();
 
+            // Liquids auf 0 setzten
+            Liquids = new Vector3(0, 0, 0);
+
             // Rect Methode setzten
             base.GetRect = base.RectPlayer;
         }
@@ -332,7 +336,7 @@ namespace EVCS_Projekt
             footRenderer.Update();
 
             // Waffe f+r cooldown etc
-            Weapon.Update(buffs);
+            Weapon.Update(Buffs);
 
             // Fußposition updaten
             footLocation.Position = LocationBehavior.Position;
@@ -346,7 +350,7 @@ namespace EVCS_Projekt
                 shotTimer -= (float)Main.GameTimeUpdate.ElapsedGameTime.TotalSeconds;
 
             // Buff updaten
-            Dictionary<EBuffType, Buff> tempDic = new Dictionary<EBuffType, Buff>(buffs);
+            Dictionary<EBuffType, Buff> tempDic = new Dictionary<EBuffType, Buff>(Buffs);
             foreach (Buff b in tempDic.Values)
             {
                 // auswirkung
@@ -367,7 +371,7 @@ namespace EVCS_Projekt
 
                 // entfrnen falls abgelaufen
                 if (b.IsExpired)
-                    buffs.Remove(b.Type);
+                    Buffs.Remove(b.Type);
             }
 
             // Poweruprenderer updaten und entfernen falls nötig
@@ -463,18 +467,38 @@ namespace EVCS_Projekt
 
         // ***************************************************************************
         // Fügt von Liquid mit der ID id, die Menge amount hinzu
-        public void AddLiquid(int id, float amount)
+        public void AddLiquid(ELiquid type, int amount)
         {
-            this.Liquid[id] += amount;
+            switch (type)
+            {
+                case ELiquid.Green:
+                    Liquids = new Vector3(Liquids.X + amount, Liquids.Y, Liquids.Z);
+                    break;
+                case ELiquid.Blue:
+                    Liquids = new Vector3(Liquids.X, Liquids.Y + amount, Liquids.Z);
+                    break;
+                case ELiquid.Red:
+                    Liquids = new Vector3(Liquids.X, Liquids.Y, Liquids.Z + amount);
+                    break;
+            }
         }
 
         // ***************************************************************************
         // Zieht von Liquid mit der ID id, die Menge amount ab
-        public void ReduceLiquid(int id, float amount)
+        public void ReduceLiquid(ELiquid type, int amount)
         {
-            this.Liquid[id] -= amount;
-            if (Liquid[id] - amount <= 0)
-                amount = 0;
+            switch (type)
+            {
+                case ELiquid.Green:
+                    Liquids = new Vector3(Math.Max(0, Liquids.X - amount), Liquids.Y, Liquids.Z);
+                    break;
+                case ELiquid.Blue:
+                    Liquids = new Vector3(Liquids.X, Liquids.Y - amount, Liquids.Z);
+                    break;
+                case ELiquid.Red:
+                    Liquids = new Vector3(Liquids.X, Liquids.Y, Liquids.Z - amount);
+                    break;
+            }
         }
 
         // ***************************************************************************
@@ -483,10 +507,10 @@ namespace EVCS_Projekt
         {
             foreach (Buff b in buffs.Values)
             {
-                if (this.buffs.ContainsKey(b.Type))
-                    this.buffs[b.Type] = b;
+                if (this.Buffs.ContainsKey(b.Type))
+                    this.Buffs[b.Type] = b;
                 else
-                    this.buffs.Add(b.Type, b);
+                    this.Buffs.Add(b.Type, b);
             }
         }
 
@@ -496,10 +520,10 @@ namespace EVCS_Projekt
         {
             foreach (Buff b in buffs)
             {
-                if (this.buffs.ContainsKey(b.Type))
-                    this.buffs[b.Type] = b;
+                if (this.Buffs.ContainsKey(b.Type))
+                    this.Buffs[b.Type] = b;
                 else
-                    this.buffs.Add(b.Type, b);
+                    this.Buffs.Add(b.Type, b);
             }
         }
 

@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Xml.Serialization;
 using EVCS_Projekt.Objects.Items;
+using Microsoft.Xna.Framework.Graphics;
+using System.Diagnostics;
 
 namespace EVCS_Projekt.Objects
 {
@@ -17,6 +19,7 @@ namespace EVCS_Projekt.Objects
     {
         // Geladene Buffs
         private static Dictionary<int, Buff> LoadedBuffs { get; set; }
+        public static Dictionary<EBuffType, Texture2D> BuffIcons { get; private set; }
 
         //Attributes
         public float Duration { get; private set; }
@@ -85,19 +88,26 @@ namespace EVCS_Projekt.Objects
         {
             // Dic init
             LoadedBuffs = new Dictionary<int, Buff>();
+            BuffIcons = new Dictionary<EBuffType, Texture2D>();
 
             // open stream
             FileStream fs = new FileStream(Configuration.Get("buffs"), FileMode.Open);
             XmlSerializer serializer = new XmlSerializer(typeof(List<BuffInner>));
             // Geladene liste
             List<BuffInner> loaded = (List<BuffInner>)serializer.Deserialize(fs);
-            
+
             foreach (BuffInner bi in loaded)
             {
                 // Buff erstellen und adden
-                Buff b = new Buff( bi.Value, bi.ValuePerSecond, bi.Duration, bi.BuffType );
+                Buff b = new Buff(bi.Value, bi.ValuePerSecond, bi.Duration, bi.BuffType);
 
                 LoadedBuffs.Add(bi.RefId, b);
+            }
+
+            // Icons der EBuffTypes laden
+            foreach (EBuffType type in Enum.GetValues(typeof(EBuffType)))
+            {
+                BuffIcons.Add(type, Main.ContentManager.Load<Texture2D>(Configuration.Get("buffIcons") + type.ToString() ) );
             }
         }
 

@@ -192,6 +192,8 @@ namespace EVCS_Projekt.Objects
         public string Description { get; private set; }
         public float Weight { get; private set; }
 
+        public Vector3 RequiredLiquid { get; private set; }
+
         public Texture2D Icon { get { return ItemIcons[TypeId]; } }
 
         // ***************************************************************************
@@ -234,13 +236,16 @@ namespace EVCS_Projekt.Objects
             Description = ii.description;
             Weight = ii.weight;
             Group = ii.group;
+            RequiredLiquid = ii.requiredLiquid;
         }
 
         // ItemIcon in den Renderer Quetschen
         private void FixRenderer()
         {
             if (typeof(Munition) == GetType())
+            {
                 ((Munition)this).ShotRenderer = Renderer;
+            }
 
             Renderer = LoadedRenderer.GetStatic("S_IconRenderer_" + TypeId);
         }
@@ -254,6 +259,7 @@ namespace EVCS_Projekt.Objects
             public string name, description;
             public EGroup group;
             public GameObjectInner gameObject;
+            public Vector3 requiredLiquid;
         }
 
         // ***************************************************************************
@@ -267,6 +273,7 @@ namespace EVCS_Projekt.Objects
             ii.description = Description;
             ii.group = Group;
             ii.gameObject = base.GetInner();
+            ii.requiredLiquid = RequiredLiquid;
             return ii;
         }
 

@@ -30,6 +30,7 @@ namespace EVCS_Projekt.Objects.Items
             Count = count;
             MagazineSize = count;
             ShotId = shotId;
+            Damage = damage;
         }
 
         // ***************************************************************************
@@ -80,7 +81,12 @@ namespace EVCS_Projekt.Objects.Items
         {
             Munition m = new Munition(TypeId, Group, Name, new List<int>(buffIDs), Count, ShotId, Damage, Description, Weight, LocationBehavior.Clone());
             m.Renderer = Renderer;
-            m.ShotRenderer = Renderer;
+
+            if (ShotRenderer == null)
+                m.ShotRenderer = Renderer;
+            else
+                m.ShotRenderer = ShotRenderer;
+
             return m;
         }
 

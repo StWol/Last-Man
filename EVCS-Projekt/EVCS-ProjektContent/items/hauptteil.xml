@@ -6,7 +6,7 @@
 	<HauptteilInner>
 		<rateOfFire>6</rateOfFire>
 		<shotCount>1</shotCount>
-		<bigWeapon>false</bigWeapon>
+		<bigWeapon>true</bigWeapon>
 		<item>
 			<weight>4</weight>
 			<id>100</id>

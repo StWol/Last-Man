@@ -1,10 +1,27 @@
 <?xml version="1.0"?>
+<!-- 
+
+BSP für Liquid:
+x = grün; Y=blau; Z=rot
+<requiredLiquid>
+	<X>2</X>
+</requiredLiquid>
+
+<requiredLiquid>
+	<X>2</X>
+	<Y>2</Y>
+	<Z>2</Z>
+</requiredLiquid>			
+-->
 <ArrayOfAntriebInner xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
 	<AntriebInner>
 		<rateOfFire>10</rateOfFire>
 		<damage>1</damage>
 		<soundId>Weapon_01</soundId>
 		<item>
+			<requiredLiquid>
+				<X>2</X>
+			</requiredLiquid>
 			<weight>1</weight>
 			<id>500</id>
 			<name>Feder</name>
