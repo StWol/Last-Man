@@ -5,6 +5,11 @@
 	<VisierInner>
 		<accuracy>1</accuracy>
 		<item>
+      <requiredLiquid>
+        <X>2</X>
+        <Y>0</Y>
+        <Z>0</Z>
+      </requiredLiquid>
 			<weight>1</weight>
 			<id>300</id>
 			<name>Laserpointer</name>
@@ -15,6 +20,11 @@
 	<VisierInner>
 		<accuracy>2</accuracy>
 		<item>
+      <requiredLiquid>
+        <X>4</X>
+        <Y>0</Y>
+        <Z>0</Z>
+      </requiredLiquid>
 			<weight>2</weight>
 			<id>301</id>
 			<name>Laserpointer</name>
@@ -25,6 +35,11 @@
 	<VisierInner>
 		<accuracy>3</accuracy>
 		<item>
+      <requiredLiquid>
+        <X>2</X>
+        <Y>2</Y>
+        <Z>1</Z>
+      </requiredLiquid>
 			<weight>3</weight>
 			<id>302</id>
 			<name>Glasflasche</name>
@@ -35,6 +50,11 @@
 	<VisierInner>
 		<accuracy>4</accuracy>
 		<item>
+      <requiredLiquid>
+        <X>4</X>
+        <Y>1</Y>
+        <Z>2</Z>
+      </requiredLiquid>
 			<weight>4</weight>
 			<id>303</id>
 			<name>Taschenlampe</name>
@@ -45,6 +65,11 @@
 	<VisierInner>
 		<accuracy>5</accuracy>
 		<item>
+      <requiredLiquid>
+        <X>5</X>
+        <Y>1</Y>
+        <Z>2</Z>
+      </requiredLiquid>
 			<weight>5</weight>
 			<id>304</id>
 			<name>Taschenlampe</name>
@@ -55,6 +80,11 @@
 	<VisierInner>
 		<accuracy>6</accuracy>
 		<item>
+      <requiredLiquid>
+        <X>2</X>
+        <Y>1</Y>
+        <Z>4</Z>
+      </requiredLiquid>
 			<weight>6</weight>
 			<id>305</id>
 			<name>Taschenlampe</name>
