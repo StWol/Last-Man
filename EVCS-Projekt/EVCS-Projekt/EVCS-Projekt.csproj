@@ -85,8 +85,9 @@
     <Compile Include="Enemy.cs" />
     <Compile Include="GameState.cs" />
     <Compile Include="GUI\Constructor.cs" />
-    <Compile Include="GUI\UIInventarPanel.cs" />
-    <Compile Include="UI\UIFilteredList.cs" />
+    <Compile Include="GUI\InventarPanel.cs" />
+    <Compile Include="UI\UIFilteredConstructorList.cs" />
+    <Compile Include="UI\UIFilteredInventarList.cs" />
     <Compile Include="UI\UIListButton.cs" />
     <Compile Include="Helper\Draw2D.cs" />
     <Compile Include="Helper\DrawHelper.cs" />

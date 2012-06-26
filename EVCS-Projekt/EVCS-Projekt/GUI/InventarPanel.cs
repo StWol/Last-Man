@@ -8,7 +8,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace EVCS_Projekt.GUI
 {
-    class UIInventarPanel : UIPanel, UIActionListener, UIMouseHoverListener
+    class InventarPanel : UIPanel, UIActionListener, UIMouseHoverListener
     {
         public bool Visible
         {
@@ -17,9 +17,9 @@ namespace EVCS_Projekt.GUI
             {
                 if ( value && !isVisible )
                 {
-                    filteredList.GenerateFilteredLists( player.Inventar );
-                    filteredList.SetItems( player.Inventar );
-                    filteredList.ResetToggleButtons();
+                    filteredInventarList.GenerateFilteredLists( player.Inventar );
+                    filteredInventarList.SetItems( player.Inventar );
+                    filteredInventarList.ResetToggleButtons();
                     activeItem = null;
                 }
                 isVisible = value;
@@ -38,11 +38,9 @@ namespace EVCS_Projekt.GUI
         private UIButton btnOk;
         private UIButton btnCancel;
 
-// ReSharper disable FieldCanBeMadeReadOnly.Local
         private List<UIShortcutButton> shortcutButtons;
-// ReSharper restore FieldCanBeMadeReadOnly.Local
 
-        private UIFilteredList filteredList;
+        private UIFilteredInventarList filteredInventarList;
         private Item activeItem;
 
 
@@ -51,7 +49,7 @@ namespace EVCS_Projekt.GUI
         private const int TEXT_LINE_HEIGHT = 30;
         private const int TEXT_PADDING = 20;
 
-        public UIInventarPanel( int width, int height, Vector2 position )
+        public InventarPanel( int width, int height, Vector2 position )
             : base( width, height, position )
         {
 
@@ -108,8 +106,8 @@ namespace EVCS_Projekt.GUI
             var cancel_h = Main.ContentManager.Load<Texture2D>( "images/gui/inventar/btn_cancel_h" );
 
 
-            filteredList = new UIFilteredList( 260, 236, new Vector2( 340, 60 ), this );
-            Add( filteredList );
+            filteredInventarList = new UIFilteredInventarList( 260, 236, new Vector2( 340, 60 ), this );
+            Add( filteredInventarList );
 
 
             btnOk = new UIButton( new Vector2( 300, 306 ), ok, ok_h );
@@ -204,9 +202,10 @@ namespace EVCS_Projekt.GUI
                     if ( activeItem.GetType() == typeof( Powerup ) )
                     {
                         //Fressen activeItem
-                        player.UsePowerup((Powerup)activeItem);
-                        filteredList.RemoveActiveItem();
+                        player.UsePowerup( ( Powerup ) activeItem );
+                        filteredInventarList.RemoveActiveItem();
                         player.RemoveItemFromInventar(activeItem);
+                        activeItem = null;
                         //Fressen activeItem
                     }
                 }
@@ -222,9 +221,9 @@ namespace EVCS_Projekt.GUI
                     Main.MainObject.GameManager.GameState.QuadTreeItems.Add( dropedItem );
 
 
-                    filteredList.RemoveActiveItem();
+                    filteredInventarList.RemoveActiveItem();
                     activeItem = player.RemoveItemFromInventar( activeItem );
-                    filteredList.GenerateFilteredLists( player.Inventar );
+                    filteredInventarList.GenerateFilteredLists( player.Inventar );
                 }
 
             //////////////////////////////////////////////////////
@@ -235,12 +234,6 @@ namespace EVCS_Projekt.GUI
             {
                 HandleShortcutButtonClick( ( UIShortcutButton ) element );
             }
-
-
-            if ( activeItem == null )
-            {
-
-            }
         }
 
 
@@ -248,27 +241,24 @@ namespace EVCS_Projekt.GUI
         {
             Weapon oldWeapon = button.Weapon;
 
-
             if ( oldWeapon != null )
             {
                 if ( oldWeapon.Munition != null )
                 {
                     // munition ins Inventar
                     player.AddItemToInventar( oldWeapon.Munition );
-                    filteredList.AddItem( oldWeapon.Munition );
+                    filteredInventarList.AddItem( oldWeapon.Munition );
                 }
 
                 //Waffe ins inventar
                 player.RemoveWeaponFromShortcutList( button.Key );
                 player.AddItemToInventar( oldWeapon );
-                filteredList.AddItem( oldWeapon );
+                filteredInventarList.AddItem( oldWeapon );
                 button.Weapon = null;
             }
             if ( newWeapon != null )
             {
                 //Waffe ändern
-
-
                 player.AddWeaponToShortcutList( button.Key, newWeapon );
                 player.RemoveItemFromInventar( newWeapon );
                 button.Weapon = newWeapon;
@@ -296,7 +286,7 @@ namespace EVCS_Projekt.GUI
                     {
                         //mun setzten
                         player.AddItemToInventar( oldMun );
-                        filteredList.AddItem( oldMun );
+                        filteredInventarList.AddItem( oldMun );
 
                         newMun.Count = Math.Min( player.Inventar[ newMun.TypeId ], newMun.MagazineSize );
 
@@ -345,7 +335,7 @@ namespace EVCS_Projekt.GUI
             }
             activeItem = null;
 
-            filteredList.RefreshItemList();
+            filteredInventarList.RefreshItemList();
 
             btnOk.IsEnabled = false;
             btnCancel.IsEnabled = false;

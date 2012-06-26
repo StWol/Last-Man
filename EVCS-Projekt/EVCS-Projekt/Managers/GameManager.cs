@@ -75,8 +75,10 @@ namespace EVCS_Projekt.Managers
         StaticRenderer gun;
         private float gun_cd;
         SoundEffect peng, headshot;
-        private UIInventarPanel uiInventarPanel;
+        private InventarPanel inventarPanel;
+        private Constructor constructorPanel;
         bool showWaypoints = false;
+        
 
         // ***************************************************************************
         // Läd den ganzen Stuff, den der GameManager benötigt
@@ -257,7 +259,8 @@ namespace EVCS_Projekt.Managers
             // TEST ENDE
             // ################################################################################
 
-            uiInventarPanel = new UIInventarPanel(760, 400, new Vector2(1024 / 2 - 760 / 2, 576 / 2 - 400 / 2));
+            inventarPanel = new InventarPanel(760, 400, new Vector2(1024 / 2 - 760 / 2, 576 / 2 - 400 / 2));
+            constructorPanel = new Constructor(760, 400, new Vector2(1024/2 - 760/2, 576/2 - 400/2));
         }
 
 
@@ -313,7 +316,10 @@ namespace EVCS_Projekt.Managers
 
         public void UpdateGui()
         {
-            uiInventarPanel.Update();
+            if(inventarPanel.Visible)
+                inventarPanel.Update();
+            if(constructorPanel.Visible)
+                constructorPanel.Update();
         }
 
         public void UpdateGame()
@@ -500,19 +506,30 @@ namespace EVCS_Projekt.Managers
 
             if (newState.IsKeyDown(Keys.I) && !oldKeyState.IsKeyDown(Keys.I))
             {
-                if (uiInventarPanel.Visible)
+                if (inventarPanel.Visible)
                 {
                     updateDelegater = UpdateGame;
-                    uiInventarPanel.Visible = false;
+                    inventarPanel.Visible = false;
                 }
                 else
                 {
                     updateDelegater = UpdateGui;
-                    uiInventarPanel.Visible = true;
+                    inventarPanel.Visible = true;
                 }
-
-
             }
+            if ( newState.IsKeyDown( Keys.K ) && !oldKeyState.IsKeyDown( Keys.K ) )
+            {
+                if ( constructorPanel.Visible )
+                {
+                    updateDelegater = UpdateGame;
+                    constructorPanel.Visible = false;
+                }
+                else
+                {
+                    updateDelegater = UpdateGui;
+                    constructorPanel.Visible = true;
+                }
+            } 
 
 
             oldKeyState = newState;
@@ -885,9 +902,11 @@ namespace EVCS_Projekt.Managers
             spriteBatch.DrawString(testFont, "Health: " + GameState.Player.Health, new Vector2(0, 60), Color.Red);
             spriteBatch.DrawString(testFont, "Accu: " + GameState.Player.Weapon.Accuracy + " Kills: " + GameState.KilledMonsters, new Vector2(0, 90), Color.Blue);
 
-            if (uiInventarPanel.Visible)
-                uiInventarPanel.Draw(spriteBatch);
+            if (inventarPanel.Visible)
+                inventarPanel.Draw(spriteBatch);
 
+            if ( constructorPanel.Visible)
+                constructorPanel.Draw( spriteBatch );
             // TEST-ENDE
             // ################################################################################
             // ################################################################################

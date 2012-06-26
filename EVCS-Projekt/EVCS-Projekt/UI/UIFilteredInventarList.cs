@@ -11,7 +11,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace EVCS_Projekt.UI
 {
-    internal class UIFilteredList : UIPanel, UIActionListener
+    internal class UIFilteredInventarList : UIPanel, UIActionListener
     {
         private UIToggleButton toggleWaffe;
         private UIToggleButton toggleHauptteil;
@@ -36,7 +36,7 @@ namespace EVCS_Projekt.UI
 
         private readonly UIList inventarList;
 
-        public UIFilteredList(int width, int height, Vector2 position, UIActionListener listener)
+        public UIFilteredInventarList(int width, int height, Vector2 position, UIActionListener listener)
             : base(width, height, position)
         {
             unscaledWidth = width;
