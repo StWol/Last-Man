@@ -110,6 +110,9 @@ namespace EVCS_Projekt.Managers
             GameState.Karte = new Karte();
             GameState.Karte.LoadMap(GameState, "testmap");
 
+            // Buffs laden
+            Buff.Load();
+
             // Items laden
             Main.MainObject.MenuManager.LoadingText = "Loading items..";
             Item.LoadItems();
@@ -169,7 +172,7 @@ namespace EVCS_Projekt.Managers
             it4.LocationBehavior.Position = new Vector2(1400, 4150);
             it4.LocationSizing();
 
-            Item it5 = Item.Get(500);
+            Item it5 = Item.Get(700);
             it5.LocationBehavior.Position = new Vector2(1500, 4150);
             it5.LocationSizing();
 
@@ -498,9 +501,9 @@ namespace EVCS_Projekt.Managers
         private void ItemColission()
         {
             // Items die mit dem spieler kollidieren
-            List<Item> itemsOnScreen = GameState.QuadTreeItems.GetObjects(GameState.Player.Rect);
+            List<Item> itemsInPlayer = GameState.QuadTreeItems.GetObjects(GameState.Player.Rect);
 
-            foreach (Item i in itemsOnScreen)
+            foreach (Item i in itemsInPlayer)
             {
                 // Item in inventar zufügem
                 GameState.Player.AddItemToInventar(i);

@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<ArrayOfBuffInner xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <BuffInner>
+    <RefId>1</RefId>
+    <Duration>5</Duration>
+    <ValuePerSecond>4</ValuePerSecond>
+    <Value>10</Value>
+    <BuffType>HealthRegenaration</BuffType>
+  </BuffInner>
+  <BuffInner>
+    <RefId>2</RefId>
+    <Duration>1</Duration>
+    <ValuePerSecond>4</ValuePerSecond>
+    <Value>3</Value>
+    <BuffType>FireDamage</BuffType>
+  </BuffInner>
+</ArrayOfBuffInner>

@@ -1540,63 +1540,156 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="animation\healing\heal_0.png">
+    <Compile Include="animation\heal\heal_0.png">
       <Name>heal_0</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-    <Compile Include="animation\healing\heal_1.png">
+    <Compile Include="animation\heal\heal_1.png">
       <Name>heal_1</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-    <Compile Include="animation\healing\heal_10.png">
+    <Compile Include="animation\heal\heal_10.png">
       <Name>heal_10</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-    <Compile Include="animation\healing\heal_2.png">
+    <Compile Include="animation\heal\heal_2.png">
       <Name>heal_2</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-    <Compile Include="animation\healing\heal_3.png">
+    <Compile Include="animation\heal\heal_3.png">
       <Name>heal_3</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-    <Compile Include="animation\healing\heal_4.png">
+    <Compile Include="animation\heal\heal_4.png">
       <Name>heal_4</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-    <Compile Include="animation\healing\heal_5.png">
+    <Compile Include="animation\heal\heal_5.png">
       <Name>heal_5</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-    <Compile Include="animation\healing\heal_6.png">
+    <Compile Include="animation\heal\heal_6.png">
       <Name>heal_6</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-    <Compile Include="animation\healing\heal_7.png">
+    <Compile Include="animation\heal\heal_7.png">
       <Name>heal_7</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-    <Compile Include="animation\healing\heal_8.png">
+    <Compile Include="animation\heal\heal_8.png">
       <Name>heal_8</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-    <Compile Include="animation\healing\heal_9.png">
+    <Compile Include="animation\heal\heal_9.png">
       <Name>heal_9</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <None Include="buffs.xml">
+      <Name>buffs</Name>
+      <Importer>XmlImporter</Importer>
+      <Processor>PassThroughProcessor</Processor>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="animation\heal_2\heal_2_00.png">
+      <Name>heal_2_00</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="animation\heal_2\heal_2_01.png">
+      <Name>heal_2_01</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="animation\heal_2\heal_2_02.png">
+      <Name>heal_2_02</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="animation\heal_2\heal_2_03.png">
+      <Name>heal_2_03</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="animation\heal_2\heal_2_04.png">
+      <Name>heal_2_04</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="animation\heal_2\heal_2_05.png">
+      <Name>heal_2_05</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="animation\heal_2\heal_2_06.png">
+      <Name>heal_2_06</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="animation\heal_2\heal_2_07.png">
+      <Name>heal_2_07</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="animation\heal_2\heal_2_08.png">
+      <Name>heal_2_08</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="animation\heal_2\heal_2_09.png">
+      <Name>heal_2_09</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="animation\heal_2\heal_2_10.png">
+      <Name>heal_2_10</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="animation\heal_2\heal_2_11.png">
+      <Name>heal_2_11</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="animation\heal_2\heal_2_12.png">
+      <Name>heal_2_12</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="animation\heal_2\heal_2_13.png">
+      <Name>heal_2_13</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="animation\heal_2\heal_2_14.png">
+      <Name>heal_2_14</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="animation\heal_2\heal_2_15.png">
+      <Name>heal_2_15</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="animation\heal_2\heal_2_16.png">
+      <Name>heal_2_16</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
     <Compile Include="images\gui\inventar\inventar_background.png">
       <Name>inventar_background</Name>
       <Importer>TextureImporter</Importer>

@@ -17,6 +17,9 @@ using EVCS_Projekt.Objects;
 using EVCS_Projekt.Audio;
 using EVCS_Projekt.Helper.XMLManager;
 using EVCS_Projekt.AI;
+using System.IO;
+using System.Xml.Serialization;
+using EVCS_Projekt.Objects.Items;
 
 namespace EVCS_Projekt
 {
@@ -39,6 +42,22 @@ namespace EVCS_Projekt
 
         public Main()
         {
+
+            FileStream fs = new FileStream("out.xml", FileMode.OpenOrCreate);
+
+            List<Powerup.PowerupInner> bi = new List<Powerup.PowerupInner>();
+
+            XmlSerializer serializer = new XmlSerializer(typeof(List<Powerup.PowerupInner>));
+            Powerup.PowerupInner b = new Powerup.PowerupInner();
+            b.effect = "";
+            b.buffRefList = new List<int>() { 1,2,3 };
+
+            bi.Add(b);
+            serializer.Serialize(fs, bi);
+            fs.Flush();
+            fs.Close();
+
+
             // Das ist ein Test :-)
             Debug.WriteLine("Start Game..");
 

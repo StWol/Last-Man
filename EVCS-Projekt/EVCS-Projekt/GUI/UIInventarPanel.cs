@@ -204,8 +204,7 @@ namespace EVCS_Projekt.GUI
                     if ( activeItem.GetType() == typeof( Powerup ) )
                     {
                         //Fressen activeItem
-                        //Fressen activeItem
-                        //Fressen activeItem
+                        player.UsePowerup((Powerup)activeItem);
                         //Fressen activeItem
                     }
                 }
