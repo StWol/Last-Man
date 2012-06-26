@@ -6,6 +6,11 @@
 	<StabilisatorInner>
 		<accuracy>4</accuracy>
 		<item>
+      <requiredLiquid>
+        <X>2</X>
+        <Y>0</Y>
+        <Z>0</Z>
+      </requiredLiquid>
 			<weight>4</weight>
 			<id>400</id>
 			<name>Türgriff</name>
@@ -16,6 +21,11 @@
 	<StabilisatorInner>
 		<accuracy>4</accuracy>
 		<item>
+      <requiredLiquid>
+        <X>1</X>
+        <Y>2</Y>
+        <Z>0</Z>
+      </requiredLiquid>
 			<weight>4</weight>
 			<id>401</id>
 			<name>Türgriff</name>
@@ -26,6 +36,11 @@
 	<StabilisatorInner>
 		<accuracy>3</accuracy>
 		<item>
+      <requiredLiquid>
+        <X>2</X>
+        <Y>3</Y>
+        <Z>0</Z>
+      </requiredLiquid>
 			<weight>2</weight>
 			<id>402</id>
 			<name>Handtuch</name>
@@ -36,6 +51,11 @@
 	<StabilisatorInner>
 		<accuracy>1</accuracy>
 		<item>
+      <requiredLiquid>
+        <X>1</X>
+        <Y>0</Y>
+        <Z>0</Z>
+      </requiredLiquid>
 			<weight>2</weight>
 			<id>403</id>
 			<name>Hosenträger</name>
@@ -46,6 +66,11 @@
 	<StabilisatorInner>
 		<accuracy>5</accuracy>
 		<item>
+      <requiredLiquid>
+        <X>2</X>
+        <Y>2</Y>
+        <Z>1</Z>
+      </requiredLiquid>
 			<weight>3</weight>
 			<id>404</id>
 			<name>Ledergürtel</name>
@@ -56,6 +81,11 @@
 	<StabilisatorInner>
 		<accuracy>2</accuracy>
 		<item>
+      <requiredLiquid>
+        <X>2</X>
+        <Y>2</Y>
+        <Z>0</Z>
+      </requiredLiquid>
 			<weight>1</weight>
 			<id>405</id>
 			<name>Schnur</name>
@@ -66,10 +96,15 @@
 	<StabilisatorInner>
 		<accuracy>10</accuracy>
 		<item>
+      <requiredLiquid>
+        <X>2</X>
+        <Y>1</Y>
+        <Z>4</Z>
+      </requiredLiquid>
 			<weight>5</weight>
 			<id>406</id>
-			<name>Schraubzange</name>
-			<description>Eine Schraubzange</description>
+			<name>Schraubzwinge</name>
+			<description>Eine Schraubwinge</description>
 			<group>FeuerGross</group>
 		</item>
 	</StabilisatorInner>

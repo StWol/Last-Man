@@ -34,6 +34,10 @@ x = grün; Y=blau; Z=rot
 		<damage>2</damage>
 		<soundId>Weapon_01</soundId>
 		<item>
+      <requiredLiquid>
+        <X>2</X>
+        <Y>2</Y>
+      </requiredLiquid>
 			<weight>1</weight>
 			<id>501</id>
 			<name>Deo</name>
@@ -46,6 +50,11 @@ x = grün; Y=blau; Z=rot
 		<damage>3</damage>
 		<soundId>Weapon_01</soundId>
 		<item>
+      <requiredLiquid>
+        <X>2</X>
+        <Y>2</Y>
+        <Z>1</Z>
+      </requiredLiquid>
 			<weight>1</weight>
 			<id>502</id>
 			<name>Co2-Flasche</name>
@@ -58,6 +67,11 @@ x = grün; Y=blau; Z=rot
 		<damage>5</damage>
 		<soundId>Weapon_01</soundId>
 		<item>
+      <requiredLiquid>
+        <X>1</X>
+        <Y>3</Y>
+        <Z>3</Z>
+      </requiredLiquid>
 			<weight>6</weight>
 			<id>503</id>
 			<name>Feuerlöscher</name>
@@ -70,6 +84,11 @@ x = grün; Y=blau; Z=rot
 		<damage>6</damage>
 		<soundId>Weapon_01</soundId>
 		<item>
+      <requiredLiquid>
+        <X>1</X>
+        <Y>4</Y>
+        <Z>2</Z>
+      </requiredLiquid>
 			<weight>4</weight>
 			<id>504</id>
 			<name>Schnaps</name>
@@ -82,6 +101,11 @@ x = grün; Y=blau; Z=rot
 		<damage>6</damage>
 		<soundId>Weapon_01</soundId>
 		<item>
+      <requiredLiquid>
+        <X>4</X>
+        <Y>4</Y>
+        <Z>1</Z>
+      </requiredLiquid>
 			<weight>4</weight>
 			<id>505</id>
 			<name>Terpentin</name>
@@ -94,6 +118,11 @@ x = grün; Y=blau; Z=rot
 		<damage>6</damage>
 		<soundId>Weapon_01</soundId>
 		<item>
+      <requiredLiquid>
+        <X>4</X>
+        <Y>0</Y>
+        <Z>5</Z>
+      </requiredLiquid>
 			<weight>4</weight>
 			<id>506</id>
 			<name>Benzin</name>
