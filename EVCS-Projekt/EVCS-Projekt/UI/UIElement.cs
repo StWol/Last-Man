@@ -16,7 +16,16 @@ namespace EVCS_Projekt.UI
 {
     abstract class UIElement
     {
+        public Color BackgroundColor { 
+            get
+        {
+            
+            return backgroundColor;
+        }
+            set { backgroundColor = value; }
+        }
 
+        private Color backgroundColor=Color.White;
         public static int DEFAULT_HEIGHT = 40;
 
         protected int width
@@ -79,7 +88,19 @@ namespace EVCS_Projekt.UI
         private Texture2D texture;
         private Texture2D hoverTexture;
 
-        public Texture2D BackgroundTextur;
+        public Texture2D BackgroundTextur
+        {
+            get
+            {
+                return backgroundTextur;
+            } 
+            set
+            {
+                backgroundTextur = value;
+            }
+        }
+
+        private Texture2D backgroundTextur = Main.ContentManager.Load<Texture2D>("images/pixelTransparent");
 
         protected List<UIActionListener> actionListener;
         protected List<UIMouseHoverListener> hoverListener;
@@ -148,7 +169,7 @@ namespace EVCS_Projekt.UI
 
 
             // Wenn nicht mehr gedrückt, aber im vorherigen Durchgang gedrückt war => Man kann die Maustaste gedrückt halten ohne das jedesmal ein Event ausgelöst wird
-            if ( IsMousePressed() )
+            if ( IsMousePressed() && IsEnabled)
             {
                 List<UIActionListener> listenerList = new List<UIActionListener>( actionListener );
                 foreach ( UIActionListener al in listenerList )

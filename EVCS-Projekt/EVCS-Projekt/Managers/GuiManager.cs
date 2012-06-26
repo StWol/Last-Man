@@ -31,37 +31,7 @@ namespace EVCS_Projekt.Managers
         private void LoadComponents()
         {
             Debug.WriteLine("Lade GUI Komponente...");
-            ContentManager content = Main.ContentManager;
-
-            background = content.Load<Texture2D>("images/menu/gui/background");
-
-            Texture2D imgKonstruktor = content.Load<Texture2D>("images/gui/button_konstruktor");
-            Texture2D imgKonstruktorHover = content.Load<Texture2D>("images/gui/button_konstruktor");
-
-            Texture2D imgMap  = content.Load<Texture2D>("images/gui/button_konstruktor");
-            Texture2D imgMapHover = content.Load<Texture2D>("images/gui/button_konstruktor");
-
-            Texture2D imgMission = content.Load<Texture2D>("images/gui/button_konstruktor");
-            Texture2D imgMissionHover = content.Load<Texture2D>("images/gui/button_konstruktor");
-
-            Texture2D imgInventar = content.Load<Texture2D>("images/gui/button_konstruktor");
-            Texture2D imgInventarHover = content.Load<Texture2D>("images/gui/button_konstruktor");
-
-
-            btnKonstruktor = new UIButton(new Vector2(0, 0), imgKonstruktor, imgKonstruktorHover);
-            btnMap = new UIButton(new Vector2(150, 0), imgMap, imgMapHover);
-            btnMission = new UIButton(new Vector2(300, 0), imgMission, imgMissionHover);
-            btnInventar = new UIButton(new Vector2(450, 0), imgInventar, imgInventarHover);
-
-            btnKonstruktor.AddActionListener(this);
-            btnMap.AddActionListener(this);
-            btnMission.AddActionListener(this);
-            btnInventar.AddActionListener(this);
-
-            mainPanel.Add(btnKonstruktor);
-            mainPanel.Add(btnMap);
-            mainPanel.Add(btnMission);
-            mainPanel.Add(btnInventar);
+            
         }
 
         public override void Update()

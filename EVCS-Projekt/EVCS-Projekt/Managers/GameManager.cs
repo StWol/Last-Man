@@ -250,11 +250,11 @@ namespace EVCS_Projekt.Managers
             GameState.Player.AddItemToInventar(Item.AllItems[300]);
             GameState.Player.AddItemToInventar(Item.AllItems[400]);
             GameState.Player.AddItemToInventar(Item.AllItems[500]);
-            GameState.Player.AddItemToInventar(Item.AllItems[100]);
-            GameState.Player.AddItemToInventar(Item.AllItems[200]);
-            GameState.Player.AddItemToInventar(Item.AllItems[300]);
-            GameState.Player.AddItemToInventar(Item.AllItems[400]);
-            GameState.Player.AddItemToInventar(Item.AllItems[500]);
+            GameState.Player.AddItemToInventar(Item.AllItems[101]);
+            GameState.Player.AddItemToInventar(Item.AllItems[201]);
+            GameState.Player.AddItemToInventar(Item.AllItems[301]);
+            GameState.Player.AddItemToInventar(Item.AllItems[401]);
+            GameState.Player.AddItemToInventar(Item.AllItems[501]);
 
             // TEST ENDE
             // ################################################################################
@@ -506,6 +506,10 @@ namespace EVCS_Projekt.Managers
 
             if (newState.IsKeyDown(Keys.I) && !oldKeyState.IsKeyDown(Keys.I))
             {
+                if (constructorPanel.Visible)
+                {
+                    constructorPanel.Visible = false;
+                }
                 if (inventarPanel.Visible)
                 {
                     updateDelegater = UpdateGame;
@@ -517,8 +521,12 @@ namespace EVCS_Projekt.Managers
                     inventarPanel.Visible = true;
                 }
             }
-            if ( newState.IsKeyDown( Keys.K ) && !oldKeyState.IsKeyDown( Keys.K ) )
+            if (newState.IsKeyDown(Keys.K) && !oldKeyState.IsKeyDown(Keys.K) && !constructorPanel.NameIsActive)
             {
+                if(inventarPanel.Visible)
+                {
+                    inventarPanel.Visible = false;
+                }
                 if ( constructorPanel.Visible )
                 {
                     updateDelegater = UpdateGame;

@@ -48,7 +48,7 @@ namespace EVCS_Projekt.UI
         public UIList( int width, int height, Vector2 position, UIActionListener listener )
             : base( width, height, position )
         {
-            MAX_VISIBLE_BUTTON_COUNT = height / DEFAULT_HEIGHT;
+            
             itemList = new Dictionary<int, int>();
             buttonList = new List<UIElement>();
             countItemsDict = new Dictionary<int, int>();
@@ -67,6 +67,9 @@ namespace EVCS_Projekt.UI
             btnNext = new UIButton(unscaledWidth, imgNextButton.Height, new Vector2(0, height - imgNextButton.Height), imgNextButton, imgNextButtonHover, "");
 
             this.listener = listener;
+
+            int listHeight = height - imgNextButton.Height*2;
+            MAX_VISIBLE_BUTTON_COUNT = (listHeight - listHeight % DEFAULT_HEIGHT) / DEFAULT_HEIGHT;
 
             player = Main.MainObject.GameManager.GameState.Player;
 

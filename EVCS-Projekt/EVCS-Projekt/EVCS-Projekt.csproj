@@ -86,6 +86,7 @@
     <Compile Include="GameState.cs" />
     <Compile Include="GUI\Constructor.cs" />
     <Compile Include="GUI\InventarPanel.cs" />
+    <Compile Include="UI\UIConstructionPanel.cs" />
     <Compile Include="UI\UIFilteredConstructorList.cs" />
     <Compile Include="UI\UIFilteredInventarList.cs" />
     <Compile Include="UI\UIListButton.cs" />
@@ -146,6 +147,7 @@
     <Compile Include="UI\UIPanel.cs" />
     <Compile Include="UI\UIShortcutButton.cs" />
     <Compile Include="UI\UIToggleButton.cs" />
+    <Compile Include="UI\UIVerticalProgressBar.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Game.ico" />

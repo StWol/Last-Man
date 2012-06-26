@@ -28,9 +28,6 @@ namespace EVCS_Projekt.GUI
 
 
 
-        private readonly Texture2D backgroundTextur;
-        private readonly Rectangle background;
-
         private readonly Player player;
 
         private bool isVisible;
@@ -57,8 +54,7 @@ namespace EVCS_Projekt.GUI
 
             Visible = false;
 
-            background = new Rectangle( ( int ) GetPosition().X, ( int ) GetPosition().Y, base.width, base.height );
-            backgroundTextur = Main.ContentManager.Load<Texture2D>( "images/gui/inventar/inventar_background" );
+            BackgroundTextur = Main.ContentManager.Load<Texture2D>( "images/gui/inventar/inventar_background" );
 
             shortcutButtons = new List<UIShortcutButton>();
 
@@ -106,7 +102,7 @@ namespace EVCS_Projekt.GUI
             var cancel_h = Main.ContentManager.Load<Texture2D>( "images/gui/inventar/btn_cancel_h" );
 
 
-            filteredInventarList = new UIFilteredInventarList( 260, 236, new Vector2( 340, 60 ), this );
+            filteredInventarList = new UIFilteredInventarList( 260, height-20, new Vector2( 340, 60 ), this );
             Add( filteredInventarList );
 
 
@@ -131,7 +127,7 @@ namespace EVCS_Projekt.GUI
 
         public override void Draw( SpriteBatch sb )
         {
-            sb.Draw( backgroundTextur, background, Color.White );
+            //sb.Draw( backgroundTextur, background, Color.White );
             base.Draw( sb );
 
             sb.DrawString( UIButton.FONT_DEFAULT, "Gewicht: " + player.TotalInventarWeight, new Vector2( GetPosition().X + 410, GetPosition().Y + 326 ), Color.Black );

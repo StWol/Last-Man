@@ -36,10 +36,8 @@ namespace EVCS_Projekt.UI
 
         public override void Draw( SpriteBatch sb )
         {
-            if(this.GetType() == typeof(InventarPanel ))
-            {
-                Debug.WriteLine("");
-            }
+            sb.Draw(BackgroundTextur, new Rectangle((int)position.X, (int)position.Y, width, height), BackgroundColor);
+
             foreach ( UIElement e in children )
             {
                 e.Draw( sb );

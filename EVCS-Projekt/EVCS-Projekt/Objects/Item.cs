@@ -39,6 +39,10 @@ namespace EVCS_Projekt.Objects
         // icons der Items
         private static Dictionary<int, Texture2D> ItemIcons;
 
+        private static Texture2D defaultWeaponIcon;
+        public static int StaticID = 800;
+
+
         // ***************************************************************************
         // Läd Items
         public static void LoadItems()
@@ -57,6 +61,8 @@ namespace EVCS_Projekt.Objects
 
             ItemIcons = new Dictionary<int, Texture2D>();
 
+            defaultWeaponIcon = Main.ContentManager.Load<Texture2D>("images/itemIcons/1");
+            ItemIcons.Add(800, defaultWeaponIcon);
             // Laden
             //Debug.WriteLine("Lade antrieb.xml");
             LoadXML<Antrieb, Antrieb.AntriebInner>("antrieb.xml");
@@ -192,7 +198,12 @@ namespace EVCS_Projekt.Objects
         public string Description { get; private set; }
         public float Weight { get; private set; }
 
-        public Texture2D Icon { get { return ItemIcons[TypeId]; } }
+        public Texture2D Icon { get
+        {
+            if (GetType() == typeof(Weapon))
+                return ItemIcons[800];
+            return ItemIcons[TypeId];
+        } }
 
         // ***************************************************************************
         // Konstruktor 1
@@ -241,8 +252,15 @@ namespace EVCS_Projekt.Objects
         {
             if (typeof(Munition) == GetType())
                 ((Munition)this).ShotRenderer = Renderer;
-
-            Renderer = LoadedRenderer.GetStatic("S_IconRenderer_" + TypeId);
+            if (typeof(Weapon) == GetType())
+            {
+                Renderer = LoadedRenderer.GetStatic("S_Weapon_Deafault");
+            }
+            else
+            {
+                Renderer = LoadedRenderer.GetStatic("S_IconRenderer_" + TypeId);
+            }
+            
         }
 
         // ***************************************************************************

@@ -36,20 +36,25 @@ namespace EVCS_Projekt.UI
             : base(width, height, position)
         {
             player = Main.MainObject.GameManager.GameState.Player;
-            inventarList = new UIList(260, 236, new Vector2(0, 0), listener);
+            inventarList = new UIList(260, height-40, new Vector2(0, 40), listener);
 
-            Dictionary<int,int> tempDict = new Dictionary<int, int>();
-            foreach ( KeyValuePair<int, int> keyValuePair in player.Inventar )
+            Dictionary<int, int> tempDict = new Dictionary<int, int>();
+            foreach (KeyValuePair<int, int> keyValuePair in player.Inventar)
             {
-                if ( Item.Get( keyValuePair.Key ).GetType() != typeof( Munition ) && Item.Get( keyValuePair.Key ).GetType() == typeof( Powerup ) )
+                if (Item.Get(keyValuePair.Key).GetType() != typeof(Munition) && Item.Get(keyValuePair.Key).GetType() != typeof(Powerup))
                 {
-                    tempDict[ keyValuePair.Key ] = keyValuePair.Value;
+                    tempDict[keyValuePair.Key] = keyValuePair.Value;
                 }
             }
 
-            inventarList.SetItems(tempDict);
-            
+            var inventarTitel = new UIButton(250, 40, new Vector2(0,0), "Inventar");
+            var filterTitel = new UIButton(120, 40, new Vector2(280, 0), "Filter") { BackgroundColor = Color.LightGray };
+
+            Add(inventarTitel);
             Add(inventarList);
+            Add(filterTitel);
+
+            inventarList.SetItems(tempDict);
             CreateCheckBoxPanel();
         }
 
@@ -143,11 +148,11 @@ namespace EVCS_Projekt.UI
             var sonstigesA = content.Load<Texture2D>("images/gui/inventar/sonstiges_a");
             var sonstigesAH = content.Load<Texture2D>("images/gui/inventar/sonstiges_a_h");
 
-            toggleWaffe = new UIToggleButton(120, 30, new Vector2(280, 0), waffe, waffeH, waffeA, waffeAH, "") {isActive = true};
-            toggleHauptteil = new UIToggleButton(120, 30, new Vector2(280, 40), hauptteil, hauptteilH, hauptteilA, hauptteilAH, "") { isActive = true };
-            toggleStabilisator = new UIToggleButton(120, 30, new Vector2(280, 80), stabilisator, stabilisatorH, stabilisatorA, stabilisatorAH, "") { isActive = true };
-            toggleVisier = new UIToggleButton(120, 30, new Vector2(280, 120), visier, visierH, visierA, visierAH, "") { isActive = true };
-            toggleAntrieb = new UIToggleButton(120, 30, new Vector2(280, 160), antrieb, antriebH, antriebA, antriebAH, "") { isActive = true };
+            toggleWaffe = new UIToggleButton(120, 30, new Vector2(280, 40), waffe, waffeH, waffeA, waffeAH, "") {isActive = true};
+            toggleHauptteil = new UIToggleButton(120, 30, new Vector2(280, 80), hauptteil, hauptteilH, hauptteilA, hauptteilAH, "") { isActive = true };
+            toggleStabilisator = new UIToggleButton(120, 30, new Vector2(280, 120), stabilisator, stabilisatorH, stabilisatorA, stabilisatorAH, "") { isActive = true };
+            toggleVisier = new UIToggleButton(120, 30, new Vector2(280, 160), visier, visierH, visierA, visierAH, "") { isActive = true };
+            toggleAntrieb = new UIToggleButton(120, 30, new Vector2(280, 200), antrieb, antriebH, antriebA, antriebAH, "") { isActive = true };
 
             toggleWaffe.AddActionListener(this);
             toggleHauptteil.AddActionListener(this);
