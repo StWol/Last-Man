@@ -57,6 +57,10 @@ namespace EVCS_Projekt.Managers
         private delegate void UpdateDel();
         private UpdateDel updateDelegater;
 
+        // Für Gui
+        private Texture2D gui_overlay, health_bar;
+        private float health_bar_height { get; set; }
+        private SpriteFont defaultFont;
 
         // Tests
         private Texture2D test;
@@ -144,6 +148,18 @@ namespace EVCS_Projekt.Managers
             background = Main.ContentManager.Load<Texture2D>("images/background");
             PixelWhite = Main.ContentManager.Load<Texture2D>("images/pixelWhite");
             PixelTransparent = Main.ContentManager.Load<Texture2D>("images/pixelTransparent");
+
+            // GUI elemente
+            gui_overlay = Main.ContentManager.Load<Texture2D>("images/gui/gui_overlay");
+            health_bar = Main.ContentManager.Load<Texture2D>("images/gui/health_bar");
+            
+            defaultFont = Main.ContentManager.Load<SpriteFont>(Configuration.Get("defaultFont"));
+
+            // Posi für Gui
+            DrawHelper.AddDimension("HealthBar_Position", 184, 425);
+            DrawHelper.AddDimension("HealthBar_Size", 33, 153);
+
+            DrawHelper.AddDimension("Munition_Position", 235, 535);
 
             // AI Thread starten
             new Thread(new ThreadStart(AIThread.UpdateAI)).Start();
@@ -299,6 +315,7 @@ namespace EVCS_Projekt.Managers
         {
             uiInventarPanel.Update();
         }
+
         public void UpdateGame()
         {
             // Bildschirm Rectangle + 200 % in jede richtung
@@ -360,6 +377,10 @@ namespace EVCS_Projekt.Managers
 
             // AI can be updated
             AIThread.IsUpdating = true;
+
+            // healthbar_rect berechnen
+            health_bar_height = DrawHelper.Get("HealthBar_Size").Y / GameState.Player.MaxHealth * GameState.Player.Health;
+
 
             // ################################################################################
             // ################################################################################
@@ -762,12 +783,6 @@ namespace EVCS_Projekt.Managers
         {
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend);
 
-            // Hintergrund zeichnen
-            /*for (int x = 0; x <= 1; x++)
-                for (int y = 0; y <= 1; y++)
-                    spriteBatch.Draw(background, new Rectangle((int)(Configuration.GetInt("resolutionWidth") * x - GameState.MapOffset.X % Configuration.GetInt("resolutionWidth")), (int)(Configuration.GetInt("resolutionHeight") * y - GameState.MapOffset.Y % Configuration.GetInt("resolutionHeight")), Configuration.GetInt("resolutionWidth"), Configuration.GetInt("resolutionHeight")), Color.White);
-            */
-
             // Bildschirm Rectangle
             Rectangle screenRect = new Rectangle((int)GameState.MapOffset.X, (int)GameState.MapOffset.Y, Configuration.GetInt("resolutionWidth"), Configuration.GetInt("resolutionHeight"));
 
@@ -834,10 +849,14 @@ namespace EVCS_Projekt.Managers
             // Player zeichnen mit verschiedenen Renderern (deswegen hat er ne eigene methode)
             GameState.Player.Draw(spriteBatch);
 
+            DrawHUD(spriteBatch);
 
             // ################################################################################
             // ################################################################################
             // TEST
+            //int x = (int)(GameState.Karte.Minimap.Width / GameState.MapSize.X * (GameState.MapOffset.X+295));
+            //int y = (int)(GameState.Karte.Minimap.Height / GameState.MapSize.Y * (GameState.MapOffset.Y+1094));
+            //spriteBatch.Draw( GameState.Karte.Minimap, new Rectangle(0,0,200,100), new Rectangle(x,y,200,100), Color.White );
 
             if (showWaypoints)
                 foreach (WayPoint w in GameState.Karte.WayPoints.Values)
@@ -862,7 +881,7 @@ namespace EVCS_Projekt.Managers
             if (GameState.Player.Weapon.Munition != null)
                 munCount = GameState.Player.Weapon.Munition.Count + "";
 
-            spriteBatch.DrawString(testFont, "Munition: " + munCount, new Vector2(0, 30), Color.Red);
+            spriteBatch.DrawString(testFont, "", new Vector2(0, 30), Color.Red);
             spriteBatch.DrawString(testFont, "Health: " + GameState.Player.Health, new Vector2(0, 60), Color.Red);
             spriteBatch.DrawString(testFont, "Accu: " + GameState.Player.Weapon.Accuracy + " Kills: " + GameState.KilledMonsters, new Vector2(0, 90), Color.Blue);
 
@@ -878,6 +897,31 @@ namespace EVCS_Projekt.Managers
             MouseCursor.DrawMouse(spriteBatch);
 
             spriteBatch.End();
+        }
+
+        //**********************************************************************************
+        // Zeichne die Oberfläche
+        private void DrawHUD(SpriteBatch spriteBatch)
+        {
+            // GUI zeichnen
+            Vector2 hb_position = DrawHelper.Get("HealthBar_Position");
+            Vector2 hb_size = DrawHelper.Get("HealthBar_Size");
+
+            spriteBatch.Draw(health_bar,
+                new Rectangle((int)hb_position.X, (int)(hb_position.Y + (hb_size.Y - health_bar_height)), (int)hb_size.X, (int)hb_size.Y),
+                //new Rectangle((int)hb_position.X, (int)(hb_position.Y + (hb_size.Y - health_bar_height)), (int)hb_size.X, (int)(health_bar_height)),
+                //new Rectangle(0, (int)(hb_size.Y - health_bar_height), (int)hb_size.X, (int)(health_bar_height)), 
+                Color.White);
+
+            // Munition
+            string munCount = "--";
+            if (GameState.Player.Weapon.Munition != null)
+                munCount = GameState.Player.Weapon.Munition.Count + "";
+
+            spriteBatch.DrawString(defaultFont, munCount, DrawHelper.Get("Munition_Position"), Color.Black);
+
+            // Overlay zeichnen
+            spriteBatch.Draw(gui_overlay, new Rectangle(0, 0, Configuration.GetInt("resolutionWidth"), Configuration.GetInt("resolutionHeight")), Color.White);
         }
 
         // ***************************************************************************

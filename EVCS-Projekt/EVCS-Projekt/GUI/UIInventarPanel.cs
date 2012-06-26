@@ -205,6 +205,8 @@ namespace EVCS_Projekt.GUI
                     {
                         //Fressen activeItem
                         player.UsePowerup((Powerup)activeItem);
+                        filteredList.RemoveActiveItem();
+                        player.RemoveItemFromInventar(activeItem);
                         //Fressen activeItem
                     }
                 }

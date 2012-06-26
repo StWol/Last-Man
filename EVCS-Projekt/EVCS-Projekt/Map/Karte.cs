@@ -27,6 +27,8 @@ namespace EVCS_Projekt.Map
         public Dictionary<int, WayPoint> WayPoints { get; set; }
         public QuadTree<WayPoint> QuadTreeWayPoints { get; set; }
 
+        // Minimap Bild
+        public Texture2D Minimap { get; private set; }
 
         public void LoadMap(GameState gameState, string mapFile)
         {
@@ -44,6 +46,9 @@ namespace EVCS_Projekt.Map
             // Wege berechnen
             Main.MainObject.MenuManager.LoadingText = "Calculating enemy routes..";
             PathFinder.InitPaths();
+
+            // Minimap laden
+            Minimap = Main.ContentManager.Load<Texture2D>("maps/" + mapFile + "_minimap");
         }
 
         private bool ReadMapFile(string mapFile)
@@ -195,7 +200,7 @@ namespace EVCS_Projekt.Map
             return nearest;
         }
 
-        public static WayPoint SearchNearest(Vector2 position, List<WayPoint> wpList )
+        public static WayPoint SearchNearest(Vector2 position, List<WayPoint> wpList)
         {
             // Nearest
             WayPoint nearest = null;
