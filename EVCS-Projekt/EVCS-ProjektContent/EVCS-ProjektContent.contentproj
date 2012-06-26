@@ -510,6 +510,11 @@
       <Importer>FontDescriptionImporter</Importer>
       <Processor>FontDescriptionProcessor</Processor>
     </Compile>
+    <Compile Include="fonts\defaultBig.spritefont">
+      <Name>defaultBig</Name>
+      <Importer>FontDescriptionImporter</Importer>
+      <Processor>FontDescriptionProcessor</Processor>
+    </Compile>
     <None Include="renderer.ini">
       <Name>renderer</Name>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

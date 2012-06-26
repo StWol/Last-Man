@@ -410,7 +410,7 @@ namespace EVCS_Projekt
                     Shot s = Weapon.CreateShot();
 
                     //ungenauigkeit: 10 - random - häflte (um 0 zentriert)
-                    Vector2 accuracy = new Vector2((float)(r.NextDouble() * Weapon.Accuracy - Weapon.Accuracy / 2), (float)(r.NextDouble() * Weapon.Accuracy - Weapon.Accuracy / 2));
+                    Vector2 accuracy = new Vector2((float)(r.NextDouble() * Weapon.AccuracyPercent - Weapon.AccuracyPercent / 2), (float)(r.NextDouble() * Weapon.AccuracyPercent - Weapon.AccuracyPercent / 2));
 
                     // Position und richtung des schussen berechnen
                     Vector2 direction = -LocationBehavior.Direction + accuracy; // + accuracy
@@ -419,6 +419,9 @@ namespace EVCS_Projekt
                     s.LocationBehavior.Position = LocationBehavior.Position;
                     s.SetDirection(direction);
                     s.LocationSizing();
+
+                    // schusscount ++
+                    Main.MainObject.GameManager.GameState.Shots++;
 
                     // schuss adden
                     Main.MainObject.GameManager.GameState.ShotListVsEnemies.Add(s);

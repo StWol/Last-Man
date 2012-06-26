@@ -164,9 +164,9 @@ namespace EVCS_Projekt.AI
 
                 if (!e.HasMoved && _walkToLastPlayerPosition)
                 {
-                    _walkToLastPlayerPosition = false;
-                    _currentWayPoint = searchNextInPath(e);
-                    _path = null;
+                    //_walkToLastPlayerPosition = false;
+                    //_currentWayPoint = searchNextInPath(e);
+                    //_path = null;
                 }
             }
             else

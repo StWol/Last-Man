@@ -61,6 +61,7 @@ namespace EVCS_Projekt.Managers
         private Texture2D gui_overlay, health_bar;
         private float health_bar_height { get; set; }
         private SpriteFont defaultFont;
+        private SpriteFont defaultFontBig;
 
         private int buffIconPulse = 0;
 
@@ -112,10 +113,16 @@ namespace EVCS_Projekt.Managers
             GameState.Karte = new Karte();
             GameState.Karte.LoadMap(GameState, "testmap");
 
+            GameState.KilledMonsters = new Dictionary<EEnemyType, int>();
+            foreach (EEnemyType e in Enum.GetValues(typeof(EEnemyType)))
+                GameState.KilledMonsters.Add(e, 0);
+
             // Werte für Runde
-            GameState.RoundDelay = 5;
+            GameState.RoundDelay = 8;
             GameState.Round = 1;
             GameState.RoundIsRunning = false;
+            GameState.RoundStartTime = new Dictionary<int, double>();
+            GameState.RoundEndTime = new Dictionary<int, double>();
 
             GameState.TimeToRoundStart = GameState.RoundDelay;
 
@@ -159,6 +166,7 @@ namespace EVCS_Projekt.Managers
             health_bar = Main.ContentManager.Load<Texture2D>("images/gui/health_bar");
 
             defaultFont = Main.ContentManager.Load<SpriteFont>(Configuration.Get("defaultFont"));
+            defaultFontBig = Main.ContentManager.Load<SpriteFont>(Configuration.Get("defaultFontBig"));
 
             // Posi für Gui
             DrawHelper.AddDimension("HealthBar_Position", 184, 425);
@@ -330,19 +338,24 @@ namespace EVCS_Projekt.Managers
 
         public void UpdateRoundLogic()
         {
-            if ( GameState.RoundIsRunning )
+            if (GameState.RoundIsRunning)
             {
                 // Wenn alle Monster getötet sind TImer wieder starten
-                if ( GameState.KillsToEndRound <= 0)
+                if (GameState.KillsToEndRound <= 0)
                 {
                     // Runde beenden
                     GameState.RoundIsRunning = false;
+
+                    // Roundenendzeit speichern
+                    GameState.RoundEndTime.Add(GameState.Round, Main.GameTimeUpdate.TotalGameTime.TotalSeconds);
 
                     // Runde erhöhen
                     GameState.Round++;
 
                     // Timer setzten
                     GameState.TimeToRoundStart = GameState.RoundDelay;
+
+
                 }
             }
             else
@@ -358,10 +371,13 @@ namespace EVCS_Projekt.Managers
                     GameState.RoundIsRunning = true;
 
                     // Monstercount für die runden
-                    GameState.MonsterSpawnCount = GameState.Round * 10;
+                    GameState.MonsterSpawnCount = GameState.Round * 1;
 
                     // KillsToEndRound setzten
                     GameState.KillsToEndRound = GameState.MonsterSpawnCount;
+
+                    // Roundenstartzeit speichern
+                    GameState.RoundStartTime.Add(GameState.Round, Main.GameTimeUpdate.TotalGameTime.TotalSeconds);
                 }
             }
         }
@@ -371,7 +387,7 @@ namespace EVCS_Projekt.Managers
             // Bildschirm Rectangle + 200 % in jede richtung
             UpdateRectangle = new Rectangle((int)(GameState.MapOffset.X - Configuration.GetInt("resolutionWidth") * 1), (int)(GameState.MapOffset.Y - Configuration.GetInt("resolutionHeight") * 1), (int)(Configuration.GetInt("resolutionWidth") * 3), (int)(Configuration.GetInt("resolutionHeight") * 3));
 
-            
+
             // Alle Gegner im SPiel. damit diese auch zum spieler laufen (wir begrenzen die gegner anzahl,
             // anstatt die ein rect des quadtrees
             List<Enemy> enemies = GameState.QuadTreeEnemies.GetAllObjects();
@@ -496,6 +512,17 @@ namespace EVCS_Projekt.Managers
                     showWaypoints = true;
             }
 
+            if (newState.IsKeyDown(Keys.M))
+            {
+                if (GameState.QuadTreeEnemies.GetAllObjects().Count > 0)
+                {
+                    Enemy e = GameState.QuadTreeEnemies.GetAllObjects()[0];
+
+                    KillEnemie(e);
+
+                }
+            }
+
 
             // TEST-ENDE
             // ###############################################################################
@@ -552,7 +579,7 @@ namespace EVCS_Projekt.Managers
                 if (i.GetType() == typeof(Liquid))
                 {
                     // Liquid adden
-                    GameState.Player.AddLiquid(((Liquid)i).TypeOfLiquid, ((Liquid)i).Amount); 
+                    GameState.Player.AddLiquid(((Liquid)i).TypeOfLiquid, ((Liquid)i).Amount);
 
                     // Item aus quadtree löschen
                     GameState.QuadTreeItems.Remove(i);
@@ -886,6 +913,9 @@ namespace EVCS_Projekt.Managers
             // Hud zeichnen
             DrawHUD(spriteBatch);
 
+            // DrawRoundinfos
+            DrawRoundinfos(spriteBatch);
+
             // inventar zeichnen
             if (inventarPanel.Visible)
             {
@@ -920,9 +950,9 @@ namespace EVCS_Projekt.Managers
 
             spriteBatch.DrawString(testFont, "Enemies: " + GameState.QuadTreeEnemies.Count + " FPS: " + (1 / Main.GameTimeDraw.ElapsedGameTime.TotalSeconds), new Vector2(0, 0), Color.Green);
 
-            spriteBatch.DrawString(testFont, "Liquids: " + GameState.Player.Liquids, new Vector2(0, 30), Color.Red);
+            spriteBatch.DrawString(testFont, "Liquids: " + GameState.Player.Liquids + " Highscore: " + HighscoreHelper.Highscore, new Vector2(0, 30), Color.Red);
             spriteBatch.DrawString(testFont, "Health: " + GameState.Player.Health, new Vector2(0, 60), Color.Red);
-            spriteBatch.DrawString(testFont, "TimeToRoundStart: " + GameState.TimeToRoundStart + " Kills: " + GameState.KilledMonsters, new Vector2(0, 90), Color.Blue);
+            spriteBatch.DrawString(testFont, "TimeToRoundStart: " + GameState.TimeToRoundStart + " Kills: " + GameState.TotalKilledMonsters, new Vector2(0, 90), Color.Blue);
 
 
 
@@ -933,11 +963,55 @@ namespace EVCS_Projekt.Managers
             // ################################################################################
             // ################################################################################
 
-
             // Cursor zeichnen
             MouseCursor.DrawMouse(spriteBatch);
 
             spriteBatch.End();
+        }
+
+        //**********************************************************************************
+        // Zeichne die Rundeninfos
+        private void DrawRoundinfos(SpriteBatch spriteBatch)
+        {
+
+            if (!GameState.RoundIsRunning || Main.GameTimeUpdate.TotalGameTime.TotalSeconds - GameState.RoundStartTime[GameState.Round] < 3)
+            {
+                string info = "";
+
+                if (GameState.RoundEndTime.ContainsKey(GameState.Round - 1) && Main.GameTimeUpdate.TotalGameTime.TotalSeconds - GameState.RoundEndTime[GameState.Round - 1] < 3)
+                {
+                    info = "Runde " + (GameState.Round - 1) + " beendet..";
+                }
+                else
+                {
+
+                    if (!GameState.RoundIsRunning)
+                    {
+                        if (GameState.TimeToRoundStart < 1)
+                            info = "1";
+                        else if (GameState.TimeToRoundStart < 2)
+                            info = "2";
+                        else if (GameState.TimeToRoundStart < 3)
+                            info = "3";
+                        else if (GameState.TimeToRoundStart < 4)
+                            info = "4";
+                        else if (GameState.TimeToRoundStart < 5)
+                            info = "5";
+                    }
+                    else
+                    {
+                        info = "Runde " + GameState.Round + " begint..";
+                    }
+                }
+
+                Vector2 size = defaultFontBig.MeasureString(info);
+                Vector2 center = new Vector2(Configuration.GetInt("resolutionWidth") / 2, Configuration.GetInt("resolutionHeight") / 2);
+                Vector2 origin = new Vector2(size.X / 2, size.Y / 2);
+
+                spriteBatch.DrawString(defaultFontBig, info, center, Color.Black, 0, origin, 1.025F, SpriteEffects.None, 0);
+                spriteBatch.DrawString(defaultFontBig, info, center, Color.Gray, 0, origin, 1, SpriteEffects.None, 0);
+            }
+
         }
 
         //**********************************************************************************
@@ -968,7 +1042,7 @@ namespace EVCS_Projekt.Managers
             foreach (Buff b in GameState.Player.Buffs.Values)
             {
                 // Transparentes Icon
-                spriteBatch.Draw(Buff.BuffIcons[b.Type], new Rectangle((int)bi_position.X - buffIconPulse, (int)bi_position.Y - buffIconPulse, (int)bi_size.X + 2 * buffIconPulse, (int)bi_size.Y + 2 * buffIconPulse), new Color(128,128,128,128) );
+                spriteBatch.Draw(Buff.BuffIcons[b.Type], new Rectangle((int)bi_position.X - buffIconPulse, (int)bi_position.Y - buffIconPulse, (int)bi_size.X + 2 * buffIconPulse, (int)bi_size.Y + 2 * buffIconPulse), new Color(128, 128, 128, 128));
 
                 int height = (int)((bi_size.Y + 2 * buffIconPulse) / b.FullDuration * b.Duration);
                 int height_ = (int)((bi_size.Y) / b.FullDuration * b.Duration);
@@ -1009,7 +1083,7 @@ namespace EVCS_Projekt.Managers
         public void KillEnemie(Enemy e)
         {
             // Killcounter erhöhen
-            GameState.KilledMonsters = GameState.KilledMonsters + 1;
+            GameState.KilledMonsters[e.TypOfEnemy]++;
 
             //Test new StaticRenderer(blood)
             AnimationRenderer a = LoadedRenderer.GetAnimation("A_Splatter_01");

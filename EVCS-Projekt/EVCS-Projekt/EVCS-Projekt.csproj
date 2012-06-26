@@ -86,6 +86,7 @@
     <Compile Include="GameState.cs" />
     <Compile Include="GUI\Constructor.cs" />
     <Compile Include="GUI\InventarPanel.cs" />
+    <Compile Include="Helper\HighscoreHelper.cs" />
     <Compile Include="UI\UIFilteredConstructorList.cs" />
     <Compile Include="UI\UIFilteredInventarList.cs" />
     <Compile Include="UI\UIListButton.cs" />

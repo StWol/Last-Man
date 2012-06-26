@@ -35,8 +35,22 @@ namespace EVCS_Projekt
         public Karte Karte { get; set; }
 
         // Getötete Monster
-        public int KilledMonsters { get; set; }
+        public int TotalKilledMonsters
+        {
+            get
+            {
+                int s = 0;
+                foreach (int i in KilledMonsters.Values)
+                    s += i;
+                return s;
+            }
+        }
 
+        public Dictionary<EEnemyType, int> KilledMonsters { get; set; }
+
+        // Highscore
+        public long Highscore { get; set; }
+        public long Shots { get; set; }
 
         // Variablen für Runden etc
         public int Round { get; set; }
@@ -45,6 +59,8 @@ namespace EVCS_Projekt
         public bool RoundIsRunning { get; set; }
         public int MonsterSpawnCount { get; set; }
         public int KillsToEndRound { get; set; }
+        public Dictionary<int, double> RoundStartTime { get; set; }
+        public Dictionary<int, double> RoundEndTime { get; set; }
 
     }
 }

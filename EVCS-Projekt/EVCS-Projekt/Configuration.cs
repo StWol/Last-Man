@@ -34,6 +34,8 @@ namespace EVCS_Projekt
             configurationDic.Add("buffs", "Content/buffs.xml");
             configurationDic.Add("buffIcons", "images/buffIcons/");
 
+            configurationDic.Add("defaultFontBig", "fonts/defaultBig");
+
             configurationDic.Add("keyMoveUp", "W");
             configurationDic.Add("keyMoveDown", "S");
             configurationDic.Add("keyMoveLeft", "A");

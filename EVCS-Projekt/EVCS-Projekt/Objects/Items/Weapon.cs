@@ -210,11 +210,23 @@ namespace EVCS_Projekt.Objects.Items
 
         // ***************************************************************************
         // Gewicht wird berechnet
-        public float Accuracy
+        public float AccuracyPercent
         {
             get
             {
-                float w = Math.Max((10 - (Visier.Accuracy + Stabilisator.Accuracy)) / 2 / 10, 0);
+                float w = Math.Max((float)Math.Pow(((Visier.Accuracy + Stabilisator.Accuracy) - 16), 2) / 300, 0);
+                
+                return w;
+            }
+        }
+
+        // ***************************************************************************
+        // Gewicht wird berechnet
+        public int Accuracy
+        {
+            get
+            {
+                int w = (int)(Visier.Accuracy + Stabilisator.Accuracy);
 
                 return w;
             }
