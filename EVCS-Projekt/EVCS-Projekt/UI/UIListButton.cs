@@ -96,11 +96,11 @@ namespace EVCS_Projekt.GUI
 
             float textY = y + height / 2 - measureString.Y / 2;
 
-            iconRect = new Rectangle( x + 0, y + 0, DEFAULT_HEIGHT, DEFAULT_HEIGHT );
-            namePos = new Vector2( x + DEFAULT_HEIGHT + 10, textY );
-            countPos = new Vector2( x + width - DEFAULT_HEIGHT * 2 - 13 + 10, textY );
-            weightRect = new Rectangle( x + width - DEFAULT_HEIGHT - 13, y + 0, 13, DEFAULT_HEIGHT );
-            weightCountPos = new Vector2( x + width - DEFAULT_HEIGHT + 10, textY );
+            iconRect = new Rectangle( x + 0, y + 0, height, height );
+            namePos = new Vector2( x + height + 10, textY );
+            countPos = new Vector2( x + width - height * 2 - 13 + 10, textY );
+            weightRect = new Rectangle( x + width - height - 13, y + 0, 13, height );
+            weightCountPos = new Vector2( x + width - height + 10, textY );
 
             sb.Draw( icon, iconRect, Color.White );
             sb.DrawString( UIButton.FONT_DEFAULT, name, namePos, Color.Black );

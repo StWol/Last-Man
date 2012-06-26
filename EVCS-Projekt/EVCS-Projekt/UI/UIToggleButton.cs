@@ -15,9 +15,11 @@ namespace EVCS_Projekt.UI
         private Texture2D activeTextureHover;
         public bool isActive;
 
+        
         public UIToggleButton( int width, int height, Vector2 position, Texture2D texture, Texture2D hoverTexture, Texture2D activeTexture, Texture2D activeTextureHover, string text )
             : base( width, height, position, texture, hoverTexture, text )
         {
+            
             this.activeTexture = activeTexture;
             this.activeTextureHover = activeTextureHover;
             isActive = false;

@@ -26,6 +26,7 @@ namespace EVCS_Projekt.UI
                 return ( int ) ( Helper.DrawHelper.Get( this.GetHashCode() + "Size" ).X );
             }
         }
+
         protected int height
         {
             get
@@ -33,6 +34,7 @@ namespace EVCS_Projekt.UI
                 return ( int ) ( Helper.DrawHelper.Get( this.GetHashCode() + "Size" ).Y );
             }
         }
+
         protected Vector2 position
         {
             get
@@ -47,6 +49,7 @@ namespace EVCS_Projekt.UI
                     y += ( int ) parent.GetPosition().Y;
                 }
 
+                
                 return new Vector2( x, y );
             }
             private set
@@ -68,6 +71,10 @@ namespace EVCS_Projekt.UI
                     return texture;
             }
         }
+
+        protected int unscaledWidth;
+        protected int unscaledHeight;
+        protected Vector2 unscaledPos;
 
         private Texture2D texture;
         private Texture2D hoverTexture;

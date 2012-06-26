@@ -992,8 +992,8 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="images\gui\inventar\inventar_background.png">
-      <Name>inventar_background</Name>
+    <Compile Include="images\gui\inventar\inventar_background1.png">
+      <Name>inventar_background1</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
@@ -1687,6 +1687,11 @@
     </Compile>
     <Compile Include="animation\heal_2\heal_2_16.png">
       <Name>heal_2_16</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="images\gui\inventar\inventar_background.png">
+      <Name>inventar_background</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>

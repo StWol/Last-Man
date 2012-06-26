@@ -44,8 +44,6 @@ namespace EVCS_Projekt.UI
 
         private Player player;
 
-        private int unscalledWidth;
-        private int unscalledHeight;
 
         public UIList( int width, int height, Vector2 position, UIActionListener listener )
             : base( width, height, position )
@@ -54,16 +52,19 @@ namespace EVCS_Projekt.UI
             itemList = new Dictionary<int, int>();
             buttonList = new List<UIElement>();
             countItemsDict = new Dictionary<int, int>();
-            unscalledWidth = width;
-            unscalledHeight = height;
+
+            unscaledWidth = width;
+            unscaledHeight = height;
+            unscaledPos = position;
+
             var imgPreviousButton = Main.ContentManager.Load<Texture2D>( "images/gui/inventar/list_previous" );
             var imgPreviousButtonHover = Main.ContentManager.Load<Texture2D>( "images/gui/inventar/list_previous_h" );
 
             var imgNextButton = Main.ContentManager.Load<Texture2D>( "images/gui/inventar/list_next" );
             var imgNextButtonHover = Main.ContentManager.Load<Texture2D>( "images/gui/inventar/list_next_h" );
 
-            btnPrevious = new UIButton(unscalledWidth, imgPreviousButton.Height, new Vector2(0, 0), imgPreviousButton, imgPreviousButtonHover, "");
-            btnNext = new UIButton(unscalledWidth, imgNextButton.Height, new Vector2(0, height - imgNextButton.Height), imgNextButton, imgNextButtonHover, "");
+            btnPrevious = new UIButton(unscaledWidth, imgPreviousButton.Height, new Vector2(0, 0), imgPreviousButton, imgPreviousButtonHover, "");
+            btnNext = new UIButton(unscaledWidth, imgNextButton.Height, new Vector2(0, height - imgNextButton.Height), imgNextButton, imgNextButtonHover, "");
 
             this.listener = listener;
 
@@ -172,7 +173,7 @@ namespace EVCS_Projekt.UI
         private void AddButton(Item item)
         {
             var y = (int)((DEFAULT_HEIGHT * buttonList.Count)) + btnPrevious.GetHeight();
-            var button = new UIListButton(unscalledWidth, 24, new Vector2(0, y), item, player.GetItemCountFromInventar(item.TypeId));
+            var button = new UIListButton(unscaledWidth, 24, new Vector2(0, y), item, player.GetItemCountFromInventar(item.TypeId));
 
             button.AddActionListener(this);
             button.AddActionListener(listener);

@@ -32,8 +32,6 @@ namespace EVCS_Projekt.UI
 
         private Player player;
 
-
-        private bool isVisible;
         public Item activeItem;
 
         private readonly UIList inventarList;
@@ -41,6 +39,10 @@ namespace EVCS_Projekt.UI
         public UIFilteredList(int width, int height, Vector2 position, UIActionListener listener)
             : base(width, height, position)
         {
+            unscaledWidth = width;
+            unscaledHeight = height;
+            unscaledPos = position;
+
             player = Main.MainObject.GameManager.GameState.Player;
             inventarList = new UIList(260, 236, new Vector2(0, 0), listener);
             inventarList.AddItemList(player.Inventar);

@@ -18,7 +18,7 @@ namespace EVCS_Projekt.UI
         protected bool mouseDown = false;
 
         private Boolean isHover;
-        public static readonly SpriteFont FONT_DEFAULT = Main.ContentManager.Load<SpriteFont>( "fonts/serenaSmall" );
+        public static readonly SpriteFont FONT_DEFAULT = Main.ContentManager.Load<SpriteFont>( Configuration.Get( "defaultFont" ) );
         public Color BackgroundColor { get; set; }
 
         private static Texture2D textureDefault = Main.ContentManager.Load<Texture2D>( "images/pixelWhite" );
@@ -32,6 +32,7 @@ namespace EVCS_Projekt.UI
             isHover = false;
             BackgroundColor = Color.Gray;
             Text = text.Trim();
+
         }
 
 

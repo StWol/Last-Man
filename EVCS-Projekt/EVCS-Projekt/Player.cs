@@ -32,6 +32,15 @@ namespace EVCS_Projekt
         public float Speed { get; set; }
         public float[] Liquid { get; set; }
 
+        public float TotalInventarWeight
+        {
+            get
+            {
+                float nventarWeight = Inventar.Sum( pair => Item.Get( pair.Key ).Weight * pair.Value );
+                float shortcutWeight = shortcuts.Sum( pair => ((Weapon)pair.Value).Weight );
+                return nventarWeight + shortcutWeight;
+            }
+        }
         //Waffe wird über ActiveShortcut gesetzt
         public Weapon Weapon
         {
@@ -89,10 +98,10 @@ namespace EVCS_Projekt
         }
 
 
-        public int GetItemCountFromInventar(int key)
+        public int GetItemCountFromInventar( int key )
         {
-            if (Inventar.ContainsKey(key))
-                return Inventar[key];
+            if ( Inventar.ContainsKey( key ) )
+                return Inventar[ key ];
             return 0;
         }
 
@@ -327,11 +336,11 @@ namespace EVCS_Projekt
                 shotTimer -= (float)Main.GameTimeUpdate.ElapsedGameTime.TotalSeconds;
 
             // Buff updaten
-            Dictionary<EBuffType, Buff> tempDic = new Dictionary<EBuffType, Buff>(buffs);
-            foreach (Buff b in tempDic.Values)
+            Dictionary<EBuffType, Buff> tempDic = new Dictionary<EBuffType, Buff>( buffs );
+            foreach ( Buff b in tempDic.Values )
             {
                 // auswirkung
-                switch (b.Type)
+                switch ( b.Type )
                 {
                     case EBuffType.HealthRegenaration:
                         // Leben regenerieren
@@ -347,8 +356,8 @@ namespace EVCS_Projekt
                 b.Update();
 
                 // entfrnen falls abgelaufen
-                if (b.IsExpired)
-                    buffs.Remove(b.Type);
+                if ( b.IsExpired )
+                    buffs.Remove( b.Type );
             }
 
             // Poweruprenderer updaten und entfernen falls nötig
@@ -460,27 +469,27 @@ namespace EVCS_Projekt
 
         // ***************************************************************************
         // Fügt die übergebene dic mit Buffs dem Player hinzu
-        public void AddBuffs(Dictionary<EBuffType, Buff> buffs)
+        public void AddBuffs( Dictionary<EBuffType, Buff> buffs )
         {
-            foreach (Buff b in buffs.Values)
+            foreach ( Buff b in buffs.Values )
             {
-                if (this.buffs.ContainsKey(b.Type))
-                    this.buffs[b.Type] = b;
+                if ( this.buffs.ContainsKey( b.Type ) )
+                    this.buffs[ b.Type ] = b;
                 else
-                    this.buffs.Add(b.Type, b);
+                    this.buffs.Add( b.Type, b );
             }
         }
 
         // ***************************************************************************
         // Fügt die übergebene Liste mit Buffs dem Player hinzu
-        public void AddBuffs(List<Buff> buffs)
+        public void AddBuffs( List<Buff> buffs )
         {
-            foreach (Buff b in buffs)
+            foreach ( Buff b in buffs )
             {
-                if (this.buffs.ContainsKey(b.Type))
-                    this.buffs[b.Type] = b;
+                if ( this.buffs.ContainsKey( b.Type ) )
+                    this.buffs[ b.Type ] = b;
                 else
-                    this.buffs.Add(b.Type, b);
+                    this.buffs.Add( b.Type, b );
             }
         }
 
