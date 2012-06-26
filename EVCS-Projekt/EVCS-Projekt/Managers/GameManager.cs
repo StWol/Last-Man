@@ -70,10 +70,6 @@ namespace EVCS_Projekt.Managers
         Texture2D monster3;
         Texture2D shot, blood, shot_01;
 
-        float accu = 0.1F;
-        float mausrad = 0F;
-
-        private float gun_cd;
         SoundEffect headshot;
         private InventarPanel inventarPanel;
         private Constructor constructorPanel;
@@ -115,6 +111,13 @@ namespace EVCS_Projekt.Managers
             Main.MainObject.MenuManager.LoadingText = "Loading map..";
             GameState.Karte = new Karte();
             GameState.Karte.LoadMap(GameState, "testmap");
+
+            // Werte für Runde
+            GameState.RoundDelay = 5;
+            GameState.Round = 1;
+            GameState.RoundIsRunning = false;
+
+            GameState.TimeToRoundStart = GameState.RoundDelay;
 
             // Buffs laden
             Buff.Load();
@@ -325,13 +328,55 @@ namespace EVCS_Projekt.Managers
                 constructorPanel.Update();
         }
 
+        public void UpdateRoundLogic()
+        {
+            if ( GameState.RoundIsRunning )
+            {
+                // Wenn alle Monster getötet sind TImer wieder starten
+                if ( GameState.KillsToEndRound <= 0)
+                {
+                    // Runde beenden
+                    GameState.RoundIsRunning = false;
+
+                    // Runde erhöhen
+                    GameState.Round++;
+
+                    // Timer setzten
+                    GameState.TimeToRoundStart = GameState.RoundDelay;
+                }
+            }
+            else
+            {
+                // Timer rutnerzählen
+                if (GameState.TimeToRoundStart > 0)
+                {
+                    GameState.TimeToRoundStart -= (float)Main.GameTimeUpdate.ElapsedGameTime.TotalSeconds;
+                }
+                else
+                {
+                    // Runde starten
+                    GameState.RoundIsRunning = true;
+
+                    // Monstercount für die runden
+                    GameState.MonsterSpawnCount = GameState.Round * 10;
+
+                    // KillsToEndRound setzten
+                    GameState.KillsToEndRound = GameState.MonsterSpawnCount;
+                }
+            }
+        }
+
         public void UpdateGame()
         {
             // Bildschirm Rectangle + 200 % in jede richtung
             UpdateRectangle = new Rectangle((int)(GameState.MapOffset.X - Configuration.GetInt("resolutionWidth") * 1), (int)(GameState.MapOffset.Y - Configuration.GetInt("resolutionHeight") * 1), (int)(Configuration.GetInt("resolutionWidth") * 3), (int)(Configuration.GetInt("resolutionHeight") * 3));
 
-            // Enemies, SO in UdpateRect
-            List<Enemy> enemies = GameState.QuadTreeEnemies.GetObjects(UpdateRectangle);
+            
+            // Alle Gegner im SPiel. damit diese auch zum spieler laufen (wir begrenzen die gegner anzahl,
+            // anstatt die ein rect des quadtrees
+            List<Enemy> enemies = GameState.QuadTreeEnemies.GetAllObjects();
+
+            // SO in UdpateRect
             List<StaticObject> staticObjects = GameState.QuadTreeStaticObjects.GetObjects(UpdateRectangle);
             List<Item> itemsOnScreen = GameState.QuadTreeItems.GetObjects(UpdateRectangle);
 
@@ -394,6 +439,9 @@ namespace EVCS_Projekt.Managers
 
             // Pulls für bufficons
             buffIconPulse = (int)((Main.GameTimeUpdate.TotalGameTime.TotalSeconds % 0.8F) / 0.2F);
+
+            // logic der round updaten
+            UpdateRoundLogic();
 
             // ################################################################################
             // ################################################################################
@@ -846,6 +894,11 @@ namespace EVCS_Projekt.Managers
                 inventarPanel.Draw(spriteBatch);
             }
 
+            foreach (Enemy e in GameState.QuadTreeEnemies.GetAllObjects())
+            {
+                Draw2D.DrawLine(spriteBatch, 1, Color.Red, e.LocationBehavior.RelativePosition, GameState.Player.LocationBehavior.RelativePosition);
+            }
+
             // ################################################################################
             // ################################################################################
             // TEST
@@ -869,7 +922,7 @@ namespace EVCS_Projekt.Managers
 
             spriteBatch.DrawString(testFont, "Liquids: " + GameState.Player.Liquids, new Vector2(0, 30), Color.Red);
             spriteBatch.DrawString(testFont, "Health: " + GameState.Player.Health, new Vector2(0, 60), Color.Red);
-            spriteBatch.DrawString(testFont, "Accu: " + GameState.Player.Weapon.Accuracy + " Kills: " + GameState.KilledMonsters, new Vector2(0, 90), Color.Blue);
+            spriteBatch.DrawString(testFont, "TimeToRoundStart: " + GameState.TimeToRoundStart + " Kills: " + GameState.KilledMonsters, new Vector2(0, 90), Color.Blue);
 
 
 
@@ -914,7 +967,17 @@ namespace EVCS_Projekt.Managers
 
             foreach (Buff b in GameState.Player.Buffs.Values)
             {
-                spriteBatch.Draw(Buff.BuffIcons[b.Type], new Rectangle((int)bi_position.X - buffIconPulse, (int)bi_position.Y - buffIconPulse, (int)bi_size.X + 2 * buffIconPulse, (int)bi_size.Y + 2 * buffIconPulse), Color.White);
+                // Transparentes Icon
+                spriteBatch.Draw(Buff.BuffIcons[b.Type], new Rectangle((int)bi_position.X - buffIconPulse, (int)bi_position.Y - buffIconPulse, (int)bi_size.X + 2 * buffIconPulse, (int)bi_size.Y + 2 * buffIconPulse), new Color(128,128,128,128) );
+
+                int height = (int)((bi_size.Y + 2 * buffIconPulse) / b.FullDuration * b.Duration);
+                int height_ = (int)((bi_size.Y) / b.FullDuration * b.Duration);
+
+                // Icon mit voller Farbe
+                spriteBatch.Draw(Buff.BuffIcons[b.Type],
+                    new Rectangle((int)bi_position.X - buffIconPulse, (int)bi_position.Y - buffIconPulse + (int)((bi_size.Y + 2 * buffIconPulse) - height), (int)bi_size.X + 2 * buffIconPulse, (int)height),
+                    new Rectangle(0, (int)(bi_size.Y - height_), (int)bi_size.X, (int)height_),
+                    Color.White);
 
                 // Position weiterrücken
                 bi_position.X = bi_position.X + bi_size.X * 1.5F;
@@ -955,6 +1018,9 @@ namespace EVCS_Projekt.Managers
             // Splatter erstellen und in quadtree einfügen
             StaticObject splatter = new StaticObject(new MapLocation(e.LocationBehavior.Position), a);
             GameState.QuadTreeStaticObjects.Add(splatter);
+
+            // KillsToEndRound - 1
+            GameState.KillsToEndRound--;
 
             // Liquid droppen
             ELiquid droppedLiquidType = ELiquid.Green;

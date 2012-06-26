@@ -36,5 +36,15 @@ namespace EVCS_Projekt
 
         // Getötete Monster
         public int KilledMonsters { get; set; }
+
+
+        // Variablen für Runden etc
+        public int Round { get; set; }
+        public float TimeToRoundStart { get; set; }
+        public float RoundDelay { get; set; }
+        public bool RoundIsRunning { get; set; }
+        public int MonsterSpawnCount { get; set; }
+        public int KillsToEndRound { get; set; }
+
     }
 }

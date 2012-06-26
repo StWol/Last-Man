@@ -4,7 +4,7 @@
 		<buffIDs>
 			<int>1337</int>
 		</buffIDs>
-		<count>20</count>
+		<count>2000</count>
 		<damage>3</damage>
 		<item>
 			<weight>0.02</weight>

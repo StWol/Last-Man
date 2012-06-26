@@ -22,6 +22,7 @@ namespace EVCS_Projekt.Objects
         public static Dictionary<EBuffType, Texture2D> BuffIcons { get; private set; }
 
         //Attributes
+        public float FullDuration { get; private set; }
         public float Duration { get; private set; }
         public float ValuePerSecond { get; private set; }
         public float Value { get; private set; }
@@ -34,6 +35,7 @@ namespace EVCS_Projekt.Objects
             Value = value;
             ValuePerSecond = valuePerSecond;
             Duration = duration;
+            FullDuration = duration;
             Type = type;
         }
 
@@ -72,6 +74,7 @@ namespace EVCS_Projekt.Objects
         public Buff Clone()
         {
             Buff b = new Buff(Value, ValuePerSecond, Duration, Type);
+            b.FullDuration = FullDuration;
             return b;
         }
 

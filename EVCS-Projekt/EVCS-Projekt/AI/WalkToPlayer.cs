@@ -108,12 +108,20 @@ namespace EVCS_Projekt.AI
             moveVector.Normalize();
             moveVector = moveVector * (float)Main.GameTimeUpdate.ElapsedGameTime.TotalSeconds * e.Speed;
 
-            if ( e.MoveGameObject(moveVector, true, true))
+            Vector2 moved = new Vector2();
+
+            if ( e.MoveGameObject(moveVector, out moved, false, true, true))
             {
                 e.HasMoved = true;
 
                 // QT update
                 Main.MainObject.GameManager.GameState.QuadTreeEnemies.Move(e);
+
+                float dist = moved.Length() / (float)Main.GameTimeUpdate.ElapsedGameTime.TotalSeconds;
+
+                if (dist < e.Speed * 0.75F)
+                    e.HasMoved = false;
+                //Debug.WriteLine(e.LocationBehavior.Position + " "+dist);
             }
             else
             {
@@ -151,9 +159,39 @@ namespace EVCS_Projekt.AI
             }
 
             if (move)
+            {
                 Move(e);
+
+                if (!e.HasMoved && _walkToLastPlayerPosition)
+                {
+                    _walkToLastPlayerPosition = false;
+                    _currentWayPoint = searchNextInPath(e);
+                    _path = null;
+                }
+            }
             else
                 e.HasMoved = false;
+        }
+
+        private WayPoint searchNextInPath(Enemy e)
+        {
+            WayPoint w = null;
+            PathNode p = _path;
+
+            while (p != null)
+            {
+                if (GameManager.PointSeePoint(e.LocationBehavior.Position, Main.MainObject.GameManager.GameState.Karte.WayPoints[p.ID].Location.Position))
+                {
+                    w = Main.MainObject.GameManager.GameState.Karte.WayPoints[p.ID];
+                    p = _path.NextNode;
+                }
+                else
+                {
+                    return w;
+                }
+            }
+
+            return w;
         }
     }
 }
