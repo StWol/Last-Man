@@ -505,13 +505,6 @@ namespace EVCS_Projekt.Managers
 
             foreach (Item i in itemsInPlayer)
             {
-                if (i.GetType() == typeof(Powerup))
-                {
-                    GameState.Player.UsePowerup((Powerup)i);
-                    GameState.QuadTreeItems.Remove(i);
-                    continue;
-                }
-
                 // Item in inventar zufügem
                 GameState.Player.AddItemToInventar(i);
 
