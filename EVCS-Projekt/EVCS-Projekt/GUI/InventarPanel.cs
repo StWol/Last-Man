@@ -8,7 +8,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace EVCS_Projekt.GUI
 {
-    class UIInventarPanel : UIPanel, UIActionListener, UIMouseHoverListener
+    class InventarPanel : UIPanel, UIActionListener, UIMouseHoverListener
     {
         public bool Visible
         {
@@ -38,9 +38,7 @@ namespace EVCS_Projekt.GUI
         private UIButton btnOk;
         private UIButton btnCancel;
 
-// ReSharper disable FieldCanBeMadeReadOnly.Local
         private List<UIShortcutButton> shortcutButtons;
-// ReSharper restore FieldCanBeMadeReadOnly.Local
 
         private UIFilteredInventarList filteredInventarList;
         private Item activeItem;
@@ -51,7 +49,7 @@ namespace EVCS_Projekt.GUI
         private const int TEXT_LINE_HEIGHT = 30;
         private const int TEXT_PADDING = 20;
 
-        public UIInventarPanel( int width, int height, Vector2 position )
+        public InventarPanel( int width, int height, Vector2 position )
             : base( width, height, position )
         {
 
@@ -204,7 +202,10 @@ namespace EVCS_Projekt.GUI
                     if ( activeItem.GetType() == typeof( Powerup ) )
                     {
                         //Fressen activeItem
-                        player.UsePowerup((Powerup)activeItem);
+                        player.UsePowerup( ( Powerup ) activeItem );
+                        filteredInventarList.RemoveActiveItem();
+                        player.RemoveItemFromInventar(activeItem);
+                        activeItem = null;
                         //Fressen activeItem
                     }
                 }
@@ -233,19 +234,12 @@ namespace EVCS_Projekt.GUI
             {
                 HandleShortcutButtonClick( ( UIShortcutButton ) element );
             }
-
-
-            if ( activeItem == null )
-            {
-
-            }
         }
 
 
         private void SwitchWeapon( Weapon newWeapon, UIShortcutButton button )
         {
             Weapon oldWeapon = button.Weapon;
-
 
             if ( oldWeapon != null )
             {
@@ -265,8 +259,6 @@ namespace EVCS_Projekt.GUI
             if ( newWeapon != null )
             {
                 //Waffe ändern
-
-
                 player.AddWeaponToShortcutList( button.Key, newWeapon );
                 player.RemoveItemFromInventar( newWeapon );
                 button.Weapon = newWeapon;

@@ -36,7 +36,7 @@ namespace EVCS_Projekt.UI
 
         public override void Draw( SpriteBatch sb )
         {
-            if(this.GetType() == typeof(UIInventarPanel ))
+            if(this.GetType() == typeof(InventarPanel ))
             {
                 Debug.WriteLine("");
             }

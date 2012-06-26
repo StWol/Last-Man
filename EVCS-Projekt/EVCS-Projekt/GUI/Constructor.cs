@@ -3,16 +3,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using EVCS_Projekt.Objects;
+using EVCS_Projekt.Objects.Items;
 using EVCS_Projekt.UI;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace EVCS_Projekt.GUI
 {
-    class Constructor : UIPanel
+    class Constructor : UIPanel, UIActionListener
     {
         private bool isVisible;
-         private UIFilteredInventarList filteredInventarList;
+        private UIFilteredConstructorList filteredConstructorList;
         private Player player;
         private Item  activeItem;
         private Rectangle background;
@@ -25,10 +26,11 @@ namespace EVCS_Projekt.GUI
             {
                 if ( value && !isVisible )
                 {
-                    filteredInventarList.GenerateFilteredLists( player.Inventar );
+                    filteredConstructorList.GenerateFilteredLists( player.Inventar );
                     //GenerateUiComponents();
-                    filteredInventarList.SetItems( player.Inventar );
-                    filteredInventarList.ResetToggleButtons();
+                    
+                    //filteredConstructorList.SetItems( tempDict );
+                    filteredConstructorList.ResetToggleButtons();
                     activeItem = null;
                 }
                 isVisible = value;
@@ -61,8 +63,8 @@ namespace EVCS_Projekt.GUI
             var cancel_h = Main.ContentManager.Load<Texture2D>( "images/gui/inventar/btn_cancel_h" );
 
 
-            filteredInventarList = new UIFilteredInventarList( 260, 236, new Vector2( 340, 60 ), this );
-            Add( filteredInventarList );
+            filteredConstructorList = new UIFilteredConstructorList( 260, 236, new Vector2( 340, 60 ), this );
+            Add( filteredConstructorList );
 
 
             //btnOk = new UIButton( new Vector2( 300, 306 ), ok, ok_h );
@@ -81,6 +83,22 @@ namespace EVCS_Projekt.GUI
 
             //Add( btnOk );
             //Add( btnCancel );
+        }
+
+        public override void Draw( SpriteBatch sb )
+        {
+            sb.Draw( backgroundTextur, background, Color.White );
+            base.Draw( sb );
+        }
+
+        public void OnMouseDown(UIElement element)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void OnMouseUp(UIElement element)
+        {
+            throw new NotImplementedException();
         }
     }
 }
