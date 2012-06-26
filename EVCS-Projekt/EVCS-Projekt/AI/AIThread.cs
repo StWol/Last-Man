@@ -22,7 +22,7 @@ namespace EVCS_Projekt.AI
                 Rectangle updateRect = Main.MainObject.GameManager.UpdateRectangle;
 
                 // Gegner holen
-                List<Enemy> enemies = Main.MainObject.GameManager.GameState.QuadTreeEnemies.GetObjects(updateRect);
+                List<Enemy> enemies = Main.MainObject.GameManager.GameState.QuadTreeEnemies.GetAllObjects();
 
                 foreach (Enemy e in enemies)
                 {

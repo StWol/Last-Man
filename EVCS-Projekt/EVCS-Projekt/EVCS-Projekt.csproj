@@ -86,7 +86,11 @@
     <Compile Include="GameState.cs" />
     <Compile Include="GUI\Constructor.cs" />
     <Compile Include="GUI\InventarPanel.cs" />
+<<<<<<< HEAD
     <Compile Include="UI\UIConstructionPanel.cs" />
+=======
+    <Compile Include="Helper\HighscoreHelper.cs" />
+>>>>>>> 4cab0141fee52e5e96e19f8264958da45507aed0
     <Compile Include="UI\UIFilteredConstructorList.cs" />
     <Compile Include="UI\UIFilteredInventarList.cs" />
     <Compile Include="UI\UIListButton.cs" />

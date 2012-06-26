@@ -31,9 +31,15 @@ namespace EVCS_Projekt.Objects
         // float gibt die wahrscheinlichkeit an ob ein Monster spawn. 0=0% 1=100%
         public float IsSpawning()
         {
+            // RUnde begrenzen
+            if (  !Main.MainObject.GameManager.GameState.RoundIsRunning || Main.MainObject.GameManager.GameState.MonsterSpawnCount <= 0 )
+                return 0;
+
             // TODO: Auslagern
             int maxSpawnDistance = 1000;
-            int maxEnemies = 200;
+            
+            // Wieviele Mosnter gleichzeitig zugelassen sind
+            int maxEnemies = 50;
 
             // + 10% Sicherheitsrahmen
             int screenWidth = (int)(Configuration.GetInt("resolutionWidth") * 1.1F);
@@ -103,6 +109,9 @@ namespace EVCS_Projekt.Objects
 
                         // Gegner in Baum adden
                         gameState.QuadTreeEnemies.Add(newEnemie);
+
+                        // SpawnCount erniedrigen
+                        Main.MainObject.GameManager.GameState.MonsterSpawnCount--;
 
                         debugCount++;
                     }

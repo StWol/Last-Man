@@ -524,11 +524,16 @@ namespace EVCS_Projekt.Objects
             // canMove
             bool canMove = false;
 
+            // Bei Player wird dieser Wert 0, da bei gegner der gegner sich selbst bekommt
+            int maxEnemies = 1;
+            if ( typeof(Player) == GetType() )
+                maxEnemies = 0;
+
             LocationBehavior.Position = LocationBehavior.Position + moveVector;
 
             // Prüfen ob man an neuer Position gehen kann
             if (GameManager.CheckRectangleInMap(Rect) &&
-                (Main.MainObject.GameManager.GameState.QuadTreeEnemies.GetObjects(Rect).Count <= 1 || !checkEnemyCollision) &&
+                (Main.MainObject.GameManager.GameState.QuadTreeEnemies.GetObjects(Rect).Count <= maxEnemies || !checkEnemyCollision) &&
                 (!PPCollisionWith(Main.MainObject.GameManager.GameState.Player) || !checkPlayerCollision)
                 )
             {
@@ -543,7 +548,7 @@ namespace EVCS_Projekt.Objects
                 LocationBehavior.Position = new Vector2(initPosition.X, initPosition.Y + moveVector.Y);
 
                 if (GameManager.CheckRectangleInMap(Rect) &&
-                    (Main.MainObject.GameManager.GameState.QuadTreeEnemies.GetObjects(Rect).Count <= 1 || !checkEnemyCollision) &&
+                    (Main.MainObject.GameManager.GameState.QuadTreeEnemies.GetObjects(Rect).Count <= maxEnemies || !checkEnemyCollision) &&
                     (!PPCollisionWith(Main.MainObject.GameManager.GameState.Player) || !checkPlayerCollision)
                     )
                 {
@@ -559,7 +564,7 @@ namespace EVCS_Projekt.Objects
                 LocationBehavior.Position = new Vector2(initPosition.X + moveVector.X, initPosition.Y);
 
                 if (GameManager.CheckRectangleInMap(Rect) &&
-                    (Main.MainObject.GameManager.GameState.QuadTreeEnemies.GetObjects(Rect).Count <= 1 || !checkEnemyCollision) &&
+                    (Main.MainObject.GameManager.GameState.QuadTreeEnemies.GetObjects(Rect).Count <= maxEnemies || !checkEnemyCollision) &&
                     (!PPCollisionWith(Main.MainObject.GameManager.GameState.Player) || !checkPlayerCollision)
                     )
                 {

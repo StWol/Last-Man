@@ -6,8 +6,13 @@
 	<HauptteilInner>
 		<rateOfFire>6</rateOfFire>
 		<shotCount>1</shotCount>
-		<bigWeapon>false</bigWeapon>
+		<bigWeapon>true</bigWeapon>
 		<item>
+      <requiredLiquid>
+        <X>3</X>
+        <Y>0</Y>
+        <Z>0</Z>
+      </requiredLiquid>
 			<weight>4</weight>
 			<id>100</id>
 			<name>Plastikrohr</name>
@@ -23,6 +28,11 @@
 		<shotCount>1</shotCount>
 		<bigWeapon>true</bigWeapon>
 		<item>
+      <requiredLiquid>
+        <X>2</X>
+        <Y>1</Y>
+        <Z>0</Z>
+      </requiredLiquid>
 			<weight>5</weight>
 			<id>101</id>
 			<name>Plastikrohr</name>
@@ -38,6 +48,11 @@
 		<shotCount>1</shotCount>
 		<bigWeapon>false</bigWeapon>
 		<item>
+      <requiredLiquid>
+        <X>2</X>
+        <Y>0</Y>
+        <Z>2</Z>
+      </requiredLiquid>
 			<weight>7</weight>
 			<id>102</id>
 			<name>Metallrohr</name>
@@ -53,6 +68,11 @@
 		<shotCount>1</shotCount>
 		<bigWeapon>true</bigWeapon>
 		<item>
+      <requiredLiquid>
+        <X>1</X>
+        <Y>2</Y>
+        <Z>1</Z>
+      </requiredLiquid>
 			<weight>8</weight>
 			<id>103</id>
 			<name>Metallrohr</name>

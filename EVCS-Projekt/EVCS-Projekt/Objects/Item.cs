@@ -204,6 +204,9 @@ namespace EVCS_Projekt.Objects
                 return ItemIcons[800];
             return ItemIcons[TypeId];
         } }
+        public Vector3 RequiredLiquid { get; private set; }
+
+        public Texture2D Icon { get { return ItemIcons[TypeId]; } }
 
         // ***************************************************************************
         // Konstruktor 1
@@ -245,12 +248,14 @@ namespace EVCS_Projekt.Objects
             Description = ii.description;
             Weight = ii.weight;
             Group = ii.group;
+            RequiredLiquid = ii.requiredLiquid;
         }
 
         // ItemIcon in den Renderer Quetschen
         private void FixRenderer()
         {
             if (typeof(Munition) == GetType())
+            {
                 ((Munition)this).ShotRenderer = Renderer;
             if (typeof(Weapon) == GetType())
             {
@@ -260,6 +265,9 @@ namespace EVCS_Projekt.Objects
             {
                 Renderer = LoadedRenderer.GetStatic("S_IconRenderer_" + TypeId);
             }
+            }
+
+            Renderer = LoadedRenderer.GetStatic("S_IconRenderer_" + TypeId);
             
         }
 
@@ -272,6 +280,7 @@ namespace EVCS_Projekt.Objects
             public string name, description;
             public EGroup group;
             public GameObjectInner gameObject;
+            public Vector3 requiredLiquid;
         }
 
         // ***************************************************************************
@@ -285,6 +294,7 @@ namespace EVCS_Projekt.Objects
             ii.description = Description;
             ii.group = Group;
             ii.gameObject = base.GetInner();
+            ii.requiredLiquid = RequiredLiquid;
             return ii;
         }
 
