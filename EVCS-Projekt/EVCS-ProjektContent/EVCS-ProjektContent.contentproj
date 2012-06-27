@@ -567,12 +567,14 @@
       <Importer>XmlImporter</Importer>
       <Processor>PassThroughProcessor</Processor>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
     </None>
     <None Include="items\visier.xml">
       <Name>visier</Name>
       <Importer>XmlImporter</Importer>
       <Processor>PassThroughProcessor</Processor>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
     </None>
     <None Include="items\weapon.xml">
       <Name>weapon</Name>
@@ -1479,13 +1481,13 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-    <Compile Include="images\itemIcons\506.png">
-      <Name>506</Name>
+    <Compile Include="images\itemIcons\505.png">
+      <Name>505</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-    <Compile Include="images\itemIcons\507.png">
-      <Name>507</Name>
+    <Compile Include="images\itemIcons\506.png">
+      <Name>506</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
