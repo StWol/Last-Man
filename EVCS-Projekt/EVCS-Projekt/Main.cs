@@ -29,8 +29,9 @@ namespace EVCS_Projekt
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
-        public GameManager GameManager { get; private set; }
-        public MenuManager MenuManager { get; private set; }
+        public GameManager GameManager { get; set; }
+        public MenuManager MenuManager { get; set; }
+        public HighscoreManager Highscoremanager { get; set; }
 
         public Manager CurrentManager { private get; set; }
 
@@ -42,22 +43,6 @@ namespace EVCS_Projekt
 
         public Main()
         {
-
-            FileStream fs = new FileStream("out.xml", FileMode.OpenOrCreate);
-
-            List<Powerup.PowerupInner> bi = new List<Powerup.PowerupInner>();
-
-            XmlSerializer serializer = new XmlSerializer(typeof(List<Powerup.PowerupInner>));
-            Powerup.PowerupInner b = new Powerup.PowerupInner();
-            b.effect = "";
-            b.buffRefList = new List<int>() { 1,2,3 };
-
-            bi.Add(b);
-            serializer.Serialize(fs, bi);
-            fs.Flush();
-            fs.Close();
-
-
             // Das ist ein Test :-)
             Debug.WriteLine("Start Game..");
 
@@ -83,7 +68,7 @@ namespace EVCS_Projekt
             graphics.IsFullScreen = Configuration.GetBool("isFullscreen");
 
             graphics.PreferMultiSampling = Configuration.GetBool("antiAliasing");
-           
+
             graphics.ApplyChanges();
 
             // Helper updaten

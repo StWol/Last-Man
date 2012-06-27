@@ -22,7 +22,7 @@ namespace EVCS_Projekt.Managers
         private UIButton btnStart;
         private UIButton btnExit;
         private UIButton btnCredits;
-        private UIButton btnOptions;
+        private UIButton btnHighscore;
 
         private Texture2D background;
         private Texture2D pixelWhite;
@@ -64,6 +64,9 @@ namespace EVCS_Projekt.Managers
         {
             Debug.WriteLine("Benötigter Content für Menu laden.");
 
+            // Highscore Laden
+            HighscoreHelper.LoadHighscore();
+
             ContentManager content = Main.ContentManager;
 
             // Initialisierung
@@ -104,17 +107,17 @@ namespace EVCS_Projekt.Managers
             btnStart = new UIButton(new Vector2(99, 152), imgStart, imgStartHover);
             btnExit = new UIButton(new Vector2(849, 490), imgExit, imgExitHover);
             btnCredits = new UIButton(new Vector2(0, 507), imgCredits, imgCreditsHover);
-            btnOptions = new UIButton(new Vector2(337, 209), imgOptions, imgOptionsHover);
+            btnHighscore = new UIButton(new Vector2(337, 209), imgOptions, imgOptionsHover);
 
             btnStart.AddActionListener(this);
             btnExit.AddActionListener(this);
             btnCredits.AddActionListener(this);
-            btnOptions.AddActionListener(this);
+            btnHighscore.AddActionListener(this);
 
             menuPanel.Add(btnStart);
             menuPanel.Add(btnExit);
             menuPanel.Add(btnCredits);
-            menuPanel.Add(btnOptions);
+            menuPanel.Add(btnHighscore);
         }
 
         // ***************************************************************************
@@ -265,8 +268,11 @@ namespace EVCS_Projekt.Managers
                 Environment.Exit(0);
             else if (element == btnStart)
                 startButtonEvent();
-            else if (element == btnOptions)
-                Debug.WriteLine("Option Button");
+            else if (element == btnHighscore)
+            {
+                Main.MainObject.Highscoremanager = new HighscoreManager();
+                Main.MainObject.CurrentManager = Main.MainObject.Highscoremanager;
+            }
             else if (element == btnCredits)
                 Debug.WriteLine("Credits Button");
         }

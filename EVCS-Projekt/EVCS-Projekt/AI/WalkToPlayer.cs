@@ -413,7 +413,7 @@ namespace EVCS_Projekt.AI
             }
 
             // greife an
-            if (_attack)
+            if (_attack && Main.MainObject.GameManager.GameState.Player.IsAlive)
             {
                 e.Attack();
             }
