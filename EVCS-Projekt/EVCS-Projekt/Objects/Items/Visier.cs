@@ -12,16 +12,16 @@ namespace EVCS_Projekt.Objects.Items
         public float Accuracy { get; set; }
 
         //Constructor
-        public Visier(int id, EGroup group, String name, float accuracy, float weight, string description, ILocationBehavior locationBehavior)
-            : base(id, group, name, description, weight, locationBehavior)
+        public Visier( int id, EGroup group, String name, float accuracy, float weight, string description, ILocationBehavior locationBehavior )
+            : base( id, group, name, description, weight, locationBehavior )
         {
             this.Accuracy = accuracy;
         }
 
         // ***************************************************************************
         // Konstruktor 3
-        public Visier(VisierInner vi)
-            : base(vi.item)
+        public Visier( VisierInner vi )
+            : base( vi.item )
         {
             Accuracy = vi.accuracy;
         }
@@ -48,11 +48,15 @@ namespace EVCS_Projekt.Objects.Items
         // Clont Object
         public Visier Clone()
         {
-            Visier v = new Visier(TypeId, Group, Name, Accuracy, Weight, Description, LocationBehavior.Clone());
+            Visier v = new Visier( TypeId, Group, Name, Accuracy, Weight, Description, LocationBehavior.Clone() );
             v.Renderer = Renderer;
+            v.RequiredLiquid = RequiredLiquid;
             return v;
         }
 
-
+        public override string ToString()
+        {
+            return "Visier: " + base.ToString();
+        }
     }
 }

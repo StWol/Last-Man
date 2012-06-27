@@ -130,7 +130,7 @@ namespace EVCS_Projekt.GUI
             //sb.Draw( backgroundTextur, background, Color.White );
             base.Draw( sb );
 
-            sb.DrawString( UIButton.FONT_DEFAULT, "Gewicht: " + player.TotalInventarWeight, new Vector2( GetPosition().X + 410, GetPosition().Y + 326 ), Color.Black );
+            sb.DrawString( UIButton.FONT_DEFAULT, "Gewicht: " + player.TotalInventarWeight, new Vector2( GetPosition().X+filteredInventarList.GetPosition().X , GetHeight()), Color.Black );
             DrawInfoPanel( sb );
 
         }
@@ -239,7 +239,7 @@ namespace EVCS_Projekt.GUI
 
             if ( oldWeapon != null )
             {
-                if ( oldWeapon.Munition != null )
+                if ( oldWeapon.Munition != null && player.GetItemCountFromInventar( oldWeapon.Munition.TypeId) >0 )
                 {
                     // munition ins Inventar
                     player.AddItemToInventar( oldWeapon.Munition );
@@ -295,7 +295,7 @@ namespace EVCS_Projekt.GUI
                 {
                     //mun ändern
                     // Wenn die Waffe, die am Shortcut "klebt" auch munition hat
-                    newMunition.Count = Math.Min( player.Inventar[ newMunition.TypeId ], newMunition.MagazineSize );
+                    newMunition.Count = Math.Min( player.GetItemCountFromInventar( newMunition.TypeId ), newMunition.MagazineSize );
                     button.Weapon.Munition = newMunition;
                     player.RemoveItemFromInventar( newMunition );
                 }

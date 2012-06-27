@@ -33,12 +33,12 @@ namespace EVCS_Projekt.UI
 
 
         private Texture2D weaponTexture;
-        private Texture2D weaponBackgroundTexture;
+        //private Texture2D weaponBackgroundTexture;
 
         public UIShortcutButton( int width, int height, Vector2 position, int key )
             : base( width, height, position )
         {
-            this.Key = key;
+            Key = key;
 
 
             weaponTexture = Main.ContentManager.Load<Texture2D>( "images/items/item_1" );
@@ -46,10 +46,11 @@ namespace EVCS_Projekt.UI
 
             //weapon.Renderer.Draw(spriteBatch, new UILocation(new Rectangle(0,0,10,10));
 
-            weaponBackgroundTexture = Main.ContentManager.Load<Texture2D>( "images/gui/inventar/shortcut_weapon" );
+            //weaponBackgroundTexture = Main.ContentManager.Load<Texture2D>( "images/gui/inventar/shortcut_weapon" );
 
             weaponPanel = new UIWeaponPanel( height, new Vector2( ( int ) height, 0 ) );
             Add(weaponPanel); 
+            
         }
 
 
@@ -62,7 +63,7 @@ namespace EVCS_Projekt.UI
 
             sb.DrawString( UIButton.FONT_DEFAULT, Key + "", new Vector2( x + 10, y + height / 2 - measureString.Y / 2 ), Color.Black );
 
-            sb.Draw( weaponBackgroundTexture, new Rectangle( ( int ) GetPosition().X + height, ( int ) GetPosition().Y, width - ( height * 3 ), height ), Color.White );
+            //sb.Draw( weaponBackgroundTexture, new Rectangle( ( int ) GetPosition().X + height, ( int ) GetPosition().Y, width - ( height * 3 ), height ), Color.White );
 
             if ( weapon != null )
             {

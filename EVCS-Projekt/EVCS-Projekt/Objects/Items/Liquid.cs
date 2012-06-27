@@ -60,5 +60,9 @@ namespace EVCS_Projekt.Objects.Items
             return l;
         }
 
+        public override string ToString()
+        {
+            return "Flüssigkeit: " + base.ToString();
+        }
     }
 }

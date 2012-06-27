@@ -97,7 +97,7 @@ namespace EVCS_Projekt.Objects.Items
 
         public override string ToString()
         {
-            return Name + ": " + Count;
+            return "Munition: " + base.ToString() + ": " + Count;
         }
     }
 }

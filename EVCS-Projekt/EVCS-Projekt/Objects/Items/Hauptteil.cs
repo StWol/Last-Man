@@ -64,8 +64,13 @@ namespace EVCS_Projekt.Objects.Items
         {
             Hauptteil h = new Hauptteil(TypeId, Group, Name,RateOfFire, Weight,Description, LocationBehavior.Clone());
             h.Renderer = Renderer;
+            h.RequiredLiquid = RequiredLiquid;
             return h;
         }
 
+        public override string ToString()
+        {
+            return "Hauptteil: " + base.ToString();
+        }
     }
 }

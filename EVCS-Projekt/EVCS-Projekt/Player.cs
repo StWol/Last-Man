@@ -79,7 +79,7 @@ namespace EVCS_Projekt
         public Vector2 Direction { get; set; }
         public WayPoint NearestWayPoint { get; private set; }
 
-        public Vector3 Liquids { get; private set; }
+        public Vector3 Liquids { get; set; }
 
         // ob ein schuss eine gewisse zeit her war
         private float shotTimer;
@@ -475,7 +475,7 @@ namespace EVCS_Projekt
 
         // ***************************************************************************
         // Fügt von Liquid mit der ID id, die Menge amount hinzu
-        public void AddLiquid(ELiquid type, int amount)
+        public void AddLiquid( ELiquid type, int amount )
         {
             switch (type)
             {
@@ -507,6 +507,18 @@ namespace EVCS_Projekt
                     Liquids = new Vector3(Liquids.X, Liquids.Y, Liquids.Z - amount);
                     break;
             }
+        }
+
+        public void AddLiquid( Vector3 liquid )
+        {
+            Liquids += liquid;
+        }
+
+        // ***************************************************************************
+        // Zieht von Liquid mit der ID id, die Menge amount ab
+        public void ReduceLiquid( Vector3 liquid )
+        {
+            Liquids -= liquid;
         }
 
         // ***************************************************************************

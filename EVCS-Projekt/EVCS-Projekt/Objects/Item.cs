@@ -208,7 +208,7 @@ namespace EVCS_Projekt.Objects
         public EGroup Group { get; private set; }
         public string Name { get; private set; }
         public string Description { get; private set; }
-        public float Weight { get; private set; }
+        public virtual float Weight { get; private set; }
         public Texture2D CraftingItem
         {
             get { return CraftingItemIcons[ TypeId ]; }
@@ -223,7 +223,7 @@ namespace EVCS_Projekt.Objects
                 return ItemIcons[ TypeId ];
             }
         }
-        public Vector3 RequiredLiquid { get; private set; }
+        public Vector3 RequiredLiquid { get;  set; }
 
 
         // ***************************************************************************
@@ -350,6 +350,10 @@ namespace EVCS_Projekt.Objects
             ret.FixRenderer();
 
             return ret;
+        }
+        public override string ToString()
+        {
+            return Name;
         }
     }
 }

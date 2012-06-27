@@ -140,5 +140,10 @@ namespace EVCS_Projekt.Objects.Items
             s.Renderer = Renderer;
             return s;
         }
+
+        public override string ToString()
+        {
+            return "Shot: " + base.ToString();
+        }
     }
 }

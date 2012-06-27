@@ -38,7 +38,7 @@ namespace EVCS_Projekt.GUI
                     foreach (KeyValuePair<int, int> keyValuePair in player.Inventar)
                     {
                         Item item = Item.Get(keyValuePair.Key);
-                        if (item.GetType() != typeof(Munition) && item.GetType() != typeof(Powerup))
+                        if ( item.GetType() != typeof( Munition ) && item.GetType() != typeof( Powerup ) && item.GetType() != typeof( Weapon ) )
                         {
                             tempDict[keyValuePair.Key] = keyValuePair.Value;
                         }
@@ -46,7 +46,7 @@ namespace EVCS_Projekt.GUI
 
                     filteredConstructorList.GenerateFilteredLists(player.Inventar);
                     filteredConstructorList.SetItems(tempDict);
-
+                    constructionPanel.ResetPanel();
                     //filteredConstructorList.SetItems( tempDict );
                     filteredConstructorList.ResetToggleButtons();
                     activeItem = null;
@@ -92,9 +92,6 @@ namespace EVCS_Projekt.GUI
             //btnCancel.AddActionListener( this );
 
 
-            
-            
-
             //Add( btnOk );
             //Add( btnCancel );
         }
@@ -137,9 +134,11 @@ namespace EVCS_Projekt.GUI
 
                 Item.AllItems.Add(Item.StaticID++, newWeapon);
                 player.AddItemToInventar(newWeapon);
-                filteredConstructorList.AddItem(newWeapon);
                 filteredConstructorList.RefreshItemList();
                 
+                player.ReduceLiquid(newWeapon.GetTotalRequeredLiquids());
+
+                constructionPanel.ResetPanel();
             }
         }
 

@@ -13,14 +13,12 @@ namespace EVCS_Projekt.UI
 {
     internal class UIFilteredConstructorList : UIPanel, UIActionListener
     {
-        private UIToggleButton toggleWaffe;
         private UIToggleButton toggleHauptteil;
         private UIToggleButton toggleStabilisator;
         private UIToggleButton toggleVisier;
         private UIToggleButton toggleAntrieb;
 
 
-        private Dictionary<int, int> listWaffe;
         private Dictionary<int, int> listHauptteil;
         private Dictionary<int, int> listStabilisator;
         private Dictionary<int, int> listVisier;
@@ -60,7 +58,6 @@ namespace EVCS_Projekt.UI
 
         public void GenerateFilteredLists(Dictionary<int, int> inventar)
         {
-            listWaffe = new Dictionary<int, int>();
             listHauptteil = new Dictionary<int, int>();
             listStabilisator = new Dictionary<int, int>();
             listVisier = new Dictionary<int, int>();
@@ -75,11 +72,8 @@ namespace EVCS_Projekt.UI
                 Item item = Item.Get(typeId);
 
                 var type = item.GetType();
-                if (type == typeof (Weapon))
-                {
-                    listWaffe[typeId] = count;
-                }
-                else if (type == typeof (Hauptteil))
+               
+                if (type == typeof (Hauptteil))
                 {
                     listHauptteil[typeId] = count;
                 }
@@ -102,7 +96,6 @@ namespace EVCS_Projekt.UI
 
         public void ResetToggleButtons()
         {
-            toggleWaffe.isActive = true;
             toggleHauptteil.isActive = true;
             toggleStabilisator.isActive = true;
             toggleVisier.isActive = true;
@@ -111,12 +104,7 @@ namespace EVCS_Projekt.UI
 
         private void CreateCheckBoxPanel()
         {
-            ContentManager content = Main.ContentManager;
-
-            var waffe = content.Load<Texture2D>("images/gui/inventar/waffe");
-            var waffeH = content.Load<Texture2D>("images/gui/inventar/waffe_h");
-            var waffeA = content.Load<Texture2D>("images/gui/inventar/waffe_a");
-            var waffeAH = content.Load<Texture2D>("images/gui/inventar/waffe_a_h");
+            var content = Main.ContentManager;
 
             var hauptteil = content.Load<Texture2D>("images/gui/inventar/hauptteil");
             var hauptteilH = content.Load<Texture2D>("images/gui/inventar/hauptteil_h");
@@ -128,11 +116,6 @@ namespace EVCS_Projekt.UI
             var stabilisatorA = content.Load<Texture2D>("images/gui/inventar/stabilisator_a");
             var stabilisatorAH = content.Load<Texture2D>("images/gui/inventar/stabilisator_a_h");
 
-            var munition = content.Load<Texture2D>("images/gui/inventar/munition");
-            var munitionH = content.Load<Texture2D>("images/gui/inventar/munition_h");
-            var munitionA = content.Load<Texture2D>("images/gui/inventar/munition_a");
-            var munitionAH = content.Load<Texture2D>("images/gui/inventar/munition_a_h");
-
             var visier = content.Load<Texture2D>("images/gui/inventar/visier");
             var visierH = content.Load<Texture2D>("images/gui/inventar/visier_h");
             var visierA = content.Load<Texture2D>("images/gui/inventar/visier_a");
@@ -143,24 +126,17 @@ namespace EVCS_Projekt.UI
             var antriebA = content.Load<Texture2D>("images/gui/inventar/antrieb_a");
             var antriebAH = content.Load<Texture2D>("images/gui/inventar/antrieb_a_h");
 
-            var sonstiges = content.Load<Texture2D>("images/gui/inventar/sonstiges");
-            var sonstigesH = content.Load<Texture2D>("images/gui/inventar/sonstiges_h");
-            var sonstigesA = content.Load<Texture2D>("images/gui/inventar/sonstiges_a");
-            var sonstigesAH = content.Load<Texture2D>("images/gui/inventar/sonstiges_a_h");
 
-            toggleWaffe = new UIToggleButton(120, 30, new Vector2(280, 40), waffe, waffeH, waffeA, waffeAH, "") {isActive = true};
             toggleHauptteil = new UIToggleButton(120, 30, new Vector2(280, 80), hauptteil, hauptteilH, hauptteilA, hauptteilAH, "") { isActive = true };
             toggleStabilisator = new UIToggleButton(120, 30, new Vector2(280, 120), stabilisator, stabilisatorH, stabilisatorA, stabilisatorAH, "") { isActive = true };
             toggleVisier = new UIToggleButton(120, 30, new Vector2(280, 160), visier, visierH, visierA, visierAH, "") { isActive = true };
             toggleAntrieb = new UIToggleButton(120, 30, new Vector2(280, 200), antrieb, antriebH, antriebA, antriebAH, "") { isActive = true };
 
-            toggleWaffe.AddActionListener(this);
             toggleHauptteil.AddActionListener(this);
             toggleStabilisator.AddActionListener(this);
             toggleVisier.AddActionListener(this);
             toggleAntrieb.AddActionListener(this);
 
-            Add(toggleWaffe);
             Add(toggleHauptteil);
             Add(toggleStabilisator);
             Add(toggleVisier);
@@ -178,11 +154,7 @@ namespace EVCS_Projekt.UI
                 inventarList.FirsVisibleButtonIndex = 0;
             }
 
-            if (element == toggleWaffe)
-            {
-                inventarList.AddItemList(listWaffe);
-            }
-            else if (element == toggleHauptteil)
+            if (element == toggleHauptteil)
             {
                 inventarList.AddItemList(listHauptteil);
             }
@@ -205,11 +177,7 @@ namespace EVCS_Projekt.UI
         public void OnMouseUp(UIElement element)
         {
             inventarList.FirsVisibleButtonIndex = 0;
-            if (element == toggleWaffe)
-            {
-                inventarList.RemoveItems(listWaffe);
-            }
-            else if (element == toggleHauptteil)
+            if (element == toggleHauptteil)
             {
                 inventarList.RemoveItems(listHauptteil);
             }

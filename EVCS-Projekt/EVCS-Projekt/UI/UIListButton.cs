@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using EVCS_Projekt.Objects;
+using EVCS_Projekt.Objects.Items;
 using EVCS_Projekt.UI;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -68,6 +70,8 @@ namespace EVCS_Projekt.GUI
             name = item.Name;
             CountString = count + "";
             weightIcon = Main.ContentManager.Load<Texture2D>( "images/gui/inventar/weight" );
+            if(item.GetType() == typeof(Weapon))
+                Debug.WriteLine("");
             weightCount = item.Weight + "";
 
             Color = new Color( 0, 0, 0, 100 );

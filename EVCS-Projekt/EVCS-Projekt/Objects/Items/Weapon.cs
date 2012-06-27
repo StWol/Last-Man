@@ -22,19 +22,19 @@ namespace EVCS_Projekt.Objects.Items
 
         // ***************************************************************************
         // Konstruktor
-        public Weapon(int visierId, int antriebId, int stabilisatorId, int hauptteilId, int id, EGroup group, String name, float weight, string description, ILocationBehavior locationBehavior)
-            : base(id, group, name, description, weight, locationBehavior)
+        public Weapon( int visierId, int antriebId, int stabilisatorId, int hauptteilId, int id, EGroup group, String name, float weight, string description, ILocationBehavior locationBehavior )
+            : base( id, group, name, description, weight, locationBehavior )
         {
-            this.Visier = Item.DefaultVisiere[visierId];
-            this.Antrieb = Item.DefaultAntrieb[antriebId];
-            this.Stabilisator = Item.DefaultStabilisatoren[stabilisatorId];
-            this.Hauptteil = Item.DefaultHauptteil[hauptteilId];
+            this.Visier = Item.DefaultVisiere[ visierId ];
+            this.Antrieb = Item.DefaultAntrieb[ antriebId ];
+            this.Stabilisator = Item.DefaultStabilisatoren[ stabilisatorId ];
+            this.Hauptteil = Item.DefaultHauptteil[ hauptteilId ];
         }
 
         // ***************************************************************************
         // Konstruktor
-        public Weapon(Visier visier, Antrieb antrieb, Stabilisator stabilisator, Hauptteil hauptteil, int id, EGroup group, String name, float weight, string description, ILocationBehavior locationBehavior)
-            : base(id, group, name, description, weight, locationBehavior)
+        public Weapon( Visier visier, Antrieb antrieb, Stabilisator stabilisator, Hauptteil hauptteil, int id, EGroup group, String name, float weight, string description, ILocationBehavior locationBehavior )
+            : base( id, group, name, description, weight, locationBehavior )
         {
             this.Visier = visier;
             this.Antrieb = antrieb;
@@ -44,15 +44,15 @@ namespace EVCS_Projekt.Objects.Items
 
         // ***************************************************************************
         // Konstruktor 3
-        public Weapon(WeaponInner wi)
-            : base(wi.item)
+        public Weapon( WeaponInner wi )
+            : base( wi.item )
         {
-            Visier = Item.DefaultVisiere[wi.visier];
-            if (wi.munition != 0)
-                Munition = Item.DefaultMunition[wi.munition];
-            Antrieb = Item.DefaultAntrieb[wi.antrieb];
-            Stabilisator = Item.DefaultStabilisatoren[wi.stabilisator];
-            Hauptteil = Item.DefaultHauptteil[wi.hauptteil];
+            Visier = Item.DefaultVisiere[ wi.visier ];
+            if ( wi.munition != 0 )
+                Munition = Item.DefaultMunition[ wi.munition ];
+            Antrieb = Item.DefaultAntrieb[ wi.antrieb ];
+            Stabilisator = Item.DefaultStabilisatoren[ wi.stabilisator ];
+            Hauptteil = Item.DefaultHauptteil[ wi.hauptteil ];
         }
 
         // ***************************************************************************
@@ -75,7 +75,7 @@ namespace EVCS_Projekt.Objects.Items
             WeaponInner wi = new WeaponInner();
 
             wi.visier = Visier.TypeId;
-            if (Munition != null)
+            if ( Munition != null )
                 wi.munition = Munition.TypeId;
             else
                 wi.munition = 0;
@@ -89,12 +89,12 @@ namespace EVCS_Projekt.Objects.Items
 
         // ***************************************************************************
         // Updaten
-        public void Update(Dictionary<EBuffType, Buff> buffs)
+        public void Update( Dictionary<EBuffType, Buff> buffs )
         {
-            if (Cooldown > 0)
+            if ( Cooldown > 0 )
             {
                 // Cooldown verringern
-                Cooldown -= (float)Main.GameTimeUpdate.ElapsedGameTime.TotalSeconds;
+                Cooldown -= ( float ) Main.GameTimeUpdate.ElapsedGameTime.TotalSeconds;
             }
         }
 
@@ -109,7 +109,7 @@ namespace EVCS_Projekt.Objects.Items
 
             // Schuss erzeugen
             //Shot s = Item.DefaultShots[Munition.ShotId].Clone();
-            Shot s = new Shot(750F, Damage, 2000);
+            Shot s = new Shot( 750F, Damage, 2000 );
             s.Renderer = Munition.ShotRenderer;
             s.Damage = Damage;
 
@@ -117,7 +117,7 @@ namespace EVCS_Projekt.Objects.Items
             Munition.Count -= 1;
 
             //if (Munition.Count <= 0)
-                //Main.MainObject.GameManager.GameState.Player.RemoveItemFromInventar(Item.Get(Munition.TypeId));
+            //Main.MainObject.GameManager.GameState.Player.RemoveItemFromInventar(Item.Get(Munition.TypeId));
             return s;
         }
 
@@ -127,23 +127,23 @@ namespace EVCS_Projekt.Objects.Items
             var player = Main.MainObject.GameManager.GameState.Player;
 
             int diff =0;
-            if (player.Inventar.ContainsKey(Munition.TypeId))
+            if ( Munition != null && player.Inventar.ContainsKey( Munition.TypeId ) )
             {
-                if (player.Inventar[Munition.TypeId]+Munition.Count >= Munition.MagazineSize)
+                if ( player.Inventar[ Munition.TypeId ] + Munition.Count >= Munition.MagazineSize )
                 {
                     diff = Munition.MagazineSize - Munition.Count;
                     Munition.Count = Munition.MagazineSize;
                 }
                 else
                 {
-                    diff = player.Inventar[Munition.TypeId];
+                    diff = player.Inventar[ Munition.TypeId ];
                     Munition.Count += diff;
                 }
-            
 
-            player.RemoveRangeItemFromInventar(Munition, diff);
+
+                player.RemoveRangeItemFromInventar( Munition, diff );
+            }
         }
-    }
 
         // ***************************************************************************
         // Schusscount
@@ -159,7 +159,7 @@ namespace EVCS_Projekt.Objects.Items
         {
             get
             {
-                if (Munition == null)
+                if ( Munition == null )
                     return -1;
                 else
                     return Munition.Count;
@@ -174,7 +174,7 @@ namespace EVCS_Projekt.Objects.Items
             {
                 float d = Antrieb.Damage;
 
-                if (Munition != null)
+                if ( Munition != null )
                     d += Munition.Damage;
 
                 return d;
@@ -195,13 +195,13 @@ namespace EVCS_Projekt.Objects.Items
 
         // ***************************************************************************
         // Gewicht wird berechnet
-        public new float Weight
+        public override float Weight
         {
             get
             {
                 float w = Hauptteil.Weight + Visier.Weight + Stabilisator.Weight + Antrieb.Weight;
 
-                if (Munition != null)
+                if ( Munition != null )
                     w += Munition.Weight * Munition.Count;
 
                 return w;
@@ -214,8 +214,8 @@ namespace EVCS_Projekt.Objects.Items
         {
             get
             {
-                float w = Math.Max((float)Math.Pow(((Visier.Accuracy + Stabilisator.Accuracy) - 16), 2) / 300, 0);
-                
+                float w = Math.Max( ( float ) Math.Pow( ( ( Visier.Accuracy + Stabilisator.Accuracy ) - 16 ), 2 ) / 300, 0 );
+
                 return w;
             }
         }
@@ -226,7 +226,7 @@ namespace EVCS_Projekt.Objects.Items
         {
             get
             {
-                int w = (int)(Visier.Accuracy + Stabilisator.Accuracy);
+                int w = ( int ) ( Visier.Accuracy + Stabilisator.Accuracy );
 
                 return w;
             }
@@ -256,13 +256,25 @@ namespace EVCS_Projekt.Objects.Items
         // Clone
         public Weapon Clone()
         {
-            Weapon w = new Weapon(GetInner());
+            Weapon w = new Weapon( GetInner() );
             w.Renderer = Renderer.Clone();
             w.LocationBehavior = LocationBehavior.Clone();
             return w;
         }
 
-        
-        
+        public Vector3 GetTotalRequeredLiquids()
+        {
+            Vector3 vector = new Vector3();
+
+            vector.X = Visier.RequiredLiquid.X + Hauptteil.RequiredLiquid.X + Stabilisator.RequiredLiquid.X + Antrieb.RequiredLiquid.X;
+            vector.Y = Visier.RequiredLiquid.Y + Hauptteil.RequiredLiquid.Y + Stabilisator.RequiredLiquid.Y + Antrieb.RequiredLiquid.Y;
+            vector.Z = Visier.RequiredLiquid.Z + Hauptteil.RequiredLiquid.Z + Stabilisator.RequiredLiquid.Z + Antrieb.RequiredLiquid.Z;
+            return vector;
+        }
+
+        public override string ToString()
+        {
+            return "Waffe: " + base.ToString();
+        }
     }
 }

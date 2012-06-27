@@ -539,6 +539,8 @@ namespace EVCS_Projekt.Managers
             }
 
 
+            
+
             // TEST-ENDE
             // ###############################################################################
         }
@@ -551,7 +553,7 @@ namespace EVCS_Projekt.Managers
 
             var newState = Keyboard.GetState();
 
-            if (newState.IsKeyDown(Keys.I) && !oldKeyState.IsKeyDown(Keys.I))
+            if ( newState.IsKeyDown( Keys.I ) && !oldKeyState.IsKeyDown( Keys.I ) && !constructorPanel.NameIsActive )
             {
                 if (constructorPanel.Visible)
                 {

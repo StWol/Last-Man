@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using EVCS_Projekt.Objects;
 using EVCS_Projekt.Objects.Items;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -47,8 +48,14 @@ namespace EVCS_Projekt.UI
         private string demage;
         private string accuracy;
 
-        
+        private Texture2D nameButtonTextur;
+        private Texture2D nameButtonActiveTextur;
 
+        MouseState oldMouseState;
+        Keys lastKey = Keys.None;
+        public string InputText = "";
+
+        private Player player;
 
         public UIConstructionPanel( int width, int height, Vector2 position, UIActionListener listener )
             : base( width, height, position )
@@ -57,6 +64,8 @@ namespace EVCS_Projekt.UI
             initWidth = width;
             initHeigth = height;
 
+            player = Main.MainObject.GameManager.GameState.Player;
+
             InitComponents();
             NameIsActive = false;
 
@@ -64,18 +73,13 @@ namespace EVCS_Projekt.UI
             rateOfFire = "Feuerate : ";
             demage = "Schaden : ";
             accuracy = "Genauigkeit : ";
-
-
-            
-
-            
         }
 
         private void InitComponents()
         {
             var shortCutTitel = new UIButton( initWidth, 40, new Vector2( 0, 0 ), "Konstruktor" );
 
-            weaponPanel = new UIWeaponPanel( 100, new Vector2( 0, 40 ));
+            weaponPanel = new UIWeaponPanel( 100, new Vector2( 0, 40 ) );
 
             nameButton = new UIButton( initWidth, 30, new Vector2( 0, 140 ), "Name der Waffe" );
 
@@ -87,24 +91,22 @@ namespace EVCS_Projekt.UI
             rateOfFireButton = new UIButton( 120, DEFAULT_HEIGHT, new Vector2( 50, 230 ), "Feuerate : 10" );
             accuracyButton = new UIButton( 120, DEFAULT_HEIGHT, new Vector2( 50, 280 ), "Genauigkeit : 13" );
 
+            player.Liquids = new Vector3( 14, 11, 22 );
 
-            bar1 = new UIVerticalProgressBar( 40, 140, new Vector2( 175, 180 ), 100, 90 ) { BackgroundColor = Color.Blue };
-            bar2 = new UIVerticalProgressBar( 40, 140, new Vector2( 215, 180 ), 100, 50 ) { BackgroundColor = Color.Green };
-            bar3 = new UIVerticalProgressBar( 40, 140, new Vector2( 255, 180 ), 100, 20 ) { BackgroundColor = Color.Red };
+            bar1 = new UIVerticalProgressBar( 40, 140, new Vector2( 175, 180 ), 100, player.Liquids.X ) { BackgroundColor = Color.Blue };
+            bar2 = new UIVerticalProgressBar( 40, 140, new Vector2( 215, 180 ), 100, player.Liquids.Y ) { BackgroundColor = Color.Green };
+            bar3 = new UIVerticalProgressBar( 40, 140, new Vector2( 255, 180 ), 100, player.Liquids.Z ) { BackgroundColor = Color.Red };
 
 
-            Texture2D okButtonTexture = Main.ContentManager.Load<Texture2D>( "images/gui/inventar/listitem" );
-            Texture2D okButtonHoverTexture = Main.ContentManager.Load<Texture2D>( "images/gui/inventar/listitem_h" );
+            Texture2D okButtonTexture = Main.ContentManager.Load<Texture2D>( "images/gui/inventar/craft_button" );
+            Texture2D okButtonHoverTexture = Main.ContentManager.Load<Texture2D>( "images/gui/inventar/craft_button_h" );
 
-            okButton = new UIButton( initWidth, 30, new Vector2( 0, 330 ), okButtonTexture, okButtonHoverTexture, "Attacke!!!" );
-
-            bar1.Needed = 12;
-            bar2.Needed = 120;
-            bar3.Needed = 3;
+            okButton = new UIButton( initWidth, 30, new Vector2( 0, 330 ), okButtonTexture, okButtonHoverTexture,"" );
 
 
             Texture2D pixelWhite = Main.ContentManager.Load<Texture2D>( "images/pixelWhite" );
-
+            nameButtonActiveTextur = Main.ContentManager.Load<Texture2D>( "images/gui/inventar/name_button_a" );
+            nameButtonTextur = Main.ContentManager.Load<Texture2D>( "images/gui/inventar/name_button" );
 
             okButton.AddActionListener( listener );
             nameButton.AddActionListener( this );
@@ -130,8 +132,7 @@ namespace EVCS_Projekt.UI
             Add( okButton );
         }
 
-        Keys lastKey = Keys.None;
-        public string InputText = "";
+
 
         public override void Update()
         {
@@ -158,8 +159,14 @@ namespace EVCS_Projekt.UI
                 }
 
                 nameButton.Text = InputText;
+                nameButton.BackgroundTextur = nameButtonActiveTextur;
+
             }
-            if ( Hauptteil != null && Visier != null && Antrieb != null && Stabilisator != null )
+            else
+            {
+                nameButton.BackgroundTextur = nameButtonTextur;
+            }
+            if ( Hauptteil != null && Visier != null && Antrieb != null && Stabilisator != null && IsEnoughLiquid() )
             {
                 okButton.IsEnabled = true;
             }
@@ -167,48 +174,90 @@ namespace EVCS_Projekt.UI
             {
                 okButton.IsEnabled = false;
             }
+
+
+
+            if ( Mouse.GetState().LeftButton == ButtonState.Pressed && oldMouseState.LeftButton != ButtonState.Pressed )
+            {
+                NameIsActive = false;
+            }
+            oldMouseState = Mouse.GetState();
             base.Update();
         }
 
-        public override void Draw( SpriteBatch sb )
+        private bool IsEnoughLiquid()
         {
-            base.Draw( sb );
-
-            
+            return bar1.IsSnoughLiquid() && bar2.IsSnoughLiquid() && bar3.IsSnoughLiquid();
         }
+
+        private void DecrimentRequired( Item item )
+        {
+            Vector3 vector =new Vector3();
+            if ( item != null )
+                vector = item.RequiredLiquid;
+
+            bar1.Required -= vector.X;
+            bar2.Required -= vector.Y;
+            bar3.Required -= vector.Z;
+        }
+
+        private void IncrementRequired( Item item )
+        {
+            Vector3 vector =new Vector3();
+            if ( item != null )
+                vector = item.RequiredLiquid;
+
+            bar1.Required += vector.X;
+            bar2.Required += vector.Y;
+            bar3.Required += vector.Z;
+        }
+
 
         public void SetVisier( Visier newVisier )
         {
+            DecrimentRequired( Visier );
+            IncrementRequired( newVisier );
+
             Visier = newVisier;
             visierButton.BackgroundTextur = newVisier.Icon;
             visierButton.BackgroundColor = Color.White;
-            weaponPanel.SetVisierIcon(newVisier);
+            weaponPanel.SetVisierIcon( newVisier );
             accuracyButton.Text = accuracy + GetTotalAccuracy();
         }
 
+
         public void SetStabilisator( Stabilisator newStabilisator )
         {
+            DecrimentRequired( Stabilisator );
+            IncrementRequired( newStabilisator );
+
             Stabilisator = newStabilisator;
             stabilisatorButton.BackgroundTextur = newStabilisator.Icon;
             stabilisatorButton.BackgroundColor = Color.White;
-            weaponPanel.SetStabilisatorIcon(newStabilisator);
+            weaponPanel.SetStabilisatorIcon( newStabilisator );
             accuracyButton.Text = accuracy + GetTotalAccuracy();
         }
 
         public void SetAntrieb( Antrieb newAntrieb )
         {
+            DecrimentRequired( Antrieb );
+            IncrementRequired( newAntrieb );
+
             Antrieb = newAntrieb;
             antriebButton.BackgroundTextur = newAntrieb.Icon;
             antriebButton.BackgroundColor = Color.White;
-            weaponPanel.SetAntriebIcon(newAntrieb);
+            weaponPanel.SetAntriebIcon( newAntrieb );
             rateOfFireButton.Text = rateOfFire + GetTotalRateOfFire();
             demageButton.Text = demage + newAntrieb.Damage;
         }
 
         public void SetHauptteil( Hauptteil newHauptteil )
         {
+            DecrimentRequired( Hauptteil );
+            IncrementRequired( newHauptteil );
+
             Hauptteil = newHauptteil;
-            weaponPanel.SetHauptteilIcon(newHauptteil);
+            weaponPanel.SetHauptteilIcon( newHauptteil );
             rateOfFireButton.Text = rateOfFire + GetTotalRateOfFire();
         }
 
@@ -249,6 +298,36 @@ namespace EVCS_Projekt.UI
         public void OnMouseUp( UIElement element )
         {
             throw new NotImplementedException();
+        }
+
+        public void ResetPanel()
+        {
+            Texture2D pixel = Main.ContentManager.Load<Texture2D>( "images/pixelTransparent" );
+
+            weaponPanel.ResetPanel();
+            nameButton.Text = "Name der Waffe";
+            antriebButton.BackgroundTextur = pixel;
+            stabilisatorButton.BackgroundTextur = pixel;
+            visierButton.BackgroundTextur = pixel;
+
+            demageButton.Text = demage;
+            accuracyButton.Text = accuracy;
+            rateOfFireButton.Text = rateOfFire;
+
+            Hauptteil = null;
+            Antrieb = null;
+            Stabilisator = null;
+            Visier = null;
+
+            bar1.Required = 0;
+            bar2.Required = 0;
+            bar3.Required = 0;
+
+            bar1.Progress = player.Liquids.X;
+            bar2.Progress = player.Liquids.Y;
+            bar3.Progress = player.Liquids.Z;
+
+
         }
     }
 }

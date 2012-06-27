@@ -23,6 +23,13 @@ namespace EVCS_Projekt.UI
             children = new List<UIElement>();
         }
 
+        public UIPanel( int width, int height, Vector2 position , Texture2D texture, Texture2D hoverTextur)
+            : base( width, height, position, texture, hoverTextur )
+        {
+
+            children = new List<UIElement>();
+        }
+
         public void Add( UIElement element )
         {
             element.SetParent( this );

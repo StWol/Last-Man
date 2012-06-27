@@ -255,4 +255,72 @@
 			</gameObject>
 		</item>
 	</MunitionInner>
+  <MunitionInner>
+    <buffIDs>
+      <int>1337</int>
+    </buffIDs>
+    <count>1</count>
+    <damage>8</damage>
+    <item>
+      <weight>0.7</weight>
+      <id>215</id>
+      <name>Spritze</name>
+      <description>Spritze</description>
+      <group>FeuerGross</group>
+      <gameObject>
+        <renderer>S_Shot_Normal</renderer>
+      </gameObject>
+    </item>
+  </MunitionInner>
+  <MunitionInner>
+    <buffIDs>
+      <int>1337</int>
+    </buffIDs>
+    <count>15</count>
+    <damage>5</damage>
+    <item>
+      <weight>0.09</weight>
+      <id>216</id>
+      <name>Kugelschreiber</name>
+      <description>Es lebe die Kunst</description>
+      <group>FeuerKlein</group>
+      <gameObject>
+        <renderer>S_Shot_Normal</renderer>
+      </gameObject>
+    </item>
+  </MunitionInner>
+  <MunitionInner>
+    <buffIDs>
+      <int>1337</int>
+    </buffIDs>
+    <count>40</count>
+    <damage>8</damage>
+    <item>
+      <weight>0.40</weight>
+      <id>217</id>
+      <name>Metallkugelln</name>
+      <description>Zeit zum Spielen..</description>
+      <group>FeuerKlein</group>
+      <gameObject>
+        <renderer>S_Shot_Normal</renderer>
+      </gameObject>
+    </item>
+  </MunitionInner>
+  <MunitionInner>
+    <buffIDs>
+      <int>1337</int>
+    </buffIDs>
+    <count>20</count>
+    <damage>6</damage>
+    <item>
+      <weight>0.2</weight>
+      <id>218</id>
+      <name>Filzstift</name>
+      <description>Es lebe die Kunst</description>
+      <group>FeuerKlein</group>
+      <gameObject>
+        <renderer>S_Shot_Normal</renderer>
+      </gameObject>
+    </item>
+  </MunitionInner>
 </ArrayOfMunitionInner>

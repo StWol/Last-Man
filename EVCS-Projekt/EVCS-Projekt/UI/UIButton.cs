@@ -21,10 +21,6 @@ namespace EVCS_Projekt.UI
         public static readonly SpriteFont FONT_DEFAULT = Main.ContentManager.Load<SpriteFont>( Configuration.Get( "defaultFont" ) );
         
 
-        private static Texture2D textureDefault = Main.ContentManager.Load<Texture2D>( "images/pixelWhite" );
-
-        
-
 
         public UIButton( int width, int height, Vector2 position, Texture2D texture, Texture2D hoverTexture, string text )
             : base( width, height, position, texture, hoverTexture )

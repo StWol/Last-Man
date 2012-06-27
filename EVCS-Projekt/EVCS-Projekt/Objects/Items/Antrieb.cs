@@ -72,8 +72,14 @@ namespace EVCS_Projekt.Objects.Items
         public Antrieb Clone()
         {
             Antrieb a = new Antrieb(TypeId, Group, Name, RateOfFire, Damage, SoundId, Weight, Description, LocationBehavior.Clone());
+            a.RequiredLiquid = RequiredLiquid;
             a.Renderer = Renderer;
             return a;
+        }
+
+        public override string ToString()
+        {
+            return "Antrieb: " + base.ToString();
         }
     }
 }

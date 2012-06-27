@@ -93,5 +93,10 @@ namespace EVCS_Projekt.Objects.Items
             p.LocationBehavior = LocationBehavior.Clone();
             return p;
         }
+
+        public override string ToString()
+        {
+            return "Powerup: " + base.ToString();
+        }
     }
 }
