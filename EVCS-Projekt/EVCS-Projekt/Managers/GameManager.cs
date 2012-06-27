@@ -58,7 +58,7 @@ namespace EVCS_Projekt.Managers
         private UpdateDel updateDelegater;
 
         // Für Gui
-        private Texture2D gui_overlay, health_bar;
+        private Texture2D gui_overlay, health_bar, gui_backlayer;
         private float health_bar_height { get; set; }
         private SpriteFont defaultFont;
         private SpriteFont defaultFontBig;
@@ -170,6 +170,7 @@ namespace EVCS_Projekt.Managers
             // GUI elemente
             gui_overlay = Main.ContentManager.Load<Texture2D>("images/gui/gui_overlay");
             health_bar = Main.ContentManager.Load<Texture2D>("images/gui/health_bar");
+            gui_backlayer = Main.ContentManager.Load<Texture2D>("images/gui/gui_backlayer");
 
             gameoverTexture = Main.ContentManager.Load<Texture2D>("images/gameover");
 
@@ -184,6 +185,10 @@ namespace EVCS_Projekt.Managers
 
             DrawHelper.AddDimension("BuffIcon_Position", 16, 365);
             DrawHelper.AddDimension("BuffIcon_Size", 32, 32);
+
+            DrawHelper.AddDimension("Minimap_Size", 181, 170);
+            DrawHelper.AddDimension("Minimap_Position", 0, 407);
+
 
             // AI Thread starten
             new Thread(new ThreadStart(AIThread.UpdateAI)).Start();
@@ -1098,7 +1103,7 @@ namespace EVCS_Projekt.Managers
 
             // Gameover
             if (gameover)
-                spriteBatch.Draw(gameoverTexture, new Rectangle(0, 0, Configuration.GetInt("resolutionWidth"), Configuration.GetInt("resolutionHeight")), new Color(255,255,255, (int)(255 - 255 * MathHelper.Clamp(timeUntilHighscoreManager-3, 0, 1))));
+                spriteBatch.Draw(gameoverTexture, new Rectangle(0, 0, Configuration.GetInt("resolutionWidth"), Configuration.GetInt("resolutionHeight")), new Color(255, 255, 255, (int)(255 - 255 * MathHelper.Clamp(timeUntilHighscoreManager - 3, 0, 1))));
 
             // FadeToBlack
             spriteBatch.Draw(PixelWhite, new Rectangle(0, 0, Configuration.GetInt("resolutionWidth"), Configuration.GetInt("resolutionHeight")), new Color(0, 0, 0, (int)(255 - 255 * _fadeToBlack)));
@@ -1154,14 +1159,29 @@ namespace EVCS_Projekt.Managers
 
         }
 
+
         //**********************************************************************************
         // Zeichne die Oberfläche
         private void DrawHUD(SpriteBatch spriteBatch)
         {
+            // backlayer
+            spriteBatch.Draw(gui_backlayer, new Rectangle(0, 0, Configuration.GetInt("resolutionWidth"), Configuration.GetInt("resolutionHeight")), Color.White);
+
             // GUI zeichnen
             Vector2 hb_position = DrawHelper.Get("HealthBar_Position");
             Vector2 hb_size = DrawHelper.Get("HealthBar_Size");
 
+            // Minimap zeichnen - Korrektur der Map x:-7 y:34
+            Vector2 mm_size = DrawHelper.Get("Minimap_Size");
+            Vector2 mm_position = DrawHelper.Get("Minimap_Position");
+
+            int x = (int)((GameState.MapOffset.X * 0.2) + 5 );
+            int y = (int)(GameState.MapOffset.Y * 0.2 - 34);
+
+            spriteBatch.Draw(GameState.Karte.Minimap, new Rectangle((int)mm_position.X, (int)mm_position.Y, (int)mm_size.X, (int)mm_size.Y), new Rectangle(x, y, 181, 170), Color.White);
+
+
+            // healthbar
             spriteBatch.Draw(health_bar,
                 new Rectangle((int)hb_position.X, (int)(hb_position.Y + (hb_size.Y - health_bar_height)), (int)hb_size.X, (int)hb_size.Y),
                 //new Rectangle((int)hb_position.X, (int)(hb_position.Y + (hb_size.Y - health_bar_height)), (int)hb_size.X, (int)(health_bar_height)),

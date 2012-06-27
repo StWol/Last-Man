@@ -51,7 +51,7 @@ namespace EVCS_Projekt.Map
             PathFinder.InitPaths();
 
             // Minimap laden
-            Minimap = Main.ContentManager.Load<Texture2D>("maps/" + mapFile + "_minimap");
+            Minimap = Main.ContentManager.Load<Texture2D>("maps/" + mapFile);
         }
 
         private void CleanMap()

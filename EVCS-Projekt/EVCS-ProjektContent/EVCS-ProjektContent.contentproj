@@ -1258,13 +1258,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="maps\testmap_minimap.jpg">
-      <Name>testmap_minimap</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="images\gui\gui_overlay.png">
       <Name>gui_overlay</Name>
       <Importer>TextureImporter</Importer>
@@ -1681,6 +1674,20 @@
   <ItemGroup>
     <Compile Include="images\gameover.png">
       <Name>gameover</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="maps\testmap.png">
+      <Name>testmap</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="images\gui\gui_backlayer.png">
+      <Name>gui_backlayer</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
