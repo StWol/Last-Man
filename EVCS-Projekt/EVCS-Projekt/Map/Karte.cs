@@ -43,12 +43,69 @@ namespace EVCS_Projekt.Map
             Main.MainObject.MenuManager.LoadingText = "Loading map..";
             ReadMapFile(mapFile);
 
+            // CleanMap()
+            CleanMap();
+
             // Wege berechnen
             Main.MainObject.MenuManager.LoadingText = "Calculating enemy routes..";
             PathFinder.InitPaths();
 
             // Minimap laden
             Minimap = Main.ContentManager.Load<Texture2D>("maps/" + mapFile + "_minimap");
+        }
+
+        private void CleanMap()
+        {
+            foreach (StaticObject s in QuadTreeWalkable)
+            {
+
+                foreach (StaticObject s2 in QuadTreeWalkable.GetObjects(s.Rect))
+                {
+                    if (s == s2)
+                        continue;
+
+                    // schaut oben drüber raus
+                    {
+                        float d = ((s.LocationBehavior.Position.X - s.LocationBehavior.Size.X / 2) - (s2.LocationBehavior.Position.X - s2.LocationBehavior.Size.X / 2));
+                        //Debug.WriteLine(d);
+                        if (d <= 2 && d >= -2)
+                        {
+                            s2.LocationBehavior.Position = new Vector2(s.LocationBehavior.Position.X - s.LocationBehavior.Size.X / 2 + s2.LocationBehavior.Size.X / 2, s2.LocationBehavior.Position.Y);
+                            //Debug.WriteLine("fixed");
+                        }
+                    }
+
+                    {
+                        float d = ((s.LocationBehavior.Position.Y - s.LocationBehavior.Size.Y / 2) - (s2.LocationBehavior.Position.Y - s2.LocationBehavior.Size.Y / 2));
+                        //Debug.WriteLine(d);
+                        if (d <= 2 && d >= -2)
+                        {
+                            s2.LocationBehavior.Position = new Vector2(s2.LocationBehavior.Position.X, s.LocationBehavior.Position.Y - s.LocationBehavior.Size.Y / 2 + s2.LocationBehavior.Size.Y / 2);
+                            //Debug.WriteLine("fixed");
+                        }
+                    }
+
+                    {
+                        float d = (s.LocationBehavior.Position.Y + s.LocationBehavior.Size.Y / 2 - s2.LocationBehavior.Size.Y / 2) - s2.LocationBehavior.Position.Y;
+                        //Debug.WriteLine(d);
+                        if (d <= 2 && d >= -2)
+                        {
+                            s2.LocationBehavior.Position = new Vector2(s2.LocationBehavior.Position.X, s2.LocationBehavior.Position.Y + d);
+                            //Debug.WriteLine("fixed " + d);
+                        }
+                    }
+
+                    {
+                        float d = (s.LocationBehavior.Position.X + s.LocationBehavior.Size.X / 2 - s2.LocationBehavior.Size.X / 2) - s2.LocationBehavior.Position.X;
+                        //Debug.WriteLine(d);
+                        if (d <= 2 && d >= -2)
+                        {
+                            s2.LocationBehavior.Position = new Vector2(s2.LocationBehavior.Position.X + d, s2.LocationBehavior.Position.Y);
+                            //Debug.WriteLine("fixed " + d);
+                        }
+                    }
+                }
+            }
         }
 
         private bool ReadMapFile(string mapFile)
@@ -119,7 +176,7 @@ namespace EVCS_Projekt.Map
                     int y = int.Parse(split[2]);
 
                     // SP erstellen
-                    SpawnPoint sp = new SpawnPoint(new MapLocation(new Vector2(x, y)), EEnemyType.E1, 1);
+                    SpawnPoint sp = new SpawnPoint(new MapLocation(new Vector2(x, y)), EEnemyType.E3, 1);
 
                     // SP adden
                     Main.MainObject.GameManager.GameState.QuadTreeSpawnPoints.Add(sp);
@@ -176,8 +233,8 @@ namespace EVCS_Projekt.Map
                     int desId = int.Parse(split[2]);
 
                     // Connection in BEIDE richtung
-                    WayPoints[srcId].connectedPoints.Add(WayPoints[desId]);
-                    WayPoints[desId].connectedPoints.Add(WayPoints[srcId]);
+                    WayPoints[srcId].AddConnection(WayPoints[desId]);
+                    WayPoints[desId].AddConnection(WayPoints[srcId]);
                 }
             }
 

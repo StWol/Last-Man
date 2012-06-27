@@ -32,12 +32,12 @@ namespace EVCS_Projekt.Objects
         public float IsSpawning()
         {
             // RUnde begrenzen
-            if (  !Main.MainObject.GameManager.GameState.RoundIsRunning || Main.MainObject.GameManager.GameState.MonsterSpawnCount <= 0 )
+            if (!Main.MainObject.GameManager.GameState.RoundIsRunning || Main.MainObject.GameManager.GameState.MonsterSpawnCount <= 0)
                 return 0;
 
             // TODO: Auslagern
             int maxSpawnDistance = 1000;
-            
+
             // Wieviele Mosnter gleichzeitig zugelassen sind
             int maxEnemies = 50;
 
@@ -96,13 +96,18 @@ namespace EVCS_Projekt.Objects
                 // Darf er Spawnen ?
                 if (s.IsSpawning() >= random)
                 {
-                    Enemy newEnemie = Enemy.DefaultEnemies[s.EnemyType].Clone();
+                    //Enemy newEnemie = Enemy.DefaultEnemies[s.EnemyType].Clone();
+                    // Enemies nach runden bestimmen
+                    EEnemyType spawnType = GetEType(gameState.Round, rand);
+                    Enemy newEnemie = Enemy.DefaultEnemies[spawnType].Clone();
+
+                    //Debug.WriteLine(spawnType);
 
                     // Spawn ein gegner
                     newEnemie.LocationBehavior.Position = s.Location.Position;
 
                     // Darf er Spawnen und ist an der SpawnPosition überhaupt die Map
-                    if (AllowToSpawn(gameState, newEnemie) && GameManager.CheckRectangleInMap(newEnemie.Rect) )
+                    if (AllowToSpawn(gameState, newEnemie) && GameManager.CheckRectangleInMap(newEnemie.Rect))
                     {
                         // Richtung player laufen
                         newEnemie.Activity = new WalkToPlayer();
@@ -120,7 +125,36 @@ namespace EVCS_Projekt.Objects
             }
 
             //Debug.WriteLine("Spawned Enemies: " + debugCount);
+        }
 
+        private static EEnemyType GetEType(int round, Random r)
+        {
+            // Wahrscheinlichkeits matrix
+            float[,] w = new float[,] { 
+            { 1F, 0, 0, 0, 0 },
+            { 0.9F, 1F, 0, 0, 0 },
+            { 0.8F, 0.95F, 1F, 0, 0 },
+            { 0.6F, 0.85F, 0.95F, 1F, 0 },
+            { 0.45F, 0.7F, 0.85F, 0.95F, 1F },
+            { 0.2F, 0.4F, 0.6F, 0.75F, 0.9F }};
+
+            round = (int)MathHelper.Clamp(round - 1, 0, 5);
+
+            double rand = r.NextDouble();
+
+            // Gegner durchgehen
+            if (rand < w[round, 0])
+                return EEnemyType.E1;
+            if (rand < w[round, 1])
+                return EEnemyType.E2;
+            if (rand < w[round, 2])
+                return EEnemyType.E3;
+            if (rand < w[round, 3])
+                return EEnemyType.E4;
+            if (rand < w[round, 4])
+                return EEnemyType.E5;
+
+            return EEnemyType.E6;
         }
 
         // ***************************************************************************

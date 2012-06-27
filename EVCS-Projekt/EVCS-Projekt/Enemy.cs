@@ -17,7 +17,26 @@ namespace EVCS_Projekt
     public class Enemy : GameObject
     {
         public float Speed { get; private set; }
-        public float Health { get; private set; }
+        private float _health = 0;
+        public float Health
+        {
+            get
+            {
+                return _health;
+            }
+            private set
+            {
+                // Schaden für HS speichern
+                if (value < _health)
+                {
+                    Main.MainObject.GameManager.GameState.DamageGiven += _health - value;
+                }
+
+                _health = value;
+                if (_health > MaxHealth)
+                    _health = MaxHealth;
+            }
+        }
         public float MaxHealth { get; private set; }
         public float SightiningDistance { get; private set; }
         public float AttackDistance { get; private set; }
@@ -53,6 +72,56 @@ namespace EVCS_Projekt
             }
         }
 
+        // ********************************************************************************
+        // Enemies laden
+        public static void Load()
+        {
+            // Dic init
+            Enemy.DefaultEnemies = new Dictionary<EEnemyType, Enemy>();
+
+            {
+                Enemy e = new Enemy(new MapLocation(new Vector2(0, 0)), LoadedRenderer.Get("A_Krabbler_Move"), 1, 300, 1000, 100, 100, 100, EEnemyType.E1);
+                e.Damage = 5F;
+                e.LocationSizing();
+
+                Enemy.DefaultEnemies.Add(e.TypOfEnemy, e);
+            }
+            {
+                Enemy e = new Enemy(new MapLocation(new Vector2(0, 0)), LoadedRenderer.Get("A_Schleimer_Move"), 1, 300, 1000, 100, 100, 100, EEnemyType.E2);
+                e.Damage = 5F;
+                e.LocationSizing();
+
+                Enemy.DefaultEnemies.Add(e.TypOfEnemy, e);
+            }
+            {
+                Enemy e = new Enemy(new MapLocation(new Vector2(0, 0)), LoadedRenderer.Get("A_StachelKrabbe_Move"), 1, 300, 1000, 100, 100, 100, EEnemyType.E3);
+                e.Damage = 5F;
+                e.LocationSizing();
+
+                Enemy.DefaultEnemies.Add(e.TypOfEnemy, e);
+            }
+            {
+                Enemy e = new Enemy(new MapLocation(new Vector2(0, 0)), LoadedRenderer.Get("A_Krabbler_Move"), 1, 300, 1000, 100, 100, 100, EEnemyType.E4);
+                e.Damage = 5F;
+                e.LocationSizing();
+
+                Enemy.DefaultEnemies.Add(e.TypOfEnemy, e);
+            }
+            {
+                Enemy e = new Enemy(new MapLocation(new Vector2(0, 0)), LoadedRenderer.Get("A_RoterDrache_Move"), 1, 300, 1000, 100, 100, 100, EEnemyType.E5);
+                e.Damage = 5F;
+                e.LocationSizing();
+
+                Enemy.DefaultEnemies.Add(e.TypOfEnemy, e);
+            }
+            {
+                Enemy e = new Enemy(new MapLocation(new Vector2(0, 0)), LoadedRenderer.Get("A_Hellboy_Move"), 1, 300, 1000, 100, 100, 100, EEnemyType.E6);
+                e.Damage = 5F;
+                e.LocationSizing();
+
+                Enemy.DefaultEnemies.Add(e.TypOfEnemy, e);
+            }
+        }
 
         public Enemy(Enemy e, Vector2 position) :
             this(e.LocationBehavior, e.Renderer, e.ratOfFire, e.AttackDistance, e.SightiningDistance, e.MaxHealth, e.Speed, e.Health, e.TypOfEnemy)
@@ -82,12 +151,29 @@ namespace EVCS_Projekt
             this.Speed = speed;
             this.Health = health;
 
-            switch ( typeOfEnemy) {
+            switch (typeOfEnemy)
+            {
                 case EEnemyType.E1:
                     moveRenderer = LoadedRenderer.Get("A_Krabbler_Move");
                     standRenderer = LoadedRenderer.Get("A_Krabbler_Stand");
                     break;
                 case EEnemyType.E2:
+                    moveRenderer = LoadedRenderer.Get("A_Schleimer_Move");
+                    standRenderer = LoadedRenderer.Get("A_Schleimer_Stand");
+                    break;
+                case EEnemyType.E3:
+                    moveRenderer = LoadedRenderer.Get("A_StachelKrabbe_Move");
+                    standRenderer = LoadedRenderer.Get("A_StachelKrabbe_Stand");
+                    break;
+                case EEnemyType.E4:
+                    moveRenderer = LoadedRenderer.Get("A_Schleimer_Move");
+                    standRenderer = LoadedRenderer.Get("A_Schleimer_Stand");
+                    break;
+                case EEnemyType.E5:
+                    moveRenderer = LoadedRenderer.Get("A_RoterDrache_Move");
+                    standRenderer = LoadedRenderer.Get("A_RoterDrache_Stand");
+                    break;
+                case EEnemyType.E6:
                     moveRenderer = LoadedRenderer.Get("A_Hellboy_Move");
                     standRenderer = LoadedRenderer.Get("A_Hellboy_Stand");
                     break;

@@ -118,7 +118,7 @@ namespace EVCS_Projekt.Managers
                 GameState.KilledMonsters.Add(e, 0);
 
             // Werte für Runde
-            GameState.RoundDelay = 8;
+            GameState.RoundDelay = 2;
             GameState.Round = 1;
             GameState.RoundIsRunning = false;
             GameState.RoundStartTime = new Dictionary<int, double>();
@@ -183,6 +183,9 @@ namespace EVCS_Projekt.Managers
             //User Interface erstellen
             InitGui();
 
+            // Enemies laden
+            Enemy.Load();
+
             // ################################################################################
             // ################################################################################
             // ################################################################################
@@ -231,16 +234,6 @@ namespace EVCS_Projekt.Managers
             test = Main.ContentManager.Load<Texture2D>("images/pixelWhite");
             testFont = Main.ContentManager.Load<SpriteFont>("fonts/arialSmall");
 
-
-
-            // DefaultEnemies laden
-            Enemy.DefaultEnemies = new Dictionary<EEnemyType, Enemy>();
-
-            Enemy d1 = new Enemy(new MapLocation(new Vector2(0, 0)), LoadedRenderer.Get("A_Krabbler_Move"), 1, 300, 1000, 100, 100, 100, EEnemyType.E1);
-            d1.Damage = 5F;
-            d1.LocationSizing();
-
-            Enemy.DefaultEnemies.Add(EEnemyType.E1, d1);
 
             // TEST-ENDE
             // ################################################################################
@@ -393,7 +386,7 @@ namespace EVCS_Projekt.Managers
                     GameState.RoundIsRunning = true;
 
                     // Monstercount für die runden
-                    GameState.MonsterSpawnCount = GameState.Round * 1;
+                    GameState.MonsterSpawnCount = GameState.Round * 10;
 
                     // KillsToEndRound setzten
                     GameState.KillsToEndRound = GameState.MonsterSpawnCount;
@@ -585,7 +578,7 @@ namespace EVCS_Projekt.Managers
                 {
                     updateDelegater = UpdateGame;
                     constructorPanel.Visible = false;
-                }     
+                }
                 else
                 {
                     updateDelegater = UpdateGui;
@@ -875,6 +868,17 @@ namespace EVCS_Projekt.Managers
             // Bildschirm Rectangle
             Rectangle screenRect = new Rectangle((int)GameState.MapOffset.X, (int)GameState.MapOffset.Y, Configuration.GetInt("resolutionWidth"), Configuration.GetInt("resolutionHeight"));
 
+            // Screen karrieren
+            int karoSize = 20;
+            for (int i = 0; i <= Configuration.GetInt("resolutionWidth") / karoSize; i++)
+            {
+                Draw2D.DrawLine(spriteBatch, 1, Color.LightGray, new Vector2(i * karoSize - GameState.MapOffset.X % karoSize, 0), new Vector2(i * karoSize - GameState.MapOffset.X % karoSize, Configuration.GetInt("resolutionHeight")));
+            }
+            for (int i = 0; i <= Configuration.GetInt("resolutionHeight") / karoSize; i++)
+            {
+                Draw2D.DrawLine(spriteBatch, 1, Color.LightGray, new Vector2(0, i * karoSize - GameState.MapOffset.Y % karoSize), new Vector2(Configuration.GetInt("resolutionWidth"), i * karoSize - GameState.MapOffset.Y % karoSize));
+            }
+
             //Static Objects im Bild
             List<StaticObject> staticOnScreen = GameState.QuadTreeStaticObjects.GetObjects(screenRect);
 
@@ -905,6 +909,7 @@ namespace EVCS_Projekt.Managers
                 //Debug.WriteLine(so.LocationBehavior.Position + " " + so.LocationBehavior.Size);
                 so.Renderer.Draw(spriteBatch, so.LocationBehavior, Color.Black);
             }
+
 
             // Statische Objekte zeichnen
             foreach (StaticObject so in staticOnScreen)
@@ -982,7 +987,11 @@ namespace EVCS_Projekt.Managers
             spriteBatch.DrawString(testFont, "Health: " + GameState.Player.Health, new Vector2(0, 60), Color.Red);
             spriteBatch.DrawString(testFont, "TimeToRoundStart: " + GameState.TimeToRoundStart + " Kills: " + GameState.TotalKilledMonsters, new Vector2(0, 90), Color.Blue);
 
-
+            // Mapinfos
+            /*foreach (StaticObject so in GameState.Karte.QuadTreeWalkable.GetObjects(screenRect))
+            {
+                spriteBatch.DrawString(defaultFont, so.LocationBehavior.RelativeBoundingBox+"\n"+so.LocationBehavior.RelativePosition+"\n"+so.LocationBehavior.Position, so.LocationBehavior.RelativePosition, Color.Magenta);
+            }*/
 
             if (constructorPanel.Visible)
             {
@@ -1032,7 +1041,7 @@ namespace EVCS_Projekt.Managers
                     }
                     else
                     {
-                        info = "Runde " + GameState.Round + " begint..";
+                        info = "Runde " + GameState.Round + " beginnt..";
                     }
                 }
 
@@ -1058,7 +1067,7 @@ namespace EVCS_Projekt.Managers
                 new Rectangle((int)hb_position.X, (int)(hb_position.Y + (hb_size.Y - health_bar_height)), (int)hb_size.X, (int)hb_size.Y),
                 //new Rectangle((int)hb_position.X, (int)(hb_position.Y + (hb_size.Y - health_bar_height)), (int)hb_size.X, (int)(health_bar_height)),
                 //new Rectangle(0, (int)(hb_size.Y - health_bar_height), (int)hb_size.X, (int)(health_bar_height)), 
-                Color.White);
+                Color.Red);
 
             // Munition
             string munCount = "--";

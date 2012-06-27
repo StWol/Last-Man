@@ -28,15 +28,20 @@ namespace EVCS_Projekt
 
         //Attributes
         public float MaxHealth { get; private set; }
-        private float _healt = 0;
+        private float _health = 0;
         public float Health
         {
-            get { return _healt; }
+            get { return _health; }
             set
             {
-                _healt = value;
-                if (_healt > MaxHealth)
-                    _healt = MaxHealth;
+                // Schaden für HS speichern
+                if (value < _health) {
+                    Main.MainObject.GameManager.GameState.DamageTaken += _health - value;
+                }
+
+                _health = value;
+                if (_health > MaxHealth)
+                    _health = MaxHealth;
             }
         }
         public float Speed { get; set; }

@@ -30,6 +30,9 @@ namespace EVCS_Projekt.Helper
                     h += (long)Math.Max(0, vorgabe + faktor);
                 }
 
+                h += (long)(g.DamageGiven * 10);
+                h -= (long)(g.DamageTaken * 10);
+
                 h = Math.Max(0, h - g.Shots);
 
                 return h;

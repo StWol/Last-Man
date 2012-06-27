@@ -10,14 +10,23 @@ namespace EVCS_Projekt.AI
     {
         public int ID { get; set; }
         public float Distance { get; set; }
+        public WayPoint WayPoint { get; set; }
 
         public PathNode PreviousNode { get; set; }
         public PathNode NextNode { get; set; }
 
-        public PathNode(float distance, int waypointID )
+        public PathNode(float distance, int waypointID)
         {
             Distance = distance;
             ID = waypointID;
+            WayPoint = Main.MainObject.GameManager.GameState.Karte.WayPoints[waypointID];
+        }
+
+        public PathNode(float distance, WayPoint waypoint)
+        {
+            Distance = distance;
+            WayPoint = waypoint;
+            ID = waypoint.ID;
         }
 
         // PathNode kopieren
