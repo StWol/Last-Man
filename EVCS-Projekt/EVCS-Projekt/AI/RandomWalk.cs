@@ -16,7 +16,7 @@ namespace EVCS_Projekt.AI
         {
         }
 
-        private WayPoint SearchNearest(Vector2 position)
+        /*private WayPoint SearchNearest(Vector2 position)
         {
             int sizeX = 1000, sizeY = 1000;
             List<WayPoint> wpList = Main.MainObject.GameManager.GameState.Karte.QuadTreeWayPoints.GetObjects(new Rectangle( (int)(position.X-sizeX/2), (int)(position.Y-sizeY/2),sizeX,sizeY ) );
@@ -63,10 +63,10 @@ namespace EVCS_Projekt.AI
         private int rotation;
         private float rotationTime;
 
-        // Läuft zufällig in der Gegend rum
+        // Läuft zufällig in der Gegend rum*/
         public override void CalculateAction(Enemy e)
         {
-            if ( noWayPointVisible)
+           /* if ( noWayPointVisible)
                 return;
 
             // Nähster WP
@@ -159,11 +159,11 @@ namespace EVCS_Projekt.AI
                     // Laufen
                     Move(e);
                 }
-            }
+            }*/
         }
 
         private void Move(Enemy e)
-        {
+        {/*
             // Direction muss umgekehrt werden ( sonst läuft er rückwärts ;) )
             Vector2 moveVector = -e.LocationBehavior.Direction;
 
@@ -181,7 +181,7 @@ namespace EVCS_Projekt.AI
             else
             {
                 e.HasMoved = false;
-            }
+            }*/
         }
     }
 }

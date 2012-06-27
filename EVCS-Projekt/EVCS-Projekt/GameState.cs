@@ -51,6 +51,8 @@ namespace EVCS_Projekt
         // Highscore
         public long Highscore { get; set; }
         public long Shots { get; set; }
+        public float DamageGiven { get; set; }
+        public float DamageTaken { get; set; }
 
         // Variablen für Runden etc
         public int Round { get; set; }

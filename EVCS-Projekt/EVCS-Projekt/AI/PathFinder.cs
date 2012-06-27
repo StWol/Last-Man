@@ -12,14 +12,21 @@ namespace EVCS_Projekt.AI
         private static Dictionary<int, Dictionary<int, PathNode>> savedPaths;
 
         // Zur berechnung nötig
-        private static List<PathNode> openList;
-        private static List<PathNode> closedList;
+        //private static List<PathNode> openList;
+        //private static List<PathNode> closedList;
 
         private static bool callculated = false;
 
         public static void InitPaths()
         {
             savedPaths = new Dictionary<int, Dictionary<int, PathNode>>();
+
+            allNodes = new Dictionary<int, PathNode>();
+
+            foreach (WayPoint w in Main.MainObject.GameManager.GameState.Karte.WayPoints.Values) {
+                PathNode n = new PathNode(float.MaxValue, w);
+                allNodes.Add(w.ID, n);
+            }
 
             //Debug.WriteLine("Pfade berechnen..");
             //int c = 0;
@@ -49,7 +56,103 @@ namespace EVCS_Projekt.AI
                 return savedPaths[start.ID][target.ID].Clone();
         }
 
+        //
+        private static List<PathNode> openList;
+        private static List<PathNode> closedList;
+        private static Dictionary<int, PathNode> allNodes;
+
         private static PathNode _findePath(WayPoint start, WayPoint target)
+        {
+            // Listen init
+            openList = new List<PathNode>();
+            closedList = new List<PathNode>();
+
+            // Start einfügen
+            PathNode startNode = new PathNode(0, start);
+            openList.Add(startNode);
+
+            // solange openlist nicht leer ist
+            while (openList.Count > 0)
+            {
+                //next Node aus openlist holen
+                PathNode next = openList[0];
+                openList.RemoveAt(0);
+
+                // Nachbarn einfügen
+                expandNode(next);
+
+                // Node in closeliste einfügn
+                closedList.Add(next);
+
+                // prüfen ob ich schon fertig bin
+                if (next.ID == target.ID)
+                    break;
+            }
+
+            // pfad bauen
+            buildPath(startNode, target.ID);
+
+            return startNode;
+        }
+
+        private static void buildPath (PathNode start, int targetId) {
+
+            PathNode _build = allNodes[targetId];
+
+            PathNode current = _build;
+
+            while (current.ID != start.ID)
+            {
+                PathNode prev = allNodes[current.PreviousNode.ID];
+
+                prev.NextNode = current;
+                int c = current.PreviousNode.ID;
+                current = prev;
+            }
+
+            start = allNodes[start.ID]; ;
+        }
+
+        private static void expandNode( PathNode n )
+        {
+            foreach (WayPoint w in n.WayPoint.connectedPoints)
+            {
+                // Pathnode mit distanz erzeugen
+                PathNode node = allNodes[w.ID]; 
+
+                // node adden falls er noch nicht in openlist und closelist ist
+                if (closedList.Contains(node))
+                    continue;
+
+                // distanz zu nachbar
+                float dist = n.Distance + n.WayPoint.distances[w.ID];
+
+                // checken ob er schon in openlist ist
+                if (openList.Contains(node))
+                {
+                    // Distanz und vorgänger udpaten falls distanz kleiner ist
+                    if (dist < node.Distance)
+                    {
+                        node.Distance = dist;
+                        node.PreviousNode = n;
+                    }
+                }
+                else
+                {
+                    // vorgänger setzten
+                    node.PreviousNode = n;
+                    node.Distance = dist;
+
+                    // pathnode in open list
+                    openList.Add(node);
+                }
+            }
+
+            // List sortieren
+            openList.Sort(CompareNodes);
+        }
+
+        /*private static PathNode _findePath(WayPoint start, WayPoint target)
         {
             //Debug.WriteLine("pfad berechnen von " + start.ID + " zu " + target.ID);
 
@@ -212,7 +315,7 @@ namespace EVCS_Projekt.AI
                 if (n.ID == id)
                     return n;
             return null;
-        }
+        }*/
 
 
         // **************************************************************************

@@ -11,6 +11,7 @@ namespace EVCS_Projekt.AI
 {
     public class WalkToPlayer : Activity
     {
+        /*
         // Calculate
         private PathNode _path { get; set; }
         private WayPoint _target { get; set; }
@@ -84,7 +85,9 @@ namespace EVCS_Projekt.AI
                     return;
                 }
 
+                double sT = DateTime.Now.Ticks;
                 _path = PathFinder.FindePath(_currentWayPoint, target);
+                Debug.WriteLine(( DateTime.Now.Ticks-sT)/10);
             }
 
             WayPoint next = Main.MainObject.GameManager.GameState.Karte.WayPoints[_path.ID];
@@ -195,6 +198,43 @@ namespace EVCS_Projekt.AI
             }
 
             return w;
+        }
+         * */
+
+        ////////////////////////////////////////////////////////////////
+        ////////////////////////////////////////////////////////////////
+        ////////////////////////////////////////////////////////////////
+        
+        private WayPoint _nearest;
+        private PathNode _currentPath;
+
+        // Tue die Action
+        public override void CalculateAction(Enemy e)
+        {
+            // WP des Players
+            WayPoint playerWayPoint = Main.MainObject.GameManager.GameState.Player.NearestWayPoint;
+
+            // Falls es kein Wegpunkt gibt, der am nähesten bei mir ist
+            if (_nearest == null)
+                _nearest = Karte.SearchNearest(e.LocationBehavior.Position);
+
+            // Sollte es kein Wegpunkt in meiner Nähe geben abbrechen
+            if (_nearest == null)
+                return;
+
+            // wenn es kein pfad gigt, pfad zu player berechnen
+            if (_currentPath == null && playerWayPoint != null)
+            {
+                _currentPath = PathFinder.FindePath(_nearest, playerWayPoint);
+            }
+
+            Debug.WriteLine("berechnet " + DateTime.Now.TimeOfDay);
+        }
+
+        // Tue die Action
+        public override void DoActivity(Enemy e)
+        {
+
         }
     }
 }

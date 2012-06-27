@@ -17,7 +17,26 @@ namespace EVCS_Projekt
     public class Enemy : GameObject
     {
         public float Speed { get; private set; }
-        public float Health { get; private set; }
+        private float _health = 0;
+        public float Health
+        {
+            get
+            {
+                return _health;
+            }
+            private set
+            {
+                // Schaden für HS speichern
+                if (value < _health)
+                {
+                    Main.MainObject.GameManager.GameState.DamageGiven += _health - value;
+                }
+
+                _health = value;
+                if (_health > MaxHealth)
+                    _health = MaxHealth;
+            }
+        }
         public float MaxHealth { get; private set; }
         public float SightiningDistance { get; private set; }
         public float AttackDistance { get; private set; }
@@ -132,7 +151,8 @@ namespace EVCS_Projekt
             this.Speed = speed;
             this.Health = health;
 
-            switch ( typeOfEnemy) {
+            switch (typeOfEnemy)
+            {
                 case EEnemyType.E1:
                     moveRenderer = LoadedRenderer.Get("A_Krabbler_Move");
                     standRenderer = LoadedRenderer.Get("A_Krabbler_Stand");

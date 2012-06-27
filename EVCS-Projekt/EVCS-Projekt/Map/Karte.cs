@@ -233,8 +233,8 @@ namespace EVCS_Projekt.Map
                     int desId = int.Parse(split[2]);
 
                     // Connection in BEIDE richtung
-                    WayPoints[srcId].connectedPoints.Add(WayPoints[desId]);
-                    WayPoints[desId].connectedPoints.Add(WayPoints[srcId]);
+                    WayPoints[srcId].AddConnection(WayPoints[desId]);
+                    WayPoints[desId].AddConnection(WayPoints[srcId]);
                 }
             }
 
