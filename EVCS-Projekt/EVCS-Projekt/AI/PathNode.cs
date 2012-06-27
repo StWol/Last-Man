@@ -40,14 +40,18 @@ namespace EVCS_Projekt.AI
             if (PreviousNode != null)
                 n.PreviousNode = PreviousNode.Clone();
 
+            n.WayPoint = WayPoint;
+
+            n.Distance = Distance;
+
             return n;
         }
 
         // **************************************************************************
         // Prüft ob sich in einem pfad ein bestimmter wegpunkt befindet
-        public static bool IsWaypointInPath(int waypointId, PathNode path)
+        public bool IsWaypointInPath(int waypointId)
         {
-            PathNode current = path;
+            PathNode current = this;
             while (current != null)
             {
                 if (current.ID == waypointId)
@@ -55,6 +59,26 @@ namespace EVCS_Projekt.AI
 
                 current = current.NextNode;
             }
+            return false;
+        }
+
+        // **************************************************************************
+        // Prüft ob sich in einem pfad ein bestimmter wegpunkt befindet
+        public bool IsWaypointInPath(int waypointId, out PathNode outNode)
+        {
+            PathNode current = this;
+            while (current != null)
+            {
+                if (current.ID == waypointId)
+                {
+                    outNode = current;
+                    return true;
+                }
+
+                current = current.NextNode;
+            }
+
+            outNode = null;
             return false;
         }
     }

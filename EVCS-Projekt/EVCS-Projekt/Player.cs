@@ -333,7 +333,7 @@ namespace EVCS_Projekt
             List<WayPoint> l = Main.MainObject.GameManager.GameState.Karte.QuadTreeWayPoints.GetObjects(new Rectangle((int)LocationBehavior.Position.X - 100, (int)LocationBehavior.Position.Y - 100, 200, 200));
             if (l.Count > 0)
             {
-                NearestWayPoint = Karte.SearchNearest(LocationBehavior.Position, l);
+                NearestWayPoint = Karte.SearchNearest(LocationBehavior.Position, LocationBehavior.Size ,l);
             }
 
             // Renderer Updaten

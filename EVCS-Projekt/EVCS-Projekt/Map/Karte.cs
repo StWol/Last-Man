@@ -252,12 +252,22 @@ namespace EVCS_Projekt.Map
             int sizeX = 1000, sizeY = 1000;
             List<WayPoint> wpList = Main.MainObject.GameManager.GameState.Karte.QuadTreeWayPoints.GetObjects(new Rectangle((int)(position.X - sizeX / 2), (int)(position.Y - sizeY / 2), sizeX, sizeY));
 
-            WayPoint nearest = SearchNearest(position, wpList);
+            WayPoint nearest = SearchNearest(position, new Vector2(1,1) , wpList);
 
             return nearest;
         }
 
-        public static WayPoint SearchNearest(Vector2 position, List<WayPoint> wpList)
+        public static WayPoint SearchNearest(Vector2 position, Vector2 size)
+        {
+            int sizeX = 1000, sizeY = 1000;
+            List<WayPoint> wpList = Main.MainObject.GameManager.GameState.Karte.QuadTreeWayPoints.GetObjects(new Rectangle((int)(position.X - sizeX / 2), (int)(position.Y - sizeY / 2), sizeX, sizeY));
+
+            WayPoint nearest = SearchNearest(position, size, wpList);
+
+            return nearest;
+        }
+
+        public static WayPoint SearchNearest(Vector2 position, Vector2 size, List<WayPoint> wpList)
         {
             // Nearest
             WayPoint nearest = null;
@@ -267,7 +277,7 @@ namespace EVCS_Projekt.Map
             {
                 if (nearest == null)
                 {
-                    if (GameManager.PointSeePoint(position, w.Location.Position))
+                    if (GameManager.PointSeePoint(position, w.Location.Position, size))
                     {
                         // Bei null setzten
                         nearest = w;
@@ -278,7 +288,7 @@ namespace EVCS_Projekt.Map
                 {
                     // prüfen ob wp näher an position liegt
                     float tDist = Vector2.Distance(w.Location.Position, position);
-                    if (tDist < dist && GameManager.PointSeePoint(position, w.Location.Position))
+                    if (tDist < dist && GameManager.PointSeePoint(position, w.Location.Position, size))
                     {
                         dist = tDist;
                         nearest = w;

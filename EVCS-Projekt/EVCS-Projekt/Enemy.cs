@@ -80,42 +80,42 @@ namespace EVCS_Projekt
             Enemy.DefaultEnemies = new Dictionary<EEnemyType, Enemy>();
 
             {
-                Enemy e = new Enemy(new MapLocation(new Vector2(0, 0)), LoadedRenderer.Get("A_Krabbler_Move"), 1, 300, 1000, 100, 100, 100, EEnemyType.E1);
+                Enemy e = new Enemy(new MapLocation(new Vector2(0, 0)), LoadedRenderer.Get("A_Krabbler_Move"), 1, 300, 400, 100, 100, 100, EEnemyType.E1);
                 e.Damage = 5F;
                 e.LocationSizing();
 
                 Enemy.DefaultEnemies.Add(e.TypOfEnemy, e);
             }
             {
-                Enemy e = new Enemy(new MapLocation(new Vector2(0, 0)), LoadedRenderer.Get("A_Schleimer_Move"), 1, 300, 1000, 100, 100, 100, EEnemyType.E2);
+                Enemy e = new Enemy(new MapLocation(new Vector2(0, 0)), LoadedRenderer.Get("A_Schleimer_Move"), 1, 300, 400, 100, 100, 100, EEnemyType.E2);
                 e.Damage = 5F;
                 e.LocationSizing();
 
                 Enemy.DefaultEnemies.Add(e.TypOfEnemy, e);
             }
             {
-                Enemy e = new Enemy(new MapLocation(new Vector2(0, 0)), LoadedRenderer.Get("A_StachelKrabbe_Move"), 1, 300, 1000, 100, 100, 100, EEnemyType.E3);
+                Enemy e = new Enemy(new MapLocation(new Vector2(0, 0)), LoadedRenderer.Get("A_StachelKrabbe_Move"), 1, 300, 400, 100, 100, 100, EEnemyType.E3);
                 e.Damage = 5F;
                 e.LocationSizing();
 
                 Enemy.DefaultEnemies.Add(e.TypOfEnemy, e);
             }
             {
-                Enemy e = new Enemy(new MapLocation(new Vector2(0, 0)), LoadedRenderer.Get("A_Krabbler_Move"), 1, 300, 1000, 100, 100, 100, EEnemyType.E4);
+                Enemy e = new Enemy(new MapLocation(new Vector2(0, 0)), LoadedRenderer.Get("A_Krabbler_Move"), 1, 300, 400, 100, 100, 100, EEnemyType.E4);
                 e.Damage = 5F;
                 e.LocationSizing();
 
                 Enemy.DefaultEnemies.Add(e.TypOfEnemy, e);
             }
             {
-                Enemy e = new Enemy(new MapLocation(new Vector2(0, 0)), LoadedRenderer.Get("A_RoterDrache_Move"), 1, 300, 1000, 100, 100, 100, EEnemyType.E5);
+                Enemy e = new Enemy(new MapLocation(new Vector2(0, 0)), LoadedRenderer.Get("A_RoterDrache_Move"), 1, 300, 400, 100, 100, 100, EEnemyType.E5);
                 e.Damage = 5F;
                 e.LocationSizing();
 
                 Enemy.DefaultEnemies.Add(e.TypOfEnemy, e);
             }
             {
-                Enemy e = new Enemy(new MapLocation(new Vector2(0, 0)), LoadedRenderer.Get("A_Hellboy_Move"), 1, 300, 1000, 100, 100, 100, EEnemyType.E6);
+                Enemy e = new Enemy(new MapLocation(new Vector2(0, 0)), LoadedRenderer.Get("A_Hellboy_Move"), 1, 300, 400, 100, 100, 100, EEnemyType.E6);
                 e.Damage = 5F;
                 e.LocationSizing();
 
