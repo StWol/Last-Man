@@ -149,6 +149,7 @@
     <Compile Include="UI\UIShortcutButton.cs" />
     <Compile Include="UI\UIToggleButton.cs" />
     <Compile Include="UI\UIVerticalProgressBar.cs" />
+    <Compile Include="UI\UIWeaponPanel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Game.ico" />
