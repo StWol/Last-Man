@@ -15,11 +15,17 @@ namespace EVCS_Projekt.UI
     {
         public int Key;
         private Weapon weapon;
+
+        private UIWeaponPanel weaponPanel;
         public Weapon Weapon
         {
             get { return weapon; }
             set
             {
+                if(value==null)
+                {
+                    weaponPanel.ResetPanel();
+                }
                 weapon = value;
             }
         }
@@ -41,6 +47,9 @@ namespace EVCS_Projekt.UI
             //weapon.Renderer.Draw(spriteBatch, new UILocation(new Rectangle(0,0,10,10));
 
             weaponBackgroundTexture = Main.ContentManager.Load<Texture2D>( "images/gui/inventar/shortcut_weapon" );
+
+            weaponPanel = new UIWeaponPanel( height, new Vector2( ( int ) height, 0 ) );
+            Add(weaponPanel); 
         }
 
 
@@ -57,7 +66,7 @@ namespace EVCS_Projekt.UI
 
             if ( weapon != null )
             {
-                sb.Draw( weaponTexture, new Rectangle( ( int ) GetPosition().X + height, ( int ) GetPosition().Y, width - ( height * 3 ), height ), Color.White );
+                weaponPanel.SetWeapon(weapon);
                 if ( weapon.Munition != null )
                 {
                     sb.Draw( weapon.Munition.Icon, new Rectangle( ( int ) x + width - height * 2, ( int ) GetPosition().Y, height, height ), Color.White );
@@ -66,7 +75,7 @@ namespace EVCS_Projekt.UI
             }
 
 
-            //btnMun.Draw( sb );
+            base.Draw( sb );
         }
 
     }

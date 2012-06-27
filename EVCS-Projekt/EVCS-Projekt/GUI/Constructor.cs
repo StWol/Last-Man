@@ -99,11 +99,6 @@ namespace EVCS_Projekt.GUI
             //Add( btnCancel );
         }
 
-        public override void Draw( SpriteBatch sb )
-        {
-            
-            base.Draw( sb );
-        }
 
         public void OnMouseDown(UIElement element)
         {

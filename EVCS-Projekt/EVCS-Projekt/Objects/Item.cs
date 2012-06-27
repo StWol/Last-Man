@@ -41,6 +41,7 @@ namespace EVCS_Projekt.Objects
 
         private static Texture2D defaultWeaponIcon;
         public static int StaticID = 800;
+        private static Dictionary<int, Texture2D> CraftingItemIcons;
 
 
         // ***************************************************************************
@@ -60,133 +61,144 @@ namespace EVCS_Projekt.Objects
             AllItems = new Dictionary<int, Item>();
 
             ItemIcons = new Dictionary<int, Texture2D>();
+            CraftingItemIcons = new Dictionary<int, Texture2D>();
 
-            defaultWeaponIcon = Main.ContentManager.Load<Texture2D>("images/itemIcons/1");
-            ItemIcons.Add(800, defaultWeaponIcon);
+            defaultWeaponIcon = Main.ContentManager.Load<Texture2D>( "images/itemIcons/1" );
+            ItemIcons.Add( 800, defaultWeaponIcon );
             // Laden
             //Debug.WriteLine("Lade antrieb.xml");
-            LoadXML<Antrieb, Antrieb.AntriebInner>("antrieb.xml");
+            LoadXML<Antrieb, Antrieb.AntriebInner>( "antrieb.xml" );
             //Debug.WriteLine("Lade hauptteil.xml");
-            LoadXML<Hauptteil, Hauptteil.HauptteilInner>("hauptteil.xml");
+            LoadXML<Hauptteil, Hauptteil.HauptteilInner>( "hauptteil.xml" );
             //Debug.WriteLine("Lade munition.xml");
-            LoadXML<Munition, Munition.MunitionInner>("munition.xml");
+            LoadXML<Munition, Munition.MunitionInner>( "munition.xml" );
             //Debug.WriteLine("Lade powerup.xml");
-            LoadXML<Powerup, Powerup.PowerupInner>("powerup.xml");
+            LoadXML<Powerup, Powerup.PowerupInner>( "powerup.xml" );
             //Debug.WriteLine("Lade shot.xml");
-            LoadXML<Shot, Shot.ShotInner>("shot.xml");
+            LoadXML<Shot, Shot.ShotInner>( "shot.xml" );
             //Debug.WriteLine("Lade stabilisator.xml");
-            LoadXML<Stabilisator, Stabilisator.StabilisatorInner>("stabilisator.xml");
+            LoadXML<Stabilisator, Stabilisator.StabilisatorInner>( "stabilisator.xml" );
             //Debug.WriteLine("Lade visier.xml");
-            LoadXML<Visier, Visier.VisierInner>("visier.xml");
+            LoadXML<Visier, Visier.VisierInner>( "visier.xml" );
             //Debug.WriteLine("Lade weapon.xml");
-            LoadXML<Weapon, Weapon.WeaponInner>("weapon.xml");
+            LoadXML<Weapon, Weapon.WeaponInner>( "weapon.xml" );
 
             // Icons
-            foreach (Item i in AllItems.Values)
+            foreach ( Item i in AllItems.Values )
             {
                 // Schüsse skippen
-                if (i.GetType() == typeof(Shot))
+                if ( i.GetType() == typeof( Shot ) )
                     continue;
 
                 Texture2D ico;
+                Texture2D craftingIcon;
                 try
                 {
-                    ico = Main.ContentManager.Load<Texture2D>(Configuration.Get("iconDir") + i.TypeId);
+                    ico = Main.ContentManager.Load<Texture2D>( Configuration.Get( "iconDir" ) + i.TypeId );
                 }
                 catch
                 {
-                    Debug.WriteLine("Dummy für " + i.TypeId);
-                    ico = Main.ContentManager.Load<Texture2D>(Configuration.Get("iconDir") + "dummy");
+                    ico = Main.ContentManager.Load<Texture2D>( Configuration.Get( "iconDir" ) + "dummy" );
                 }
 
+                try
+                {
+                    string path = Configuration.Get("craftingItemDir") + i.TypeId;
+                    craftingIcon = Main.ContentManager.Load<Texture2D>( path );
+                }
+                catch
+                {
+                    craftingIcon = Main.ContentManager.Load<Texture2D>( "images/pixelTransparent" );
+                }
                 // StaticRenderer erstellen, da icons immer staticrenderer haben! is so
-                StaticRenderer s = new StaticRenderer(ico);
+                StaticRenderer s = new StaticRenderer( ico );
                 s.Name = "S_IconRenderer_" + i.TypeId;
 
-                LoadedRenderer.DefaultRenderer.Add("S_IconRenderer_" + i.TypeId, s);
+                LoadedRenderer.DefaultRenderer.Add( "S_IconRenderer_" + i.TypeId, s );
 
-                ItemIcons.Add(i.TypeId, ico);
+                ItemIcons.Add( i.TypeId, ico );
+                CraftingItemIcons.Add( i.TypeId, craftingIcon );
             }
         }
 
-        private static List<Inner> GetList<Inner>(FileStream fs)
+        private static List<Inner> GetList<Inner>( FileStream fs )
         {
-            XmlSerializer serializer = new XmlSerializer(typeof(List<Inner>));
-            List<Inner> loaded = (List<Inner>)serializer.Deserialize(fs);
+            XmlSerializer serializer = new XmlSerializer( typeof( List<Inner> ) );
+            List<Inner> loaded = ( List<Inner> ) serializer.Deserialize( fs );
             return loaded;
         }
 
-        private static void LoadXML<Outter, Inner>(string file)
+        private static void LoadXML<Outter, Inner>( string file )
         {
 
             //BaseFruit fruit = constructor.Invoke(new object[] { (int)150 }) as BaseFruit;
 
 
             // File öffnen
-            FileStream fs = new FileStream(Configuration.Get("itemDir") + file, FileMode.Open);
+            FileStream fs = new FileStream( Configuration.Get( "itemDir" ) + file, FileMode.Open );
 
 
-            if (typeof(Outter) == typeof(Antrieb))
+            if ( typeof( Outter ) == typeof( Antrieb ) )
             {
-                foreach (Antrieb.AntriebInner i in GetList<Antrieb.AntriebInner>(fs))
+                foreach ( Antrieb.AntriebInner i in GetList<Antrieb.AntriebInner>( fs ) )
                 {
-                    Antrieb v = new Antrieb(i);
-                    DefaultAntrieb.Add(v.TypeId, v);
-                    AllItems.Add(v.TypeId, v);
+                    Antrieb v = new Antrieb( i );
+                    DefaultAntrieb.Add( v.TypeId, v );
+                    AllItems.Add( v.TypeId, v );
                 }
             }
-            else if (typeof(Outter) == typeof(Hauptteil))
+            else if ( typeof( Outter ) == typeof( Hauptteil ) )
             {
-                foreach (Hauptteil.HauptteilInner i in GetList<Hauptteil.HauptteilInner>(fs))
+                foreach ( Hauptteil.HauptteilInner i in GetList<Hauptteil.HauptteilInner>( fs ) )
                 {
-                    Hauptteil v = new Hauptteil(i);
-                    DefaultHauptteil.Add(v.TypeId, v);
-                    AllItems.Add(v.TypeId, v);
+                    Hauptteil v = new Hauptteil( i );
+                    DefaultHauptteil.Add( v.TypeId, v );
+                    AllItems.Add( v.TypeId, v );
                 }
             }
-            else if (typeof(Outter) == typeof(Munition))
+            else if ( typeof( Outter ) == typeof( Munition ) )
             {
-                foreach (Munition.MunitionInner i in GetList<Munition.MunitionInner>(fs))
+                foreach ( Munition.MunitionInner i in GetList<Munition.MunitionInner>( fs ) )
                 {
-                    Munition v = new Munition(i);
-                    DefaultMunition.Add(v.TypeId, v);
-                    AllItems.Add(v.TypeId, v);
+                    Munition v = new Munition( i );
+                    DefaultMunition.Add( v.TypeId, v );
+                    AllItems.Add( v.TypeId, v );
                 }
             }
-            else if (typeof(Outter) == typeof(Powerup))
+            else if ( typeof( Outter ) == typeof( Powerup ) )
             {
-                foreach (Powerup.PowerupInner i in GetList<Powerup.PowerupInner>(fs))
+                foreach ( Powerup.PowerupInner i in GetList<Powerup.PowerupInner>( fs ) )
                 {
-                    Powerup v = new Powerup(i);
-                    DefaultPowerups.Add(v.TypeId, v);
-                    AllItems.Add(v.TypeId, v);
+                    Powerup v = new Powerup( i );
+                    DefaultPowerups.Add( v.TypeId, v );
+                    AllItems.Add( v.TypeId, v );
                 }
             }
-            else if (typeof(Outter) == typeof(Stabilisator))
+            else if ( typeof( Outter ) == typeof( Stabilisator ) )
             {
-                foreach (Stabilisator.StabilisatorInner i in GetList<Stabilisator.StabilisatorInner>(fs))
+                foreach ( Stabilisator.StabilisatorInner i in GetList<Stabilisator.StabilisatorInner>( fs ) )
                 {
-                    Stabilisator v = new Stabilisator(i);
-                    DefaultStabilisatoren.Add(v.TypeId, v);
-                    AllItems.Add(v.TypeId, v);
+                    Stabilisator v = new Stabilisator( i );
+                    DefaultStabilisatoren.Add( v.TypeId, v );
+                    AllItems.Add( v.TypeId, v );
                 }
             }
-            else if (typeof(Outter) == typeof(Visier))
+            else if ( typeof( Outter ) == typeof( Visier ) )
             {
-                foreach (Visier.VisierInner i in GetList<Visier.VisierInner>(fs))
+                foreach ( Visier.VisierInner i in GetList<Visier.VisierInner>( fs ) )
                 {
-                    Visier v = new Visier(i);
-                    DefaultVisiere.Add(v.TypeId, v);
-                    AllItems.Add(v.TypeId, v);
+                    Visier v = new Visier( i );
+                    DefaultVisiere.Add( v.TypeId, v );
+                    AllItems.Add( v.TypeId, v );
                 }
             }
-            else if (typeof(Outter) == typeof(Weapon))
+            else if ( typeof( Outter ) == typeof( Weapon ) )
             {
-                foreach (Weapon.WeaponInner i in GetList<Weapon.WeaponInner>(fs))
+                foreach ( Weapon.WeaponInner i in GetList<Weapon.WeaponInner>( fs ) )
                 {
-                    Weapon v = new Weapon(i);
-                    DefaultWeapon.Add(v.TypeId, v);
-                    AllItems.Add(v.TypeId, v);
+                    Weapon v = new Weapon( i );
+                    DefaultWeapon.Add( v.TypeId, v );
+                    AllItems.Add( v.TypeId, v );
                 }
             }
         }
@@ -197,20 +209,27 @@ namespace EVCS_Projekt.Objects
         public string Name { get; private set; }
         public string Description { get; private set; }
         public float Weight { get; private set; }
-
-        public Texture2D Icon { get
+        public Texture2D CraftingItem
         {
-            if (GetType() == typeof(Weapon))
-                return ItemIcons[800];
-            return ItemIcons[TypeId];
-        } }
+            get { return CraftingItemIcons[ TypeId ]; }
+        }
+
+        public Texture2D Icon
+        {
+            get
+            {
+                if ( GetType() == typeof( Weapon ) )
+                    return ItemIcons[ 800 ];
+                return ItemIcons[ TypeId ];
+            }
+        }
         public Vector3 RequiredLiquid { get; private set; }
 
 
         // ***************************************************************************
         // Konstruktor 1
-        public Item(int id, EGroup group, string name, string description, float weight, ILocationBehavior locationBehavior, IRenderBehavior renderBehavior)
-            : base(locationBehavior, renderBehavior)
+        public Item( int id, EGroup group, string name, string description, float weight, ILocationBehavior locationBehavior, IRenderBehavior renderBehavior )
+            : base( locationBehavior, renderBehavior )
         {
             this.TypeId = id;
             Name = name;
@@ -224,8 +243,8 @@ namespace EVCS_Projekt.Objects
 
         // ***************************************************************************
         // Konstruktor 2
-        public Item(int id, EGroup group, string name, string description, float weight, ILocationBehavior locationBehavior)
-            : base(locationBehavior)
+        public Item( int id, EGroup group, string name, string description, float weight, ILocationBehavior locationBehavior )
+            : base( locationBehavior )
         {
             this.TypeId = id;
             Name = name;
@@ -239,8 +258,8 @@ namespace EVCS_Projekt.Objects
 
         // ***************************************************************************
         // Konstruktor 3
-        public Item(ItemInner ii)
-            : base(ii.gameObject)
+        public Item( ItemInner ii )
+            : base( ii.gameObject )
         {
             TypeId = ii.id;
             Name = ii.name;
@@ -253,17 +272,17 @@ namespace EVCS_Projekt.Objects
         // ItemIcon in den Renderer Quetschen
         private void FixRenderer()
         {
-            if (typeof(Munition) == GetType())
+            if ( typeof( Munition ) == GetType() )
             {
-                ((Munition) this).ShotRenderer = Renderer;
+                ( ( Munition ) this ).ShotRenderer = Renderer;
             }
-            if (typeof(Weapon) == GetType())
+            if ( typeof( Weapon ) == GetType() )
             {
-                Renderer = LoadedRenderer.GetStatic("S_Weapon_Deafault");
+                Renderer = LoadedRenderer.GetStatic( "S_Weapon_Deafault" );
             }
             else
             {
-                Renderer = LoadedRenderer.GetStatic("S_IconRenderer_" + TypeId);
+                Renderer = LoadedRenderer.GetStatic( "S_IconRenderer_" + TypeId );
             }
         }
 
@@ -302,30 +321,30 @@ namespace EVCS_Projekt.Objects
         }
 
         //
-        public static Item Get(int x)
+        public static Item Get( int x )
         {
-            Item i = AllItems[x];
+            Item i = AllItems[ x ];
 
             Item ret = null;
 
-            if (i.GetType() == typeof(Antrieb))
-                ret = ((Antrieb)i).Clone();
-            if (i.GetType() == typeof(Hauptteil))
-                ret = ((Hauptteil)i).Clone();
-            if (i.GetType() == typeof(Liquid))
-                ret = ((Liquid)i).Clone();
-            if (i.GetType() == typeof(Munition))
-                ret = ((Munition)i).Clone();
-            if (i.GetType() == typeof(Powerup))
-                ret = ((Powerup)i).Clone();
-            if (i.GetType() == typeof(Shot))
-                ret = ((Shot)i).Clone();
-            if (i.GetType() == typeof(Stabilisator))
-                ret = ((Stabilisator)i).Clone();
-            if (i.GetType() == typeof(Visier))
-                ret = ((Visier)i).Clone();
-            if (i.GetType() == typeof(Weapon))
-                ret = ((Weapon)i).Clone();
+            if ( i.GetType() == typeof( Antrieb ) )
+                ret = ( ( Antrieb ) i ).Clone();
+            if ( i.GetType() == typeof( Hauptteil ) )
+                ret = ( ( Hauptteil ) i ).Clone();
+            if ( i.GetType() == typeof( Liquid ) )
+                ret = ( ( Liquid ) i ).Clone();
+            if ( i.GetType() == typeof( Munition ) )
+                ret = ( ( Munition ) i ).Clone();
+            if ( i.GetType() == typeof( Powerup ) )
+                ret = ( ( Powerup ) i ).Clone();
+            if ( i.GetType() == typeof( Shot ) )
+                ret = ( ( Shot ) i ).Clone();
+            if ( i.GetType() == typeof( Stabilisator ) )
+                ret = ( ( Stabilisator ) i ).Clone();
+            if ( i.GetType() == typeof( Visier ) )
+                ret = ( ( Visier ) i ).Clone();
+            if ( i.GetType() == typeof( Weapon ) )
+                ret = ( ( Weapon ) i ).Clone();
 
             // Renderer fixen (icon)
             ret.FixRenderer();

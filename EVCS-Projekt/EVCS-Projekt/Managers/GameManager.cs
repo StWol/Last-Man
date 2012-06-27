@@ -260,15 +260,37 @@ namespace EVCS_Projekt.Managers
             // TEST 
 
             GameState.Player.AddItemToInventar(Item.AllItems[100]);
+            GameState.Player.AddItemToInventar( Item.AllItems[ 101 ] );
+            GameState.Player.AddItemToInventar( Item.AllItems[ 102 ] );
+            GameState.Player.AddItemToInventar( Item.AllItems[ 103 ] );
+
+
             GameState.Player.AddItemToInventar(Item.AllItems[200]);
+            GameState.Player.AddItemToInventar( Item.AllItems[ 201 ] );
+
+
             GameState.Player.AddItemToInventar(Item.AllItems[300]);
+            GameState.Player.AddItemToInventar( Item.AllItems[ 301 ] );
+            GameState.Player.AddItemToInventar( Item.AllItems[ 302 ] );
+            GameState.Player.AddItemToInventar( Item.AllItems[ 303 ] );
+            GameState.Player.AddItemToInventar( Item.AllItems[ 304 ] );
+            GameState.Player.AddItemToInventar( Item.AllItems[ 305 ] );
+
             GameState.Player.AddItemToInventar(Item.AllItems[400]);
+            GameState.Player.AddItemToInventar( Item.AllItems[ 401 ] );
+            GameState.Player.AddItemToInventar( Item.AllItems[ 402 ] );
+            GameState.Player.AddItemToInventar( Item.AllItems[ 403 ] );
+            GameState.Player.AddItemToInventar( Item.AllItems[ 404 ] );
+            GameState.Player.AddItemToInventar( Item.AllItems[ 405 ] );
+            GameState.Player.AddItemToInventar( Item.AllItems[ 406 ] );
+
             GameState.Player.AddItemToInventar(Item.AllItems[500]);
-            GameState.Player.AddItemToInventar(Item.AllItems[101]);
-            GameState.Player.AddItemToInventar(Item.AllItems[201]);
-            GameState.Player.AddItemToInventar(Item.AllItems[301]);
-            GameState.Player.AddItemToInventar(Item.AllItems[401]);
             GameState.Player.AddItemToInventar(Item.AllItems[501]);
+            GameState.Player.AddItemToInventar(Item.AllItems[502]);
+            GameState.Player.AddItemToInventar(Item.AllItems[503]);
+            GameState.Player.AddItemToInventar(Item.AllItems[504]);
+            GameState.Player.AddItemToInventar(Item.AllItems[505]);
+            GameState.Player.AddItemToInventar(Item.AllItems[506]);
 
             // TEST ENDE
             // ################################################################################
@@ -963,7 +985,11 @@ namespace EVCS_Projekt.Managers
 
 
             if (constructorPanel.Visible)
-                constructorPanel.Draw(spriteBatch);
+            {
+                spriteBatch.Draw( PixelWhite, new Rectangle( 0, 0, Configuration.GetInt( "resolutionWidth" ), Configuration.GetInt( "resolutionHeight" ) ), new Color( 0, 0, 0, 128 ) );
+                constructorPanel.Draw( spriteBatch );
+            }
+                
 
             // TEST-ENDE
             // ################################################################################
