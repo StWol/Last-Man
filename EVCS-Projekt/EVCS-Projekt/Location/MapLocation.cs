@@ -68,7 +68,9 @@ namespace EVCS_Projekt.Location
         // Clone
         public ILocationBehavior Clone()
         {
-            return new MapLocation(BoundingBox);
+            MapLocation m = new MapLocation(BoundingBox);
+            m.Rotation = Rotation;
+            return m;
         }
     }
 }

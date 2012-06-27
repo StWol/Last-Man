@@ -35,7 +35,8 @@ namespace EVCS_Projekt
             set
             {
                 // Schaden für HS speichern
-                if (value < _health) {
+                if (value < _health)
+                {
                     Main.MainObject.GameManager.GameState.DamageTaken += _health - value;
                 }
 
@@ -45,6 +46,8 @@ namespace EVCS_Projekt
             }
         }
         public float Speed { get; set; }
+
+        public bool IsAlive { get { if (Health <= 0) return false; else return true; } }
 
         public float TotalInventarWeight
         {
@@ -92,6 +95,9 @@ namespace EVCS_Projekt
         {
             get
             {
+                if (!IsAlive)
+                    return RendererDying;
+
                 if (Weapon == null)
                     return RendererStanding;
 
@@ -237,6 +243,8 @@ namespace EVCS_Projekt
         private StaticRenderer RendererSmallWeapon { get; set; }
         private StaticRenderer RendererSmallWeaponShot { get; set; }
 
+        private AnimationRenderer RendererDying { get; set; }
+
         // Füße
         private AnimationRenderer RendererFootMoving { get; set; }
 
@@ -272,6 +280,9 @@ namespace EVCS_Projekt
             RendererBigWeaponShot = LoadedRenderer.GetStatic("S_Player_BW_Shot");
             RendererSmallWeapon = LoadedRenderer.GetStatic("S_Player_SW");
             RendererSmallWeaponShot = LoadedRenderer.GetStatic("S_Player_SW_Shot");
+
+            RendererDying = LoadedRenderer.GetAnimation("A_Splatter_01");
+            RendererDying.PlayOnce();
 
             Texture2D[] textureFootMoving = new Texture2D[]{ 
                 Main.ContentManager.Load<Texture2D>("images/character/left_foot"),
@@ -333,7 +344,7 @@ namespace EVCS_Projekt
             List<WayPoint> l = Main.MainObject.GameManager.GameState.Karte.QuadTreeWayPoints.GetObjects(new Rectangle((int)LocationBehavior.Position.X - 100, (int)LocationBehavior.Position.Y - 100, 200, 200));
             if (l.Count > 0)
             {
-                NearestWayPoint = Karte.SearchNearest(LocationBehavior.Position, l);
+                NearestWayPoint = Karte.SearchNearest(LocationBehavior.Position, LocationBehavior.Size, l);
             }
 
             // Renderer Updaten

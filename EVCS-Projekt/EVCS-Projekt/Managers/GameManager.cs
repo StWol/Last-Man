@@ -58,12 +58,18 @@ namespace EVCS_Projekt.Managers
         private UpdateDel updateDelegater;
 
         // Für Gui
-        private Texture2D gui_overlay, health_bar;
+        private Texture2D gui_overlay, health_bar, gui_backlayer;
         private float health_bar_height { get; set; }
         private SpriteFont defaultFont;
         private SpriteFont defaultFontBig;
 
         private int buffIconPulse = 0;
+
+        // Fader
+        private float _fadeToBlack = 0;
+
+        private bool gameover = false;
+        private Texture2D gameoverTexture;
 
         // Tests
         private Texture2D test;
@@ -164,6 +170,9 @@ namespace EVCS_Projekt.Managers
             // GUI elemente
             gui_overlay = Main.ContentManager.Load<Texture2D>("images/gui/gui_overlay");
             health_bar = Main.ContentManager.Load<Texture2D>("images/gui/health_bar");
+            gui_backlayer = Main.ContentManager.Load<Texture2D>("images/gui/gui_backlayer");
+
+            gameoverTexture = Main.ContentManager.Load<Texture2D>("images/gameover");
 
             defaultFont = Main.ContentManager.Load<SpriteFont>(Configuration.Get("defaultFont"));
             defaultFontBig = Main.ContentManager.Load<SpriteFont>(Configuration.Get("defaultFontBig"));
@@ -177,6 +186,10 @@ namespace EVCS_Projekt.Managers
             DrawHelper.AddDimension("BuffIcon_Position", 16, 365);
             DrawHelper.AddDimension("BuffIcon_Size", 32, 32);
 
+            DrawHelper.AddDimension("Minimap_Size", 181, 170);
+            DrawHelper.AddDimension("Minimap_Position", 0, 407);
+
+
             // AI Thread starten
             new Thread(new ThreadStart(AIThread.UpdateAI)).Start();
 
@@ -185,6 +198,9 @@ namespace EVCS_Projekt.Managers
 
             // Enemies laden
             Enemy.Load();
+
+            // Maus auf fadenkreuz setzten
+            MouseCursor.CurrentCursor = MouseCursor.Cross_01;
 
             // ################################################################################
             // ################################################################################
@@ -227,9 +243,6 @@ namespace EVCS_Projekt.Managers
             blood = Main.ContentManager.Load<Texture2D>("test/blood");
             shot_01 = Main.ContentManager.Load<Texture2D>("images/shots/shot_01");
 
-
-            MouseCursor.CurrentCursor = MouseCursor.DefaultCursor;
-
             // Testtextur
             test = Main.ContentManager.Load<Texture2D>("images/pixelWhite");
             testFont = Main.ContentManager.Load<SpriteFont>("fonts/arialSmall");
@@ -253,29 +266,29 @@ namespace EVCS_Projekt.Managers
             // TEST 
 
             GameState.Player.AddItemToInventar(Item.AllItems[100]);
-            GameState.Player.AddItemToInventar( Item.AllItems[ 101 ] );
-            GameState.Player.AddItemToInventar( Item.AllItems[ 102 ] );
-            GameState.Player.AddItemToInventar( Item.AllItems[ 103 ] );
+            GameState.Player.AddItemToInventar(Item.AllItems[101]);
+            GameState.Player.AddItemToInventar(Item.AllItems[102]);
+            GameState.Player.AddItemToInventar(Item.AllItems[103]);
 
 
             GameState.Player.AddItemToInventar(Item.AllItems[200]);
-            GameState.Player.AddItemToInventar( Item.AllItems[ 201 ] );
+            GameState.Player.AddItemToInventar(Item.AllItems[201]);
 
 
             GameState.Player.AddItemToInventar(Item.AllItems[300]);
-            GameState.Player.AddItemToInventar( Item.AllItems[ 301 ] );
-            GameState.Player.AddItemToInventar( Item.AllItems[ 302 ] );
-            GameState.Player.AddItemToInventar( Item.AllItems[ 303 ] );
-            GameState.Player.AddItemToInventar( Item.AllItems[ 304 ] );
-            GameState.Player.AddItemToInventar( Item.AllItems[ 305 ] );
+            GameState.Player.AddItemToInventar(Item.AllItems[301]);
+            GameState.Player.AddItemToInventar(Item.AllItems[302]);
+            GameState.Player.AddItemToInventar(Item.AllItems[303]);
+            GameState.Player.AddItemToInventar(Item.AllItems[304]);
+            GameState.Player.AddItemToInventar(Item.AllItems[305]);
 
             GameState.Player.AddItemToInventar(Item.AllItems[400]);
-            GameState.Player.AddItemToInventar( Item.AllItems[ 401 ] );
-            GameState.Player.AddItemToInventar( Item.AllItems[ 402 ] );
-            GameState.Player.AddItemToInventar( Item.AllItems[ 403 ] );
-            GameState.Player.AddItemToInventar( Item.AllItems[ 404 ] );
-            GameState.Player.AddItemToInventar( Item.AllItems[ 405 ] );
-            GameState.Player.AddItemToInventar( Item.AllItems[ 406 ] );
+            GameState.Player.AddItemToInventar(Item.AllItems[401]);
+            GameState.Player.AddItemToInventar(Item.AllItems[402]);
+            GameState.Player.AddItemToInventar(Item.AllItems[403]);
+            GameState.Player.AddItemToInventar(Item.AllItems[404]);
+            GameState.Player.AddItemToInventar(Item.AllItems[405]);
+            GameState.Player.AddItemToInventar(Item.AllItems[406]);
 
             GameState.Player.AddItemToInventar(Item.AllItems[500]);
             GameState.Player.AddItemToInventar(Item.AllItems[501]);
@@ -397,7 +410,7 @@ namespace EVCS_Projekt.Managers
             }
         }
 
-        public void UpdateGame()
+        public void UpdateGamePlay()
         {
             // Bildschirm Rectangle + 200 % in jede richtung
             UpdateRectangle = new Rectangle((int)(GameState.MapOffset.X - Configuration.GetInt("resolutionWidth") * 1), (int)(GameState.MapOffset.Y - Configuration.GetInt("resolutionHeight") * 1), (int)(Configuration.GetInt("resolutionWidth") * 3), (int)(Configuration.GetInt("resolutionHeight") * 3));
@@ -474,6 +487,15 @@ namespace EVCS_Projekt.Managers
             // logic der round updaten
             UpdateRoundLogic();
 
+            // Spieler stirbt
+            if (!GameState.Player.IsAlive)
+            {
+                PlayerDied();
+            }
+
+            // Anfang das Bild einfaden
+            _fadeToBlack = MathHelper.Clamp(_fadeToBlack + (float)Main.GameTimeUpdate.ElapsedGameTime.TotalSeconds, 0, 1);
+
             // ################################################################################
             // ################################################################################
             // ################################################################################
@@ -538,6 +560,11 @@ namespace EVCS_Projekt.Managers
                 }
             }
 
+            if (newState.IsKeyDown(Keys.B))
+            {
+                GameState.Player.Health = 0;
+            }
+
 
             
 
@@ -546,10 +573,65 @@ namespace EVCS_Projekt.Managers
         }
 
         // ***************************************************************************
-        // Update
-        public override void Update()
+        // Player stirbt
+        private void PlayerDied()
         {
-            updateDelegater();
+            // Update umbiegen
+            updateDelegater = UpdatePlayerIsDead;
+
+            // AiThread beenden
+            AIThread.Running = false;
+
+            // maus verstecken
+            MouseCursor.CurrentCursor = MouseCursor.NoCursor;
+
+            // player füße verstecken
+            GameState.Player.IsMoving = false;
+
+            // Gameover setzten
+            gameover = true;
+        }
+
+        // timer bis zum managerswitch
+        private float timeUntilHighscoreManager = 5;
+
+        // ***************************************************************************
+        // Update sobald der spieler gestorben ist
+        public void UpdatePlayerIsDead()
+        {
+            // Schüsse weiter fliegen lassen
+            UpdateShots();
+
+            // Enemies updaten (nur Renderer)
+            foreach (Enemy e in GameState.QuadTreeEnemies.GetAllObjects())
+            {
+                e.HasMoved = false;
+                e.Renderer.Update();
+            }
+
+            GameState.Player.Renderer.Update();
+
+            timeUntilHighscoreManager -= (float)Main.GameTimeUpdate.ElapsedGameTime.TotalSeconds;
+
+            // Rendererswitch
+            if (timeUntilHighscoreManager < 0)
+            {
+
+                // gamestate mitgeben
+                Main.MainObject.Highscoremanager = new HighscoreManager(GameState);
+
+                Main.MainObject.CurrentManager = Main.MainObject.Highscoremanager;
+            }
+
+            // Bild ausfaden
+            _fadeToBlack = MathHelper.Clamp(timeUntilHighscoreManager, 0, 1);
+        }
+
+        // ***************************************************************************
+        // Update für das eigentliche spiel
+        public void UpdateGame()
+        {
+            UpdateGamePlay();
 
             var newState = Keyboard.GetState();
 
@@ -561,7 +643,7 @@ namespace EVCS_Projekt.Managers
                 }
                 if (inventarPanel.Visible)
                 {
-                    updateDelegater = UpdateGame;
+                    updateDelegater = UpdateGamePlay;
                     inventarPanel.Visible = false;
                 }
                 else
@@ -578,7 +660,7 @@ namespace EVCS_Projekt.Managers
                 }
                 if (constructorPanel.Visible)
                 {
-                    updateDelegater = UpdateGame;
+                    updateDelegater = UpdateGamePlay;
                     constructorPanel.Visible = false;
                 }
                 else
@@ -588,6 +670,13 @@ namespace EVCS_Projekt.Managers
                 }
             }
             oldKeyState = newState;
+        }
+
+        // ***************************************************************************
+        // Update
+        public override void Update()
+        {
+            updateDelegater();
         }
 
         // Colision mit items
@@ -922,7 +1011,9 @@ namespace EVCS_Projekt.Managers
             // Items zeichnen
             foreach (Item it in itemsOnScreen)
             {
-                it.Renderer.Draw(spriteBatch, it.LocationBehavior);
+                ILocationBehavior temp = it.LocationBehavior.Clone();
+                temp.Size = new Vector2(32, 32);
+                it.Renderer.Draw(spriteBatch, temp);
             }
 
             // Shots werden alle gezeichnet, da es von ihnen nicht viele gibt und diese normalerweise alle innerhalb des bildschirms liegen
@@ -959,10 +1050,11 @@ namespace EVCS_Projekt.Managers
                 inventarPanel.Draw(spriteBatch);
             }
 
-            foreach (Enemy e in GameState.QuadTreeEnemies.GetAllObjects())
-            {
-                Draw2D.DrawLine(spriteBatch, 1, Color.Red, e.LocationBehavior.RelativePosition, GameState.Player.LocationBehavior.RelativePosition);
-            }
+
+
+
+
+
 
             // ################################################################################
             // ################################################################################
@@ -970,6 +1062,11 @@ namespace EVCS_Projekt.Managers
             //int x = (int)(GameState.Karte.Minimap.Width / GameState.MapSize.X * (GameState.MapOffset.X+295));
             //int y = (int)(GameState.Karte.Minimap.Height / GameState.MapSize.Y * (GameState.MapOffset.Y+1094));
             //spriteBatch.Draw( GameState.Karte.Minimap, new Rectangle(0,0,200,100), new Rectangle(x,y,200,100), Color.White );
+
+            /*foreach (Enemy e in GameState.QuadTreeEnemies.GetAllObjects())
+            {
+                Draw2D.DrawLine(spriteBatch, 1, Color.Red, e.LocationBehavior.RelativePosition, GameState.Player.LocationBehavior.RelativePosition);
+            }*/
 
             if (showWaypoints)
                 foreach (WayPoint w in GameState.Karte.WayPoints.Values)
@@ -997,14 +1094,21 @@ namespace EVCS_Projekt.Managers
 
             if (constructorPanel.Visible)
             {
-                spriteBatch.Draw( PixelWhite, new Rectangle( 0, 0, Configuration.GetInt( "resolutionWidth" ), Configuration.GetInt( "resolutionHeight" ) ), new Color( 0, 0, 0, 128 ) );
-                constructorPanel.Draw( spriteBatch );
+                spriteBatch.Draw(PixelWhite, new Rectangle(0, 0, Configuration.GetInt("resolutionWidth"), Configuration.GetInt("resolutionHeight")), new Color(0, 0, 0, 128));
+                constructorPanel.Draw(spriteBatch);
             }
-                
+
 
             // TEST-ENDE
             // ################################################################################
             // ################################################################################
+
+            // Gameover
+            if (gameover)
+                spriteBatch.Draw(gameoverTexture, new Rectangle(0, 0, Configuration.GetInt("resolutionWidth"), Configuration.GetInt("resolutionHeight")), new Color(255, 255, 255, (int)(255 - 255 * MathHelper.Clamp(timeUntilHighscoreManager - 3, 0, 1))));
+
+            // FadeToBlack
+            spriteBatch.Draw(PixelWhite, new Rectangle(0, 0, Configuration.GetInt("resolutionWidth"), Configuration.GetInt("resolutionHeight")), new Color(0, 0, 0, (int)(255 - 255 * _fadeToBlack)));
 
             // Cursor zeichnen
             MouseCursor.DrawMouse(spriteBatch);
@@ -1057,14 +1161,29 @@ namespace EVCS_Projekt.Managers
 
         }
 
+
         //**********************************************************************************
         // Zeichne die Oberfläche
         private void DrawHUD(SpriteBatch spriteBatch)
         {
+            // backlayer
+            spriteBatch.Draw(gui_backlayer, new Rectangle(0, 0, Configuration.GetInt("resolutionWidth"), Configuration.GetInt("resolutionHeight")), Color.White);
+
             // GUI zeichnen
             Vector2 hb_position = DrawHelper.Get("HealthBar_Position");
             Vector2 hb_size = DrawHelper.Get("HealthBar_Size");
 
+            // Minimap zeichnen - Korrektur der Map x:-7 y:34
+            Vector2 mm_size = DrawHelper.Get("Minimap_Size");
+            Vector2 mm_position = DrawHelper.Get("Minimap_Position");
+
+            int x = (int)((GameState.MapOffset.X * 0.2) + 5 );
+            int y = (int)(GameState.MapOffset.Y * 0.2 - 34);
+
+            spriteBatch.Draw(GameState.Karte.Minimap, new Rectangle((int)mm_position.X, (int)mm_position.Y, (int)mm_size.X, (int)mm_size.Y), new Rectangle(x, y, 181, 170), Color.White);
+
+
+            // healthbar
             spriteBatch.Draw(health_bar,
                 new Rectangle((int)hb_position.X, (int)(hb_position.Y + (hb_size.Y - health_bar_height)), (int)hb_size.X, (int)hb_size.Y),
                 //new Rectangle((int)hb_position.X, (int)(hb_position.Y + (hb_size.Y - health_bar_height)), (int)hb_size.X, (int)(health_bar_height)),

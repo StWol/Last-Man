@@ -23,32 +23,18 @@ namespace EVCS_Projekt.AI
 
             allNodes = new Dictionary<int, PathNode>();
 
-            foreach (WayPoint w in Main.MainObject.GameManager.GameState.Karte.WayPoints.Values) {
+            foreach (WayPoint w in Main.MainObject.GameManager.GameState.Karte.WayPoints.Values)
+            {
                 PathNode n = new PathNode(float.MaxValue, w);
                 allNodes.Add(w.ID, n);
             }
-
-            //Debug.WriteLine("Pfade berechnen..");
-            //int c = 0;
-            /*foreach (WayPoint s in Main.MainObject.GameManager.GameState.Karte.WayPoints.Values)
-            {
-                //c++;
-                foreach (WayPoint t in Main.MainObject.GameManager.GameState.Karte.WayPoints.Values)
-                {
-                    PathFinder.FindePath(s, t);
-                }
-
-                //Debug.WriteLineIf(c % 100 == 0, c + " pfade berechnet");
-            }*/
-
-            //callculated = true;
         }
 
         public static PathNode FindePath(WayPoint start, WayPoint target)
         {
             if (!callculated)
             {
-                if ( savedPaths.ContainsKey(start.ID) && savedPaths[start.ID].ContainsKey(target.ID) )
+                if (savedPaths.ContainsKey(start.ID) && savedPaths[start.ID].ContainsKey(target.ID))
                     return savedPaths[start.ID][target.ID].Clone();
                 return _findePath(start, target);
             }
@@ -56,16 +42,32 @@ namespace EVCS_Projekt.AI
                 return savedPaths[start.ID][target.ID].Clone();
         }
 
+        private static Dictionary<int, PathNode> CloneNodeDic()
+        {
+            Dictionary<int, PathNode> dic = new Dictionary<int, PathNode>();
+
+            foreach (KeyValuePair<int, PathNode> p in allNodes)
+            {
+                dic.Add(p.Key, p.Value.Clone());
+            }
+
+            return dic;
+        }
+
         //
         private static List<PathNode> openList;
         private static List<PathNode> closedList;
         private static Dictionary<int, PathNode> allNodes;
+        //
+        private static Dictionary<int, PathNode> allNodesTemp;
 
         private static PathNode _findePath(WayPoint start, WayPoint target)
         {
             // Listen init
             openList = new List<PathNode>();
             closedList = new List<PathNode>();
+
+            allNodesTemp = CloneNodeDic();
 
             // Start einfügen
             PathNode startNode = new PathNode(0, start);
@@ -90,35 +92,36 @@ namespace EVCS_Projekt.AI
             }
 
             // pfad bauen
-            buildPath(startNode, target.ID);
+            buildPath(ref startNode, target.ID);
 
             return startNode;
         }
 
-        private static void buildPath (PathNode start, int targetId) {
+        private static void buildPath(ref PathNode start, int targetId)
+        {
 
-            PathNode _build = allNodes[targetId];
+            PathNode _build = allNodesTemp[targetId];
 
             PathNode current = _build;
 
             while (current.ID != start.ID)
             {
-                PathNode prev = allNodes[current.PreviousNode.ID];
+                PathNode prev = allNodesTemp[current.PreviousNode.ID];
 
                 prev.NextNode = current;
                 int c = current.PreviousNode.ID;
                 current = prev;
             }
 
-            start = allNodes[start.ID]; ;
+            start = allNodesTemp[start.ID]; ;
         }
 
-        private static void expandNode( PathNode n )
+        private static void expandNode(PathNode n)
         {
             foreach (WayPoint w in n.WayPoint.connectedPoints)
             {
                 // Pathnode mit distanz erzeugen
-                PathNode node = allNodes[w.ID]; 
+                PathNode node = allNodesTemp[w.ID];
 
                 // node adden falls er noch nicht in openlist und closelist ist
                 if (closedList.Contains(node))

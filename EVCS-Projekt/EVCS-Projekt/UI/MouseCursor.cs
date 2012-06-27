@@ -16,6 +16,7 @@ namespace EVCS_Projekt.UI
     {
         public static Texture2D NoCursor { get; private set; }
         public static Texture2D DefaultCursor { get; private set; }
+        public static Texture2D Cross_01 { get; private set; }
 
         public static Texture2D CurrentCursor { private get; set; }
 
@@ -32,6 +33,7 @@ namespace EVCS_Projekt.UI
             // Cursor laden
             NoCursor = content.Load<Texture2D>("images/pixelTransparent");
             DefaultCursor = content.Load<Texture2D>("images/mouse/default");
+            Cross_01 = content.Load<Texture2D>("images/mouse/cross_01");
 
             CurrentCursor = NoCursor;
         }
