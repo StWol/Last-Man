@@ -29,7 +29,7 @@ namespace EVCS_Projekt.AI
 
         public override void CalculateAction(Enemy e)
         {
-            if (GameManager.PointSeePoint(e.LocationBehavior.Position, Main.MainObject.GameManager.GameState.Player.LocationBehavior.Position, e.LocationBehavior.Size/4))
+            if (GameManager.PointSeePoint(e.LocationBehavior.Position, Main.MainObject.GameManager.GameState.Player.LocationBehavior.Position, e.LocationBehavior.Size))
             {
                 e.CanSeePlayer = true;
 
@@ -56,14 +56,17 @@ namespace EVCS_Projekt.AI
             if (_walkToLastPlayerPosition)
             {
                 if (Vector2.Distance(_lastPlayerPosition, e.LocationBehavior.Position) < e.LocationBehavior.Size.X)
+                {
                     _walkToLastPlayerPosition = false;
+                    _currentWayPoint = null;
+                } 
                 else
                     return;
             }
 
             WayPoint target = Main.MainObject.GameManager.GameState.Player.NearestWayPoint;
 
-            if (target == null)
+            if (target == null || target == _target)
                 return;
 
             if (_path == null || target != _target && !PathNode.IsWaypointInPath(target.ID, _path))

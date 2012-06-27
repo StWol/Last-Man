@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using Microsoft.Xna.Framework;
+using System.Diagnostics;
 
 namespace EVCS_Projekt.AI
 {
@@ -26,7 +27,9 @@ namespace EVCS_Projekt.AI
 
                 foreach (Enemy e in enemies)
                 {
+                    double s = DateTime.Now.Ticks;
                     e.CalculateActivity();
+                    //Debug.WriteLine((DateTime.Now.Ticks-s)/10+"us");
                 }
 
                 // Nur max. alle 50 sekunden ausführen 
