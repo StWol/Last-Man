@@ -80,43 +80,43 @@ namespace EVCS_Projekt
             Enemy.DefaultEnemies = new Dictionary<EEnemyType, Enemy>();
 
             {
-                Enemy e = new Enemy(new MapLocation(new Vector2(0, 0)), LoadedRenderer.Get("A_Krabbler_Move"), 1, 300, 400, 100, 100, 100, EEnemyType.E1);
+                Enemy e = new Enemy(new MapLocation(new Vector2(0, 0)), LoadedRenderer.Get("A_Krabbler_Move"), 1, 100, 400, 15, 120, 15, EEnemyType.E1);
+                e.Damage = 1F;
+                e.LocationSizing();
+
+                Enemy.DefaultEnemies.Add(e.TypOfEnemy, e);
+            }
+            {
+                Enemy e = new Enemy(new MapLocation(new Vector2(0, 0)), LoadedRenderer.Get("A_Schleimer_Move"), 1, 140, 400, 20, 70, 20, EEnemyType.E2);
+                e.Damage = 3F;
+                e.LocationSizing();
+
+                Enemy.DefaultEnemies.Add(e.TypOfEnemy, e);
+            }
+            {
+                Enemy e = new Enemy(new MapLocation(new Vector2(0, 0)), LoadedRenderer.Get("A_StachelKrabbe_Move"), 1, 75, 400, 50, 100, 50, EEnemyType.E3);
                 e.Damage = 5F;
                 e.LocationSizing();
 
                 Enemy.DefaultEnemies.Add(e.TypOfEnemy, e);
             }
             {
-                Enemy e = new Enemy(new MapLocation(new Vector2(0, 0)), LoadedRenderer.Get("A_Schleimer_Move"), 1, 300, 400, 100, 100, 100, EEnemyType.E2);
-                e.Damage = 5F;
+                Enemy e = new Enemy(new MapLocation(new Vector2(0, 0)), LoadedRenderer.Get("A_Krabbler_Move"), 1, 100, 400, 15, 120, 15, EEnemyType.E4);
+                e.Damage = 1F;
                 e.LocationSizing();
 
                 Enemy.DefaultEnemies.Add(e.TypOfEnemy, e);
             }
             {
-                Enemy e = new Enemy(new MapLocation(new Vector2(0, 0)), LoadedRenderer.Get("A_StachelKrabbe_Move"), 1, 300, 400, 100, 100, 100, EEnemyType.E3);
-                e.Damage = 5F;
+                Enemy e = new Enemy(new MapLocation(new Vector2(0, 0)), LoadedRenderer.Get("A_RoterDrache_Move"), 1, 160, 400, 300, 100, 30, EEnemyType.E5);
+                e.Damage = 2F;
                 e.LocationSizing();
 
                 Enemy.DefaultEnemies.Add(e.TypOfEnemy, e);
             }
             {
-                Enemy e = new Enemy(new MapLocation(new Vector2(0, 0)), LoadedRenderer.Get("A_Krabbler_Move"), 1, 300, 400, 100, 100, 100, EEnemyType.E4);
-                e.Damage = 5F;
-                e.LocationSizing();
-
-                Enemy.DefaultEnemies.Add(e.TypOfEnemy, e);
-            }
-            {
-                Enemy e = new Enemy(new MapLocation(new Vector2(0, 0)), LoadedRenderer.Get("A_RoterDrache_Move"), 1, 300, 400, 100, 100, 100, EEnemyType.E5);
-                e.Damage = 5F;
-                e.LocationSizing();
-
-                Enemy.DefaultEnemies.Add(e.TypOfEnemy, e);
-            }
-            {
-                Enemy e = new Enemy(new MapLocation(new Vector2(0, 0)), LoadedRenderer.Get("A_Hellboy_Move"), 1, 300, 400, 100, 100, 100, EEnemyType.E6);
-                e.Damage = 5F;
+                Enemy e = new Enemy(new MapLocation(new Vector2(0, 0)), LoadedRenderer.Get("A_Hellboy_Move"), 1, 200, 400, 50, 120, 50, EEnemyType.E6);
+                e.Damage = 7F;
                 e.LocationSizing();
 
                 Enemy.DefaultEnemies.Add(e.TypOfEnemy, e);
@@ -221,14 +221,29 @@ namespace EVCS_Projekt
             {
                 lastAttack = Main.GameTimeUpdate.TotalGameTime.TotalSeconds;
 
+                Random r = new Random();
+                float acc = 0.3F;
+                Vector2 accuracy = new Vector2((float)(r.NextDouble() * acc - acc / 2), (float)(r.NextDouble() * acc - acc / 2));
+                Vector2 direction = -LocationBehavior.Direction + accuracy;
+
+
                 // Schuss erstellen
-                Shot s = new Shot(0, 0, 1000, -LocationBehavior.Direction, Damage, "", 0, "", 0, new MapLocation(LocationBehavior.Position));
+                Shot s = new Shot(0, 0, 1000, direction, Damage, "", 0, "", 0, new MapLocation(LocationBehavior.Position));
 
                 // Je nach Gegner andere SchussGrafik
                 switch (TypOfEnemy)
                 {
                     case EEnemyType.E1:
+                    case EEnemyType.E2:
                         s.Renderer = LoadedRenderer.DefaultRenderer["S_Shot_Monster_01"];
+                        break;
+                    case EEnemyType.E3:
+                    case EEnemyType.E4:
+                        s.Renderer = LoadedRenderer.DefaultRenderer["S_Shot_Monster_02"];
+                        break;
+                    case EEnemyType.E5:
+                    case EEnemyType.E6:
+                        s.Renderer = LoadedRenderer.DefaultRenderer["S_Shot_Monster_03"];
                         break;
                     default:
                         s.Renderer = LoadedRenderer.DefaultRenderer["S_Shot_Normal"];
@@ -236,9 +251,10 @@ namespace EVCS_Projekt
                 }
 
                 // TEST BUFF
-                s.AddBuff(new Buff(0, 10, 5, EBuffType.FireDamage));
+                if (TypOfEnemy == EEnemyType.E5 || TypOfEnemy == EEnemyType.E6)
+                    s.AddBuff(new Buff(0, 10, 5, EBuffType.FireDamage));
 
-                s.SetDirection(-LocationBehavior.Direction);
+                s.SetDirection(direction);
                 s.LocationSizing();
 
                 // Play Sound

@@ -126,7 +126,7 @@ namespace EVCS_Projekt.Managers
                 GameState.KilledMonsters.Add(e, 0);
 
             // Werte für Runde
-            GameState.RoundDelay = 2;
+            GameState.RoundDelay = 30;
             GameState.Round = 1;
             GameState.RoundIsRunning = false;
             GameState.RoundStartTime = new Dictionary<int, double>();
@@ -191,6 +191,8 @@ namespace EVCS_Projekt.Managers
             DrawHelper.AddDimension("Minimap_Size", 181, 170);
             DrawHelper.AddDimension("Minimap_Position", 0, 407);
 
+            DrawHelper.AddDimension("IconOnTheFloor_Size", 32,32);
+            
 
             // AI Thread starten
             new Thread(new ThreadStart(AIThread.UpdateAI)).Start();
@@ -211,23 +213,28 @@ namespace EVCS_Projekt.Managers
 
             Item it1 = Item.Get(100);
             it1.LocationBehavior.Position = new Vector2(1100, 4150);
-            it1.LocationSizing();
+            it1.LocationBehavior.Size = DrawHelper.Get("IconOnTheFloor_Size");
+            //it1.LocationSizing();
 
             Item it2 = Item.Get(200);
             it2.LocationBehavior.Position = new Vector2(1200, 4150);
-            it2.LocationSizing();
+            it2.LocationBehavior.Size = DrawHelper.Get("IconOnTheFloor_Size");
+            //it2.LocationSizing();
 
             Item it3 = Item.Get(300);
             it3.LocationBehavior.Position = new Vector2(1300, 4150);
-            it3.LocationSizing();
+            it3.LocationBehavior.Size = DrawHelper.Get("IconOnTheFloor_Size");
+            //it3.LocationSizing();
 
             Item it4 = Item.Get(400);
             it4.LocationBehavior.Position = new Vector2(1400, 4150);
-            it4.LocationSizing();
+            it4.LocationBehavior.Size = DrawHelper.Get("IconOnTheFloor_Size");
+            //it4.LocationSizing();
 
             Item it5 = Item.Get(700);
             it5.LocationBehavior.Position = new Vector2(1500, 4150);
-            it5.LocationSizing();
+            it5.LocationBehavior.Size = DrawHelper.Get("IconOnTheFloor_Size");
+            //it5.LocationSizing();
 
 
             GameState.QuadTreeItems.Add(it1);
@@ -385,7 +392,8 @@ namespace EVCS_Projekt.Managers
                     // Timer setzten
                     GameState.TimeToRoundStart = GameState.RoundDelay;
 
-
+                    // Items spawnen
+                    ItemSpawner.SpawnItems();
                 }
             }
             else
@@ -523,6 +531,20 @@ namespace EVCS_Projekt.Managers
                 Sound.Sounds["Weapon_Reload"].Play();
                 GameState.Player.Reloading = (float)Sound.Sounds["Weapon_Reload"].Duration.TotalSeconds;
             }
+            if (Keyboard.GetState().IsKeyDown(Keys.D3) && GameState.Player.Reloading <= 0)
+            {
+                GameState.Player.ActiveShortcut = 3;
+
+                Sound.Sounds["Weapon_Reload"].Play();
+                GameState.Player.Reloading = (float)Sound.Sounds["Weapon_Reload"].Duration.TotalSeconds;
+            }
+            if (Keyboard.GetState().IsKeyDown(Keys.D4) && GameState.Player.Reloading <= 0)
+            {
+                GameState.Player.ActiveShortcut = 4;
+
+                Sound.Sounds["Weapon_Reload"].Play();
+                GameState.Player.Reloading = (float)Sound.Sounds["Weapon_Reload"].Duration.TotalSeconds;
+            }
             if (Keyboard.GetState().IsKeyDown(Keys.R) && GameState.Player.Reloading <= 0)
             {
                 GameState.Player.Weapon.Reload();
@@ -533,7 +555,7 @@ namespace EVCS_Projekt.Managers
 
             var newState = Keyboard.GetState();
 
-            if (Keyboard.GetState().IsKeyDown(Keys.D0))
+            /*if (Keyboard.GetState().IsKeyDown(Keys.D0))
             {
                 foreach (Enemy e in GameState.QuadTreeEnemies)
                 {
@@ -567,8 +589,11 @@ namespace EVCS_Projekt.Managers
                 GameState.Player.Health = 0;
             }
 
-
-            
+            if (newState.IsKeyDown(Keys.V))
+            {
+                ItemSpawner.SpawnItems();
+            }
+            */
 
             // TEST-ENDE
             // ###############################################################################
@@ -1013,9 +1038,8 @@ namespace EVCS_Projekt.Managers
             // Items zeichnen
             foreach (Item it in itemsOnScreen)
             {
-                ILocationBehavior temp = it.LocationBehavior.Clone();
-                temp.Size = new Vector2(32, 32);
-                it.Renderer.Draw(spriteBatch, temp);
+                // Items auf dem boden sind kleiner als normal
+                it.Renderer.Draw(spriteBatch, it.LocationBehavior);
             }
 
             // Shots werden alle gezeichnet, da es von ihnen nicht viele gibt und diese normalerweise alle innerhalb des bildschirms liegen
@@ -1082,11 +1106,11 @@ namespace EVCS_Projekt.Managers
                     }
                 }
 
-            spriteBatch.DrawString(testFont, "Enemies: " + GameState.QuadTreeEnemies.Count + " FPS: " + (1 / Main.GameTimeDraw.ElapsedGameTime.TotalSeconds), new Vector2(0, 0), Color.Green);
+//            spriteBatch.DrawString(testFont, "Enemies: " + GameState.QuadTreeEnemies.Count + " FPS: " + (1 / Main.GameTimeDraw.ElapsedGameTime.TotalSeconds), new Vector2(0, 0), Color.Green);
 
-            spriteBatch.DrawString(testFont, "Liquids: " + GameState.Player.Liquids + " Highscore: " + HighscoreHelper.Highscore, new Vector2(0, 30), Color.Red);
-            spriteBatch.DrawString(testFont, "Health: " + GameState.Player.Health, new Vector2(0, 60), Color.Red);
-            spriteBatch.DrawString(testFont, "TimeToRoundStart: " + GameState.TimeToRoundStart + " Kills: " + GameState.TotalKilledMonsters, new Vector2(0, 90), Color.Blue);
+//            spriteBatch.DrawString(testFont, "Liquids: " + GameState.Player.Liquids + " Highscore: " + HighscoreHelper.Highscore, new Vector2(0, 30), Color.Red);
+//            spriteBatch.DrawString(testFont, "Health: " + GameState.Player.Health, new Vector2(0, 60), Color.Red);
+//            spriteBatch.DrawString(testFont, "TimeToRoundStart: " + GameState.TimeToRoundStart + " Kills: " + GameState.TotalKilledMonsters, new Vector2(0, 90), Color.Blue);
 
             // Mapinfos
             /*foreach (StaticObject so in GameState.Karte.QuadTreeWalkable.GetObjects(screenRect))
@@ -1101,10 +1125,10 @@ namespace EVCS_Projekt.Managers
             }
 
             // Statische Objekte zeichnen
-            foreach (StaticObject so in staticOnScreen)
+            /*foreach (StaticObject so in staticOnScreen)
             {
                 spriteBatch.DrawString(defaultFont, "" + so.LocationBehavior.Position, so.LocationBehavior.RelativePosition, Color.Violet);
-            }
+            }*/
 
             // TEST-ENDE
             // ################################################################################
@@ -1127,6 +1151,15 @@ namespace EVCS_Projekt.Managers
         // Zeichne die Rundeninfos
         private void DrawRoundinfos(SpriteBatch spriteBatch)
         {
+
+            if (!GameState.RoundIsRunning && GameState.TimeToRoundStart > 5 )
+            {
+                string s = "Nächste Runde startet in " + (int)(GameState.TimeToRoundStart+1) + " Sekunden" ;
+
+                Vector2 sm = defaultFont.MeasureString(s);
+
+                spriteBatch.DrawString(defaultFont, s, new Vector2(Configuration.GetInt("resolutionWidth") / 2-sm.X/2, 10), new Color(128,64,64, 220));
+            }
 
             if (!GameState.RoundIsRunning || Main.GameTimeUpdate.TotalGameTime.TotalSeconds - GameState.RoundStartTime[GameState.Round] < 3)
             {
