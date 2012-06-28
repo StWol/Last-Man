@@ -1100,6 +1100,11 @@ namespace EVCS_Projekt.Managers
                 constructorPanel.Draw(spriteBatch);
             }
 
+            // Statische Objekte zeichnen
+            foreach (StaticObject so in staticOnScreen)
+            {
+                spriteBatch.DrawString(defaultFont, "" + so.LocationBehavior.Position, so.LocationBehavior.RelativePosition, Color.Violet);
+            }
 
             // TEST-ENDE
             // ################################################################################
