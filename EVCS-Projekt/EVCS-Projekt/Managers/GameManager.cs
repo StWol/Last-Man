@@ -1137,10 +1137,10 @@ namespace EVCS_Projekt.Managers
             }
 
             // Statische Objekte zeichnen
-            /*foreach (StaticObject so in staticOnScreen)
-            {
-                spriteBatch.DrawString(defaultFont, "" + so.LocationBehavior.Position, so.LocationBehavior.RelativePosition, Color.Violet);
-            }*/
+            //foreach (StaticObject so in staticOnScreen)
+            //{
+            //    spriteBatch.DrawString(defaultFont, "" + so.LocationBehavior.Position, so.LocationBehavior.RelativePosition, Color.Violet);
+            //}
 
             // TEST-ENDE
             // ################################################################################
