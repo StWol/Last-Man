@@ -128,7 +128,7 @@ namespace EVCS_Projekt.Managers
                 GameState.KilledMonsters.Add(e, 0);
 
             // Werte für Runde
-            GameState.RoundDelay = 30;
+            GameState.RoundDelay = 1;
             GameState.Round = 1;
             GameState.RoundIsRunning = false;
             GameState.RoundStartTime = new Dictionary<int, double>();

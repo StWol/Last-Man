@@ -201,6 +201,11 @@ namespace EVCS_Projekt.Objects
         // Pixelgenaue Collisionsprüfung
         public bool PPCollisionWith(GameObject g)
         {
+            return PPCollisionWith(g, null);
+        }
+        
+        public bool PPCollisionWith(GameObject g, Texture2D t)
+        {
             bool rCollision = CollisionWith(g);
 
             // Bei false ist keine Kollision
@@ -228,6 +233,9 @@ namespace EVCS_Projekt.Objects
                 textB = ((AnimationRenderer)g.Renderer).Textures[((AnimationRenderer)g.Renderer).Frame];
             else
                 textB = ((StaticRenderer)g.Renderer).Texture;
+
+            if (t != null)
+                textA = t;
 
             Color[] dataA = new Color[textA.Width * textA.Height];
             Color[] dataB = new Color[textB.Width * textB.Height];
@@ -511,10 +519,15 @@ namespace EVCS_Projekt.Objects
             return MoveGameObject(moveVector, out trash, false, checkEnemyCollision, checkPlayerCollision);
         }
 
+        public static Texture2D playerCol = null;
+
         // ***************************************************************************
         // Bewegt ein object und gibt die bewegung zurück und zusätzlich kann angegeben werden, ob überhaupt bewegt werden soll
         public bool MoveGameObject(Vector2 moveVector, out Vector2 realMoveVector, bool onlyCheck, bool checkEnemyCollision, bool checkPlayerCollision)
         {
+            if ( playerCol == null )
+                playerCol = Main.ContentManager.Load<Texture2D>("images/playerCol");
+
             // CurrentPosition
             Vector2 initPosition = LocationBehavior.Position;
 
@@ -526,20 +539,39 @@ namespace EVCS_Projekt.Objects
 
             // Bei Player wird dieser Wert 0, da bei gegner der gegner sich selbst bekommt
             int maxEnemies = 1;
-            if ( typeof(Player) == GetType() )
+            if (typeof(Player) == GetType())
                 maxEnemies = 0;
 
             LocationBehavior.Position = LocationBehavior.Position + moveVector;
 
-            // Prüfen ob man an neuer Position gehen kann
-            if (GameManager.CheckRectangleInMap(Rect) &&
-                (Main.MainObject.GameManager.GameState.QuadTreeEnemies.GetObjects(Rect).Count <= maxEnemies || !checkEnemyCollision) &&
-                (!PPCollisionWith(Main.MainObject.GameManager.GameState.Player) || !checkPlayerCollision)
-                )
+            // SO
+            /*List<StaticObject> sos = Main.MainObject.GameManager.GameState.QuadTreeStaticObjects.GetObjects(Rect);
+            foreach (StaticObject s in sos)
             {
-                // das rect kann wie gewünscht fahren
-                realMoveVector = moveVector;
-                canMove = true;
+                bool pp = false;
+                if (GetType() == typeof(Player) )
+                    pp = PPCollisionWith(s, playerCol);
+                else
+                    pp = PPCollisionWith(s);
+                if (pp)
+                {
+                    canMove = false;
+                    break;
+                }
+            }*/
+
+            // Prüfen ob man an neuer Position gehen kann
+            if (true || canMove)
+            {
+                if (GameManager.CheckRectangleInMap(Rect) &&
+                    (Main.MainObject.GameManager.GameState.QuadTreeEnemies.GetObjects(Rect).Count <= maxEnemies || !checkEnemyCollision) &&
+                    (!PPCollisionWith(Main.MainObject.GameManager.GameState.Player) || !checkPlayerCollision)
+                    )
+                {
+                    // das rect kann wie gewünscht fahren
+                    realMoveVector = moveVector;
+                    canMove = true;
+                }
             }
 
             if (!canMove && moveVector.Y != 0)
