@@ -87,6 +87,7 @@
     <Compile Include="GUI\Constructor.cs" />
     <Compile Include="GUI\InventarPanel.cs" />
     <Compile Include="Managers\HighscoreManager.cs" />
+    <Compile Include="Objects\ItemSpawner.cs" />
     <Compile Include="UI\UIConstructionPanel.cs" />
     <Compile Include="Helper\HighscoreHelper.cs" />
     <Compile Include="UI\UIFilteredConstructorList.cs" />

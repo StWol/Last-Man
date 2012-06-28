@@ -101,9 +101,12 @@ namespace EVCS_Projekt.Helper
         {
             int p = 0;
 
+            List<Score> temp = new List<Score>(highscore);
+            temp.Reverse();
+
             while (p < HighscoreCount)
             {
-                if (highscore[p].Points < score)
+                if (temp[p].Points < score)
                 {
                     break;
                 }

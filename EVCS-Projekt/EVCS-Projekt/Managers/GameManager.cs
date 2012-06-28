@@ -191,6 +191,8 @@ namespace EVCS_Projekt.Managers
             DrawHelper.AddDimension("Minimap_Size", 181, 170);
             DrawHelper.AddDimension("Minimap_Position", 0, 407);
 
+            DrawHelper.AddDimension("IconOnTheFloor_Size", 32,32);
+            
 
             // AI Thread starten
             new Thread(new ThreadStart(AIThread.UpdateAI)).Start();
@@ -211,23 +213,28 @@ namespace EVCS_Projekt.Managers
 
             Item it1 = Item.Get(100);
             it1.LocationBehavior.Position = new Vector2(1100, 4150);
-            it1.LocationSizing();
+            it1.LocationBehavior.Size = DrawHelper.Get("IconOnTheFloor_Size");
+            //it1.LocationSizing();
 
             Item it2 = Item.Get(200);
             it2.LocationBehavior.Position = new Vector2(1200, 4150);
-            it2.LocationSizing();
+            it2.LocationBehavior.Size = DrawHelper.Get("IconOnTheFloor_Size");
+            //it2.LocationSizing();
 
             Item it3 = Item.Get(300);
             it3.LocationBehavior.Position = new Vector2(1300, 4150);
-            it3.LocationSizing();
+            it3.LocationBehavior.Size = DrawHelper.Get("IconOnTheFloor_Size");
+            //it3.LocationSizing();
 
             Item it4 = Item.Get(400);
             it4.LocationBehavior.Position = new Vector2(1400, 4150);
-            it4.LocationSizing();
+            it4.LocationBehavior.Size = DrawHelper.Get("IconOnTheFloor_Size");
+            //it4.LocationSizing();
 
             Item it5 = Item.Get(700);
             it5.LocationBehavior.Position = new Vector2(1500, 4150);
-            it5.LocationSizing();
+            it5.LocationBehavior.Size = DrawHelper.Get("IconOnTheFloor_Size");
+            //it5.LocationSizing();
 
 
             GameState.QuadTreeItems.Add(it1);
@@ -385,7 +392,8 @@ namespace EVCS_Projekt.Managers
                     // Timer setzten
                     GameState.TimeToRoundStart = GameState.RoundDelay;
 
-
+                    // Items spawnen
+                    ItemSpawner.SpawnItems();
                 }
             }
             else
@@ -567,7 +575,10 @@ namespace EVCS_Projekt.Managers
                 GameState.Player.Health = 0;
             }
 
-
+            if (newState.IsKeyDown(Keys.V))
+            {
+                ItemSpawner.SpawnItems();
+            }
             
 
             // TEST-ENDE
@@ -1013,9 +1024,8 @@ namespace EVCS_Projekt.Managers
             // Items zeichnen
             foreach (Item it in itemsOnScreen)
             {
-                ILocationBehavior temp = it.LocationBehavior.Clone();
-                temp.Size = new Vector2(32, 32);
-                it.Renderer.Draw(spriteBatch, temp);
+                // Items auf dem boden sind kleiner als normal
+                it.Renderer.Draw(spriteBatch, it.LocationBehavior);
             }
 
             // Shots werden alle gezeichnet, da es von ihnen nicht viele gibt und diese normalerweise alle innerhalb des bildschirms liegen

@@ -203,7 +203,7 @@ namespace EVCS_Projekt.Managers
             float xLeft = DrawHelper.Get("Score_XKoods").X;
             float xRight = DrawHelper.Get("Score_XKoods").Y;
 
-            string highscoreText = "Score: " + HighscoreHelper.Highscore + "  Platz: " + HighscoreHelper.GetPosition(123) + "/" + (HighscoreHelper.HighscoreCount + 1);
+            string highscoreText = "Score: " + HighscoreHelper.Highscore + "  Platz: " + HighscoreHelper.GetPosition(HighscoreHelper.Highscore) + "/" + (HighscoreHelper.HighscoreCount + 1);
 
             spriteBatch.DrawString(_font, highscoreText, new Vector2(Configuration.GetInt("resolutionWidth") / 2 - _font.MeasureString(highscoreText).X / 2, yPos), new Color(128, 0, 0, 200));
 

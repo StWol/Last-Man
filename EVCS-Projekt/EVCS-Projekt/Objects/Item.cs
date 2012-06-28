@@ -35,6 +35,7 @@ namespace EVCS_Projekt.Objects
         public static Dictionary<int, Weapon> DefaultWeapon;
 
         public static Dictionary<int, Item> AllItems;
+        public static List<Item> AllItemsList;
 
         // icons der Items
         private static Dictionary<int, Texture2D> ItemIcons;
@@ -59,6 +60,7 @@ namespace EVCS_Projekt.Objects
             DefaultWeapon = new Dictionary<int, Weapon>();
 
             AllItems = new Dictionary<int, Item>();
+            AllItemsList = new List<Item>();
 
             ItemIcons = new Dictionary<int, Texture2D>();
             CraftingItemIcons = new Dictionary<int, Texture2D>();
@@ -89,6 +91,9 @@ namespace EVCS_Projekt.Objects
                 // Schüsse skippen
                 if ( i.GetType() == typeof( Shot ) )
                     continue;
+
+                // zusätzlich in liste speichern
+                AllItemsList.Add(i);
 
                 Texture2D ico;
                 Texture2D craftingIcon;
