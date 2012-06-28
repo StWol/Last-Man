@@ -279,19 +279,24 @@ namespace EVCS_Projekt.AI
                 // Suche den nähsten WP und schaue ob er auf der route lag
                 WayPoint _newNearest = Karte.SearchNearest(_sawPlayerAt);
 
-                // nearest in path
-                PathNode nearestInPath = null;
+                if (_newNearest != null)
+                {
 
-                // wenn der nähste wegpunkt im pfad ist, diesen als neues ziel setzten
-                if (_currentPath.IsWaypointInPath(_newNearest.ID, out nearestInPath))
-                {
-                    _currentPath = nearestInPath;
-                }
-                else
-                {
-                    // ansonsten den aktuellen pfad löschen und neuen berechnen
-                    _nearest = _newNearest;
-                    _currentPath = null;
+                    // nearest in path
+                    PathNode nearestInPath = null;
+
+                    // wenn der nähste wegpunkt im pfad ist, diesen als neues ziel setzten
+                    if (_currentPath.IsWaypointInPath(_newNearest.ID, out nearestInPath))
+                    {
+                        _currentPath = nearestInPath;
+                    }
+                    else
+                    {
+                        // ansonsten den aktuellen pfad löschen und neuen berechnen
+                        _nearest = _newNearest;
+                        _currentPath = null;
+                    }
+
                 }
             }
 
