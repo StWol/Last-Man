@@ -62,7 +62,7 @@ namespace EVCS_Projekt.Managers
         private Texture2D gui_overlay, health_bar, gui_backlayer;
         private float health_bar_height { get; set; }
         private SpriteFont defaultFont;
-        private SpriteFont defaultFontBig;
+        private SpriteFont defaultFontBig, defaultFontSmall;
 
         private int buffIconPulse = 0;
 
@@ -83,6 +83,8 @@ namespace EVCS_Projekt.Managers
         private Constructor constructorPanel;
         bool showWaypoints = false;
 
+        private string collText = "";
+        private float collTime = 3F;
 
         // ***************************************************************************
         // Läd den ganzen Stuff, den der GameManager benötigt
@@ -178,6 +180,7 @@ namespace EVCS_Projekt.Managers
 
             defaultFont = Main.ContentManager.Load<SpriteFont>(Configuration.Get("defaultFont"));
             defaultFontBig = Main.ContentManager.Load<SpriteFont>(Configuration.Get("defaultFontBig"));
+            defaultFontSmall = Main.ContentManager.Load<SpriteFont>(Configuration.Get("defaultFontSmall"));
 
             // Posi für Gui
             DrawHelper.AddDimension("HealthBar_Position", 184, 425);
@@ -191,8 +194,8 @@ namespace EVCS_Projekt.Managers
             DrawHelper.AddDimension("Minimap_Size", 181, 170);
             DrawHelper.AddDimension("Minimap_Position", 0, 407);
 
-            DrawHelper.AddDimension("IconOnTheFloor_Size", 32,32);
-            
+            DrawHelper.AddDimension("IconOnTheFloor_Size", 32, 32);
+
 
             // AI Thread starten
             new Thread(new ThreadStart(AIThread.UpdateAI)).Start();
@@ -555,6 +558,11 @@ namespace EVCS_Projekt.Managers
 
             var newState = Keyboard.GetState();
 
+
+            if (collTime > 0)
+                collTime -= (float)Main.GameTimeUpdate.ElapsedGameTime.TotalSeconds;
+
+
             /*if (Keyboard.GetState().IsKeyDown(Keys.D0))
             {
                 foreach (Enemy e in GameState.QuadTreeEnemies)
@@ -662,7 +670,7 @@ namespace EVCS_Projekt.Managers
 
             var newState = Keyboard.GetState();
 
-            if ( newState.IsKeyDown( Keys.I ) && !oldKeyState.IsKeyDown( Keys.I ) && !constructorPanel.NameIsActive )
+            if (newState.IsKeyDown(Keys.I) && !oldKeyState.IsKeyDown(Keys.I) && !constructorPanel.NameIsActive)
             {
                 if (constructorPanel.Visible)
                 {
@@ -725,6 +733,10 @@ namespace EVCS_Projekt.Managers
                 }
                 else
                 {
+                    // abzeige zeit auf 
+                    collTime = 2F;
+                    collText = i.Name;
+
                     // Item in inventar zufügem
                     GameState.Player.AddItemToInventar(i);
 
@@ -1106,11 +1118,11 @@ namespace EVCS_Projekt.Managers
                     }
                 }
 
-//            spriteBatch.DrawString(testFont, "Enemies: " + GameState.QuadTreeEnemies.Count + " FPS: " + (1 / Main.GameTimeDraw.ElapsedGameTime.TotalSeconds), new Vector2(0, 0), Color.Green);
+            //            spriteBatch.DrawString(testFont, "Enemies: " + GameState.QuadTreeEnemies.Count + " FPS: " + (1 / Main.GameTimeDraw.ElapsedGameTime.TotalSeconds), new Vector2(0, 0), Color.Green);
 
-//            spriteBatch.DrawString(testFont, "Liquids: " + GameState.Player.Liquids + " Highscore: " + HighscoreHelper.Highscore, new Vector2(0, 30), Color.Red);
-//            spriteBatch.DrawString(testFont, "Health: " + GameState.Player.Health, new Vector2(0, 60), Color.Red);
-//            spriteBatch.DrawString(testFont, "TimeToRoundStart: " + GameState.TimeToRoundStart + " Kills: " + GameState.TotalKilledMonsters, new Vector2(0, 90), Color.Blue);
+            //            spriteBatch.DrawString(testFont, "Liquids: " + GameState.Player.Liquids + " Highscore: " + HighscoreHelper.Highscore, new Vector2(0, 30), Color.Red);
+            //            spriteBatch.DrawString(testFont, "Health: " + GameState.Player.Health, new Vector2(0, 60), Color.Red);
+            //            spriteBatch.DrawString(testFont, "TimeToRoundStart: " + GameState.TimeToRoundStart + " Kills: " + GameState.TotalKilledMonsters, new Vector2(0, 90), Color.Blue);
 
             // Mapinfos
             /*foreach (StaticObject so in GameState.Karte.QuadTreeWalkable.GetObjects(screenRect))
@@ -1152,13 +1164,13 @@ namespace EVCS_Projekt.Managers
         private void DrawRoundinfos(SpriteBatch spriteBatch)
         {
 
-            if (!GameState.RoundIsRunning && GameState.TimeToRoundStart > 5 )
+            if (!GameState.RoundIsRunning && GameState.TimeToRoundStart > 5)
             {
-                string s = "Nächste Runde startet in " + (int)(GameState.TimeToRoundStart+1) + " Sekunden" ;
+                string s = "Nächste Runde startet in " + (int)(GameState.TimeToRoundStart + 1) + " Sekunden";
 
                 Vector2 sm = defaultFont.MeasureString(s);
 
-                spriteBatch.DrawString(defaultFont, s, new Vector2(Configuration.GetInt("resolutionWidth") / 2-sm.X/2, 10), new Color(128,64,64, 220));
+                spriteBatch.DrawString(defaultFont, s, new Vector2(Configuration.GetInt("resolutionWidth") / 2 - sm.X / 2, 10), new Color(128, 64, 64, 220));
             }
 
             if (!GameState.RoundIsRunning || Main.GameTimeUpdate.TotalGameTime.TotalSeconds - GameState.RoundStartTime[GameState.Round] < 3)
@@ -1209,6 +1221,15 @@ namespace EVCS_Projekt.Managers
             // backlayer
             spriteBatch.Draw(gui_backlayer, new Rectangle(0, 0, Configuration.GetInt("resolutionWidth"), Configuration.GetInt("resolutionHeight")), Color.White);
 
+            // Text was man aufgenommen hat
+            if (collTime > 0) {
+                Vector2 p = GameState.Player.LocationBehavior.RelativePosition;
+                p.Y = p.Y - GameState.Player.LocationBehavior.Size.Y * 1.5F;
+                Vector2 sm = defaultFontSmall.MeasureString(collText);
+                p.X = p.X - sm.X / 2;
+                spriteBatch.DrawString(defaultFontSmall, collText, p , new Color(50,0,0) );
+            }
+
             // GUI zeichnen
             Vector2 hb_position = DrawHelper.Get("HealthBar_Position");
             Vector2 hb_size = DrawHelper.Get("HealthBar_Size");
@@ -1217,7 +1238,7 @@ namespace EVCS_Projekt.Managers
             Vector2 mm_size = DrawHelper.Get("Minimap_Size");
             Vector2 mm_position = DrawHelper.Get("Minimap_Position");
 
-            int x = (int)((GameState.MapOffset.X * 0.2) + 5 );
+            int x = (int)((GameState.MapOffset.X * 0.2) + 5);
             int y = (int)(GameState.MapOffset.Y * 0.2 - 34);
 
             spriteBatch.Draw(GameState.Karte.Minimap, new Rectangle((int)mm_position.X, (int)mm_position.Y, (int)mm_size.X, (int)mm_size.Y), new Rectangle(x, y, 181, 170), Color.White);

@@ -327,7 +327,11 @@ namespace EVCS_Projekt
             footRenderer.Draw(spriteBatch, footLocation);
 
             // Character oberteil
+            float angle = LocationBehavior.Rotation;
+            if (IsMoving)
+                LocationBehavior.Rotation = LocationBehavior.Rotation + (float)(Math.Sin(Main.GameTimeDraw.TotalGameTime.TotalSeconds * 12) / 6);
             Renderer.Draw(spriteBatch, LocationBehavior);
+            LocationBehavior.Rotation = angle;
 
             // Effecte der Powerups zeichnen
             foreach (Powerup p in ActivePowerups)
@@ -486,7 +490,7 @@ namespace EVCS_Projekt
 
         // ***************************************************************************
         // Fügt von Liquid mit der ID id, die Menge amount hinzu
-        public void AddLiquid( ELiquid type, int amount )
+        public void AddLiquid(ELiquid type, int amount)
         {
             switch (type)
             {
@@ -520,14 +524,14 @@ namespace EVCS_Projekt
             }
         }
 
-        public void AddLiquid( Vector3 liquid )
+        public void AddLiquid(Vector3 liquid)
         {
             Liquids += liquid;
         }
 
         // ***************************************************************************
         // Zieht von Liquid mit der ID id, die Menge amount ab
-        public void ReduceLiquid( Vector3 liquid )
+        public void ReduceLiquid(Vector3 liquid)
         {
             Liquids -= liquid;
         }
