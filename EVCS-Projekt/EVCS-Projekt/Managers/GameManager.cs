@@ -56,6 +56,7 @@ namespace EVCS_Projekt.Managers
         // Update Delegates
         private delegate void UpdateDel();
         private UpdateDel updateDelegater;
+        private UpdateDel updateGamePlayDelegator;
 
         // Für Gui
         private Texture2D gui_overlay, health_bar, gui_backlayer;
@@ -91,6 +92,7 @@ namespace EVCS_Projekt.Managers
 
             // Update Delegator setzen
             updateDelegater = UpdateGame;
+            updateGamePlayDelegator = UpdateGamePlay;
 
             // Variablen initialisiwerung
             GameState = new GameState();
@@ -631,7 +633,7 @@ namespace EVCS_Projekt.Managers
         // Update für das eigentliche spiel
         public void UpdateGame()
         {
-            UpdateGamePlay();
+            updateGamePlayDelegator();
 
             var newState = Keyboard.GetState();
 
@@ -643,12 +645,12 @@ namespace EVCS_Projekt.Managers
                 }
                 if (inventarPanel.Visible)
                 {
-                    updateDelegater = UpdateGamePlay;
+                    updateGamePlayDelegator = UpdateGamePlay;
                     inventarPanel.Visible = false;
                 }
                 else
                 {
-                    updateDelegater = UpdateGui;
+                    updateGamePlayDelegator = UpdateGui;
                     inventarPanel.Visible = true;
                 }
             }
@@ -660,12 +662,12 @@ namespace EVCS_Projekt.Managers
                 }
                 if (constructorPanel.Visible)
                 {
-                    updateDelegater = UpdateGamePlay;
+                    updateGamePlayDelegator = UpdateGamePlay;
                     constructorPanel.Visible = false;
                 }
                 else
                 {
-                    updateDelegater = UpdateGui;
+                    updateGamePlayDelegator = UpdateGui;
                     constructorPanel.Visible = true;
                 }
             }
