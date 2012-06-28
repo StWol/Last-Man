@@ -9,8 +9,8 @@
   </BuffInner>
   <BuffInner>
     <RefId>2</RefId>
-    <Duration>1</Duration>
-    <ValuePerSecond>4</ValuePerSecond>
+    <Duration>4</Duration>
+    <ValuePerSecond>3</ValuePerSecond>
     <Value>3</Value>
     <BuffType>FireDamage</BuffType>
   </BuffInner>

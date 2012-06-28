@@ -126,7 +126,7 @@ namespace EVCS_Projekt.Managers
                 GameState.KilledMonsters.Add(e, 0);
 
             // Werte für Runde
-            GameState.RoundDelay = 2;
+            GameState.RoundDelay = 30;
             GameState.Round = 1;
             GameState.RoundIsRunning = false;
             GameState.RoundStartTime = new Dictionary<int, double>();
@@ -531,6 +531,20 @@ namespace EVCS_Projekt.Managers
                 Sound.Sounds["Weapon_Reload"].Play();
                 GameState.Player.Reloading = (float)Sound.Sounds["Weapon_Reload"].Duration.TotalSeconds;
             }
+            if (Keyboard.GetState().IsKeyDown(Keys.D3) && GameState.Player.Reloading <= 0)
+            {
+                GameState.Player.ActiveShortcut = 3;
+
+                Sound.Sounds["Weapon_Reload"].Play();
+                GameState.Player.Reloading = (float)Sound.Sounds["Weapon_Reload"].Duration.TotalSeconds;
+            }
+            if (Keyboard.GetState().IsKeyDown(Keys.D4) && GameState.Player.Reloading <= 0)
+            {
+                GameState.Player.ActiveShortcut = 4;
+
+                Sound.Sounds["Weapon_Reload"].Play();
+                GameState.Player.Reloading = (float)Sound.Sounds["Weapon_Reload"].Duration.TotalSeconds;
+            }
             if (Keyboard.GetState().IsKeyDown(Keys.R) && GameState.Player.Reloading <= 0)
             {
                 GameState.Player.Weapon.Reload();
@@ -541,7 +555,7 @@ namespace EVCS_Projekt.Managers
 
             var newState = Keyboard.GetState();
 
-            if (Keyboard.GetState().IsKeyDown(Keys.D0))
+            /*if (Keyboard.GetState().IsKeyDown(Keys.D0))
             {
                 foreach (Enemy e in GameState.QuadTreeEnemies)
                 {
@@ -579,7 +593,7 @@ namespace EVCS_Projekt.Managers
             {
                 ItemSpawner.SpawnItems();
             }
-            
+            */
 
             // TEST-ENDE
             // ###############################################################################
@@ -1092,11 +1106,11 @@ namespace EVCS_Projekt.Managers
                     }
                 }
 
-            spriteBatch.DrawString(testFont, "Enemies: " + GameState.QuadTreeEnemies.Count + " FPS: " + (1 / Main.GameTimeDraw.ElapsedGameTime.TotalSeconds), new Vector2(0, 0), Color.Green);
+//            spriteBatch.DrawString(testFont, "Enemies: " + GameState.QuadTreeEnemies.Count + " FPS: " + (1 / Main.GameTimeDraw.ElapsedGameTime.TotalSeconds), new Vector2(0, 0), Color.Green);
 
-            spriteBatch.DrawString(testFont, "Liquids: " + GameState.Player.Liquids + " Highscore: " + HighscoreHelper.Highscore, new Vector2(0, 30), Color.Red);
-            spriteBatch.DrawString(testFont, "Health: " + GameState.Player.Health, new Vector2(0, 60), Color.Red);
-            spriteBatch.DrawString(testFont, "TimeToRoundStart: " + GameState.TimeToRoundStart + " Kills: " + GameState.TotalKilledMonsters, new Vector2(0, 90), Color.Blue);
+//            spriteBatch.DrawString(testFont, "Liquids: " + GameState.Player.Liquids + " Highscore: " + HighscoreHelper.Highscore, new Vector2(0, 30), Color.Red);
+//            spriteBatch.DrawString(testFont, "Health: " + GameState.Player.Health, new Vector2(0, 60), Color.Red);
+//            spriteBatch.DrawString(testFont, "TimeToRoundStart: " + GameState.TimeToRoundStart + " Kills: " + GameState.TotalKilledMonsters, new Vector2(0, 90), Color.Blue);
 
             // Mapinfos
             /*foreach (StaticObject so in GameState.Karte.QuadTreeWalkable.GetObjects(screenRect))
@@ -1111,10 +1125,10 @@ namespace EVCS_Projekt.Managers
             }
 
             // Statische Objekte zeichnen
-            foreach (StaticObject so in staticOnScreen)
+            /*foreach (StaticObject so in staticOnScreen)
             {
                 spriteBatch.DrawString(defaultFont, "" + so.LocationBehavior.Position, so.LocationBehavior.RelativePosition, Color.Violet);
-            }
+            }*/
 
             // TEST-ENDE
             // ################################################################################
@@ -1137,6 +1151,15 @@ namespace EVCS_Projekt.Managers
         // Zeichne die Rundeninfos
         private void DrawRoundinfos(SpriteBatch spriteBatch)
         {
+
+            if (!GameState.RoundIsRunning && GameState.TimeToRoundStart > 5 )
+            {
+                string s = "Nächste Runde startet in " + (int)(GameState.TimeToRoundStart+1) + " Sekunden" ;
+
+                Vector2 sm = defaultFont.MeasureString(s);
+
+                spriteBatch.DrawString(defaultFont, s, new Vector2(Configuration.GetInt("resolutionWidth") / 2-sm.X/2, 10), new Color(128,64,64, 220));
+            }
 
             if (!GameState.RoundIsRunning || Main.GameTimeUpdate.TotalGameTime.TotalSeconds - GameState.RoundStartTime[GameState.Round] < 3)
             {
