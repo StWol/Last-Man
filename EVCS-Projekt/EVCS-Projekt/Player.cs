@@ -37,7 +37,7 @@ namespace EVCS_Projekt
                 // Schaden für HS speichern
                 if (value < _health)
                 {
-                    Main.MainObject.GameManager.GameState.DamageTaken += _health - value;
+                    Main.MainObject.GameManager.GameState.GameStatistic.DamageTaken += _health - value;
                 }
 
                 _health = value;
@@ -441,7 +441,7 @@ namespace EVCS_Projekt
                     s.LocationSizing();
 
                     // schusscount ++
-                    Main.MainObject.GameManager.GameState.Shots++;
+                    Main.MainObject.GameManager.GameState.GameStatistic.Shots++;
 
                     // schuss adden
                     Main.MainObject.GameManager.GameState.ShotListVsEnemies.Add(s);

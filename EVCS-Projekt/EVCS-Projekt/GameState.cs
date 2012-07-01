@@ -12,57 +12,73 @@ namespace EVCS_Projekt
 {
     public class GameState
     {
-        // QT für die Gegner
+        /// <summary>
+        /// QuadTree in dem die Enemies gespeichert sind
+        /// </summary>
         public QuadTree<Enemy> QuadTreeEnemies { get; set; }
-        // QT für die SpawnPoints
+
+        /// <summary>
+        /// QuadTree in dem die SpawnPoints gespeichert sind
+        /// </summary>
         public QuadTree<SpawnPoint> QuadTreeSpawnPoints { get; set; }
-        // QT für statische Objekte
+
+        /// <summary>
+        /// QuadTree in dem die Objekte der Map gespeichert sind
+        /// </summary>
         public QuadTree<StaticObject> QuadTreeStaticObjects { get; set; }
-        // QT für Items
+
+        /// <summary>
+        /// QuadTree in dem die Items gespeichert sind, welche auf der Map liegen
+        /// </summary>
         public QuadTree<Item> QuadTreeItems { get; set; }
-        // List für alle Schüsse von Spieler
+
+        /// <summary>
+        /// List der Schüsse, die mit Enemies kollidieren können
+        /// </summary>
         public List<Shot> ShotListVsEnemies { get; set; }
+
+        /// <summary>
+        /// List der Schüsse, die mit dem Player kollidieren können
+        /// </summary>
         public List<Shot> ShotListVsPlayer { get; set; }
-        // Der Spieler
+        
+        /// <summary>
+        /// Das Playerobjekt
+        /// </summary>
         public Player Player { get; set; }
-        // Der Versatz der Map relativ zum Spieler - so dass Spieler in der Mitte von Screen ist
+
+        /// <summary>
+        /// Der Versatz der Map relativ zum Spieler - so dass Spieler in der Mitte von Screen ist
+        /// </summary>
         public Vector2 MapOffset { get; set; }
-        // Größe der Map in Pixel
+        
+        /// <summary>
+        ///  Größe der Map in Pixel
+        /// </summary>
         public Vector2 MapSize { get; set; }
-        // Zeit bis zum nächsten Gegner spawn
+        
+        /// <summary>
+        /// Zeit bis die nächsten Gegner spawnen
+        /// </summary>
         public float NextSpawn { get; set; }
-        // Die Map selbst
+        
+        /// <summary>
+        /// Das Mapobjekt
+        /// </summary>
         public Karte Karte { get; set; }
 
-        // Getötete Monster
-        public int TotalKilledMonsters
-        {
-            get
-            {
-                int s = 0;
-                foreach (int i in KilledMonsters.Values)
-                    s += i;
-                return s;
-            }
-        }
-
-        public Dictionary<EEnemyType, int> KilledMonsters { get; set; }
-
-        // Highscore
-        public long Highscore { get; set; }
-        public long Shots { get; set; }
-        public float DamageGiven { get; set; }
-        public float DamageTaken { get; set; }
+        /// <summary>
+        /// Statistic des aktuellen Spiels
+        /// </summary>
+        public GameStatistic GameStatistic { get; set; }
 
         // Variablen für Runden etc
-        public int Round { get; set; }
         public float TimeToRoundStart { get; set; }
         public float RoundDelay { get; set; }
         public bool RoundIsRunning { get; set; }
         public int MonsterSpawnCount { get; set; }
         public int KillsToEndRound { get; set; }
-        public Dictionary<int, double> RoundStartTime { get; set; }
-        public Dictionary<int, double> RoundEndTime { get; set; }
+        
 
     }
 }

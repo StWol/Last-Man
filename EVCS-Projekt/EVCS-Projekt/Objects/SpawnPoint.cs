@@ -98,7 +98,7 @@ namespace EVCS_Projekt.Objects
                 {
                     //Enemy newEnemie = Enemy.DefaultEnemies[s.EnemyType].Clone();
                     // Enemies nach runden bestimmen
-                    EEnemyType spawnType = GetEType(gameState.Round, rand);
+                    EEnemyType spawnType = GetEType(gameState.GameStatistic.Round, rand);
                     Enemy newEnemie = Enemy.DefaultEnemies[spawnType].Clone();
 
                     //Debug.WriteLine(spawnType);

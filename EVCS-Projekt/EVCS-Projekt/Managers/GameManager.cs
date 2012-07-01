@@ -102,7 +102,7 @@ namespace EVCS_Projekt.Managers
             // Renderer laden
             Main.MainObject.MenuManager.LoadingText = "Loading images..";
             LoadRenderer();
-
+            
             // Sounds laden
             Main.MainObject.MenuManager.LoadingText = "Loading sounds..";
             Sound.LoadSounds();
@@ -123,17 +123,14 @@ namespace EVCS_Projekt.Managers
             GameState.Karte = new Karte();
             GameState.Karte.LoadMap(GameState, "testmap");
 
-            GameState.KilledMonsters = new Dictionary<EEnemyType, int>();
-            foreach (EEnemyType e in Enum.GetValues(typeof(EEnemyType)))
-                GameState.KilledMonsters.Add(e, 0);
+            GameState.GameStatistic = new GameStatistic();
+
+            
 
             // Werte für Runde
             GameState.RoundDelay = 1;
-            GameState.Round = 1;
+            GameState.GameStatistic.Round = 1;
             GameState.RoundIsRunning = false;
-            GameState.RoundStartTime = new Dictionary<int, double>();
-            GameState.RoundEndTime = new Dictionary<int, double>();
-
             GameState.TimeToRoundStart = GameState.RoundDelay;
 
             // Buffs laden
@@ -387,10 +384,10 @@ namespace EVCS_Projekt.Managers
                     GameState.RoundIsRunning = false;
 
                     // Roundenendzeit speichern
-                    GameState.RoundEndTime.Add(GameState.Round, Main.GameTimeUpdate.TotalGameTime.TotalSeconds);
+                    GameState.GameStatistic.RoundTimes.Add(GameState.GameStatistic.Round, Main.GameTimeUpdate.TotalGameTime.TotalSeconds - GameState.GameStatistic.RoundStartTime);
 
                     // Runde erhöhen
-                    GameState.Round++;
+                    GameState.GameStatistic.Round++;
 
                     // Timer setzten
                     GameState.TimeToRoundStart = GameState.RoundDelay;
@@ -412,13 +409,13 @@ namespace EVCS_Projekt.Managers
                     GameState.RoundIsRunning = true;
 
                     // Monstercount für die runden
-                    GameState.MonsterSpawnCount = GameState.Round * 10;
+                    GameState.MonsterSpawnCount = GameState.GameStatistic.Round * 10;
 
                     // KillsToEndRound setzten
                     GameState.KillsToEndRound = GameState.MonsterSpawnCount;
 
                     // Roundenstartzeit speichern
-                    GameState.RoundStartTime.Add(GameState.Round, Main.GameTimeUpdate.TotalGameTime.TotalSeconds);
+                    GameState.GameStatistic.RoundStartTime = (float)Main.GameTimeUpdate.TotalGameTime.TotalSeconds;
                 }
             }
         }
@@ -562,6 +559,10 @@ namespace EVCS_Projekt.Managers
             if (collTime > 0)
                 collTime -= (float)Main.GameTimeUpdate.ElapsedGameTime.TotalSeconds;
 
+            if (Keyboard.GetState().IsKeyDown(Keys.Escape))
+            {
+                GameState.Player.Health = 0;
+            }
 
             /*if (Keyboard.GetState().IsKeyDown(Keys.D0))
             {
@@ -1173,13 +1174,13 @@ namespace EVCS_Projekt.Managers
                 spriteBatch.DrawString(defaultFont, s, new Vector2(Configuration.GetInt("resolutionWidth") / 2 - sm.X / 2, 10), new Color(128, 64, 64, 220));
             }
 
-            if (!GameState.RoundIsRunning || Main.GameTimeUpdate.TotalGameTime.TotalSeconds - GameState.RoundStartTime[GameState.Round] < 3)
+            if (!GameState.RoundIsRunning || Main.GameTimeUpdate.TotalGameTime.TotalSeconds - GameState.GameStatistic.RoundStartTime < 3)
             {
                 string info = "";
 
-                if (GameState.RoundEndTime.ContainsKey(GameState.Round - 1) && Main.GameTimeUpdate.TotalGameTime.TotalSeconds - GameState.RoundEndTime[GameState.Round - 1] < 3)
+                if (GameState.GameStatistic.RoundTimes.ContainsKey(GameState.GameStatistic.Round - 1) && Main.GameTimeUpdate.TotalGameTime.TotalSeconds - GameState.GameStatistic.RoundTimes[GameState.GameStatistic.Round - 1] < 3)
                 {
-                    info = "Runde " + (GameState.Round - 1) + " beendet..";
+                    info = "Runde " + (GameState.GameStatistic.Round - 1) + " beendet..";
                 }
                 else
                 {
@@ -1199,7 +1200,7 @@ namespace EVCS_Projekt.Managers
                     }
                     else
                     {
-                        info = "Runde " + GameState.Round + " beginnt..";
+                        info = "Runde " + GameState.GameStatistic.Round + " beginnt..";
                     }
                 }
 
@@ -1306,7 +1307,7 @@ namespace EVCS_Projekt.Managers
         public void KillEnemie(Enemy e)
         {
             // Killcounter erhöhen
-            GameState.KilledMonsters[e.TypOfEnemy]++;
+            GameState.GameStatistic.KilledMonsters[e.TypOfEnemy]++;
 
             //Test new StaticRenderer(blood)
             AnimationRenderer a = LoadedRenderer.GetAnimation("A_Splatter_01");

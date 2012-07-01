@@ -29,7 +29,7 @@ namespace EVCS_Projekt
                 // Schaden für HS speichern
                 if (value < _health)
                 {
-                    Main.MainObject.GameManager.GameState.DamageGiven += _health - value;
+                    Main.MainObject.GameManager.GameState.GameStatistic.DamageGiven += _health - value;
                 }
 
                 _health = value;

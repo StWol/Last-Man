@@ -1,58 +1,81 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Audio;
-using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework.GamerServices;
-using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
-using Microsoft.Xna.Framework.Media;
-
 using System.Diagnostics;
-
-using EVCS_Projekt.Managers;
-using EVCS_Projekt.Helper;
-using EVCS_Projekt.Objects;
-using EVCS_Projekt.Audio;
-using EVCS_Projekt.Helper.XMLManager;
 using EVCS_Projekt.AI;
-using System.IO;
-using System.Xml.Serialization;
-using EVCS_Projekt.Objects.Items;
+using EVCS_Projekt.Audio;
+using EVCS_Projekt.Helper;
+using EVCS_Projekt.Managers;
+using EVCS_Projekt.UI;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace EVCS_Projekt
 {
-    public class Main : Microsoft.Xna.Framework.Game
+    public class Main : Game
     {
         // Attribute
-        GraphicsDeviceManager graphics;
-        SpriteBatch spriteBatch;
+        private readonly GraphicsDeviceManager _graphics;
+        private SpriteBatch _spriteBatch;
 
+        /// <summary>
+        ///   Aktueller GameManager
+        /// </summary>
         public GameManager GameManager { get; set; }
+
+        /// <summary>
+        ///   Aktueller MenuManager
+        /// </summary>
         public MenuManager MenuManager { get; set; }
+
+        /// <summary>
+        ///   Aktueller HighscoreManager
+        /// </summary>
         public HighscoreManager Highscoremanager { get; set; }
 
+        /// <summary>
+        ///   Der aktive Manager, dessen Update- und Drawmethoden ausgeführt werden
+        /// </summary>
         public Manager CurrentManager { private get; set; }
 
-        // Statische Attribute
+        // ############### Statische Attribute ###############
+
+        /// <summary>
+        ///   GameTime des letzten Update Durchlaufs
+        /// </summary>
         public static GameTime GameTimeUpdate { get; private set; }
+
+        /// <summary>
+        ///   GameTime des letzten Draw Durchlaufs
+        /// </summary>
         public static GameTime GameTimeDraw { get; private set; }
+
+        /// <summary>
+        ///   Referenz zu dem aktuellen Main-Objekt
+        /// </summary>
         public static Main MainObject { get; private set; }
+
+        /// <summary>
+        ///   Referenz zu dem ContentManager
+        /// </summary>
         public static ContentManager ContentManager { get; private set; }
 
+
+        /// <summary>
+        ///   Main-Methode. Hier startet das Spiel
+        /// </summary>
         public Main()
         {
             // Das ist ein Test :-)
             Debug.WriteLine("Start Game..");
 
-            Debug.WriteLine(Math.Tan(45F * Math.PI / 180));
-
-            graphics = new GraphicsDeviceManager(this);
+            _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
         }
 
 
+        /// <summary>
+        ///   Initialisierung wichtiger Variablen und setzten der Auflösung
+        /// </summary>
         protected override void Initialize()
         {
             // Load Config
@@ -62,14 +85,14 @@ namespace EVCS_Projekt
             int resWidht = Configuration.GetInt("resolutionWidth");
             int resHeight = Configuration.GetInt("resolutionHeight");
 
-            graphics.PreferredBackBufferWidth = resWidht;
-            graphics.PreferredBackBufferHeight = resHeight;
+            _graphics.PreferredBackBufferWidth = resWidht;
+            _graphics.PreferredBackBufferHeight = resHeight;
 
-            graphics.IsFullScreen = Configuration.GetBool("isFullscreen");
+            _graphics.IsFullScreen = Configuration.GetBool("isFullscreen");
 
-            graphics.PreferMultiSampling = Configuration.GetBool("antiAliasing");
+            _graphics.PreferMultiSampling = Configuration.GetBool("antiAliasing");
 
-            graphics.ApplyChanges();
+            _graphics.ApplyChanges();
 
             // Helper updaten
             DrawHelper.Callculate();
@@ -78,16 +101,19 @@ namespace EVCS_Projekt
         }
 
 
+        /// <summary>
+        ///   Laden der ManagerKlassen
+        /// </summary>
         protected override void LoadContent()
         {
-            spriteBatch = new SpriteBatch(GraphicsDevice);
+            _spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // Main + ContentManager für static Zugriff
             MainObject = this;
             ContentManager = Content;
 
             // Mauszeiger laden
-            UI.MouseCursor.Load();
+            MouseCursor.Load();
 
             // Music laden
             MusicPlayer.LoadSongs();
@@ -106,17 +132,20 @@ namespace EVCS_Projekt
 
         protected override void UnloadContent()
         {
-
         }
 
 
+        /// <summary>
+        ///   Von hier aus wird der Updatevorgang des aktuellen Managers angestoßen
+        /// </summary>
+        /// <param name="gameTime"> Aktuelle GameTime </param>
         protected override void Update(GameTime gameTime)
         {
             //GameTime speichern um für alle zugänglich zu machen
             GameTimeUpdate = gameTime;
 
             // Wenn Spielfenster keinen Focus hat, wird kein updatevorgang ausgeführt
-            if (this.IsActive)
+            if (IsActive)
                 // Manager updaten
                 CurrentManager.Update();
 
@@ -124,6 +153,10 @@ namespace EVCS_Projekt
         }
 
 
+        /// <summary>
+        ///   Von hier aus wird der Drawvorgang des aktuellen Managers angestoßen
+        /// </summary>
+        /// <param name="gameTime"> Aktuelle GameTime </param>
         protected override void Draw(GameTime gameTime)
         {
             //GameTime speichern um für alle zugänglich zu machen
@@ -133,11 +166,15 @@ namespace EVCS_Projekt
             GraphicsDevice.Clear(Color.White);
 
             // currentmanagaer draw
-            CurrentManager.Draw(spriteBatch);
-
+            CurrentManager.Draw(_spriteBatch);
+            
             base.Draw(gameTime);
         }
 
+
+        /// <summary>
+        ///   Beim schließen des Fensters alle laufenden Threads beenden
+        /// </summary>
         protected override void OnExiting(Object sender, EventArgs args)
         {
             base.OnExiting(sender, args);
@@ -147,6 +184,5 @@ namespace EVCS_Projekt
             // Stop the threads
             AIThread.Running = false;
         }
-
     }
 }

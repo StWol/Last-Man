@@ -172,8 +172,8 @@ namespace EVCS_Projekt.Managers
                     // Highscore eintragen
                     Score newScore = new Score();
                     newScore.Name = _inputText;
-                    newScore.Points = HighscoreHelper.Highscore;
-                    newScore.Round = _gameState.Round;
+                    newScore.Points = _gameState.GameStatistic.Highscore;
+                    newScore.Round = _gameState.GameStatistic.Round;
 
                     HighscoreHelper.Add(newScore);
 
@@ -203,17 +203,17 @@ namespace EVCS_Projekt.Managers
             float xLeft = DrawHelper.Get("Score_XKoods").X;
             float xRight = DrawHelper.Get("Score_XKoods").Y;
 
-            string highscoreText = "Score: " + HighscoreHelper.Highscore + "  Platz: " + HighscoreHelper.GetPosition(HighscoreHelper.Highscore) + "/" + (HighscoreHelper.HighscoreCount + 1);
+            string highscoreText = "Score: " + _gameState.GameStatistic.Highscore + "  Platz: " + HighscoreHelper.GetPosition(_gameState.GameStatistic.Highscore) + "/" + (HighscoreHelper.HighscoreCount + 1);
 
             spriteBatch.DrawString(_font, highscoreText, new Vector2(Configuration.GetInt("resolutionWidth") / 2 - _font.MeasureString(highscoreText).X / 2, yPos), new Color(128, 0, 0, 200));
 
-            spriteBatch.DrawString(_font, "Runde: " + _gameState.Round, new Vector2(xLeft, yPos + lineHeight), new Color(0, 0, 0, 200));
+            spriteBatch.DrawString(_font, "Runde: " + _gameState.GameStatistic.Round, new Vector2(xLeft, yPos + lineHeight), new Color(0, 0, 0, 200));
 
-            spriteBatch.DrawString(_font, "Schaden bekommen: " + (long)_gameState.DamageTaken, new Vector2(xLeft, yPos + lineHeight * 2), new Color(0, 0, 0, 200));
-            spriteBatch.DrawString(_font, "Schaden gegeben: " + (long)_gameState.DamageGiven, new Vector2(xRight, yPos + lineHeight * 2), new Color(0, 0, 0, 200));
+            spriteBatch.DrawString(_font, "Schaden bekommen: " + (long)_gameState.GameStatistic.DamageTaken, new Vector2(xLeft, yPos + lineHeight * 2), new Color(0, 0, 0, 200));
+            spriteBatch.DrawString(_font, "Schaden gegeben: " + (long)_gameState.GameStatistic.DamageGiven, new Vector2(xRight, yPos + lineHeight * 2), new Color(0, 0, 0, 200));
 
-            spriteBatch.DrawString(_font, "Schüsse: " + _gameState.Shots, new Vector2(xLeft, yPos + lineHeight * 3), new Color(0, 0, 0, 200));
-            spriteBatch.DrawString(_font, "Gegner getötet: " + _gameState.TotalKilledMonsters, new Vector2(xRight, yPos + lineHeight * 3), new Color(0, 0, 0, 200));
+            spriteBatch.DrawString(_font, "Schüsse: " + _gameState.GameStatistic.Shots, new Vector2(xLeft, yPos + lineHeight * 3), new Color(0, 0, 0, 200));
+            spriteBatch.DrawString(_font, "Gegner getötet: " + _gameState.GameStatistic.TotalKilledMonsters, new Vector2(xRight, yPos + lineHeight * 3), new Color(0, 0, 0, 200));
         }
 
         /// ////////////////////////////////////////////////////////////
