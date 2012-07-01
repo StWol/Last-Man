@@ -1,16 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EVCS-Projekt", "EVCS-Projekt\EVCS-Projekt\EVCS-Projekt.csproj", "{95136B82-37AA-4964-AEAC-AC3CCFB958A2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LastMan", "EVCS-Projekt\EVCS-Projekt\LastMan.csproj", "{95136B82-37AA-4964-AEAC-AC3CCFB958A2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EVCS-ProjektContent", "EVCS-Projekt\EVCS-ProjektContent\EVCS-ProjektContent.contentproj", "{BE098348-C34C-4AB1-8A1C-C209C3FD808C}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{4E1D931A-81E7-42D3-AB07-6C2C42785644}"
-	ProjectSection(SolutionItems) = preProject
-		EVCS-Projekt.vsmdi = EVCS-Projekt.vsmdi
-		Local.testsettings = Local.testsettings
-		TraceAndTestImpact.testsettings = TraceAndTestImpact.testsettings
-	EndProjectSection
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LastManContent", "EVCS-Projekt\EVCS-ProjektContent\LastManContent.contentproj", "{BE098348-C34C-4AB1-8A1C-C209C3FD808C}"
 EndProject
 Global
 	GlobalSection(TestCaseManagementSettings) = postSolution

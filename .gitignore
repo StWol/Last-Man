@@ -25,4 +25,4 @@ obj/
 [Rr]elease*/
 _ReSharper*/
 [Tt]est[Rr]esult*
-EVCS-Projekt/EVCS-Projekt/EVCS-Projekt.csproj.Debug.cachefile
+*.cachefile

@@ -7,8 +7,8 @@
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>EVCS_Projekt</RootNamespace>
-    <AssemblyName>EVCS-Projekt</AssemblyName>
+    <RootNamespace>LastMan</RootNamespace>
+    <AssemblyName>LastMan</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <TargetFrameworkProfile>Client</TargetFrameworkProfile>
     <XnaFrameworkVersion>v4.0</XnaFrameworkVersion>
@@ -181,8 +181,8 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\EVCS-ProjektContent\EVCS-ProjektContent.contentproj">
-      <Name>EVCS-ProjektContent %28Content%29</Name>
+    <ProjectReference Include="..\EVCS-ProjektContent\LastManContent.contentproj">
+      <Name>LastManContent %28Content%29</Name>
       <XnaReferenceType>Content</XnaReferenceType>
       <Project>{BE098348-C34C-4AB1-8A1C-C209C3FD808C}</Project>
     </ProjectReference>

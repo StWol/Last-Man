@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("EVCS-Projekt")]
-[assembly: AssemblyProduct("EVCS-Projekt")]
-[assembly: AssemblyDescription("")]
-[assembly: AssemblyCompany("Microsoft")]
-[assembly: AssemblyCopyright("Copyright © Microsoft 2011")]
+[assembly: AssemblyTitle("LastMan")]
+[assembly: AssemblyProduct("LastMan")]
+[assembly: AssemblyDescription("2D-ActionShooter")]
+[assembly: AssemblyCompany("")]
+[assembly: AssemblyCopyright("Jan Horak, Marius Oehler, Stanislaw Wolf")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
