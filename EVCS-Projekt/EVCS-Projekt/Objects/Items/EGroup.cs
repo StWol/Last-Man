@@ -1,4 +1,4 @@
-﻿namespace EVCS_Projekt.Objects.Items
+﻿namespace LastMan.Objects.Items
 {
     public enum EGroup
     {

@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace EVCS_Projekt.UI
+namespace LastMan.UI
 {
     internal class UIButton : UIElement
     {

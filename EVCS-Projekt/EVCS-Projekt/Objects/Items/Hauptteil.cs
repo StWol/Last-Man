@@ -1,9 +1,8 @@
 using System;
-using EVCS_Projekt.Location;
-using Microsoft.Xna.Framework;
-using EVCS_Projekt;
+using LastMan.Objects;
+using LastMan.Location;
 
-namespace EVCS_Projekt.Objects.Items
+namespace LastMan.Objects.Items
 {
     /**
      * @UMLVersion = 12.Mai2012

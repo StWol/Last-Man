@@ -2,15 +2,16 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using EVCS_Projekt.Location;
+using LastMan.Location;
+using LastMan.Objects;
 using Microsoft.Xna.Framework;
 
 using System.Diagnostics;
-using EVCS_Projekt.Tree;
-using EVCS_Projekt.Managers;
-using EVCS_Projekt.AI;
+using LastMan.Tree;
+using LastMan.Managers;
+using LastMan.AI;
 
-namespace EVCS_Projekt.Objects
+namespace LastMan.Objects
 {
     public class SpawnPoint : IQuadStorable
     {

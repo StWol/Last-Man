@@ -1,4 +1,4 @@
-﻿namespace EVCS_Projekt.Objects
+﻿namespace LastMan.Objects
 {
     public enum EBuffType
     {

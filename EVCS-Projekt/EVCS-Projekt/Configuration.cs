@@ -7,7 +7,7 @@ using System.Xml.Serialization;
 
 using System.Diagnostics;
 
-namespace EVCS_Projekt
+namespace LastMan
 {
     class Configuration
     {

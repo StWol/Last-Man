@@ -1,7 +1,6 @@
-﻿using System;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 
-namespace EVCS_Projekt.Location
+namespace LastMan.Location
 {
     class UILocation : ILocationBehavior
     {

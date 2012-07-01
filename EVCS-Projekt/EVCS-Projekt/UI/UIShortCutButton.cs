@@ -3,13 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Mime;
 using System.Text;
-using EVCS_Projekt.Location;
-using EVCS_Projekt.Objects.Items;
-using EVCS_Projekt.Renderer;
+using LastMan.Objects.Items;
+using LastMan.Renderer;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace EVCS_Projekt.UI
+namespace LastMan.UI
 {
     class UIShortcutButton : UIPanel
     {

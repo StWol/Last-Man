@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Mime;
 using System.Text;
-using EVCS_Projekt.Objects;
-using EVCS_Projekt.Objects.Items;
+using LastMan.Objects;
+using LastMan.Objects.Items;
+using LastMan.Objects.Items;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace EVCS_Projekt.UI
+namespace LastMan.UI
 {
     class UIInfoPanel : UIPanel
     {

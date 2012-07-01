@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
-using EVCS_Projekt.UI;
+using LastMan.UI;
+using LastMan.UI;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace EVCS_Projekt.Managers
+namespace LastMan.Managers
 {
     class GuiManager : Manager, UIActionListener
     {

@@ -1,8 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using EVCS_Projekt.Location;
-using EVCS_Projekt.Objects.Items;
+using LastMan.Objects.Items;
+using LastMan.Location;
+using LastMan.Objects.Items;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
@@ -10,7 +11,7 @@ using Microsoft.Xna.Framework.GamerServices;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
-using EVCS_Projekt.Renderer;
+using LastMan.Renderer;
 using System.Xml;
 using System.IO;
 using System.Xml.Serialization;
@@ -18,7 +19,7 @@ using System.Diagnostics;
 using System.Reflection;
 
 
-namespace EVCS_Projekt.Objects
+namespace LastMan.Objects
 {
 
     public abstract class Item : GameObject

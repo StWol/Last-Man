@@ -2,13 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using EVCS_Projekt.Tree;
+using LastMan.Tree;
+using LastMan;
 using Microsoft.Xna.Framework;
-using EVCS_Projekt.Objects.Items;
-using EVCS_Projekt.Objects;
-using EVCS_Projekt.Map;
+using LastMan.Objects.Items;
+using LastMan.Objects;
+using LastMan.Map;
 
-namespace EVCS_Projekt
+namespace LastMan
 {
     public class GameState
     {

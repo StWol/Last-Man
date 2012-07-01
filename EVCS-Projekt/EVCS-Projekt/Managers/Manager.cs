@@ -6,7 +6,7 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace EVCS_Projekt.Managers
+namespace LastMan.Managers
 {
     public abstract class Manager
     {

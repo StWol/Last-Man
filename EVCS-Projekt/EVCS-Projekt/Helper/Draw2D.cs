@@ -5,7 +5,7 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace EVCS_Projekt.Helper
+namespace LastMan.Helper
 {
     public class Draw2D
     {

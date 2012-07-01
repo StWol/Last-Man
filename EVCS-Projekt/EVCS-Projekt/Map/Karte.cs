@@ -2,18 +2,19 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using LastMan.Location;
+using LastMan.Objects;
 using Microsoft.Xna.Framework.Graphics;
 using System.IO;
-using EVCS_Projekt.Tree;
+using LastMan.Tree;
 using Microsoft.Xna.Framework;
-using EVCS_Projekt.Objects;
-using EVCS_Projekt.Location;
-using EVCS_Projekt.Renderer;
+using LastMan.Objects;
+using LastMan.Renderer;
 using System.Diagnostics;
-using EVCS_Projekt.Managers;
-using EVCS_Projekt.AI;
+using LastMan.Managers;
+using LastMan.AI;
 
-namespace EVCS_Projekt.Map
+namespace LastMan.Map
 {
     public class Karte
     {

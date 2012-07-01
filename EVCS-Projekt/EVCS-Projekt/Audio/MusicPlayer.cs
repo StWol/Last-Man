@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework.Media;
 
-namespace EVCS_Projekt.Audio
+namespace LastMan.Audio
 {
     class MusicPlayer
     {

@@ -5,7 +5,7 @@ using Microsoft.Xna.Framework;
 using System.IO;
 using System.Xml.Serialization;
 
-namespace EVCS_Projekt.Helper
+namespace LastMan.Helper
 {
     public struct Score
     {

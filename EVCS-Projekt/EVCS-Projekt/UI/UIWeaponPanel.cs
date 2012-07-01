@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using EVCS_Projekt.Objects.Items;
+using LastMan.Objects.Items;
+using LastMan.Objects.Items;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace EVCS_Projekt.UI
+namespace LastMan.UI
 {
     class UIWeaponPanel : UIPanel
     {

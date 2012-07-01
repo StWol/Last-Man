@@ -1,6 +1,6 @@
-using System;
+using LastMan;
 
-namespace EVCS_Projekt
+namespace LastMan
 {
 #if WINDOWS || XBOX
     static class Program

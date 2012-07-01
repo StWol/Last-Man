@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using LastMan.AI;
 using Microsoft.Xna.Framework;
-using EVCS_Projekt.Map;
-using EVCS_Projekt.Managers;
+using LastMan.Map;
+using LastMan.Managers;
 
-namespace EVCS_Projekt.AI
+namespace LastMan.AI
 {
     public class WalkTo : Activity
     {

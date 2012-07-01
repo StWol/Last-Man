@@ -4,13 +4,15 @@ using System.Diagnostics;
 using System.Linq;
 using System.Net.Mime;
 using System.Text;
-using EVCS_Projekt.GUI;
-using EVCS_Projekt.Objects;
-using EVCS_Projekt.Objects.Items;
+using LastMan.GUI;
+using LastMan.Objects;
+using LastMan.Objects.Items;
+using LastMan;
+using LastMan.UI;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace EVCS_Projekt.UI
+namespace LastMan.UI
 {
     class UIList : UIPanel, UIActionListener
     {

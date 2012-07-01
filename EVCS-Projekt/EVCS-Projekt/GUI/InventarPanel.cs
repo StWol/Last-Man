@@ -1,12 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using EVCS_Projekt.Objects;
-using EVCS_Projekt.Objects.Items;
-using EVCS_Projekt.UI;
+using LastMan.Objects;
+using LastMan.Objects.Items;
+using LastMan.UI;
+using LastMan;
+using LastMan.Objects.Items;
+using LastMan.UI;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace EVCS_Projekt.GUI
+namespace LastMan.GUI
 {
     class InventarPanel : UIPanel, UIActionListener, UIMouseHoverListener
     {
@@ -72,7 +75,7 @@ namespace EVCS_Projekt.GUI
 
         private void GenerateShortcuts()
         {
-            Dictionary<int, Weapon> shortcuts = player.GetShortcuts();
+            Dictionary<int, Weapon> shortcuts = player.Shortcuts;
 
             for ( int i = 0; i < 4; i++ )
             {
@@ -309,7 +312,7 @@ namespace EVCS_Projekt.GUI
 
             if ( activeItem == null )
             {
-                if ( player.GetShortcuts().Values.Count > 1 )
+                if ( player.Shortcuts.Values.Count > 1 )
                 {
                     SwitchWeapon( null, button );
                 }
@@ -324,7 +327,7 @@ namespace EVCS_Projekt.GUI
             }
             else
             {
-                if ( player.GetShortcuts().Values.Count > 1 )
+                if ( player.Shortcuts.Values.Count > 1 )
                 {
                     SwitchWeapon( null, button );
                 }

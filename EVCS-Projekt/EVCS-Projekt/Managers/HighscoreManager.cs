@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
-using EVCS_Projekt.Helper;
+using LastMan.Helper;
 using Microsoft.Xna.Framework.Input;
 
-namespace EVCS_Projekt.Managers
+namespace LastMan.Managers
 {
     public class HighscoreManager : Manager
     {

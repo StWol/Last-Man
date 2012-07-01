@@ -5,7 +5,7 @@ using System.Text;
 using Microsoft.Xna.Framework.Audio;
 using System.IO;
 
-namespace EVCS_Projekt.Audio
+namespace LastMan.Audio
 {
     public class Sound
     {

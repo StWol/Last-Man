@@ -2,17 +2,19 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using EVCS_Projekt.Location;
-using EVCS_Projekt.Objects;
+using LastMan.Objects;
+using LastMan.AI;
+using LastMan.Location;
+using LastMan.Objects;
 using Microsoft.Xna.Framework;
-using EVCS_Projekt.Renderer;
-using EVCS_Projekt.Objects.Items;
+using LastMan.Renderer;
+using LastMan.Objects.Items;
 using System.Diagnostics;
-using EVCS_Projekt.AI;
-using EVCS_Projekt.Audio;
+using LastMan.AI;
+using LastMan.Audio;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace EVCS_Projekt
+namespace LastMan
 {
     public class Enemy : GameObject
     {

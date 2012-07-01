@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using EVCS_Projekt.Map;
+using LastMan.Map;
 
-namespace EVCS_Projekt.AI
+namespace LastMan.AI
 {
     public class PathNode
     {

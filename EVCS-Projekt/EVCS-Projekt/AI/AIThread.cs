@@ -6,7 +6,7 @@ using System.Threading;
 using Microsoft.Xna.Framework;
 using System.Diagnostics;
 
-namespace EVCS_Projekt.AI
+namespace LastMan.AI
 {
     class AIThread
     {

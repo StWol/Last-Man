@@ -6,7 +6,7 @@ using System.Xml;
 
 using System.Diagnostics;
 
-namespace EVCS_Projekt.Helper.XMLManager
+namespace LastMan.Helper.XMLManager
 {
     class XMLManager
     {

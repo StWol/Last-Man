@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using LastMan.UI;
 
-namespace EVCS_Projekt.UI
+namespace LastMan.UI
 {
     interface UIActionListener: UIListener
     {

@@ -5,7 +5,7 @@ using System.Text;
 using Microsoft.Xna.Framework.Graphics;
 using System.Diagnostics;
 
-namespace EVCS_Projekt.Renderer
+namespace LastMan.Renderer
 {
     class LoadedRenderer
     {

@@ -3,15 +3,18 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
-using EVCS_Projekt.Location;
-using EVCS_Projekt.Objects;
-using EVCS_Projekt.Objects.Items;
-using EVCS_Projekt.Renderer;
-using EVCS_Projekt.UI;
+using LastMan.Objects;
+using LastMan.Objects.Items;
+using LastMan.Renderer;
+using LastMan.UI;
+using LastMan;
+using LastMan.Location;
+using LastMan.Objects.Items;
+using LastMan.UI;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace EVCS_Projekt.GUI
+namespace LastMan.GUI
 {
     class Constructor : UIPanel, UIActionListener
     {

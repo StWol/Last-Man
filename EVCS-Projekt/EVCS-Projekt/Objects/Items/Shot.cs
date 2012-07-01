@@ -1,10 +1,12 @@
 using System;
 using System.Collections.Generic;
-using EVCS_Projekt.Location;
+using LastMan.Location;
+using LastMan.Objects;
+using LastMan.Objects.Items;
 using Microsoft.Xna.Framework;
 using System.Diagnostics;
 
-namespace EVCS_Projekt.Objects.Items
+namespace LastMan.Objects.Items
 {
     /**
      * @UMLVersion = 12.Mai2012

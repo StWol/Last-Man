@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using EVCS_Projekt.Location;
-using EVCS_Projekt.Renderer;
-using EVCS_Projekt.Tree;
+using LastMan.Renderer;
+using LastMan.Tree;
+using LastMan.Location;
 using Microsoft.Xna.Framework;
 
-namespace EVCS_Projekt.Map
+namespace LastMan.Map
 {
     public class WayPoint : IQuadStorable
     {

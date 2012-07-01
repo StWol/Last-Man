@@ -6,7 +6,7 @@ using Microsoft.Xna.Framework;
 using System.Collections;
 using System.Diagnostics;
 
-namespace EVCS_Projekt.Tree
+namespace LastMan.Tree
 {
     /// <summary>
     /// Interface to define Rect, so that QuadTree knows how to store the object.

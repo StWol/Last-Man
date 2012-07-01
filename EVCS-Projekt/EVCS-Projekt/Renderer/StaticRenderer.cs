@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using LastMan.Location;
 using Microsoft.Xna.Framework.Graphics;
-using EVCS_Projekt.Location;
 using Microsoft.Xna.Framework;
 using System.Diagnostics;
 
-namespace EVCS_Projekt.Renderer
+namespace LastMan.Renderer
 {
     public class StaticRenderer : IRenderBehavior
     {

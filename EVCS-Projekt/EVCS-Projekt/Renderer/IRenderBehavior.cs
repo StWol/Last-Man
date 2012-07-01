@@ -1,8 +1,8 @@
-﻿using EVCS_Projekt.Location;
+﻿using LastMan.Location;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 
-namespace EVCS_Projekt.Renderer
+namespace LastMan.Renderer
 {
     public interface IRenderBehavior
     {

@@ -5,7 +5,7 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 
-namespace EVCS_Projekt.UI
+namespace LastMan.UI
 {
     class UIMouseEvent
     {

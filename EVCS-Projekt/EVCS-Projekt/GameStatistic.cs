@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using EVCS_Projekt.Objects;
+using LastMan.Objects;
+using LastMan.Objects;
 
-namespace EVCS_Projekt
+namespace LastMan
 {
     public class GameStatistic
     {

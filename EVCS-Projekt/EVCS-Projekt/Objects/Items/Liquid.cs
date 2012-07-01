@@ -1,10 +1,11 @@
 using System;
-using EVCS_Projekt.Location;
+using LastMan.Location;
+using LastMan.Objects.Items;
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
-using EVCS_Projekt.Renderer;
+using LastMan.Renderer;
 
-namespace EVCS_Projekt.Objects.Items
+namespace LastMan.Objects.Items
 {
     public enum ELiquid
     {

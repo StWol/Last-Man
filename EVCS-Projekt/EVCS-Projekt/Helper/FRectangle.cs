@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
 
-namespace EVCS_Projekt.Helper
+namespace LastMan.Helper
 {
     public struct FRectangle
     {

@@ -2,30 +2,32 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using EVCS_Projekt.GUI;
+using LastMan.GUI;
+using LastMan;
+using LastMan.Location;
+using LastMan.Objects;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 using System.Diagnostics;
-using EVCS_Projekt.Objects;
+using LastMan.Objects;
 using System.Threading;
-using EVCS_Projekt.Tree;
-using EVCS_Projekt.Location;
+using LastMan.Tree;
 using Microsoft.Xna.Framework.Input;
-using EVCS_Projekt.Renderer;
-using EVCS_Projekt.Audio;
-using EVCS_Projekt.UI;
-using EVCS_Projekt.Objects.Items;
-using EVCS_Projekt.Map;
+using LastMan.Renderer;
+using LastMan.Audio;
+using LastMan.UI;
+using LastMan.Objects.Items;
+using LastMan.Map;
 using Microsoft.Xna.Framework.Audio;
 using System.Xml;
-using EVCS_Projekt.Helper.XMLManager;
+using LastMan.Helper.XMLManager;
 using System.Xml.Serialization;
 using System.IO;
-using EVCS_Projekt.AI;
-using EVCS_Projekt.Helper;
+using LastMan.AI;
+using LastMan.Helper;
 
-namespace EVCS_Projekt.Managers
+namespace LastMan.Managers
 {
     public class GameManager : Manager
     {

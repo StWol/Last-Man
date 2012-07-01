@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
-using EVCS_Projekt.Objects;
-using EVCS_Projekt.Objects.Items;
-using EVCS_Projekt.UI;
+using LastMan.Objects;
+using LastMan.Objects.Items;
+using LastMan.UI;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace EVCS_Projekt.GUI
+namespace LastMan.GUI
 {
     /// <summary>
     /// Ein Button fuer die Liste

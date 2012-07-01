@@ -1,11 +1,14 @@
 ﻿using System.Collections.Generic;
-using EVCS_Projekt.Objects;
-using EVCS_Projekt.Objects.Items;
+using LastMan.Objects;
+using LastMan.Objects.Items;
+using LastMan;
+using LastMan.Objects.Items;
+using LastMan.UI;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace EVCS_Projekt.UI
+namespace LastMan.UI
 {
     internal class UIFilteredInventarList : UIPanel, UIActionListener
     {

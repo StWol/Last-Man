@@ -1,15 +1,15 @@
 using System;
 using System.Diagnostics;
-using EVCS_Projekt.AI;
-using EVCS_Projekt.Audio;
-using EVCS_Projekt.Helper;
-using EVCS_Projekt.Managers;
-using EVCS_Projekt.UI;
+using LastMan.AI;
+using LastMan.Audio;
+using LastMan.Helper;
+using LastMan.Managers;
+using LastMan.UI;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace EVCS_Projekt
+namespace LastMan
 {
     public class Main : Game
     {

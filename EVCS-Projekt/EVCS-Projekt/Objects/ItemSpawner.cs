@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using EVCS_Projekt.Map;
+using LastMan.Map;
+using LastMan.Location;
 using Microsoft.Xna.Framework;
-using EVCS_Projekt.Objects.Items;
-using EVCS_Projekt.Location;
-using EVCS_Projekt.Helper;
+using LastMan.Objects.Items;
+using LastMan.Helper;
 
-namespace EVCS_Projekt.Objects
+namespace LastMan.Objects
 {
     public class ItemSpawner
     {

@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using EVCS_Projekt.Location;
-using EVCS_Projekt.Renderer;
+using LastMan.Renderer;
+using LastMan.Location;
 
-namespace EVCS_Projekt.Objects
+namespace LastMan.Objects
 {
     public class StaticObject : GameObject
     {

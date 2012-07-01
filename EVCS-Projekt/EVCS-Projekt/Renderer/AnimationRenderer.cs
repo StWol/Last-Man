@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using LastMan.Location;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
-using EVCS_Projekt.Location;
 using System.Diagnostics;
 
-namespace EVCS_Projekt.Renderer
+namespace LastMan.Renderer
 {
     public class AnimationRenderer : IRenderBehavior
     {

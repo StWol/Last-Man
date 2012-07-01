@@ -1,271 +1,40 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using EVCS_Projekt.Location;
-using EVCS_Projekt.Managers;
-using EVCS_Projekt.Objects.Items;
-using EVCS_Projekt.Objects;
+using LastMan.Audio;
+using LastMan.Location;
+using LastMan.Managers;
+using LastMan.Map;
+using LastMan.Objects;
+using LastMan.Objects.Items;
+using LastMan.Renderer;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Audio;
-using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework.GamerServices;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
-using Microsoft.Xna.Framework.Media;
-using System.Diagnostics;
-using EVCS_Projekt.Renderer;
-using EVCS_Projekt.Audio;
-using EVCS_Projekt.Map;
 
-
-namespace EVCS_Projekt
+namespace LastMan
 {
     public class Player : GameObject
     {
         //  Wie lange das schussbild gezeigt wird
-        private static float ShotTime = 0.05F;
+        private const float ShotTime = 0.05F;
+        public Dictionary<EBuffType, Buff> Buffs;
 
         //Attributes
-        public float MaxHealth { get; private set; }
-        private float _health = 0;
-        public float Health
-        {
-            get { return _health; }
-            set
-            {
-                // Schaden für HS speichern
-                if (value < _health)
-                {
-                    Main.MainObject.GameManager.GameState.GameStatistic.DamageTaken += _health - value;
-                }
-
-                _health = value;
-                if (_health > MaxHealth)
-                    _health = MaxHealth;
-            }
-        }
-        public float Speed { get; set; }
-
-        public bool IsAlive { get { if (Health <= 0) return false; else return true; } }
-
-        public float TotalInventarWeight
-        {
-            get
-            {
-                float nventarWeight = Inventar.Sum(pair => Item.Get(pair.Key).Weight * pair.Value);
-                float shortcutWeight = shortcuts.Sum(pair => ((Weapon)pair.Value).Weight);
-                return nventarWeight + shortcutWeight;
-            }
-        }
-        //Waffe wird über ActiveShortcut gesetzt
-        public Weapon Weapon
-        {
-            get
-            {
-                if (shortcuts != null)
-                {
-                    if (shortcuts.ContainsKey(ActiveShortcut))
-                        return shortcuts[ActiveShortcut];
-                    return shortcuts.Values.ToList()[0]; // TODO Nullpointer
-                }
-                return null;
-            }
-        }
-
-        public Dictionary<int, int> Inventar { get; private set; }
-        private Dictionary<int, Weapon> shortcuts;
-
-        public List<Powerup> ActivePowerups { get; private set; }
-
-        public Dictionary<EBuffType, Buff> Buffs;
-        public Vector2 Direction { get; set; }
-        public WayPoint NearestWayPoint { get; private set; }
-
-        public Vector3 Liquids { get; set; }
-
-        // ob ein schuss eine gewisse zeit her war
-        private float shotTimer;
-        public bool BigWeapon { get; set; }
-
-        // wegpunkt timeout.. nur einmal pro sekunde wegpunkt updaten
+        private float _health;
         private float _waypointTimeout = 1F;
+        private int _activeShortcut = 1;
+        private readonly MapLocation _footLocation;
+        private IRenderBehavior _footRenderer;
+        private bool _isMoving;
+        private float _shotTimer;
 
-        public new IRenderBehavior Renderer
-        {
-            get
-            {
-                if (!IsAlive)
-                    return RendererDying;
-
-                if (Weapon == null)
-                    return RendererStanding;
-
-                if (Weapon.BigWeapon)
-                {
-                    if (shotTimer > 0)
-                        return RendererBigWeaponShot;
-                    return RendererBigWeapon;
-                }
-                else
-                {
-                    if (shotTimer > 0)
-                        return RendererSmallWeaponShot;
-                    return RendererSmallWeapon;
-                }
-            }
-            set
-            {
-            }
-        }
-
-
-        public int GetItemCountFromInventar(int key)
-        {
-            if (Inventar.ContainsKey(key))
-                return Inventar[key];
-            return 0;
-        }
-
-        public void AddItemToInventar(Item item)
-        {
-            int anzahl = 1;
-            if (item.GetType() == typeof(Munition))
-                anzahl = ((Munition)item).Count;
-            AddRangeItemToInventar(item, anzahl);
-        }
-
-
-        public void AddRangeItemToInventar(Item item, int range)
-        {
-            if (Inventar.ContainsKey(item.TypeId))
-            {
-                Inventar[item.TypeId] += range;
-            }
-            else
-            {
-                Inventar[item.TypeId] = range;
-            }
-        }
-
-        public Item RemoveItemFromInventar(Item item)
-        {
-            int anzahl = 1;
-            if (item.GetType() == typeof(Munition))
-                anzahl = ((Munition)item).Count;
-            return RemoveRangeItemFromInventar(item, anzahl);
-        }
-
-        public Item RemoveRangeItemFromInventar(Item item, int range)
-        {
-
-            if (Inventar.ContainsKey(item.TypeId))
-            {
-                Inventar[item.TypeId] -= range;
-                if (Inventar[item.TypeId] < 1)
-                {
-                    Inventar.Remove(item.TypeId);
-                    return null;
-                }
-                return item;
-            }
-            return null;
-        }
-        public void AddWeaponToShortcutList(int key, Weapon weapon)
-        {
-            if (!shortcuts.ContainsKey(key))
-            {
-                shortcuts[key] = weapon;
-            }
-        }
-
-        public void RemoveWeaponFromShortcutList(int key)
-        {
-            if (shortcuts.ContainsKey(key))
-            {
-                shortcuts.Remove(key);
-            }
-        }
-
-        public float GetTotalWeight()
-        {
-            float sum = 0;
-            foreach (KeyValuePair<int, int> pair in Inventar)
-            {
-                sum += Item.Get(pair.Key).Weight * pair.Value;
-            }
-            return sum;
-        }
-
-        public Dictionary<int, Weapon> GetShortcuts()
-        {
-            return shortcuts;
-        }
-
-        public float Reloading { get; set; }
-
-        public float FootRotation
-        {
-            set
-            {
-                footLocation.Rotation = value;
-            }
-        }
-
-        private bool isMoving = false;
-        public bool IsMoving
-        {
-            get { return isMoving; }
-            set
-            {
-                if (isMoving == value)
-                    return;
-
-                isMoving = value;
-                if (isMoving)
-                {
-                    //Renderer = RendererMoving;
-                    footRenderer = RendererFootMoving;
-                }
-                else
-                {
-                    //Renderer = RendererStanding;
-                    footRenderer = new NoRenderer();
-                }
-            }
-        }
-
-        // Verschiedene Renderer
-        private StaticRenderer RendererStanding { get; set; }
-        private StaticRenderer RendererBigWeapon { get; set; }
-        private StaticRenderer RendererBigWeaponShot { get; set; }
-
-        private StaticRenderer RendererSmallWeapon { get; set; }
-        private StaticRenderer RendererSmallWeaponShot { get; set; }
-
-        private AnimationRenderer RendererDying { get; set; }
-
-        // Füße
-        private AnimationRenderer RendererFootMoving { get; set; }
-
-        // 
-        private IRenderBehavior footRenderer;
-        private MapLocation footLocation;
-        public int ActiveShortcut
-        {
-            get { return activeShortcut; }
-            set
-            {
-                if (shortcuts.ContainsKey(value))
-                {
-                    activeShortcut = value;
-                }
-            }
-        }
-        private int activeShortcut = 1;
-
-        // ***************************************************************************
-        // Konstruktor
+        /// <summary>
+        ///   Kosntruktor
+        /// </summary>
+        /// <param name="locationBehavior"> Position des Spielers auf der Map </param>
+        /// <param name="maxHealth"> Maximal Leben </param>
+        /// <param name="health"> Aktuelles Leben </param>
+        /// <param name="speed"> Bewegungsgeschwindigkeit </param>
         public Player(ILocationBehavior locationBehavior, float maxHealth, float health, float speed)
             : base(locationBehavior)
         {
@@ -284,19 +53,21 @@ namespace EVCS_Projekt
             RendererDying = LoadedRenderer.GetAnimation("A_Splatter_01");
             RendererDying.PlayOnce();
 
-            Texture2D[] textureFootMoving = new Texture2D[]{ 
-                Main.ContentManager.Load<Texture2D>("images/character/left_foot"),
-                Main.ContentManager.Load<Texture2D>("images/character/right_foot")
-            };
+            Texture2D[] textureFootMoving = new[]
+                                                {
+                                                    Main.ContentManager.Load<Texture2D>("images/character/left_foot"),
+                                                    Main.ContentManager.Load<Texture2D>("images/character/right_foot")
+                                                };
             RendererFootMoving = new AnimationRenderer(textureFootMoving, 4F);
 
-            footRenderer = new NoRenderer();
+            _footRenderer = new NoRenderer();
 
             // Location für die Füße
-            footLocation = new MapLocation(locationBehavior.Position, new Vector2(textureFootMoving[0].Width, textureFootMoving[0].Height));
+            _footLocation = new MapLocation(locationBehavior.Position,
+                                           new Vector2(textureFootMoving[0].Width, textureFootMoving[0].Height));
 
             // Standardmäßig den StandingRenderer zuweisen
-            Renderer = RendererBigWeapon;
+            //Renderer = RendererBigWeapon;
 
             // LocationSize anpassen
             LocationSizing();
@@ -305,9 +76,9 @@ namespace EVCS_Projekt
             // InventarListe init
             Inventar = new Dictionary<int, int>();
 
-            shortcuts = new Dictionary<int, Weapon>();
+            Shortcuts = new Dictionary<int, Weapon>();
             // Schusstime auf 0 setzten
-            shotTimer = 0;
+            _shotTimer = 0;
 
             // Poweruplist init
             ActivePowerups = new List<Powerup>();
@@ -319,17 +90,328 @@ namespace EVCS_Projekt
             base.GetRect = base.RectPlayer;
         }
 
-        // ***************************************************************************
-        // Player Draw
+        public Dictionary<int, Weapon> Shortcuts { get; private set; }
+
+        /// <summary>
+        ///   Maximales Leben
+        /// </summary>
+        public float MaxHealth { get; private set; }
+
+        /// <summary>
+        ///   Aktuelles Leben
+        /// </summary>
+        public float Health
+        {
+            get { return _health; }
+            set
+            {
+                // Schaden für HS speichern
+                if (value < _health)
+                {
+                    Main.MainObject.GameManager.GameState.GameStatistic.DamageTaken += _health - value;
+                }
+
+                _health = value;
+                if (_health > MaxHealth)
+                    _health = MaxHealth;
+            }
+        }
+
+        /// <summary>
+        ///   Bewegungsgeschwindigkeit
+        /// </summary>
+        public float Speed { get; private set; }
+
+        /// <summary>
+        ///   Ist Spieler am Leben
+        /// </summary>
+        public bool IsAlive
+        {
+            get { return Health > 0; }
+        }
+
+        /// <summary>
+        ///   Gewicht des Inventars
+        /// </summary>
+        public float TotalInventarWeight
+        {
+            get
+            {
+                float nventarWeight = Inventar.Sum(pair => Item.Get(pair.Key).Weight * pair.Value);
+                float shortcutWeight = Shortcuts.Sum(pair => (pair.Value).Weight);
+                return nventarWeight + shortcutWeight;
+            }
+        }
+
+        /// <summary>
+        ///   Gibt ausgewählte Waffe zurück
+        /// </summary>
+        public Weapon Weapon
+        {
+            get
+            {
+                if (Shortcuts != null)
+                {
+                    return Shortcuts.ContainsKey(ActiveShortcut) ? Shortcuts[ActiveShortcut] : Shortcuts.Values.ToList()[0];
+                }
+                return null;
+            }
+        }
+
+        /// <summary>
+        ///   Items, welche der Spieler im Inventar hat
+        /// </summary>
+        public Dictionary<int, int> Inventar { get; private set; }
+
+        /// <summary>
+        ///   Powerups, welche gerade aktiv sind
+        /// </summary>
+        public List<Powerup> ActivePowerups { get; private set; }
+
+        /// <summary>
+        ///   Richtung in die der Spieler schaut
+        /// </summary>
+        public Vector2 Direction { get; set; }
+
+        /// <summary>
+        ///   Wegpunkt, der dem Spieler am nähsten ist
+        /// </summary>
+        public WayPoint NearestWayPoint { get; private set; }
+
+        /// <summary>
+        ///   Stand der Flüssigkeiten
+        /// </summary>
+        public Vector3 Liquids { get; set; }
+
+        /// <summary>
+        ///   Handelt es sich bei der ausgewählten Waffe um eine "große" Waffe oder um eine kleine. Einfluss auf den Renderer.
+        /// </summary>
+        public bool BigWeapon { get; set; }
+
+        /// <summary>
+        ///   Gibt aktuellen Renderer zurück. Je nach dem ob der Spieler tot ist, steht, eine große oder kleine Waffe hat..
+        /// </summary>
+        public new IRenderBehavior Renderer
+        {
+            get
+            {
+                if (!IsAlive)
+                    return RendererDying;
+
+                if (Weapon == null)
+                    return RendererStanding;
+
+                if (Weapon.BigWeapon)
+                {
+                    return _shotTimer > 0 ? RendererBigWeaponShot : RendererBigWeapon;
+                }
+                else
+                {
+                    return _shotTimer > 0 ? RendererSmallWeaponShot : RendererSmallWeapon;
+                }
+            }
+        }
+
+        /// <summary>
+        ///   Zeit die der Spieler noch am Nachladen ist
+        /// </summary>
+        public float Reloading { get; set; }
+
+        /// <summary>
+        ///   Drehung der Füße - je nachdem in welche Richtung der Spieler läuft
+        /// </summary>
+        public float FootRotation
+        {
+            set { _footLocation.Rotation = value; }
+        }
+
+        /// <summary>
+        ///   Bewegt sich der Spieler gerade
+        /// </summary>
+        public bool IsMoving
+        {
+            get { return _isMoving; }
+            set
+            {
+                if (_isMoving == value)
+                    return;
+
+                _isMoving = value;
+                if (_isMoving)
+                {
+                    //Renderer = RendererMoving;
+                    _footRenderer = RendererFootMoving;
+                }
+                else
+                {
+                    //Renderer = RendererStanding;
+                    _footRenderer = new NoRenderer();
+                }
+            }
+        }
+
+        // Verschiedene Renderer
+        private StaticRenderer RendererStanding { get; set; }
+        private StaticRenderer RendererBigWeapon { get; set; }
+        private StaticRenderer RendererBigWeaponShot { get; set; }
+
+        private StaticRenderer RendererSmallWeapon { get; set; }
+        private StaticRenderer RendererSmallWeaponShot { get; set; }
+
+        private AnimationRenderer RendererDying { get; set; }
+
+        // Füße
+        private AnimationRenderer RendererFootMoving { get; set; }
+
+        /// <summary>
+        ///   Aktiver Weapon Shortcut
+        /// </summary>
+        public int ActiveShortcut
+        {
+            get { return _activeShortcut; }
+            set
+            {
+                if (Shortcuts.ContainsKey(value))
+                {
+                    _activeShortcut = value;
+                }
+            }
+        }
+
+        /// <summary>
+        ///   Kleinere BoundingBox als "Rect"
+        /// </summary>
+        public Rectangle LittleBoundingBox
+        {
+            get
+            {
+                int s = (int)LocationBehavior.Size.Y;
+                return new Rectangle((int)(LocationBehavior.Position.X - s / 2F),
+                                     (int)(LocationBehavior.Position.Y - s / 2F), s, s);
+            }
+        }
+
+        /// <summary>
+        ///   Gesamtgewicht des Invetars, ohne Shortcuts
+        /// </summary>
+        /// <returns> </returns>
+        public float TotalWeight
+        {
+            get { return Inventar.Sum(pair => Item.Get(pair.Key).Weight * pair.Value); }
+        }
+
+        /// <summary>
+        ///   Gibt die im Invetar enthaltene Anzahl des gewünschten Items zurück
+        /// </summary>
+        /// <param name="key"> key des Items dessen Menge man haben will </param>
+        /// <returns> Menge des angegeben Items </returns>
+        public int GetItemCountFromInventar(int key)
+        {
+            return Inventar.ContainsKey(key) ? Inventar[key] : 0;
+        }
+
+        /// <summary>
+        ///   Item in das Inventar hinzufügen
+        /// </summary>
+        /// <param name="item"> Item, dass hinzugefügt wird </param>
+        public void AddItemToInventar(Item item)
+        {
+            int anzahl = 1;
+            if (item.GetType() == typeof(Munition))
+                anzahl = ((Munition)item).Count;
+            AddRangeItemToInventar(item, anzahl);
+        }
+
+        /// <summary>
+        ///   Fügt eine gewisse Anzahl eines Items in das Inventar
+        /// </summary>
+        /// <param name="item"> Itemtyp das hinzugefüt wird </param>
+        /// <param name="range"> Wieviel des angegebenen Items wird hinzugefügt </param>
+        public void AddRangeItemToInventar(Item item, int range)
+        {
+            if (Inventar.ContainsKey(item.TypeId))
+            {
+                Inventar[item.TypeId] += range;
+            }
+            else
+            {
+                Inventar[item.TypeId] = range;
+            }
+        }
+
+        /// <summary>
+        ///   Entfernt ein Item aus dem Inventar
+        /// </summary>
+        /// <param name="item"> Item, dass entfernt wird </param>
+        /// <returns> Typ des Items wird zurückgegeben </returns>
+        public Item RemoveItemFromInventar(Item item)
+        {
+            int anzahl = 1;
+            if (item.GetType() == typeof(Munition))
+                anzahl = ((Munition)item).Count;
+            return RemoveRangeItemFromInventar(item, anzahl);
+        }
+
+        /// <summary>
+        ///   Mehrere Items des selben Typs entfernen
+        /// </summary>
+        /// <param name="item"> Itemtyp der entfernt wird </param>
+        /// <param name="range"> Wieviele Items entfernt werden </param>
+        /// <returns> Typ des Items wird zurückgegeben </returns>
+        public Item RemoveRangeItemFromInventar(Item item, int range)
+        {
+            if (Inventar.ContainsKey(item.TypeId))
+            {
+                Inventar[item.TypeId] -= range;
+                if (Inventar[item.TypeId] < 1)
+                {
+                    Inventar.Remove(item.TypeId);
+                    return null;
+                }
+                return item;
+            }
+            return null;
+        }
+
+        /// <summary>
+        ///   Waffe einem Shortcut hinzufügen
+        /// </summary>
+        /// <param name="key"> Shortcutplatz </param>
+        /// <param name="weapon"> Waffe die hinzugefügt wird </param>
+        public void AddWeaponToShortcutList(int key, Weapon weapon)
+        {
+            if (!Shortcuts.ContainsKey(key))
+            {
+                Shortcuts[key] = weapon;
+            }
+        }
+
+        /// <summary>
+        ///   Waffe aus Shortcut entfernen
+        /// </summary>
+        /// <param name="key"> Shortcutplatz </param>
+        public void RemoveWeaponFromShortcutList(int key)
+        {
+            if (Shortcuts.ContainsKey(key))
+            {
+                Shortcuts.Remove(key);
+            }
+        }
+
+        /// <summary>
+        ///   Zeichnet Füße, Oberteil und Effekte der Buffs, falls welche vorhanden sind
+        /// </summary>
+        /// <param name="spriteBatch"> </param>
         public void Draw(SpriteBatch spriteBatch)
         {
             // Füße zeichnen
-            footRenderer.Draw(spriteBatch, footLocation);
+            _footRenderer.Draw(spriteBatch, _footLocation);
 
             // Character oberteil
             float angle = LocationBehavior.Rotation;
             if (IsMoving)
-                LocationBehavior.Rotation = LocationBehavior.Rotation + (float)(Math.Sin(Main.GameTimeDraw.TotalGameTime.TotalSeconds * 12) / 6);
+                LocationBehavior.Rotation = LocationBehavior.Rotation +
+                                            (float)(Math.Sin(Main.GameTimeDraw.TotalGameTime.TotalSeconds * 12) / 6);
             Renderer.Draw(spriteBatch, LocationBehavior);
             LocationBehavior.Rotation = angle;
 
@@ -340,12 +422,16 @@ namespace EVCS_Projekt
             }
         }
 
-        // ***************************************************************************
-        // Player Update
+        /// <summary>
+        ///   Update der Renderer, Timer, ...
+        /// </summary>
         public void Update()
         {
             // NÄCHSTER WEGPUNKT ZUM PLAYER
-            List<WayPoint> l = Main.MainObject.GameManager.GameState.Karte.QuadTreeWayPoints.GetObjects(new Rectangle((int)LocationBehavior.Position.X - 100, (int)LocationBehavior.Position.Y - 100, 200, 200));
+            List<WayPoint> l =
+                Main.MainObject.GameManager.GameState.Karte.QuadTreeWayPoints.GetObjects(
+                    new Rectangle((int)LocationBehavior.Position.X - 100, (int)LocationBehavior.Position.Y - 100, 200,
+                                  200));
             if (l.Count > 0)
             {
                 NearestWayPoint = Karte.SearchNearest(LocationBehavior.Position, LocationBehavior.Size, l);
@@ -353,21 +439,21 @@ namespace EVCS_Projekt
 
             // Renderer Updaten
             Renderer.Update();
-            footRenderer.Update();
+            _footRenderer.Update();
 
             // Waffe f+r cooldown etc
             Weapon.Update(Buffs);
 
             // Fußposition updaten
-            footLocation.Position = LocationBehavior.Position;
+            _footLocation.Position = LocationBehavior.Position;
 
             // ReloadTimer
             if (Reloading > 0)
                 Reloading -= (float)Main.GameTimeUpdate.ElapsedGameTime.TotalSeconds;
 
             // ShotTimer verringer
-            if (shotTimer > 0)
-                shotTimer -= (float)Main.GameTimeUpdate.ElapsedGameTime.TotalSeconds;
+            if (_shotTimer > 0)
+                _shotTimer -= (float)Main.GameTimeUpdate.ElapsedGameTime.TotalSeconds;
 
             // Buff updaten
             Dictionary<EBuffType, Buff> tempDic = new Dictionary<EBuffType, Buff>(Buffs);
@@ -408,8 +494,9 @@ namespace EVCS_Projekt
             }
         }
 
-        // ***************************************************************************
-        // Player schießt
+        /// <summary>
+        ///   Player schießt mit aktiver Waffe in die Richtung, in die er gerade schaut
+        /// </summary>
         public void Shoot()
         {
             // Reloading checken
@@ -430,7 +517,9 @@ namespace EVCS_Projekt
                     Shot s = Weapon.CreateShot();
 
                     //ungenauigkeit: 10 - random - häflte (um 0 zentriert)
-                    Vector2 accuracy = new Vector2((float)(r.NextDouble() * Weapon.AccuracyPercent - Weapon.AccuracyPercent / 2), (float)(r.NextDouble() * Weapon.AccuracyPercent - Weapon.AccuracyPercent / 2));
+                    Vector2 accuracy =
+                        new Vector2((float)(r.NextDouble() * Weapon.AccuracyPercent - Weapon.AccuracyPercent / 2),
+                                    (float)(r.NextDouble() * Weapon.AccuracyPercent - Weapon.AccuracyPercent / 2));
 
                     // Position und richtung des schussen berechnen
                     Vector2 direction = -LocationBehavior.Direction + accuracy; // + accuracy
@@ -451,7 +540,7 @@ namespace EVCS_Projekt
                 Sound.Sounds[Weapon.Antrieb.SoundId].Play();
 
                 // Shottimer setzten
-                shotTimer = ShotTime;
+                _shotTimer = ShotTime;
             }
             else if (Weapon.Cooldown <= 0 && Weapon.MunitionCount == 0)
             {
@@ -463,8 +552,10 @@ namespace EVCS_Projekt
             }
         }
 
-        // ***************************************************************************
-        // Player wird von Schuss getroffen => Schaden nehmen und Buffs übernehmen - manager muss auf Tod reagieren
+        /// <summary>
+        ///   Player wird von Schuss getroffen. Bekommt Damage und die Buffs des Schusses
+        /// </summary>
+        /// <param name="shot"> Schuss der den Spieler trifft </param>
         public void TakeDamage(Shot shot)
         {
             // Schaden abziehen
@@ -474,8 +565,10 @@ namespace EVCS_Projekt
             AddBuffs(shot.Buffs);
         }
 
-        // ***************************************************************************
-        // Entfernt das Item aus dem UIInventarPanel
+        /// <summary>
+        ///   Powerup benutzen und aus Inventar entfernen
+        /// </summary>
+        /// <param name="powerup"> Powerup, welches verbaucht wird </param>
         public void UsePowerup(Powerup powerup)
         {
             // Aus inventar löschem
@@ -488,8 +581,11 @@ namespace EVCS_Projekt
             AddBuffs(powerup.Buffs);
         }
 
-        // ***************************************************************************
-        // Fügt von Liquid mit der ID id, die Menge amount hinzu
+        /// <summary>
+        ///   Fügt dem Liquid des Types "type", die Menge "amount" hinzu
+        /// </summary>
+        /// <param name="type"> Zu welchem Liquid hinzugefügt wird </param>
+        /// <param name="amount"> Menge die hinzugefügt wird </param>
         public void AddLiquid(ELiquid type, int amount)
         {
             switch (type)
@@ -506,8 +602,11 @@ namespace EVCS_Projekt
             }
         }
 
-        // ***************************************************************************
-        // Zieht von Liquid mit der ID id, die Menge amount ab
+        /// <summary>
+        ///   Zieht von dem Liquid des Types "type", die Menge "amount" ab
+        /// </summary>
+        /// <param name="type"> Von welchem Liquid abgezogen wird </param>
+        /// <param name="amount"> Menge die abgezogen wird </param>
         public void ReduceLiquid(ELiquid type, int amount)
         {
             switch (type)
@@ -524,60 +623,61 @@ namespace EVCS_Projekt
             }
         }
 
+        /// <summary>
+        ///   Erhöht die Anzahl der Flüssigkeiten
+        /// </summary>
+        /// <param name="liquid"> Anzahl um wieviel die Flüssigkeiten erhöht werden </param>
         public void AddLiquid(Vector3 liquid)
         {
             Liquids += liquid;
         }
 
-        // ***************************************************************************
-        // Zieht von Liquid mit der ID id, die Menge amount ab
+        /// <summary>
+        ///   Reduziert die Anzahl der Flöüssigkeiten
+        /// </summary>
+        /// <param name="liquid"> Vector mit Verbrauchsanzahl </param>
         public void ReduceLiquid(Vector3 liquid)
         {
             Liquids -= liquid;
         }
 
-        // ***************************************************************************
-        // Fügt die übergebene dic mit Buffs dem Player hinzu
+        /// <summary>
+        ///   Fügt die übergebene Buffdictionary dem Player hinzu
+        /// </summary>
+        /// <param name="buffs"> Buffs die hinzugefügt werden </param>
         public void AddBuffs(Dictionary<EBuffType, Buff> buffs)
         {
             foreach (Buff b in buffs.Values)
             {
-                if (this.Buffs.ContainsKey(b.Type))
-                    this.Buffs[b.Type] = b;
+                if (Buffs.ContainsKey(b.Type))
+                    Buffs[b.Type] = b;
                 else
-                    this.Buffs.Add(b.Type, b);
+                    Buffs.Add(b.Type, b);
             }
         }
 
-        // ***************************************************************************
-        // Fügt die übergebene Liste mit Buffs dem Player hinzu
+        /// <summary>
+        ///   Fügt die übergebene Buffliste dem Player hinzu
+        /// </summary>
+        /// <param name="buffs"> Buffs die hinzugefügt werden </param>
         public void AddBuffs(List<Buff> buffs)
         {
             foreach (Buff b in buffs)
             {
-                if (this.Buffs.ContainsKey(b.Type))
-                    this.Buffs[b.Type] = b;
+                if (Buffs.ContainsKey(b.Type))
+                    Buffs[b.Type] = b;
                 else
-                    this.Buffs.Add(b.Type, b);
+                    Buffs.Add(b.Type, b);
             }
         }
 
-        // Kleine BoundingBox
-        public Rectangle LittleBoundingBox
-        {
-            get
-            {
-                int s = (int)LocationBehavior.Size.Y;
-                return new Rectangle((int)(LocationBehavior.Position.X - s / 2F), (int)(LocationBehavior.Position.Y - s / 2F), s, s);
-            }
-            set
-            {
-            }
-        }
 
-        // ***************************************************************************
-        // Prüft ob position außerhalb der map liegt
-        public new bool CheckPosition(Vector2 newPosition)
+        /// <summary>
+        ///   Prüft ob Player mit der Map kolidiert, wenn er an Position des Vectors steht
+        /// </summary>
+        /// <param name="newPosition"> Position die grpüft wird </param>
+        /// <returns> bool ob Player an der Position stehen kann </returns>
+        public bool CheckPosition(Vector2 newPosition)
         {
             // old position
             Vector2 old = LocationBehavior.Position;

@@ -1,16 +1,17 @@
-using EVCS_Projekt.Location;
-using EVCS_Projekt.Managers;
-using EVCS_Projekt.Renderer;
+using LastMan.Managers;
+using LastMan.Renderer;
+using LastMan;
+using LastMan.Location;
 using Microsoft.Xna.Framework;
-using EVCS_Projekt.Tree;
+using LastMan.Tree;
 using System;
 using System.Diagnostics;
 using Microsoft.Xna.Framework.Graphics;
 using System.Xml;
-using EVCS_Projekt.Helper;
+using LastMan.Helper;
 using System.Collections.Generic;
 
-namespace EVCS_Projekt.Objects
+namespace LastMan.Objects
 {
 
     public abstract class GameObject : IQuadStorable

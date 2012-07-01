@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
-using EVCS_Projekt.Helper;
-using EVCS_Projekt.Map;
+using LastMan.Helper;
+using LastMan.Map;
+using LastMan.AI;
 using Microsoft.Xna.Framework;
-using EVCS_Projekt.Managers;
+using LastMan.Managers;
 
-namespace EVCS_Projekt.AI
+namespace LastMan.AI
 {
     public class RandomWalk : Activity
     {

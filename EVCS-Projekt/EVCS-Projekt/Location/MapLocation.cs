@@ -1,7 +1,7 @@
-﻿using System;
+﻿using LastMan;
 using Microsoft.Xna.Framework;
 
-namespace EVCS_Projekt.Location
+namespace LastMan.Location
 {
     public class MapLocation : ILocationBehavior
     {

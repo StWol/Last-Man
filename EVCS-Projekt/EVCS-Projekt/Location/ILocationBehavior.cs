@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 
-namespace EVCS_Projekt.Location
+namespace LastMan.Location
 {
     public interface ILocationBehavior
     {
