@@ -1,6 +1,4 @@
-﻿using LastMan;
-
-namespace LastMan.AI
+﻿namespace LastMan.AI
 {
     class NoActivity : Activity
     {

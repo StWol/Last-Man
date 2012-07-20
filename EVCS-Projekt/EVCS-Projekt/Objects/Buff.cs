@@ -1,12 +1,8 @@
 using System;
-using LastMan.Objects;
-using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using System.IO;
 using System.Xml.Serialization;
-using LastMan.Objects.Items;
 using Microsoft.Xna.Framework.Graphics;
-using System.Diagnostics;
 
 namespace LastMan.Objects
 {

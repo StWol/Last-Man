@@ -1,10 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace LastMan.UI
@@ -19,7 +14,7 @@ namespace LastMan.UI
 
         private Boolean isHover;
         public static readonly SpriteFont FONT_DEFAULT = Main.ContentManager.Load<SpriteFont>( Configuration.Get( "defaultFont" ) );
-        
+
 
 
         public UIButton( int width, int height, Vector2 position, Texture2D texture, Texture2D hoverTexture, string text )
@@ -28,7 +23,6 @@ namespace LastMan.UI
             isHover = false;
             BackgroundColor = Color.Gray;
             Text = text.Trim();
-
         }
 
 
@@ -77,9 +71,6 @@ namespace LastMan.UI
             {
                 sb.Draw( CurrentTexture, new Rectangle( x, y, width, height ), BackgroundColor );
             }
-
-
         }
-
     }
 }

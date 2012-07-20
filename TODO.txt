@@ -1,9 +1,3 @@
-- Nahkämper Gegner
-- Flüssigkeiten
-- Konstruktionsmenü
-- Items aus dem Inventar entfernen (funktioniert) und auf der Karte zeichnen lassen (funktioniert noch nicht!)
-
-
 IDs:
 hauptteile : 100 - 199
 Mun : 200 - 299

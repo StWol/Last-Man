@@ -1,12 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using LastMan.Location;
-using LastMan.Objects;
 using Microsoft.Xna.Framework;
-
-using System.Diagnostics;
 using LastMan.Tree;
 using LastMan.Managers;
 using LastMan.AI;

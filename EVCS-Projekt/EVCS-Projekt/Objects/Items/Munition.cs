@@ -1,8 +1,6 @@
 using System;
 using System.Collections.Generic;
 using LastMan.Location;
-using LastMan.Objects.Items;
-using Microsoft.Xna.Framework;
 using LastMan.Renderer;
 
 namespace LastMan.Objects.Items

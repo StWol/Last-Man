@@ -1,6 +1,4 @@
-﻿using LastMan.UI;
-
-namespace LastMan.UI
+﻿namespace LastMan.UI
 {
     interface UIActionListener: UIListener
     {

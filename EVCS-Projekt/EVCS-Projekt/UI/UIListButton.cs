@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
+﻿using System.Diagnostics;
 using LastMan.Objects;
 using LastMan.Objects.Items;
-using LastMan.UI;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace LastMan.GUI
+namespace LastMan.UI
 {
     /// <summary>
     /// Ein Button fuer die Liste

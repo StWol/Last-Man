@@ -1,6 +1,4 @@
-﻿using LastMan;
-
-namespace LastMan.AI
+﻿namespace LastMan.AI
 {
     public abstract class Activity
     {

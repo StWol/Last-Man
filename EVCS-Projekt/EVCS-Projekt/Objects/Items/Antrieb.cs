@@ -1,5 +1,4 @@
 using System;
-using LastMan.Objects;
 using LastMan.Location;
 
 namespace LastMan.Objects.Items

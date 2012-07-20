@@ -1,5 +1,3 @@
-using LastMan;
-
 namespace LastMan
 {
 #if WINDOWS || XBOX

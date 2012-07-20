@@ -1,5 +1,4 @@
-﻿using LastMan;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 
 namespace LastMan.Location
 {

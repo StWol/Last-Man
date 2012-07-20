@@ -1,14 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using LastMan.Location;
 using LastMan.Objects;
 using Microsoft.Xna.Framework.Graphics;
 using System.IO;
 using LastMan.Tree;
 using Microsoft.Xna.Framework;
-using LastMan.Objects;
 using LastMan.Renderer;
 using System.Diagnostics;
 using LastMan.Managers;

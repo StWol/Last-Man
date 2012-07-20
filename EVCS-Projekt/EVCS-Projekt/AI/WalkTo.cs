@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using LastMan.AI;
+﻿using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using LastMan.Map;
 using LastMan.Managers;

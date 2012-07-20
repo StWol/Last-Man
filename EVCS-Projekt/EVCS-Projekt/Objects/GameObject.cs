@@ -1,15 +1,11 @@
 using LastMan.Managers;
 using LastMan.Renderer;
-using LastMan;
 using LastMan.Location;
 using Microsoft.Xna.Framework;
 using LastMan.Tree;
 using System;
-using System.Diagnostics;
 using Microsoft.Xna.Framework.Graphics;
-using System.Xml;
 using LastMan.Helper;
-using System.Collections.Generic;
 
 namespace LastMan.Objects
 {

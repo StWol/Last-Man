@@ -1,15 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using LastMan.Helper;
-using LastMan.Map;
-using LastMan.AI;
-using Microsoft.Xna.Framework;
-using LastMan.Managers;
-
-namespace LastMan.AI
+﻿namespace LastMan.AI
 {
     public class RandomWalk : Activity
     {

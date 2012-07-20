@@ -3,9 +3,6 @@ using System.Collections.Generic;
 using LastMan.Objects;
 using LastMan.Objects.Items;
 using LastMan.UI;
-using LastMan;
-using LastMan.Objects.Items;
-using LastMan.UI;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -20,7 +17,7 @@ namespace LastMan.GUI
             {
                 if ( value && !isVisible )
                 {
-                    filteredInventarList.GenerateFilteredLists( player.Inventar );
+                    //filteredInventarList.GenerateFilteredLists( player.Inventar );
                     filteredInventarList.SetItems( player.Inventar );
                     filteredInventarList.ResetToggleButtons();
                     activeItem = null;
@@ -222,7 +219,7 @@ namespace LastMan.GUI
 
                     filteredInventarList.RemoveActiveItem();
                     activeItem = player.RemoveItemFromInventar( activeItem );
-                    filteredInventarList.GenerateFilteredLists( player.Inventar );
+                    //filteredInventarList.GenerateFilteredLists( player.Inventar );
                 }
 
             //////////////////////////////////////////////////////
