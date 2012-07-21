@@ -91,10 +91,10 @@ namespace LastMan.UI
 
         public void ResetToggleButtons()
         {
-            toggleHauptteil.isActive = true;
-            toggleStabilisator.isActive = true;
-            toggleVisier.isActive = true;
-            toggleAntrieb.isActive = true;
+            toggleHauptteil.IsActive = true;
+            toggleStabilisator.IsActive = true;
+            toggleVisier.IsActive = true;
+            toggleAntrieb.IsActive = true;
         }
 
         private void CreateCheckBoxPanel()
@@ -122,10 +122,10 @@ namespace LastMan.UI
             var antriebAH = content.Load<Texture2D>("images/gui/inventar/antrieb_a_h");
 
 
-            toggleHauptteil = new UIToggleButton(120, 30, new Vector2(280, 80), hauptteil, hauptteilH, hauptteilA, hauptteilAH, "") { isActive = true };
-            toggleStabilisator = new UIToggleButton(120, 30, new Vector2(280, 120), stabilisator, stabilisatorH, stabilisatorA, stabilisatorAH, "") { isActive = true };
-            toggleVisier = new UIToggleButton(120, 30, new Vector2(280, 160), visier, visierH, visierA, visierAH, "") { isActive = true };
-            toggleAntrieb = new UIToggleButton(120, 30, new Vector2(280, 200), antrieb, antriebH, antriebA, antriebAH, "") { isActive = true };
+            toggleHauptteil = new UIToggleButton(120, 30, new Vector2(280, 80), hauptteil, hauptteilH, hauptteilA, hauptteilAH, "") { IsActive = true };
+            toggleStabilisator = new UIToggleButton(120, 30, new Vector2(280, 120), stabilisator, stabilisatorH, stabilisatorA, stabilisatorAH, "") { IsActive = true };
+            toggleVisier = new UIToggleButton(120, 30, new Vector2(280, 160), visier, visierH, visierA, visierAH, "") { IsActive = true };
+            toggleAntrieb = new UIToggleButton(120, 30, new Vector2(280, 200), antrieb, antriebH, antriebA, antriebAH, "") { IsActive = true };
 
             toggleHauptteil.AddActionListener(this);
             toggleStabilisator.AddActionListener(this);

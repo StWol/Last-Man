@@ -7,12 +7,13 @@ namespace LastMan.UI
 {
     abstract class UIElement
     {
-        public Color BackgroundColor { 
-            get
+        public Color BackgroundColor
         {
-            
-            return backgroundColor;
-        }
+            get
+            {
+
+                return backgroundColor;
+            }
             set { backgroundColor = value; }
         }
 
@@ -49,7 +50,7 @@ namespace LastMan.UI
                     y += ( int ) parent.GetPosition().Y;
                 }
 
-                
+
                 return new Vector2( x, y );
             }
             private set
@@ -63,7 +64,7 @@ namespace LastMan.UI
         {
             get
             {
-                if ( IsHover && IsEnabled)
+                if ( IsHover && IsEnabled )
                 {
                     return hoverTexture;
                 }
@@ -84,14 +85,14 @@ namespace LastMan.UI
             get
             {
                 return backgroundTextur;
-            } 
+            }
             set
             {
                 backgroundTextur = value;
             }
         }
 
-        private Texture2D backgroundTextur = Main.ContentManager.Load<Texture2D>("images/pixelTransparent");
+        private Texture2D backgroundTextur = Main.ContentManager.Load<Texture2D>( "images/pixelTransparent" );
 
         protected List<UIActionListener> actionListener;
         protected List<UIMouseHoverListener> hoverListener;
@@ -160,7 +161,7 @@ namespace LastMan.UI
 
 
             // Wenn nicht mehr gedrückt, aber im vorherigen Durchgang gedrückt war => Man kann die Maustaste gedrückt halten ohne das jedesmal ein Event ausgelöst wird
-            if ( IsMousePressed() && IsEnabled)
+            if ( IsMousePressed() && IsEnabled )
             {
                 List<UIActionListener> listenerList = new List<UIActionListener>( actionListener );
                 foreach ( UIActionListener al in listenerList )
@@ -186,7 +187,7 @@ namespace LastMan.UI
 
             var mouseEvent = new UIMouseEvent( state );
 
-            if ( mouseEvent.isMouseIn( GetBoundingBox() ) )
+            if ( mouseEvent.isMouseIn( GetBoundingBox(), this ) )
             {
                 if ( !IsHover )
                 {

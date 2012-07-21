@@ -1304,11 +1304,6 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-    <Compile Include="images\itemIcons\12.png">
-      <Name>12</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
     <Compile Include="images\itemIcons\200.png">
       <Name>200</Name>
       <Importer>TextureImporter</Importer>
@@ -1471,11 +1466,6 @@
     </Compile>
     <Compile Include="images\itemIcons\8.png">
       <Name>8</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-    <Compile Include="images\itemIcons\9.png">
-      <Name>9</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>

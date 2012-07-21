@@ -104,13 +104,13 @@ namespace LastMan.UI
 
         public void ResetToggleButtons()
         {
-            toggleWaffe.isActive = false;
-            toggleHauptteil.isActive = false;
-            toggleStabilisator.isActive = false;
-            toggleMunition.isActive = false;
-            toggleVisier.isActive = false;
-            toggleAntrieb.isActive = false;
-            togglePowerup.isActive = false;
+            toggleWaffe.IsActive = false;
+            toggleHauptteil.IsActive = false;
+            toggleStabilisator.IsActive = false;
+            toggleMunition.IsActive = false;
+            toggleVisier.IsActive = false;
+            toggleAntrieb.IsActive = false;
+            togglePowerup.IsActive = false;
         }
 
         private void CreateCheckBoxPanel()

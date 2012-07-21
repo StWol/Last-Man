@@ -15,7 +15,9 @@ namespace LastMan.UI
 
         public static void DrawMouse(SpriteBatch sb)
         {
-            sb.Draw(CurrentCursor, new Vector2(Mouse.GetState().X, Mouse.GetState().Y), Color.White);
+            int x = Mouse.GetState().X-CurrentCursor.Width / 2;
+            int y = Mouse.GetState().Y-CurrentCursor.Height / 2;
+            sb.Draw(CurrentCursor, new Vector2(x, y), Color.White);
         }
 
         public static void Load()

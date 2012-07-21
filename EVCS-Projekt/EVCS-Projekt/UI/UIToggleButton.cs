@@ -8,7 +8,7 @@ namespace LastMan.UI
     {
         private Texture2D activeTexture;
         private Texture2D activeTextureHover;
-        public bool isActive;
+        public bool IsActive;
 
         
         public UIToggleButton( int width, int height, Vector2 position, Texture2D texture, Texture2D hoverTexture, Texture2D activeTexture, Texture2D activeTextureHover, string text )
@@ -17,14 +17,14 @@ namespace LastMan.UI
             
             this.activeTexture = activeTexture;
             this.activeTextureHover = activeTextureHover;
-            isActive = false;
+            IsActive = false;
         }
 
         public override Texture2D CurrentTexture
         {
             get
             {
-                if ( isActive )
+                if ( IsActive )
                 {
                     if ( IsHover )
                         return activeTextureHover;
@@ -41,7 +41,7 @@ namespace LastMan.UI
                 var listenerList = new List<UIActionListener>( actionListener );
                 foreach ( UIActionListener al in listenerList )
                 {
-                    if ( isActive )
+                    if ( IsActive )
                     {
                         al.OnMouseUp( this );
                     }
@@ -50,7 +50,7 @@ namespace LastMan.UI
                         al.OnMouseDown( this );
                     }
                 }
-                isActive = !isActive;
+                IsActive = !IsActive;
             }
         }
     }
