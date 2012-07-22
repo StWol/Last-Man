@@ -1,14 +1,14 @@
 <?xml version="1.0"?>
 <ArrayOfWeaponInner xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
 	<WeaponInner>
-		<visier>300</visier>
-		<antrieb>500</antrieb>
-		<stabilisator>400</stabilisator>
-		<hauptteil>100</hauptteil>
+		<visier>305</visier>
+		<antrieb>506</antrieb>
+		<stabilisator>406</stabilisator>
+		<hauptteil>103</hauptteil>
 		<item>
 			<id>8</id>
-			<name>test</name>
-			<description>desc</description>
+			<name>Monsterkanone</name>
+      <description>mit besten Items</description>
 			<group>Nahkampf</group>
 			<gameObject>
 				<renderer>S_Item_8</renderer>

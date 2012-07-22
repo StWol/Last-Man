@@ -50,13 +50,7 @@ namespace LastMan.UI
                 sb.Draw( BackgroundTextur, new Rectangle( x, y, width, height ), Color.White );
             }
 
-            if ( Text != null )
-            {
-                Vector2 measureString = FONT_DEFAULT.MeasureString( Text );
-
-                //sb.Draw(Main.ContentManager.Load<Texture2D>("images/pixelWhite"), new Rectangle(x, y, width, height), BackgroundColor);
-                sb.DrawString( FONT_DEFAULT, Text, new Vector2( x + 10, y + height / 2 - measureString.Y / 2 ), Color.Black );
-            }
+            
 
             if ( IsEnabled )
             {
@@ -70,6 +64,14 @@ namespace LastMan.UI
             if ( CurrentTexture != null )
             {
                 sb.Draw( CurrentTexture, new Rectangle( x, y, width, height ), BackgroundColor );
+            }
+
+            if ( Text != null )
+            {
+                Vector2 measureString = FONT_DEFAULT.MeasureString( Text );
+
+                //sb.Draw(Main.ContentManager.Load<Texture2D>("images/pixelWhite"), new Rectangle(x, y, width, height), BackgroundColor);
+                sb.DrawString( FONT_DEFAULT, Text, new Vector2( x + 10, y + height / 2 - measureString.Y / 2 ), Color.Black );
             }
         }
     }

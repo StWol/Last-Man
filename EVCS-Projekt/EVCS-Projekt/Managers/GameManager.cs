@@ -302,6 +302,10 @@ namespace LastMan.Managers
             GameState.Player.AddItemToInventar( Item.AllItems[ 505 ] );
             GameState.Player.AddItemToInventar( Item.AllItems[ 506 ] );
 
+
+            GameState.Player.AddItemToInventar( Item.AllItems[ 702 ] );
+            GameState.Player.AddItemToInventar( Item.AllItems[ 703 ] );
+
             // TEST ENDE
             // ################################################################################
 

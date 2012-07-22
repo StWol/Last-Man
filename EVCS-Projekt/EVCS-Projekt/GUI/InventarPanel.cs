@@ -17,7 +17,7 @@ namespace LastMan.GUI
             {
                 if ( value && !isVisible )
                 {
-                    //filteredInventarList.GenerateFilteredLists( player.Inventar );
+                    filteredInventarList.GenerateFilteredLists( player.Inventar );
                     filteredInventarList.SetItems( player.Inventar );
                     filteredInventarList.ResetToggleButtons();
                     activeItem = null;
